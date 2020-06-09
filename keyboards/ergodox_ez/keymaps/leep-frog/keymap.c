@@ -16,6 +16,14 @@ enum custom_keycodes {
   RGB_SLD
 };
 
+// Command descriptions (from https://github.com/qmk/qmk_firmware/blob/master/docs/keycodes.md)
+// LCTL(kc): press left control key and kc command
+// LCTL_T(kc): left control when held, kc when tapped
+// LGUI: left special (windows or Command button)
+// TG(layer): Toggle layer
+// LSPO: Left shift when held
+// RSPO: Right shift when held
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
@@ -40,14 +48,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox_pretty(
   // left hand
-  KC_EQL,          KC_1,        KC_2,          KC_3,    KC_4,    KC_5,    KC_LEFT,              KC_RGHT,      KC_6,    KC_7,    KC_8,    KC_9,              KC_0,           KC_MINS,
-  KC_DEL,          KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB),             TG(SYMB),     KC_Y,    KC_U,    KC_I,    KC_O,              KC_P,           KC_BSLS,
-  KC_BSPC,         KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                                        KC_H,    KC_J,    KC_K,    KC_L,    LT(MDIA, KC_SCLN), GUI_T(KC_QUOT),
-  KC_LSFT,         CTL_T(KC_Z), KC_X,          KC_C,    KC_V,    KC_B,    ALL_T(KC_NO),                  MEH_T(KC_NO), KC_N,    KC_M,    KC_COMM, KC_DOT,           CTL_T(KC_SLSH), KC_RSFT,
-  LT(SYMB,KC_GRV), KC_QUOT,     LALT(KC_LSFT), KC_LEFT, KC_RGHT,                                              KC_UP,   KC_DOWN, KC_LBRC, KC_RBRC, TT(SYMB),
-                                                           ALT_T(KC_APP), KC_LGUI,                KC_LALT, CTL_T(KC_ESC),
-                                                                          KC_HOME,                 KC_PGUP,
-                                                         KC_SPC, KC_BSPC, KC_END,                  KC_PGDN, KC_TAB, KC_ENT
+  KC_EQL,          KC_1,        KC_2,          KC_3,    KC_4,    KC_5,    LCTL(LGUI(KC_LEFT)),  RCTL(RGUI(KC_RGHT)), KC_6,    KC_7,    KC_8,        KC_9,        KC_0,    KC_MINUS,
+  KC_TAB,       KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB),             TG(MDIA),            KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
+  KC_LSPO,         KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                                               KC_H,    KC_J,    KC_K,        KC_L,        KC_SCLN, KC_RSPC,
+  KC_LBRACKET,     KC_Z,        KC_X,          KC_C,    KC_V,    KC_B,    LCTL(LGUI(KC_LEFT)),  RCTL(RGUI(KC_RGHT)), KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RBRACKET,
+  KC_GRAVE,        KC_QUOTE,    LALT(KC_LSFT), KC_LEFT, KC_RGHT,                                                     KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, TG(SYMB),
+                                                  LALT_T(KC_APPLICATION), KC_HOME,                  KC_PGUP, CTL_T(KC_ESC),
+                                                                           KC_END,                  KC_PGDN,
+                                                     KC_ENTER, KC_LALT, KC_BSPACE,                  KC_DELETE, KC_RCTRL, KC_SPACE
 ),
 /* Keymap 1: Symbol Layer
  *
