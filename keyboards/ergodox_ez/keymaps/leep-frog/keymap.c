@@ -120,9 +120,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [MDIA] = LAYOUT_ergodox_pretty(
   // left hand
   _______, _______, _______, _______, _______, _______, _______,     _______, _______, KC_SPCB, KC_BTN3, KC_SPCF, _______, _______,
-  _______, _______, _______, KC_WH_U, _______, _______, _______,     _______, KC_PSTE, KC_TABB, KC_MS_U, KC_TABF, _______, _______,
-  _______, _______, KC_WH_L, KC_WH_D, KC_WH_R, _______,                       KC_COPY, KC_MS_L, KC_MS_D, KC_MS_R, _______, KC_MPLY,
-  _______, _______, _______, _______, _______, _______, _______,     _______, _______, KC_WBAK, _______, KC_WFWD, _______, _______,
+  _______, _______, _______, KC_WH_U, _______, _______, _______,     _______, KC_WH_U, KC_TABB, KC_MS_U, KC_TABF, KC_PSTE, _______,
+  _______, _______, KC_WH_L, KC_WH_D, KC_WH_R, _______,                       KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, _______, KC_MPLY,
+  _______, _______, _______, _______, _______, _______, _______,     _______, KC_COPY, KC_WBAK, _______, KC_WFWD, _______, _______,
   _______, _______, _______, KC_BTN1, KC_BTN2,                                         KC_VOLU, KC_VOLD, KC_MUTE, _______, _______,
 
                                                _______, _______,     _______, _______,
@@ -221,3 +221,5 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
   return state;
 };
+
+// TODO: custom copy and paste command (default ones only work on linux)
