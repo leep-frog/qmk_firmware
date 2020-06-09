@@ -24,6 +24,10 @@ enum custom_keycodes {
 // LSPO: Left shift when held
 // RSPO: Right shift when held
 
+// Custom commands
+#define KC_SPCF RCTL(RGUI(KC_RGHT))
+#define KC_SPCB LCTL(LGUI(KC_LEFT))
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
@@ -48,11 +52,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox_pretty(
   // left hand
-  KC_EQL,          KC_1,        KC_2,          KC_3,    KC_4,    KC_5,    LCTL(LGUI(KC_LEFT)),  RCTL(RGUI(KC_RGHT)), KC_6,    KC_7,    KC_8,        KC_9,        KC_0,    KC_MINUS,
-  KC_TAB,       KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB),             TG(MDIA),            KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
-  KC_LSPO,         KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                                               KC_H,    KC_J,    KC_K,        KC_L,        KC_SCLN, KC_RSPC,
-  KC_LBRACKET,     KC_Z,        KC_X,          KC_C,    KC_V,    KC_B,    LCTL(LGUI(KC_LEFT)),  RCTL(RGUI(KC_RGHT)), KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RBRACKET,
+  KC_EQL,          KC_1,        KC_2,          KC_3,    KC_4,    KC_5,    KC_SPCB,  KC_SPCF,  KC_6,    KC_7,    KC_8,        KC_9,        KC_0,    KC_MINUS,
+  KC_TAB,          KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB), TG(MDIA), KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
+  KC_LSPO,         KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,    KC_K,        KC_L,        KC_SCLN, KC_RSPC,
+  KC_LBRACKET,     KC_Z,        KC_X,          KC_C,    KC_V,    KC_B,    KC_SPCB,  KC_SPCF,  KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RBRACKET,
   KC_GRAVE,        KC_QUOTE,    LALT(KC_LSFT), KC_LEFT, KC_RGHT,                                                     KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, TG(SYMB),
+
                                                   LALT_T(KC_APPLICATION), KC_HOME,                  KC_PGUP, CTL_T(KC_ESC),
                                                                            KC_END,                  KC_PGDN,
                                                      KC_ENTER, KC_LALT, KC_BSPACE,                  KC_DELETE, KC_RCTRL, KC_SPACE
@@ -80,14 +85,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [SYMB] = LAYOUT_ergodox_pretty(
   // left hand
-  VRSN,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_TRNS,     KC_TRNS, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-  KC_TRNS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE, KC_TRNS,     KC_TRNS, KC_UP,   KC_7,    KC_8,    KC_9,    KC_ASTR, KC_F12,
-  KC_TRNS, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,               KC_DOWN, KC_4,    KC_5,    KC_6,    KC_PLUS, KC_TRNS,
-  KC_TRNS, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, KC_TRNS,     KC_TRNS, KC_AMPR, KC_1,    KC_2,    KC_3,    KC_BSLS, KC_TRNS,
-  EEP_RST, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_DOT,  KC_0,    KC_EQL,  KC_TRNS,
-                                               RGB_MOD, KC_TRNS,     RGB_TOG, RGB_SLD,
-                                                        KC_TRNS,     KC_TRNS,
-                                      RGB_VAD, RGB_VAI, KC_TRNS,     KC_TRNS, RGB_HUD, RGB_HUI
+  VRSN,           KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,   _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,
+  _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE, _______,   _______, KC_UP,   KC_7,    KC_UP,   KC_9,     KC_ASTR, KC_F12,
+  _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                                    KC_DOWN, KC_LEFT, KC_DOWN, KC_RIGHT, KC_PLUS, _______,
+  _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______,   _______, KC_AMPR, KC_1,    KC_2,    KC_3,     KC_BSLS, _______,
+  EEP_RST, _______, _______, _______, _______,       _______, KC_DOT,  KC_0,    KC_EQL,  _______,
+                                               RGB_MOD, _______,     RGB_TOG, RGB_SLD,
+                                                        _______,     _______,
+                                      RGB_VAD, RGB_VAI, _______,     _______, RGB_HUD, RGB_HUI
 ),
 /* Keymap 2: Media and mouse keys
  *
@@ -112,15 +117,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [MDIA] = LAYOUT_ergodox_pretty(
   // left hand
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MPLY,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_MPRV, KC_MNXT, KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,                                         KC_VOLU, KC_VOLD, KC_MUTE, KC_TRNS, KC_TRNS,
+  _______, _______, _______, _______, _______, _______, _______,     _______, _______, KC_SPCB, KC_BTN3, KC_SPCF, _______, _______,
+  _______, _______, _______, KC_WH_U, _______, _______, _______,     _______, KC_PSTE, KC_SPCF, KC_MS_U, KC_SPCB, _______, _______,
+  _______, _______, KC_WH_L, KC_WH_D, KC_WH_R, _______,                       KC_COPY, KC_MS_L, KC_MS_D, KC_MS_R, _______, KC_MPLY,
+  _______, _______, _______, _______, _______, _______, _______,     _______, _______, KC_WBAK, _______, KC_WFWD, _______, _______,
+  _______, _______, _______, KC_BTN1, KC_BTN2,                                         KC_VOLU, KC_VOLD, KC_MUTE, _______, _______,
 
-                                               KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
-                                                        KC_TRNS,     KC_TRNS,
-                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_WBAK
+                                               _______, _______,     _______, _______,
+                                                        _______,     _______,
+                                      _______, _______, _______,     _______, KC_MS_BTN1, KC_MS_BTN2
 ),
 };
 
