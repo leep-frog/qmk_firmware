@@ -25,8 +25,10 @@ enum custom_keycodes {
 // RSPO: Right shift when held
 
 // Custom commands
-#define KC_SPCF RCTL(RGUI(KC_RGHT))
-#define KC_SPCB LCTL(LGUI(KC_LEFT))
+#define KC_SPCF RCTL(RGUI(KC_RGHT))  // Slide to next workspace
+#define KC_SPCB LCTL(LGUI(KC_LEFT))  // Slide to previous workspace
+#define KC_TABF RCTL(KC_TAB)  // Next tab in chrome
+#define KC_TABB LCTL(LSFT(KC_TAB))  // Previous tab in chrome
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
@@ -118,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [MDIA] = LAYOUT_ergodox_pretty(
   // left hand
   _______, _______, _______, _______, _______, _______, _______,     _______, _______, KC_SPCB, KC_BTN3, KC_SPCF, _______, _______,
-  _______, _______, _______, KC_WH_U, _______, _______, _______,     _______, KC_PSTE, KC_SPCF, KC_MS_U, KC_SPCB, _______, _______,
+  _______, _______, _______, KC_WH_U, _______, _______, _______,     _______, KC_PSTE, KC_TABB, KC_MS_U, KC_TABF, _______, _______,
   _______, _______, KC_WH_L, KC_WH_D, KC_WH_R, _______,                       KC_COPY, KC_MS_L, KC_MS_D, KC_MS_R, _______, KC_MPLY,
   _______, _______, _______, _______, _______, _______, _______,     _______, _______, KC_WBAK, _______, KC_WFWD, _______, _______,
   _______, _______, _______, KC_BTN1, KC_BTN2,                                         KC_VOLU, KC_VOLD, KC_MUTE, _______, _______,
