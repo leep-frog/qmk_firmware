@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                  KC_SPCF, KC_HOME,                  KC_PGUP, KC_SPCB,
                                                                            KC_END,                  KC_PGDN,
-                                                     KC_ENTER, KC_LALT, KC_DELETE,                  KC_BSPACE, KC_RCTRL, KC_SPACE
+                                           LT(SYMB, KC_ENTER), KC_LALT, KC_DELETE,                  KC_BSPACE, KC_RCTRL, RGUI_T(KC_SPACE)
 ),
 /* Keymap 1: Symbol Layer
  *
@@ -131,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                _______, _______,     _______, _______,
                                                         _______,     _______,
-                                      _______, _______, _______,     KC_MS_BTN1, KC_RCTRL, KC_MS_BTN2
+                                      _______, _______, _______,     KC_MS_BTN1, KC_RCTRL, RGUI_T(KC_MS_BTN2)
 ),
 };
 
