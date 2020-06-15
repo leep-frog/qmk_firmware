@@ -1,5 +1,12 @@
 #include "../../config.h"
 
+// How long it takes for a tap to become a hold. Primarily added because
+// Shift-combinations were too quick and causing a parentheses to be added.
+#ifdef TAPPING_TERM
+#undef TAPPING_TERM
+#define TAPPING_TERM 100
+#endif
+
 // Combo setup
 #define FORCE_NKRO
 #define COMBO_COUNT 3
