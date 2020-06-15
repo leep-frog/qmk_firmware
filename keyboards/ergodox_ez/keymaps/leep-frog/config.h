@@ -4,7 +4,7 @@
 // Shift-combinations were too quick and causing a parentheses to be added.
 #ifdef TAPPING_TERM
 #undef TAPPING_TERM
-#define TAPPING_TERM 100
+#define TAPPING_TERM 160
 #endif
 
 // Combo setup
