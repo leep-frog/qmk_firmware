@@ -62,11 +62,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,          KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB), TG(MDIA), KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
   KC_LSPO,         KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,    KC_K,        KC_L,        LT(SYMB, KC_SCLN), KC_RSPC,
   KC_LBRACKET,     KC_Z,        KC_X,          KC_C,    KC_V,    KC_B,    KC_SPCB,  KC_SPCF,  KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RBRACKET,
-  KC_LGUI,         KC_QUOTE,    LALT(KC_LSFT), KC_LEFT, KC_RGHT,                                       KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, KC_RGUI,
+  KC_LGUI,         KC_QUOTE,    LALT(KC_LSFT), KC_LEFT, MO(SYMB),                                      KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, KC_RGUI,
 
                                                                  KC_SPCF, KC_HOME,                  KC_PGUP, KC_SPCB,
                                                                            KC_END,                  KC_PGDN,
-                                                     KC_LALT, KC_ENTER, KC_DELETE,                  KC_BSPACE, KC_SPACE, KC_RCTRL
+                                                     KC_ENTER, KC_LALT, KC_DELETE,                  KC_BSPACE, KC_RCTRL, KC_SPACE
 ),
 /* Keymap 1: Symbol Layer
  *
@@ -92,9 +92,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [SYMB] = LAYOUT_ergodox_pretty(
   // left hand
   VRSN,           KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,   _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,
-  _______, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE, _______,   _______, KC_WH_U, KC_TABB, KC_UP,   KC_TABF, KC_ASTR, KC_F12,
-  _______, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,                      KC_WH_D, KC_LEFT, KC_DOWN, KC_RIGHT, KC_PLUS, _______,
-  _______, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, _______,   _______, KC_AMPR, KC_1,    KC_2,    KC_3,     KC_BSLS, _______,
+  _______, KC_EXLM, KC_AT,   KC_EXLM, KC_HASH, KC_AT,   _______,   _______, KC_WH_U, KC_TABB, KC_UP,   KC_TABF, KC_ASTR, KC_F12,
+  _______, KC_AMPR, KC_ASTR, KC_DLR,  KC_RPRN, KC_GRV,                      KC_WH_D, KC_LEFT, KC_DOWN, KC_RIGHT, KC_PLUS, _______,
+  _______, KC_PERC, KC_CIRC, KC_PERC, KC_CIRC, KC_TILD, _______,   _______, KC_AMPR, KC_1,    KC_2,    KC_3,     KC_BSLS, _______,
   EEP_RST, _______, _______, _______, _______,       _______, KC_DOT,  KC_0,    KC_EQL,  _______,
                                                RGB_MOD, _______,     RGB_TOG, RGB_SLD,
                                                         _______,     _______,
