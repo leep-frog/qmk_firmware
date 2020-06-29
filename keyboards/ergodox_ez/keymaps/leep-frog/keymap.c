@@ -232,14 +232,17 @@ enum combos {
   JK_HYPHEN,
   DF_QUOTE,
   SF_GRAVE,
+  JL_EQUALS,
 };
 
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sf_combo[] = {KC_S, KC_F, COMBO_END};
+const uint16_t PROGMEM jl_combo[] = {KC_J, KC_L, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [JK_HYPHEN] = COMBO(jk_combo, KC_MINUS),
   [DF_QUOTE] = COMBO(df_combo, KC_QUOTE),
   [SF_GRAVE] = COMBO(sf_combo, KC_GRAVE),
+  [JL_EQUALS] = COMBO(jl_combo, KC_EQUAL),
 };
