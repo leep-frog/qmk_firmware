@@ -68,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                  KC_SPCF, KC_HOME,                  KC_PGUP, KC_SPCB,
                                                                            KC_END,                  KC_PGDN,
-                                     LT(SYMB, KC_ENTER), LALT(KC_LCBR), KC_DELETE,                  KC_BSPACE, RCTL(KC_RCBR), RGUI_T(KC_SPACE)
+                                   LT(SYMB, KC_ENTER), LALT_T(KC_LCBR), KC_DELETE,                  KC_BSPACE, RCTL_T(KC_RCBR), RGUI_T(KC_SPACE)
 ),
 /* Keymap 1: Symbol Layer
  *
