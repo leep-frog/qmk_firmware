@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // left hand
   VRSN,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,   _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,
   _______, KC_QUES, KC_DQUO, KC_EQL,  KC_CIRC, KC_GRV,  _______,   _______, KC_PIPE, KC_QUOT, KC_RBRC, KC_AT,    KC_PERC, KC_F12,
-  _______, KC_AMPR, KC_ASTR, KC_DLR,  KC_SLSH, KC_GT,                       KC_HASH, KC_LPRN, KC_RPRN, KC_LT,    KC_PLUS, _______,
+  _______, KC_AMPR, KC_ASTR, KC_DLR,  KC_SLSH, KC_GT,                       KC_HASH, KC_LPRN, KC_COLN, KC_LT,    KC_PLUS, _______,
   _______, KC_PERC, KC_EXLM, KC_PERC, KC_CIRC, KC_BSLS, _______,   _______, KC_PLUS, KC_MINS, KC_RCBR, KC_3,     KC_BSLS, _______,
   EEP_RST, _______, _______, _______, _______,       _______, KC_DOT,  KC_0,    KC_EQL,  _______,
                                                RGB_MOD, _______,     RGB_TOG, RGB_SLD,
