@@ -7,7 +7,6 @@ enum layers {
     BASE, // default layer
     SYMB, // symbols
     MDIA,  // media keys
-    NMBR, // number pads
 };
 
 enum custom_keycodes {
@@ -61,15 +60,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox_pretty(
   // left hand
-  KC_EQL,          KC_1,           KC_2,          KC_3,    KC_4,    KC_5,    KC_SPCB,  KC_ESC,   KC_6,    KC_7,    KC_8,        KC_9,        KC_0,    KC_MINUS,
-  KC_TAB,          KC_Q,           KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB), TG(MDIA), KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
-  KC_LSPO,         LT(NMBR, KC_A), KC_S,          KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,    KC_K,        KC_L,        LT(MDIA, KC_SCLN), KC_RSPC,
-  KC_LCBR,         KC_Z,           KC_X,          KC_C,    KC_V,    KC_B,    KC_SPCB,  KC_SPCF,  KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RCBR,
-  KC_LGUI,         KC_QUOTE,       LALT(KC_LSFT), KC_LEFT, MO(SYMB),                                      KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, KC_RGUI,
+  KC_EQL,          KC_1,     KC_2,          KC_3,    KC_4,    KC_5,    KC_SPCB,  KC_ESC,   KC_6,    KC_7,    KC_8,        KC_9,        KC_0,    KC_MINUS,
+  KC_TAB,          KC_Q,     KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB), TG(MDIA), KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
+  KC_LSPO,         KC_A,     KC_S,          KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,    KC_K,        KC_L,        LT(MDIA, KC_SCLN), KC_RSPC,
+  KC_LCBR,         KC_Z,     KC_X,          KC_C,    KC_V,    KC_B,    KC_SPCB,  KC_SPCF,  KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RCBR,
+  KC_LGUI,         KC_QUOTE, LALT(KC_LSFT), KC_LEFT, MO(SYMB),                                      KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, KC_RGUI,
 
                                                                  KC_SPCF, KC_HOME,                  KC_PGUP, KC_SPCB,
                                                                            KC_END,                  KC_PGDN,
-                                   LT(SYMB, KC_LCBR), LALT_T(KC_ENTER), KC_DELETE,                  LT(NMBR, KC_BSPACE), RCTL_T(KC_SPACE), RGUI_T(KC_RCBR)
+                                   LALT_T(KC_LCBR), LT(SYMB, KC_ENTER), KC_DELETE,                  KC_BSPACE, RCTL_T(KC_SPACE), RGUI_T(KC_RCBR)
 ),
 /* Keymap 1: Symbol Layer
  *
@@ -95,9 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [SYMB] = LAYOUT_ergodox_pretty(
   // left hand
   VRSN,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,   _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,
-  _______, KC_QUES, KC_DQUO, KC_EQL,  KC_CIRC, KC_GRV,  _______,   _______, KC_PIPE, KC_QUOT, KC_RBRC, KC_AT,    KC_PERC, KC_F12,
-  _______, KC_AMPR, KC_ASTR, KC_DLR,  KC_SLSH, KC_GT,                       KC_HASH, KC_LPRN, KC_COLN, KC_LT,    KC_PLUS, _______,
-  _______, KC_PERC, KC_EXLM, KC_PERC, KC_CIRC, KC_BSLS, _______,   _______, KC_PLUS, KC_MINS, KC_RCBR, KC_3,     KC_BSLS, _______,
+  _______, _______, KC_PLUS, KC_EQL,  KC_CIRC, KC_BSLS, _______,   _______, KC_PIPE, KC_1,    KC_2,    KC_3,     KC_PERC, KC_F12,
+  _______, KC_AMPR, KC_ASTR, KC_DLR,  KC_HASH, KC_LCBR,                     KC_RCBR, KC_4,    KC_5,    KC_6,     KC_0,    _______,
+  _______, KC_TILD, KC_EXLM, KC_AT,   KC_GRV,  KC_LBRC, _______,   _______, KC_RBRC, KC_7,    KC_8,    KC_9,     KC_BSLS, _______,
   EEP_RST, _______, _______, _______, _______,       _______, KC_DOT,  KC_0,    KC_EQL,  _______,
                                                RGB_MOD, _______,     RGB_TOG, RGB_SLD,
                                                         _______,     _______,
@@ -134,20 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                _______, _______,     _______, _______,
                                                         _______,     _______,
-                                      _______, _______, _______,     KC_MS_BTN1, KC_RCTRL, RGUI_T(KC_MS_BTN2)
-),
-
-[NMBR] = LAYOUT_ergodox_pretty(
-  // left hand
-  _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, KC_7,    KC_8,    KC_9,    _______, _______,     _______, _______, KC_7,    KC_8,    KC_9,    _______, _______,
-  _______, _______, KC_4,    KC_5,    KC_6,    KC_0,                          _______, KC_4,    KC_5,    KC_6,    KC_0,    _______,
-  _______, _______, KC_1,    KC_2,    KC_3,    _______, _______,     _______, _______, KC_1,    KC_2,    KC_3,    _______, _______,
-  _______, _______, _______, KC_BTN1, KC_BTN2,                                         _______, _______, _______, _______, _______,
-
-                                               _______, _______,     _______, _______,
-                                                        _______,     _______,
-                                      _______, _______, _______,     KC_MS_BTN1, KC_RCTRL, RGUI_T(KC_MS_BTN2)
+                                      _______, _______, _______,     KC_MS_BTN1, KC_RCTRL, KC_RGUI
 ),
 };
 
@@ -246,8 +232,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // Remember to increment COMBO_COUNT in config.h when adding to this.
 enum combos {
   JK_HYPHEN,
-  DF_QUOTE,
-  SF_GRAVE,
+  DF_DQUOTE,
+  SF_QUOTE,
   JL_EQUALS,
 };
 
@@ -258,7 +244,7 @@ const uint16_t PROGMEM jl_combo[] = {KC_J, KC_L, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [JK_HYPHEN] = COMBO(jk_combo, KC_MINUS),
-  [DF_QUOTE] = COMBO(df_combo, KC_QUOTE),
-  [SF_GRAVE] = COMBO(sf_combo, KC_GRAVE),
+  [DF_DQUOTE] = COMBO(df_combo, KC_DQUO),
+  [SF_QUOTE] = COMBO(sf_combo, KC_QUOTE),
   [JL_EQUALS] = COMBO(jl_combo, KC_EQUAL),
 };
