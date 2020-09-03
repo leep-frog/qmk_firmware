@@ -94,9 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [SYMB] = LAYOUT_ergodox_pretty(
   // left hand
   VRSN,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,   _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,
-  _______, _______, KC_PLUS, KC_EQL,  KC_CIRC, KC_BSLS, _______,   _______, KC_PIPE, KC_1,    KC_2,    KC_3,     KC_PERC, KC_F12,
+  _______, _______, KC_COLN, KC_EQL,  KC_CIRC, KC_BSLS, _______,   _______, KC_PIPE, KC_7,    KC_8,    KC_9,     KC_0,    KC_F12,
   _______, KC_AMPR, KC_ASTR, KC_DLR,  KC_HASH, KC_LCBR,                     KC_RCBR, KC_4,    KC_5,    KC_6,     KC_0,    _______,
-  _______, KC_TILD, KC_EXLM, KC_AT,   KC_GRV,  KC_LBRC, _______,   _______, KC_RBRC, KC_7,    KC_8,    KC_9,     KC_BSLS, _______,
+  _______, KC_TILD, KC_EXLM, KC_AT,   KC_GRV,  KC_LBRC, _______,   _______, KC_RBRC, KC_1,    KC_2,    KC_3,     KC_0,    _______,
   EEP_RST, _______, _______, _______, _______,       _______, KC_DOT,  KC_0,    KC_EQL,  _______,
                                                RGB_MOD, _______,     RGB_TOG, RGB_SLD,
                                                         _______,     _______,
@@ -235,16 +235,20 @@ enum combos {
   DF_DQUOTE,
   SF_QUOTE,
   JL_EQUALS,
+  AF_TICK,
 };
 
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM jl_combo[] = {KC_J, KC_L, COMBO_END};
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sf_combo[] = {KC_S, KC_F, COMBO_END};
-const uint16_t PROGMEM jl_combo[] = {KC_J, KC_L, COMBO_END};
+const uint16_t PROGMEM af_combo[] = {KC_A, KC_F, COMBO_END};
+
 
 combo_t key_combos[COMBO_COUNT] = {
   [JK_HYPHEN] = COMBO(jk_combo, KC_MINUS),
+  [JL_EQUALS] = COMBO(jl_combo, KC_EQUAL),
   [DF_DQUOTE] = COMBO(df_combo, KC_DQUO),
   [SF_QUOTE] = COMBO(sf_combo, KC_QUOTE),
-  [JL_EQUALS] = COMBO(jl_combo, KC_EQUAL),
+  [AF_TICK] = COMBO(af_combo, KC_GRAVE),
 };
