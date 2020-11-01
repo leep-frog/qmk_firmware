@@ -9,7 +9,7 @@
 
 // Combo setup
 #define FORCE_NKRO
-#define COMBO_COUNT 5
+#define COMBO_COUNT 6
 #define COMBO_TERM 40  // Number of milliseconds for combo keys.
 
 // Mouse settings
