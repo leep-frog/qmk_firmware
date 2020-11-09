@@ -7,6 +7,7 @@ enum layers {
     BASE, // default layer
     SYMB, // symbols
     MDIA,  // media keys
+    GMAIL, // gmail shortcut keys
 };
 
 enum custom_keycodes {
@@ -35,6 +36,7 @@ enum custom_keycodes {
 #define KC_WWWB LALT(KC_LEFT)  // Previous page in chrome
 #define MY_COPY LCTL(KC_C)
 #define MY_PSTE LCTL(KC_V)
+#define RELOAD RCTL(KC_R)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
@@ -59,40 +61,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `----------------------'
  */
 [BASE] = LAYOUT_ergodox_pretty(
-  // left hand
-  KC_EQL,          KC_1,     KC_2,          KC_3,    KC_4,    KC_5,    KC_SPCB,  KC_ESC,   KC_6,    KC_7,    KC_8,        KC_9,        KC_0,    KC_MINUS,
-  KC_TAB,          KC_Q,     KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB), TG(MDIA), KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
-  KC_LSPO,         KC_A,     KC_S,          KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,    KC_K,        KC_L,        LT(MDIA, KC_SCLN), KC_RSPC,
-  KC_LCBR,         KC_Z,     KC_X,          KC_C,    KC_V,    KC_B,    KC_SPCB,  KC_SPCF,  KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RCBR,
-  KC_LGUI,         KC_QUOTE, LALT(KC_LSFT), KC_LEFT, MO(SYMB),                                      KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, KC_RGUI,
+  KC_EQL,          KC_1,           KC_2,          KC_3,    KC_4,    KC_5,    KC_SPCB,  KC_ESC,   KC_6,    KC_7,    KC_8,        KC_9,        KC_0,    KC_MINUS,
+  KC_TAB,          KC_Q,           KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB), TG(MDIA), KC_Y,    KC_U,    KC_I,        KC_O,        KC_P,    KC_BSLASH,
+  KC_LSPO,         LT(MDIA, KC_A), KC_S,          KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,    KC_K,        KC_L,        LT(MDIA, KC_SCLN), KC_RSPC,
+  KC_LCBR,         KC_Z,           KC_X,          KC_C,    KC_V,    KC_B,    KC_SPCB,  KC_SPCF,  KC_N,    KC_M,    KC_COMMA,    KC_DOT,      KC_SLSH, KC_RCBR,
+  KC_LGUI,         KC_QUOTE,       LALT(KC_LSFT), KC_LEFT, MO(SYMB),                                      KC_UP,   KC_DOWN, KC_LBRACKET, KC_RBRACKET, KC_RGUI,
 
                                                                  KC_SPCF, KC_HOME,                  KC_PGUP, KC_SPCB,
                                                                            KC_END,                  KC_PGDN,
                                    LALT_T(KC_LCBR), LT(SYMB, KC_ENTER), KC_DELETE,                  KC_BSPACE, RCTL_T(KC_SPACE), RGUI_T(KC_RCBR)
 ),
-/* Keymap 1: Symbol Layer
- *
- * ,---------------------------------------------------.           ,--------------------------------------------------.
- * |Version  |  F1  |  F2  |  F3  |  F4  |  F5  |      |           |      |  F6  |  F7  |  F8  |  F9  |  F10 |   F11  |
- * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |         |   !  |   @  |   {  |   }  |   |  |      |           |      |   Up |   7  |   8  |   9  |   *  |   F12  |
- * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |   #  |   $  |   (  |   )  |   `  |------|           |------| Down |   4  |   5  |   6  |   +  |        |
- * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |   %  |   ^  |   [  |   ]  |   ~  |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
- * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | EPRM  |      |      |      |      |                                       |      |    . |   0  |   =  |      |
- *   `-----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        |Animat|      |       |Toggle|Solid |
- *                                 ,------|------|------|       |------+------+------.
- *                                 |Bright|Bright|      |       |      |Hue-  |Hue+  |
- *                                 |ness- |ness+ |------|       |------|      |      |
- *                                 |      |      |      |       |      |      |      |
- *                                 `--------------------'       `--------------------'
- */
+
 [SYMB] = LAYOUT_ergodox_pretty(
-  // left hand
   VRSN,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,   _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,
   _______, _______, KC_COLN, KC_EQL,  KC_CIRC, KC_BSLS, _______,   _______, KC_PIPE, KC_7,    KC_8,    KC_9,     KC_PERC, KC_F12,
   _______, KC_AMPR, KC_ASTR, KC_DLR,  KC_SLSH, KC_LCBR,                     KC_HASH, KC_4,    KC_5,    KC_6,     KC_0,    _______,
@@ -102,38 +82,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                         _______,     _______,
                                       RGB_VAD, RGB_VAI, _______,     _______, KC_SPACE, RGB_HUI
 ),
-/* Keymap 2: Media and mouse keys
- *
- * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
- * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      | MsUp |      |      |      |           |      |      |      |      |      |      |        |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |MsLeft|MsDown|MsRght|      |------|           |------|      |      |      |      |      |  Play  |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      | Prev | Next |      |        |
- * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      | Lclk | Rclk |                                       |VolUp |VolDn | Mute |      |      |
- *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        |      |      |       |      |      |
- *                                 ,------|------|------|       |------+------+------.
- *                                 |      |      |      |       |      |      |Brwser|
- *                                 |      |      |------|       |------|      |Back  |
- *                                 |      |      |      |       |      |      |      |
- *                                 `--------------------'       `--------------------'
- */
+
 [MDIA] = LAYOUT_ergodox_pretty(
-  // left hand
-  _______, _______, _______, _______, _______, _______, _______,     _______, _______, KC_SPCB, KC_BTN3, KC_SPCF, _______, _______,
-  _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,     _______, KC_WH_U, KC_TABB, KC_UP,   KC_TABF, MY_PSTE, _______,
-  _______, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                          KC_WH_D, KC_LEFT, KC_DOWN, KC_RIGHT, _______, KC_MPLY,
-  _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______,     _______, MY_COPY, KC_WWWB, _______, KC_WWWF, _______, _______,
-  _______, _______, _______, KC_BTN1, KC_BTN2,                                         KC_VOLU, KC_VOLD, KC_MUTE, _______, _______,
+  _______, _______, _______, _______, _______,  _______,    _______,     _______, _______,    KC_SPCB, KC_BTN3, KC_SPCF,  _______, _______,
+  _______, KC_Q,    KC_TABB, KC_UP,   KC_TABF,  KC_WH_U,    _______,     _______, KC_WH_U,    KC_TABB, KC_UP,   KC_TABF,  MY_PSTE, _______,
+  _______, _______, KC_LEFT, KC_DOWN, KC_RIGHT, KC_WH_D,                          KC_WH_D,    KC_LEFT, KC_DOWN, KC_RIGHT, _______, KC_MPLY,
+  _______, KC_Z,    KC_WWWB, RELOAD,  KC_WWWF,  KC_MS_BTN1, _______,     _______, KC_MS_BTN1, KC_WWWB, RELOAD,  KC_WWWF,  _______, _______,
+  _______, _______, _______, KC_BTN1, KC_BTN2,                                                KC_VOLU, KC_VOLD, KC_MUTE,  _______, _______,
 
                                                _______, _______,     _______, _______,
                                                         _______,     _______,
-                                      _______, _______, _______,     KC_MS_BTN1, KC_SPACE, KC_RGUI
+                    RCTL(KC_T), LT(GMAIL, KC_ENTER), RCTL(KC_W),     RCTL(KC_W), LT(GMAIL, KC_ENTER), RCTL(KC_T)
+),
+
+// Using this requires configuring the following chrome shortcuts
+// "Go to Inbox" -> i
+// "Deselect all conversations" -> c
+// "Compose" -> W (previously c)
+// "Compose in tab" -> w
+// "Select conversation" -> x (already x)
+// "Mark as read" -> d
+[GMAIL] = LAYOUT_ergodox_pretty(
+  _______, _______, _______, _______, _______, _______, _______,        _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, KC_D,    KC_UP,   KC_C,    _______, _______,        _______, _______, KC_C,    KC_UP,   KC_D,    _______, _______,
+  _______, _______, KC_I,    KC_DOWN, KC_X,    KC_ENT,                           KC_ENT,  KC_X,    KC_DOWN, KC_I,    _______, _______,
+  _______, _______, _______, _______, _______, _______, _______,        _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______,                                            _______, _______, _______, _______, _______,
+
+                                               _______, _______,     _______, _______,
+                                                        _______,     _______,
+                                      _______, _______, _______,     _______, _______, _______
 ),
 };
 
@@ -231,27 +209,31 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // Combos
 // Remember to increment COMBO_COUNT in config.h when adding to this.
 enum combos {
+  // Note: can't use conditional click keys (like LT(MEDIA, KC_A)) here
   JI_ESC,
   JK_HYPHEN,
   JL_EQUALS,
+  KL_ENTER,
   DF_DQUOTE,
   SF_QUOTE,
-  AF_TICK,
+  SD_TICK,
 };
 
 const uint16_t PROGMEM ji_combo[] = {KC_J, KC_I, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM jl_combo[] = {KC_J, KC_L, COMBO_END};
+const uint16_t PROGMEM kl_combo[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sf_combo[] = {KC_S, KC_F, COMBO_END};
-const uint16_t PROGMEM af_combo[] = {KC_A, KC_F, COMBO_END};
+const uint16_t PROGMEM sd_combo[] = {KC_S, KC_D, COMBO_END};
 
 
 combo_t key_combos[COMBO_COUNT] = {
   [JI_ESC] = COMBO(ji_combo, KC_ESCAPE),
   [JK_HYPHEN] = COMBO(jk_combo, KC_MINUS),
   [JL_EQUALS] = COMBO(jl_combo, KC_EQUAL),
+  [KL_ENTER] = COMBO(kl_combo, KC_ENTER),
   [DF_DQUOTE] = COMBO(df_combo, KC_DQUO),
   [SF_QUOTE] = COMBO(sf_combo, KC_QUOTE),
-  [AF_TICK] = COMBO(af_combo, KC_GRAVE),
+  [SD_TICK] = COMBO(sd_combo, KC_GRAVE),
 };

@@ -4,12 +4,12 @@
 // Shift-combinations were too quick and causing a parentheses to be added.
 #ifdef TAPPING_TERM
 #undef TAPPING_TERM
-#define TAPPING_TERM 160
+#define TAPPING_TERM 120
 #endif
 
 // Combo setup
 #define FORCE_NKRO
-#define COMBO_COUNT 6
+#define COMBO_COUNT 7
 #define COMBO_TERM 40  // Number of milliseconds for combo keys.
 
 // Mouse settings
