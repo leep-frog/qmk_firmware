@@ -69,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                  KC_SPCF, KC_HOME,                  KC_PGUP, KC_SPCB,
                                                                            KC_END,                  KC_PGDN,
-                                      KC_TAB, LSFT_T(KC_ENTER), LALT_T(KC_DELETE),                  RCTL_T(KC_BSPACE), LT(SYMB, KC_SPACE), RGUI_T(KC_RCBR)
+                                      KC_TAB, LT(SYMB, KC_ENTER), LALT_T(KC_DELETE),                  RCTL_T(KC_BSPACE), RSFT_T(KC_SPACE), RGUI_T(KC_RCBR)
 ),
 
 /* Keymap 0: Basic layer
