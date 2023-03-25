@@ -5,6 +5,7 @@ enum layers {
     LR_CTRL,
     LR_ALT,
     LR_WS,
+    LR_KB,
     LR_OUTLOOK,
     NUM_LAYERS,
 };

@@ -76,68 +76,106 @@ void td_workspace_finished(tap_dance_state_t *state, void *user_data) {
 // TDK_CTRL
 
 void td_ctrl_each_press(tap_dance_state_t *state, void *user_data) {
-    layer_on(LR_CTRL);
+    if (state->count > 1) {
+        // First click (count == 1) is sent on unpress, so only send subsequent clicks
+        register_code16(KC_BTN1);
+    }
 }
 
 void td_ctrl_each_unpress(tap_dance_state_t *state, void *user_data) {
-    layer_off(LR_CTRL);
+    if (state->count == 1) {
+        // If the dance isn't finished then click
+        // (if the dance is finished, then we reached a HOLD or INTERRUPT state,
+        // in which case the key was used as a layer change).
+        if (!state->finished) {
+            tap_code16(KC_BTN1);
+        }
+    } else {
+        // Otherwise, just regular un-click
+        unregister_code16(KC_BTN1);
+    }
 }
 
 void td_ctrl_finished(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, false)) {
-        case SINGLE_TAP:
-            tap_code16(KC_BTN1);
-            break;
-        case DOUBLE_HOLD:
-            register_code16(KC_BTN1);
-            break;
+    if ((cur_dance(state, false) == SINGLE_HOLD)) {
+        layer_on(LR_CTRL);
     }
 }
 
 void td_ctrl_reset(tap_dance_state_t *state, void *user_data) {
-    unregister_code16(KC_BTN1);
+    layer_off(LR_CTRL);
 }
 
 // TDK_ALT
 
 void td_alt_each_press(tap_dance_state_t *state, void *user_data) {
-    layer_on(LR_ALT);
+    if (state->count > 1) {
+        // First click (count == 1) is sent on unpress, so only send subsequent clicks
+        register_code16(KC_BTN2);
+    }
 }
 
 void td_alt_each_unpress(tap_dance_state_t *state, void *user_data) {
-    layer_off(LR_ALT);
+    if (state->count == 1) {
+        // If the dance isn't finished then click
+        // (if the dance is finished, then we reached a HOLD or INTERRUPT state,
+        // in which case the key was used as a layer change).
+        if (!state->finished) {
+            tap_code16(KC_BTN2);
+        }
+    } else {
+        // Otherwise, just regular un-click
+        unregister_code16(KC_BTN2);
+    }
 }
 
 void td_alt_finished(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, false)) {
-        case SINGLE_TAP:
-            tap_code16(KC_BTN2);
-            break;
+    if ((cur_dance(state, false) == SINGLE_HOLD)) {
+        layer_on(LR_ALT);
     }
+}
+
+void td_alt_reset(tap_dance_state_t *state, void *user_data) {
+    layer_off(LR_ALT);
 }
 
 // TDK_COPY
 
-void td_copy(tap_dance_state_t *state, void *user_data) {
+void td_copy_finished(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
         case SINGLE_TAP:
             SEND_STRING(SS_COPY);
             break;
+        case SINGLE_HOLD:
+            layer_on(LR_KB);
+            break;
         case DOUBLE_TAP:
             URL_COPY();
+            break;
     }
+}
+
+void td_copy_each_unpress(tap_dance_state_t *state, void *user_data) {
+    layer_off(LR_KB);
 }
 
 // TDK_PASTE
 
-void td_paste(tap_dance_state_t *state, void *user_data) {
+void td_paste_finished(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
         case SINGLE_TAP:
             SEND_STRING(SS_PASTE);
             break;
+        case SINGLE_HOLD:
+            register_code16(KC_BTN2);
+            break;
         case DOUBLE_TAP:
             URL_PASTE();
     }
+}
+
+void td_paste_each_unpress(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_BTN2);
 }
 
 // TDK_OPEN_TAB
@@ -173,12 +211,19 @@ void td_close_tab(tap_dance_state_t *state, void *user_data) {
 }
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TDK_ALT] = ACTION_TAP_DANCE_FN_ADVANCED(td_alt_each_press, td_alt_each_unpress, td_alt_finished, NULL),
+    // Alt dance
+    [TDK_ALT] = ACTION_TAP_DANCE_FN_ADVANCED(td_alt_each_press, td_alt_each_unpress, td_alt_finished, td_alt_reset),
+    // Ctrl dance
     [TDK_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(td_ctrl_each_press, td_ctrl_each_unpress, td_ctrl_finished, td_ctrl_reset),
+    // WS dance
     [TDK_WORKSPACE] = ACTION_TAP_DANCE_FN_ADVANCED(td_workspace_each_press, td_workspace_each_unpress, td_workspace_finished, NULL),
-    [TDK_COPY] = ACTION_TAP_DANCE_FN(td_copy),
-    [TDK_PASTE] = ACTION_TAP_DANCE_FN(td_paste),
+    // Copy dance
+    [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_copy_each_unpress, td_copy_finished, NULL),
+    // Paste dance
+    [TDK_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_paste_each_unpress, td_paste_finished, NULL),
+    // Open tab dance
     [TDK_OPEN_TAB] = ACTION_TAP_DANCE_FN(td_open_tab),
+    // Close tab dance
     [TDK_CLOSE_TAB] = ACTION_TAP_DANCE_FN(td_close_tab),
 };
 

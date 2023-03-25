@@ -28,6 +28,8 @@
  * TODO:
  * Ctrl-f
  * Escape
+ * Enter
+ * Backspace
  **************************/
 
 /*******************
@@ -55,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_BASE] = LEEPOUT(
         // Top
-        C(KC_C), TO_CTRL, KC_BTN3, TO_ALT, TO_WS,
+        KC_BTN1, TO_CTRL, KC_BTN3, TO_ALT, TO_WS,
         // Side buttons
         TD_COPY, TD_PASTE,
         // Special button
@@ -82,6 +84,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_WS] = LEEPOUT(
         // Top
         _______, C(G(KC_LEFT)), _______, C(G(KC_RIGHT)), _______,
+        // Side buttons
+        _______, _______,
+        // Special button
+        _______),
+
+    [LR_KB] = LEEPOUT(
+        // Top
+        _______, KC_BSPC, _______, KC_DEL, KC_ENTER,
         // Side buttons
         _______, _______,
         // Special button
@@ -135,6 +145,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     }
 
     switch (keycode) {
+        // Custom keycodes (in order for performance)
         case CK_ATAB:
             activate_alt();
             SEND_STRING(SS_TAP(X_TAB));

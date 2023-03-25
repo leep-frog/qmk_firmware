@@ -6,7 +6,7 @@
 // Shift-combinations were too quick and causing a parentheses to be added.
 #ifdef TAPPING_TERM
 #    undef TAPPING_TERM
-#    define TAPPING_TERM 150
+#    define TAPPING_TERM 100
 #endif
 // Allows us to define tapping term per key. See link for more details:
 // https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md#tapping-term
