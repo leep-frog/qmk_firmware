@@ -55,89 +55,55 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_matters) {
 
 /********************** END COPY **********************/
 
-// TDK_WORKSPACE
-void td_workspace_each_press(tap_dance_state_t *state, void *user_data) {
-    layer_on(LR_WS);
-}
+/****************** CLICK_HOLD START ******************/
 
-void td_workspace_each_unpress(tap_dance_state_t *state, void *user_data) {
-    layer_off(LR_WS);
-}
+typedef struct {
+    uint16_t kc;
+    uint16_t layer;
+} leep_td_user_data_t;
 
-void td_workspace_finished(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, false)) {
-        case SINGLE_TAP:
-            // New tab
-            SEND_STRING(SS_RCTL("t"));
-            break;
-    }
-}
+void leep_td_each_press(tap_dance_state_t *state, void *user_data) {
+    leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
 
-// TDK_CTRL
-
-void td_ctrl_each_press(tap_dance_state_t *state, void *user_data) {
     if (state->count > 1) {
-        // First click (count == 1) is sent on unpress, so only send subsequent clicks
-        register_code16(KC_BTN1);
+        // First click (count == 1) is sent on unpress, so only send subsequent clicks.
+        register_code16(ud->kc);
     }
 }
 
-void td_ctrl_each_unpress(tap_dance_state_t *state, void *user_data) {
+void leep_td_each_unpress(tap_dance_state_t *state, void *user_data) {
+    leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
+
     if (state->count == 1) {
-        // If the dance isn't finished then click
+        /* If the dance isn't finished then click
         // (if the dance is finished, then we reached a HOLD or INTERRUPT state,
-        // in which case the key was used as a layer change).
+        // in which case the key was used as a layer change).*/
         if (!state->finished) {
-            tap_code16(KC_BTN1);
+            tap_code16(ud->kc);
         }
     } else {
-        // Otherwise, just regular un-click
-        unregister_code16(KC_BTN1);
+        /* Otherwise, just regular un-click */
+        unregister_code16(ud->kc);
     }
 }
 
-void td_ctrl_finished(tap_dance_state_t *state, void *user_data) {
+void leep_td_finished(tap_dance_state_t *state, void *user_data) {
+    leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
+
     if ((cur_dance(state, false) == SINGLE_HOLD)) {
-        layer_on(LR_CTRL);
+        layer_on(ud->layer);
     }
 }
 
-void td_ctrl_reset(tap_dance_state_t *state, void *user_data) {
-    layer_off(LR_CTRL);
+void leep_td_reset(tap_dance_state_t *state, void *user_data) {
+    leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
+    layer_off(ud->layer);
 }
 
-// TDK_ALT
+#define LEEP_TD_CLICK_HOLD(kc, layer) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, layer}), }
 
-void td_alt_each_press(tap_dance_state_t *state, void *user_data) {
-    if (state->count > 1) {
-        // First click (count == 1) is sent on unpress, so only send subsequent clicks
-        register_code16(KC_BTN2);
-    }
-}
-
-void td_alt_each_unpress(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // If the dance isn't finished then click
-        // (if the dance is finished, then we reached a HOLD or INTERRUPT state,
-        // in which case the key was used as a layer change).
-        if (!state->finished) {
-            tap_code16(KC_BTN2);
-        }
-    } else {
-        // Otherwise, just regular un-click
-        unregister_code16(KC_BTN2);
-    }
-}
-
-void td_alt_finished(tap_dance_state_t *state, void *user_data) {
-    if ((cur_dance(state, false) == SINGLE_HOLD)) {
-        layer_on(LR_ALT);
-    }
-}
-
-void td_alt_reset(tap_dance_state_t *state, void *user_data) {
-    layer_off(LR_ALT);
-}
+/******************* CLICK_HOLD END *******************/
 
 // TDK_COPY
 
@@ -212,11 +178,11 @@ void td_close_tab(tap_dance_state_t *state, void *user_data) {
 
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
-    [TDK_ALT] = ACTION_TAP_DANCE_FN_ADVANCED(td_alt_each_press, td_alt_each_unpress, td_alt_finished, td_alt_reset),
+    [TDK_ALT] = LEEP_TD_CLICK_HOLD(KC_BTN2, LR_ALT),
     // Ctrl dance
-    [TDK_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(td_ctrl_each_press, td_ctrl_each_unpress, td_ctrl_finished, td_ctrl_reset),
+    [TDK_CTRL] = LEEP_TD_CLICK_HOLD(KC_BTN1, LR_CTRL),
     // WS dance
-    [TDK_WORKSPACE] = ACTION_TAP_DANCE_FN_ADVANCED(td_workspace_each_press, td_workspace_each_unpress, td_workspace_finished, NULL),
+    [TDK_WORKSPACE] = LEEP_TD_CLICK_HOLD(KC_BTN3, LR_WS),
     // Copy dance
     [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_copy_each_unpress, td_copy_finished, NULL),
     // Paste dance
