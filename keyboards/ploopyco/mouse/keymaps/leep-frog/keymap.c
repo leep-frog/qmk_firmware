@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_BASE] = LEEPOUT(
         // Top
-        KC_BTN1, TO_CTRL, KC_BTN3, TO_ALT, TO_WS,
+        KC_BTN1, TO_CTRL, _______, TO_ALT, TO_WS,
         // Side buttons
         TD_COPY, TD_PASTE,
         // Special button
