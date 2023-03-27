@@ -6,6 +6,7 @@ enum layers {
     LR_ALT,
     LR_WS,
     LR_KB,
+    LR_POWER_KB,
     LR_OUTLOOK,
     NUM_LAYERS,
 };
@@ -19,6 +20,7 @@ enum dances {
     TDK_OPEN_TAB,
     TDK_CLOSE_TAB,
     TDK_OUTLOOK_RELOAD,
+    TDK_VSCODE_DEFINITION,
 };
 
 enum custom_keycodes {

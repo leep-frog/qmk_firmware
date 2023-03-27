@@ -26,7 +26,7 @@
 
 /*************************
  * TODO:
- * Ctrl-f
+ * Add a layer in keyboard QMK to complement capabilities here
  **************************/
 
 /*******************
@@ -89,6 +89,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_KB] = LEEPOUT(
         // Top
         KC_ESC, KC_BSPC, _______, KC_DEL, KC_ENTER,
+        // Side buttons
+        _______, _______,
+        // Special button
+        _______),
+
+    [LR_POWER_KB] = LEEPOUT(
+        // Top
+        _______, TD_VDEF, _______, _______, _______,
         // Side buttons
         _______, _______,
         // Special button

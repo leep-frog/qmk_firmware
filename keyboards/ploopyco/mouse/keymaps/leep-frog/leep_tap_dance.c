@@ -90,6 +90,7 @@ void leep_td_each_unpress(tap_dance_state_t *state, void *user_data) {
 void leep_td_finished(tap_dance_state_t *state, void *user_data) {
     leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
 
+    // This accounts for holds or interrupts (and is run before interrupting key).
     if ((cur_dance(state, false) == SINGLE_HOLD)) {
         layer_on(ud->layer);
     }
@@ -107,41 +108,46 @@ void leep_td_reset(tap_dance_state_t *state, void *user_data) {
 
 // TDK_COPY
 
+void td_copy_pressed(tap_dance_state_t *state, void *user_data) {
+    layer_on(LR_KB);
+}
+
+void td_copy_unpressed(tap_dance_state_t *state, void *user_data) {
+    layer_off(LR_KB);
+}
+
 void td_copy_finished(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
+    switch (cur_dance(state, false)) {
         case SINGLE_TAP:
             SEND_STRING(SS_COPY);
             break;
-        case SINGLE_HOLD:
-            layer_on(LR_KB);
-            break;
+        // case SINGLE_HOLD: layer_on(LR_KB) is done by [un]pressed functions
         case DOUBLE_TAP:
             URL_COPY();
             break;
     }
 }
 
-void td_copy_each_unpress(tap_dance_state_t *state, void *user_data) {
-    layer_off(LR_KB);
-}
-
 // TDK_PASTE
 
+void td_paste_pressed(tap_dance_state_t *state, void *user_data) {
+    layer_on(LR_POWER_KB);
+}
+
+void td_paste_unpressed(tap_dance_state_t *state, void *user_data) {
+    layer_off(LR_POWER_KB);
+}
+
 void td_paste_finished(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
+    switch (cur_dance(state, false)) {
         case SINGLE_TAP:
             SEND_STRING(SS_PASTE);
             break;
-        case SINGLE_HOLD:
-            register_code16(KC_BTN2);
-            break;
+        // case SINGLE_HOLD: layer_on(LR_KB) is done by [un]pressed functions
         case DOUBLE_TAP:
             URL_PASTE();
+            break;
     }
-}
-
-void td_paste_each_unpress(tap_dance_state_t *state, void *user_data) {
-    unregister_code16(KC_BTN2);
 }
 
 // TDK_OPEN_TAB
@@ -178,7 +184,7 @@ void td_close_tab(tap_dance_state_t *state, void *user_data) {
 
 // TDK_OUTLOOK_RELOAD
 
-void td_outlook_reload(qk_tap_dance_state_t *state, void *user_data) {
+void td_outlook_reload(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
         case SINGLE_TAP:
             // Switch panes
@@ -197,6 +203,21 @@ void td_outlook_reload(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
+// TDK_VSCODE_DEFINITION
+
+void td_vscode_definition(tap_dance_state_t *state, void *user_data) {
+    switch (cur_dance(state, true)) {
+        case SINGLE_TAP:
+            // Go to definition (ctrl+x ctrl+d)
+            SEND_STRING(SS_RCTL("xd"));
+            break;
+        case SINGLE_HOLD:
+            // Go to definition in separate window (ctrl+shift+d)
+            SEND_STRING(SS_RCTL(SS_RSFT("d")));
+            break;
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
     [TDK_ALT] = LEEP_TD_CLICK_HOLD(KC_BTN2, LR_ALT),
@@ -205,14 +226,17 @@ tap_dance_action_t tap_dance_actions[] = {
     // WS dance
     [TDK_WORKSPACE] = LEEP_TD_CLICK_HOLD(KC_BTN3, LR_WS),
     // Copy dance
-    [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_copy_each_unpress, td_copy_finished, NULL),
+    [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(td_copy_pressed, td_copy_unpressed, td_copy_finished, NULL),
     // Paste dance
-    [TDK_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_paste_each_unpress, td_paste_finished, NULL),
+    [TDK_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(td_paste_pressed, td_paste_unpressed, td_paste_finished, NULL),
     // Open tab dance
     [TDK_OPEN_TAB] = ACTION_TAP_DANCE_FN(td_open_tab),
     // Close tab dance
     [TDK_CLOSE_TAB] = ACTION_TAP_DANCE_FN(td_close_tab),
+    // Outlook dance
     [TDK_OUTLOOK_RELOAD] = ACTION_TAP_DANCE_FN(td_outlook_reload),
+    // VSCode definition dance
+    [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
 };
 
 #define TO_ALT TD(TDK_ALT)
@@ -224,3 +248,4 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TD_OTAB TD(TDK_OPEN_TAB)
 #define TD_CTAB TD(TDK_CLOSE_TAB)
 #define OL_RLD TD(TDK_OUTLOOK_RELOAD)
+#define TD_VDEF TD(TDK_VSCODE_DEFINITION)
