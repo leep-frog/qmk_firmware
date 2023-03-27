@@ -96,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_OUTLOOK] = LEEPOUT(
         // Top
-        _______, KC_BTN1, _______, OL_DEL, _______,
+        OL_RLD, KC_BTN1, _______, OL_DEL, _______,
         // Side buttons
         OL_READ, OL_UNRD,
         // Special button

@@ -176,6 +176,27 @@ void td_close_tab(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+// TDK_OUTLOOK_RELOAD
+
+void td_outlook_reload(qk_tap_dance_state_t *state, void *user_data) {
+    switch (cur_dance(state, true)) {
+        case SINGLE_TAP:
+            // Switch panes
+            send_string(SS_RCTL(SS_RSFT(SS_TAP(X_TAB))));
+            // Reload
+            tap_code16(KC_F5);
+            // Swtich panes again
+            send_string(SS_RCTL(SS_TAP(X_TAB)));
+            break;
+        case SINGLE_HOLD:
+            // Today in calendar view.
+            SEND_STRING(SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D));
+            break;
+        default:
+            tap_code16(KC_F5);
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
     [TDK_ALT] = LEEP_TD_CLICK_HOLD(KC_BTN2, LR_ALT),
@@ -191,6 +212,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_OPEN_TAB] = ACTION_TAP_DANCE_FN(td_open_tab),
     // Close tab dance
     [TDK_CLOSE_TAB] = ACTION_TAP_DANCE_FN(td_close_tab),
+    [TDK_OUTLOOK_RELOAD] = ACTION_TAP_DANCE_FN(td_outlook_reload),
 };
 
 #define TO_ALT TD(TDK_ALT)
@@ -201,3 +223,4 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TD_PASTE TD(TDK_PASTE)
 #define TD_OTAB TD(TDK_OPEN_TAB)
 #define TD_CTAB TD(TDK_CLOSE_TAB)
+#define OL_RLD TD(TDK_OUTLOOK_RELOAD)

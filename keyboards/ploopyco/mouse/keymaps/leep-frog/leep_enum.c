@@ -18,6 +18,7 @@ enum dances {
     TDK_PASTE,
     TDK_OPEN_TAB,
     TDK_CLOSE_TAB,
+    TDK_OUTLOOK_RELOAD,
 };
 
 enum custom_keycodes {
