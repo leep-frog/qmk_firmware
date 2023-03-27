@@ -27,9 +27,6 @@
 /*************************
  * TODO:
  * Ctrl-f
- * Escape
- * Enter
- * Backspace
  **************************/
 
 /*******************
@@ -91,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_KB] = LEEPOUT(
         // Top
-        _______, KC_BSPC, _______, KC_DEL, KC_ENTER,
+        KC_ESC, KC_BSPC, _______, KC_DEL, KC_ENTER,
         // Side buttons
         _______, _______,
         // Special button
@@ -105,34 +102,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Special button
         _______),
 };
-
-// https://docs.qmk.fm/#/feature_pointing_device?id=manipulating-mouse-reports
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report){
-    // executed each time the sensor is updated
-    // mouse_report.<attribute> - can be used to access indivdual mouse attributes
-    if (IS_LAYER_ON(LR_WS)) {
-        /*int v = mouse_report->v;
-        mouse_report->v = mouse_report->h;
-        mouse_report->h = v;*/
-
-        /*mouse_report.h = mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;*/
-
-        mouse_report.h = mouse_report.v;
-        mouse_report.v = 0;
-
-
-        /*int8_t v = mouse_report.v;
-        mouse_report.v = mouse_report.h;
-        mouse_report.h = v;*/
-    }
-
-    mouse_report.v = 0;
-    mouse_report.h = 0;
-    return mouse_report;
-}
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!record->event.pressed) {

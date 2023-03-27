@@ -41,6 +41,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
+// Initially tried to do this via the pointing_device_task_user function (https://docs.qmk.fm/#/feature_pointing_device?id=manipulating-mouse-reports),
+// but the report_mouse_t returned by the function (for ploopyco at least) isn't used for scrolling.
+// Instead, I added this method in `ploopyco/.../mouse.c` and implemented it here.
 bool transpose_scrolling(void) {
     return IS_LAYER_ON(LR_WS);
 }
