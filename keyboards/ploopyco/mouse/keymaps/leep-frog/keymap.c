@@ -97,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_POWER_KB] = LEEPOUT(
         // Top
-        _______, TD_VDEF, _______, _______, _______,
+        _______, TD_VDEF, _______, _______, KC_PRINT_SCREEN,
         // Side buttons
         _______, _______,
         // Special button
