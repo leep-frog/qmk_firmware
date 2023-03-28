@@ -18,10 +18,11 @@
 #include QMK_KEYBOARD_H
 #include "leep_enum.c"
 #include "leep_url.c"
+#include "leep_outlook.c"
 #include "leep_tap_dance.c"
 #include "leep_alt.c"
 #include "leep_layers.c"
-#include "leep_outlook.c"
+
 
 
 /*************************
@@ -104,9 +105,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_OUTLOOK] = LEEPOUT(
         // Top
-        OL_RLD, KC_BTN1, _______, OL_DEL, _______,
+        OL_RLD, KC_BTN1, _______, OL_RDTD, _______,
         // Side buttons
-        OL_READ, OL_UNRD,
+        OL_DEL, _______,
         // Special button
         _______),
 };

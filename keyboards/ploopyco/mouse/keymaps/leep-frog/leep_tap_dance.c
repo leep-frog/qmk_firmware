@@ -59,7 +59,8 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_matters) {
 
 typedef struct {
     uint16_t kc;
-    uint16_t layer;
+    uint16_t hold;
+    bool hold_is_kc;
 } leep_td_user_data_t;
 
 void leep_td_each_press(tap_dance_state_t *state, void *user_data) {
@@ -92,17 +93,26 @@ void leep_td_finished(tap_dance_state_t *state, void *user_data) {
 
     // This accounts for holds or interrupts (and is run before interrupting key).
     if ((cur_dance(state, false) == SINGLE_HOLD)) {
-        layer_on(ud->layer);
+        if (ud->hold_is_kc) {
+            tap_code16(ud->hold);
+        } else {
+            layer_on(ud->hold);
+        }
     }
 }
 
 void leep_td_reset(tap_dance_state_t *state, void *user_data) {
     leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
-    layer_off(ud->layer);
+    if (!ud->hold_is_kc) {
+        layer_off(ud->hold);
+    }
 }
 
-#define LEEP_TD_CLICK_HOLD(kc, layer) \
-    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, layer}), }
+#define LEEP_TD_CLICK_TO_HOLD_LAYER(kc, layer) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, layer, false}), }
+
+#define LEEP_TD_CLICK_TO_HOLD_KC(kc, hold_kc) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, hold_kc, true}), }
 
 /******************* CLICK_HOLD END *******************/
 
@@ -220,11 +230,11 @@ void td_vscode_definition(tap_dance_state_t *state, void *user_data) {
 
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
-    [TDK_ALT] = LEEP_TD_CLICK_HOLD(KC_BTN2, LR_ALT),
+    [TDK_ALT] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN2, LR_ALT),
     // Ctrl dance
-    [TDK_CTRL] = LEEP_TD_CLICK_HOLD(KC_BTN1, LR_CTRL),
+    [TDK_CTRL] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN1, LR_CTRL),
     // WS dance
-    [TDK_WORKSPACE] = LEEP_TD_CLICK_HOLD(KC_BTN3, LR_WS),
+    [TDK_WORKSPACE] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN3, LR_WS),
     // Copy dance
     [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(td_copy_pressed, td_copy_unpressed, td_copy_finished, NULL),
     // Paste dance
@@ -235,6 +245,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_CLOSE_TAB] = ACTION_TAP_DANCE_FN(td_close_tab),
     // Outlook dance
     [TDK_OUTLOOK_RELOAD] = ACTION_TAP_DANCE_FN(td_outlook_reload),
+    // Outlook dance
+    [TDK_OUTLOOK_READ] = LEEP_TD_CLICK_TO_HOLD_KC(OL_MARK_READ, OL_MARK_UNREAD),
     // VSCode definition dance
     [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
 };
@@ -248,4 +260,5 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TD_OTAB TD(TDK_OPEN_TAB)
 #define TD_CTAB TD(TDK_CLOSE_TAB)
 #define OL_RLD TD(TDK_OUTLOOK_RELOAD)
+#define OL_RDTD TD(TDK_OUTLOOK_READ)
 #define TD_VDEF TD(TDK_VSCODE_DEFINITION)

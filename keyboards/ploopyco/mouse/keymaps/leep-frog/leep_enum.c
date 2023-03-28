@@ -20,6 +20,7 @@ enum dances {
     TDK_OPEN_TAB,
     TDK_CLOSE_TAB,
     TDK_OUTLOOK_RELOAD,
+    TDK_OUTLOOK_READ,
     TDK_VSCODE_DEFINITION,
 };
 
