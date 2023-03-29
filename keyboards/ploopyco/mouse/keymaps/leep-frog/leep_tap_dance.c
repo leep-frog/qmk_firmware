@@ -57,10 +57,20 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_matters) {
 
 /****************** CLICK_HOLD START ******************/
 
+typedef union {
+    uint16_t hold_int;
+    char hold_string[13];
+} leep_hold_value_t;
+
+#define HOLD_INT(i) { .hold_int = i }
+#define HOLD_STRING(s) { .hold_string = s "\0" }
+
+typedef void (*leep_hold_fn_t)(tap_dance_state_t *state, bool finished, leep_hold_value_t *hold_value);
+
 typedef struct {
     uint16_t kc;
-    uint16_t hold;
-    bool hold_is_kc;
+    leep_hold_value_t hold_value;
+    leep_hold_fn_t hold_fn;
 } leep_td_user_data_t;
 
 void leep_td_each_press(tap_dance_state_t *state, void *user_data) {
@@ -93,26 +103,42 @@ void leep_td_finished(tap_dance_state_t *state, void *user_data) {
 
     // This accounts for holds or interrupts (and is run before interrupting key).
     if ((cur_dance(state, false) == SINGLE_HOLD)) {
-        if (ud->hold_is_kc) {
-            tap_code16(ud->hold);
-        } else {
-            layer_on(ud->hold);
+        if (ud->hold_fn) {
+            ud->hold_fn(state, true, &(ud->hold_value));
         }
     }
 }
 
 void leep_td_reset(tap_dance_state_t *state, void *user_data) {
     leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
-    if (!ud->hold_is_kc) {
-        layer_off(ud->hold);
+    if (ud->hold_fn) {
+        ud->hold_fn(state, false, &(ud->hold_value));
     }
 }
 
-#define LEEP_TD_CLICK_TO_HOLD_LAYER(kc, layer) \
-    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, layer, false}), }
-
+// Click to hold KC
+void leep_kc_hold_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t *hv) {
+    if (finished) {
+        tap_code16(hv->hold_int);
+    }
+}
 #define LEEP_TD_CLICK_TO_HOLD_KC(kc, hold_kc) \
-    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, hold_kc, true}), }
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, HOLD_INT(hold_kc), leep_kc_hold_fn}), }
+
+// Click to hold layer
+void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t *hv) {
+    if (finished) {
+        layer_on(hv->hold_int);
+    } else {
+        layer_off(hv->hold_int);
+    }
+}
+#define LEEP_TD_CLICK_TO_HOLD_LAYER(kc, layer) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, HOLD_INT(layer), leep_layer_hold_fn}), }
+
+// Click to hold custom fn
+#define LEEP_TD_CLICK_TO_HOLD_FN(kc, hold_fn, hold_value) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, hold_value, hold_fn}), }
 
 /******************* CLICK_HOLD END *******************/
 
@@ -228,13 +254,38 @@ void td_vscode_definition(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+// TDK_CTRL_[SHIFT_]TAB
+
+void tdk_ctrl_tab_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t *hv) {
+    if (finished) {
+        del_weak_mods(state->weak_mods);
+        send_string(hv->hold_string);
+    } else {
+        SEND_STRING(SS_DOWN(X_RCTL));
+    }
+}
+
+/*void tdk_ctrl_shift_tab_fn(tap_dance_state_t *state, bool finished, uint16_t value) {
+    if (finished) {
+        del_weak_mods(state->weak_mods);
+        // clear_mods();
+        SEND_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(value)));
+    } else {
+        SEND_STRING(SS_DOWN(X_RCTL));
+    }
+}*/
+
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
-    [TDK_ALT] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN2, LR_ALT),
+    [TDK_ALT] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN3, LR_ALT),
     // Ctrl dance
     [TDK_CTRL] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN1, LR_CTRL),
+    // Ctrl+tab or next page in browser
+    [TDK_CTRL_TAB] = LEEP_TD_CLICK_TO_HOLD_FN(KC_TAB, &tdk_ctrl_tab_fn, HOLD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_RIGHT)))),
+    // Ctrl+shift+tab of previous page in browser
+    [TDK_CTRL_STAB] = LEEP_TD_CLICK_TO_HOLD_FN(S(KC_TAB), &tdk_ctrl_tab_fn, HOLD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_LEFT)))),
     // WS dance
-    [TDK_WORKSPACE] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN3, LR_WS),
+    [TDK_WORKSPACE] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN2, LR_WS),
     // Copy dance
     [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(td_copy_pressed, td_copy_unpressed, td_copy_finished, NULL),
     // Paste dance
@@ -255,6 +306,8 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TO_CTRL TD(TDK_CTRL)
 #define TO_WS TD(TDK_WORKSPACE)
 
+#define TD_CFWD TD(TDK_CTRL_TAB)
+#define TD_CBCK TD(TDK_CTRL_STAB)
 #define TD_COPY TD(TDK_COPY)
 #define TD_PASTE TD(TDK_PASTE)
 #define TD_OTAB TD(TDK_OPEN_TAB)

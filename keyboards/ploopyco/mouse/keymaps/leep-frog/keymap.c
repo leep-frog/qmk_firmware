@@ -19,11 +19,9 @@
 #include "leep_enum.c"
 #include "leep_url.c"
 #include "leep_outlook.c"
-#include "leep_tap_dance.c"
 #include "leep_alt.c"
 #include "leep_layers.c"
-
-
+#include "leep_tap_dance.c"
 
 /*************************
  * TODO:
@@ -65,9 +63,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // As pressing ctrl+click in too rapid succession doesn't always work on the work laptop.
     [LR_CTRL] = LEEPOUT(
         // Top
-        KC_BTN1, _______, KC_BTN1, KC_TAB, TD_CTAB,
+        KC_BTN1, _______, KC_BTN1, TD_CFWD, TD_CTAB,
         // Side buttons
-        S(KC_TAB), TD_OTAB,
+        TD_CBCK, TD_OTAB,
         // Special button
         _______),
 

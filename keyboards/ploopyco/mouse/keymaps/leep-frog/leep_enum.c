@@ -14,6 +14,8 @@ enum layers {
 enum dances {
     TDK_ALT,
     TDK_CTRL,
+    TDK_CTRL_TAB,
+    TDK_CTRL_STAB,
     TDK_WORKSPACE,
     TDK_COPY,
     TDK_PASTE,
