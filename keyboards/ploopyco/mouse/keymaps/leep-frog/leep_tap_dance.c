@@ -265,6 +265,21 @@ void tdk_ctrl_tab_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t 
     }
 }
 
+// TDK_BOOT
+
+// LEEP_TD_CLICK_TO_HOLD_* doesn't work with custom keycodes (QK_BOOT), hence why
+// we need to create this function.
+void td_boot(tap_dance_state_t *state, void *user_data) {
+    switch (cur_dance(state, true)) {
+        case SINGLE_TAP:
+            reset_keyboard();
+            break;
+        case SINGLE_HOLD:
+            SEND_STRING(SS_RGUI("l"));
+            break;
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
     [TDK_ALT] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN3, LR_ALT),
@@ -291,7 +306,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // VSCode definition dance
     [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
     // Boot dance
-    [TDK_BOOT] = LEEP_TD_CLICK_TO_HOLD_KC(QK_BOOT, G(KC_L)),
+    [TDK_BOOT] = ACTION_TAP_DANCE_FN(td_boot),
 };
 
 #define TO_ALT TD(TDK_ALT)
