@@ -57,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Side buttons
         TD_COPY, TD_PASTE,
         // Special button
-        QK_BOOT),
+        TD_BOOT),
 
     // This layer holds down the ctrl key when activated (mostly so ctrl+click works properly).
     // As pressing ctrl+click in too rapid succession doesn't always work on the work laptop.

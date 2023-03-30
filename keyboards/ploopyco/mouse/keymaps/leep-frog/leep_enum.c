@@ -24,6 +24,7 @@ enum dances {
     TDK_OUTLOOK_RELOAD,
     TDK_OUTLOOK_READ,
     TDK_VSCODE_DEFINITION,
+    TDK_BOOT,
 };
 
 enum custom_keycodes {

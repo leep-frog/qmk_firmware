@@ -265,16 +265,6 @@ void tdk_ctrl_tab_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t 
     }
 }
 
-/*void tdk_ctrl_shift_tab_fn(tap_dance_state_t *state, bool finished, uint16_t value) {
-    if (finished) {
-        del_weak_mods(state->weak_mods);
-        // clear_mods();
-        SEND_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(value)));
-    } else {
-        SEND_STRING(SS_DOWN(X_RCTL));
-    }
-}*/
-
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
     [TDK_ALT] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN3, LR_ALT),
@@ -300,6 +290,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_OUTLOOK_READ] = LEEP_TD_CLICK_TO_HOLD_KC(OL_MARK_READ, OL_MARK_UNREAD),
     // VSCode definition dance
     [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
+    // Boot dance
+    [TDK_BOOT] = LEEP_TD_CLICK_TO_HOLD_KC(QK_BOOT, G(KC_L)),
 };
 
 #define TO_ALT TD(TDK_ALT)
@@ -315,3 +307,6 @@ tap_dance_action_t tap_dance_actions[] = {
 #define OL_RLD TD(TDK_OUTLOOK_RELOAD)
 #define OL_RDTD TD(TDK_OUTLOOK_READ)
 #define TD_VDEF TD(TDK_VSCODE_DEFINITION)
+// You can also put the mouse into boot mode by holding down the back thumb
+// button down while plugging in the mouse.
+#define TD_BOOT TD(TDK_BOOT)
