@@ -171,6 +171,8 @@ void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t
 }
 #define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
 
+#define LEEP_TD_CLICK_FN_HOLD_LAYER(press_fn, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(0), press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
+
 // Click to hold custom fn
 #define LEEP_TD_CLICK_KC_HOLD_FN(kc, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(kc), leep_kc_press_fn, hold_value, hold_fn)
 
@@ -314,17 +316,30 @@ void td_boot(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+// TDK_WORKSPACE
+
+// modeled after leep_kc_press_fn
+void td_workspace_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
+    // Key is on first tap.
+    if (tap) {
+        SEND_STRING(SS_DOWN(X_RCTL) SS_DOWN(X_RSFT) SS_DELAY(25) SS_TAP(X_BTN1) SS_DELAY(25) SS_UP(X_RCTL) SS_UP(X_RSFT));
+        return;
+    }
+
+    // Can't really add additional logic here because the tap code will still be run first.
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
     [TDK_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN3, LR_ALT),
     // Ctrl dance
     [TDK_CTRL] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN1, LR_CTRL),
     // Ctrl+tab or next page in browser
-    [TDK_CTRL_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(KC_TAB, &tdk_ctrl_tab_fn, LEEP_TD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_RIGHT)))),
+    [TDK_CTRL_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(KC_TAB, tdk_ctrl_tab_fn, LEEP_TD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_RIGHT)))),
     // Ctrl+shift+tab of previous page in browser
-    [TDK_CTRL_STAB] = LEEP_TD_CLICK_KC_HOLD_FN(S(KC_TAB), &tdk_ctrl_tab_fn, LEEP_TD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_LEFT)))),
+    [TDK_CTRL_STAB] = LEEP_TD_CLICK_KC_HOLD_FN(S(KC_TAB), tdk_ctrl_tab_fn, LEEP_TD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_LEFT)))),
     // WS dance
-    [TDK_WORKSPACE] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN2, LR_WS),
+    [TDK_WORKSPACE] = LEEP_TD_CLICK_FN_HOLD_LAYER(td_workspace_press_fn, LR_WS),
     // Copy dance
     [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(td_copy_pressed, td_copy_unpressed, td_copy_finished, NULL),
     // Paste dance

@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_BASE] = LEEPOUT(
         // Top
-        KC_BTN1, TO_CTRL, _______, TO_ALT, TO_WS,
+        KC_BTN1, TO_CTRL, KC_BTN2, TO_ALT, TO_WS,
         // Side buttons
         TD_COPY, TD_PASTE,
         // Special button
@@ -135,6 +135,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             return true;
     }
 
-    // SEND_STRING(SS_DOWN(X_RCTL) SS_DOWN(X_RSFT) SS_DELAY(25) SS_TAP(X_BTN1) SS_DELAY(25) SS_UP(X_RCTL) SS_UP(X_RSFT));
     return true;
 }
