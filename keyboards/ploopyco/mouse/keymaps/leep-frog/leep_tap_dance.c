@@ -53,9 +53,7 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_matters) {
     }
 }
 
-/********************** END COPY **********************/
-
-/****************** CLICK_HOLD START ******************/
+/****************** CLICK_HOLD START (STILL IN COPY) ******************/
 
 typedef union {
     uint16_t td_int;
@@ -177,6 +175,8 @@ void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t
 #define LEEP_TD_CLICK_KC_HOLD_FN(kc, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(kc), leep_kc_press_fn, hold_value, hold_fn)
 
 /******************* CLICK_HOLD END *******************/
+
+/********************** END COPY **********************/
 
 // TDK_COPY
 
