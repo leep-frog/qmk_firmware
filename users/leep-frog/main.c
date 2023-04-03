@@ -192,28 +192,18 @@ typedef void (*processor_action_t)(bool activated);
 
 // Be sure to end each with "\0" character (string end character).
 
-/*PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
+
+PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
                        // KC_ESC actually sends a "`" (KC_GRAVE) character for some reason.
                        // Maybe it's something to do with KC_GESC overlapping or something?
                        // Who knows why, but we do need this custom keycode regardless to get around that.
-                       CK_ESC, SS_TAP(X_T) "\0",
+                       CK_ESC, SS_TAP(X_ESC) "\0",
                        // Outlook today
                        OL_TDAY, SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D) "\0",
                        // Universal backspace
-                       CK_UNBS, SS_RCTL(SS_TAP(X_BSPACE)) "\0",
+                       CK_UNBS, SS_TAP(SS_RCTL(X_BSPACE)) "\0",
                        // Log filter text
                        CK_LOGS, SS_TAP(X_ENTER) " | sort @timestamp asc\0"
-                       // Trailing comma
-)*/
-
-PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
-                       CK_ESC, "1",
-                       // Outlook today
-                       OL_TDAY, "2",
-                       // Universal backspace
-                       CK_UNBS, "3",
-                       // Log filter text
-                       CK_LOGS, "4"
                        // Trailing comma
 )
 
