@@ -426,9 +426,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 // Runs whenever there is a layer state change.
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Run processors
+    bool change = false;
     for (int i = 0; i < NUM_LAYERS; i++) {
         bool current_state = layer_state_cmp(state, i);
         if (current_state != layers_status[i]) {
+            change = true;
             layers_status[i] = current_state;
             if (layer_processors[i]) {
                 layer_processors[i](current_state);
@@ -436,7 +438,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         }
     }
 
-    LEEP_LAYER_COLOR(get_highest_layer(state), false);
+    if (change) {
+        LEEP_LAYER_COLOR(get_highest_layer(state), false);
+    }
 
     return state;
 }
