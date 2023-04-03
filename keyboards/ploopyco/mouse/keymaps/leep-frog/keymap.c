@@ -135,5 +135,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             return true;
     }
 
+    // SEND_STRING(SS_DOWN(X_RCTL) SS_DOWN(X_RSFT) SS_DELAY(25) SS_TAP(X_BTN1) SS_DELAY(25) SS_UP(X_RCTL) SS_UP(X_RSFT));
     return true;
 }

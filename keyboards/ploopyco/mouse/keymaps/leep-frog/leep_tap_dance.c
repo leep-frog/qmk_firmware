@@ -67,8 +67,15 @@ typedef union {
 
 typedef void (*leep_hold_fn_t)(tap_dance_state_t *state, bool finished, leep_hold_value_t *hold_value);
 
+// Press function will be called once for the first tap (click+unclick) and then separately for each subsequent click and unclick.
+// The `tap` argument will be set to `true` if the function is being executed for the first tap. Otherwise,
+// the function should check the `state` argument for the `count` and `pressed` fields to determine which press/unpress
+// the dance is at.
+typedef void (*leep_press_fn_t)(tap_dance_state_t *state, bool tap, leep_hold_value_t *hold_value);
+
 typedef struct {
-    uint16_t kc;
+    leep_hold_value_t press_value;
+    leep_press_fn_t press_fn;
     leep_hold_value_t hold_value;
     leep_hold_fn_t hold_fn;
 } leep_td_user_data_t;
@@ -78,7 +85,10 @@ void leep_td_each_press(tap_dance_state_t *state, void *user_data) {
 
     if (state->count > 1) {
         // First click (count == 1) is sent on unpress, so only send subsequent clicks.
-        register_code16(ud->kc);
+        // ~register_code16(ud->kc);
+        if (ud->press_fn) {
+            ud->press_fn(state, false, &(ud->press_value));
+        }
     }
 }
 
@@ -90,11 +100,17 @@ void leep_td_each_unpress(tap_dance_state_t *state, void *user_data) {
         // (if the dance is finished, then we reached a HOLD or INTERRUPT state,
         // in which case the key was used as a layer change).*/
         if (!state->finished) {
-            tap_code16(ud->kc);
+            // ~tap_code16(ud->kc);
+            if (ud->press_fn) {
+                ud->press_fn(state, true, &(ud->press_value));
+            }
         }
     } else {
         /* Otherwise, just regular un-click */
-        unregister_code16(ud->kc);
+        // ~unregister_code16(ud->kc);
+        if (ud->press_fn) {
+            ud->press_fn(state, false, &(ud->press_value));
+        }
     }
 }
 
@@ -116,14 +132,30 @@ void leep_td_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-// Click to hold KC
+// press KC fn
+void leep_kc_press_fn(tap_dance_state_t *state, bool tap, leep_hold_value_t *hv) {
+    // Key is on first tap.
+    if (tap) {
+        tap_code16(hv->hold_int);
+        return;
+    }
+
+    // On subsequent clicks so either register or unregister accordingly.
+    if (state->pressed) {
+        register_code16(hv->hold_int);
+    } else {
+        unregister_code16(hv->hold_int);
+    }
+}
+
+// hold KC fn
 void leep_kc_hold_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t *hv) {
     if (finished) {
         tap_code16(hv->hold_int);
     }
 }
-#define LEEP_TD_CLICK_TO_HOLD_KC(kc, hold_kc) \
-    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, HOLD_INT(hold_kc), leep_kc_hold_fn}), }
+#define LEEP_TD_CLICK_KC_HOLD_KC(kc, hold_kc) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){HOLD_INT(kc), leep_kc_press_fn, HOLD_INT(hold_kc), leep_kc_hold_fn}), }
 
 // Click to hold layer
 void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t *hv) {
@@ -133,12 +165,12 @@ void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_hold_value
         layer_off(hv->hold_int);
     }
 }
-#define LEEP_TD_CLICK_TO_HOLD_LAYER(kc, layer) \
-    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, HOLD_INT(layer), leep_layer_hold_fn}), }
+#define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){HOLD_INT(kc), leep_kc_press_fn, HOLD_INT(layer), leep_layer_hold_fn}), }
 
 // Click to hold custom fn
-#define LEEP_TD_CLICK_TO_HOLD_FN(kc, hold_fn, hold_value) \
-    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){kc, hold_value, hold_fn}), }
+#define LEEP_TD_CLICK_KC_HOLD_FN(kc, hold_fn, hold_value) \
+    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){HOLD_INT(kc), leep_kc_press_fn, hold_value, hold_fn}), }
 
 /******************* CLICK_HOLD END *******************/
 
@@ -267,7 +299,7 @@ void tdk_ctrl_tab_fn(tap_dance_state_t *state, bool finished, leep_hold_value_t 
 
 // TDK_BOOT
 
-// LEEP_TD_CLICK_TO_HOLD_* doesn't work with custom keycodes (QK_BOOT), hence why
+// LEEP_TD_CLICK_TO_HOLD_KC_* doesn't work with custom keycodes (QK_BOOT), hence why
 // we need to create this function.
 void td_boot(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
@@ -282,15 +314,15 @@ void td_boot(tap_dance_state_t *state, void *user_data) {
 
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
-    [TDK_ALT] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN3, LR_ALT),
+    [TDK_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN3, LR_ALT),
     // Ctrl dance
-    [TDK_CTRL] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN1, LR_CTRL),
+    [TDK_CTRL] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN1, LR_CTRL),
     // Ctrl+tab or next page in browser
-    [TDK_CTRL_TAB] = LEEP_TD_CLICK_TO_HOLD_FN(KC_TAB, &tdk_ctrl_tab_fn, HOLD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_RIGHT)))),
+    [TDK_CTRL_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(KC_TAB, &tdk_ctrl_tab_fn, HOLD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_RIGHT)))),
     // Ctrl+shift+tab of previous page in browser
-    [TDK_CTRL_STAB] = LEEP_TD_CLICK_TO_HOLD_FN(S(KC_TAB), &tdk_ctrl_tab_fn, HOLD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_LEFT)))),
+    [TDK_CTRL_STAB] = LEEP_TD_CLICK_KC_HOLD_FN(S(KC_TAB), &tdk_ctrl_tab_fn, HOLD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_LEFT)))),
     // WS dance
-    [TDK_WORKSPACE] = LEEP_TD_CLICK_TO_HOLD_LAYER(KC_BTN2, LR_WS),
+    [TDK_WORKSPACE] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN2, LR_WS),
     // Copy dance
     [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(td_copy_pressed, td_copy_unpressed, td_copy_finished, NULL),
     // Paste dance
@@ -302,7 +334,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // Outlook dance
     [TDK_OUTLOOK_RELOAD] = ACTION_TAP_DANCE_FN(td_outlook_reload),
     // Outlook dance
-    [TDK_OUTLOOK_READ] = LEEP_TD_CLICK_TO_HOLD_KC(OL_MARK_READ, OL_MARK_UNREAD),
+    [TDK_OUTLOOK_READ] = LEEP_TD_CLICK_KC_HOLD_KC(OL_MARK_READ, OL_MARK_UNREAD),
     // VSCode definition dance
     [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
     // Boot dance
