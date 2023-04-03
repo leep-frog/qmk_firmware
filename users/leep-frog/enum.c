@@ -127,6 +127,8 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
           CK_ATB,
           // shift+alt+tab
           CK_SATB,
+          // To LR_CTRL_X
+          TO_CTLX,
           // Trailing comma
 )
 
@@ -134,6 +136,5 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
 // Defined here because needed by combo.c
 #define TO_SFTY TO(LR_SAFE)
 #define TO_CTAL MO(LR_CTRL_ALT)
-#define TO_CTLX OSL(LR_CTRL_X)
 
 #endif

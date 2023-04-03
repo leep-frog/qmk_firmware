@@ -142,6 +142,13 @@ void _ck_timer(bool pressed) {
     }
 }
 
+void to_ctrl_x_layer(bool pressed) {
+    if (pressed) {
+        SEND_STRING(SS_RCTL("x"));
+        ActivateOneshot(LR_CTRL_X);
+    }
+}
+
 void _safe_layer(bool activated) {
     if (!activated) {
         return;
@@ -175,6 +182,7 @@ typedef void (*processor_action_t)(bool activated);
 #define PROCESSOR_VALUE12(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE11(start, __VA_ARGS__)
 #define PROCESSOR_VALUE13(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE12(start, __VA_ARGS__)
 #define PROCESSOR_VALUE14(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE13(start, __VA_ARGS__)
+#define PROCESSOR_VALUE15(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE14(start, __VA_ARGS__)
 
 #define OPTIONAL_PROCESSOR_MACRO(_type_, sz, num_provided, e_start, prefix, suffix, dflt, ...) const _type_ PROGMEM prefix##_processors[sz] suffix = {[0 ... sz - 1] = dflt, PROCESSOR_VALUE##num_provided(e_start, __VA_ARGS__)};
 
@@ -229,7 +237,7 @@ PROCESSOR_MACRO_STRING(3, CN_ENUM_START, cn, 12, "",
                        // Trailing comma
 )
 
-PROCESSOR_MACRO(processor_action_t, 14, CK_ENUM_START, ck, , NULL,
+PROCESSOR_MACRO(processor_action_t, 15, CK_ENUM_START, ck, , NULL,
                 // Ctrl g
                 CK_CTLG, &_ctrl_g_new,
                 // Mute
@@ -257,7 +265,9 @@ PROCESSOR_MACRO(processor_action_t, 14, CK_ENUM_START, ck, , NULL,
                 // shift+alt+tab
                 CK_SATB, &AltTab_runShift,
                 // Wait for some milliseconds (useful for record).
-                CK_WAIT, &_leep_wait
+                CK_WAIT, &_leep_wait,
+                // To LR_CTRL_X
+                TO_CTLX, &to_ctrl_x_layer
                 // Trailing comma
 )
 
@@ -269,12 +279,6 @@ void one_hand_layer_change(bool activated) {
     }
 }
 
-void ctrl_x_layer(bool activated) {
-    if (activated) {
-        SEND_STRING(SS_RCTL(SS_TAP(X_X)));
-    }
-}
-
 void ctrl_alt_layer(bool activated) {
     if (activated) {
         SEND_STRING(SS_DOWN(X_RCTL) SS_DOWN(X_RALT));
@@ -283,7 +287,7 @@ void ctrl_alt_layer(bool activated) {
     }
 }
 
-OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 8, -1, layer, , NULL, LR_CTRL_X, &ctrl_x_layer,
+OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
                          // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
                          LR_ALT, &AltTab_deactivate,
                          // Only want combos to be enabled in the base layer (even though we
@@ -355,6 +359,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     }
     ToAlt_handled(keycode);
     ToCtrl_handled(keycode);
+    Oneshot_handled(record);
 
     // Return if this is being run on key un-pressed.
     if (!record->event.pressed) {
