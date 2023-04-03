@@ -201,7 +201,7 @@ PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
                        // Outlook today
                        OL_TDAY, SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D) "\0",
                        // Universal backspace
-                       CK_UNBS, SS_TAP(SS_RCTL(X_BSPACE)) "\0",
+                       CK_UNBS, SS_RCTL(SS_TAP(X_BSPC)) "\0",
                        // Log filter text
                        CK_LOGS, SS_TAP(X_ENTER) " | sort @timestamp asc\0"
                        // Trailing comma
