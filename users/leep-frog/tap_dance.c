@@ -534,7 +534,8 @@ void scroll_right_finished(tap_dance_state_t *state, void *user_data) {
 
 tap_dance_action_t tap_dance_actions[] = {
     // Shift toggle
-    [TDK_SHIFT_TOGGLE] = ACTION_TAP_DANCE_FN(TDToggleShift),
+    // [TDK_SHIFT_TOGGLE] = ACTION_TAP_DANCE_FN(TDToggleShift),
+    [TDK_SHIFT_TOGGLE] = LEEP_TD_CLICK_KC_HOLD_FN(C(KC_J), TDToggleShift_hold, LEEP_TD_INT(0)),
     // Kill line
     [TDK_KILL_LINE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, TDKillLine_finished, TDKillLine_reset),
     // Record 1

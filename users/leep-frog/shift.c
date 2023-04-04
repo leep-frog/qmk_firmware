@@ -23,11 +23,24 @@ bool UntoggleShift(void) {
 
 // Runs emacs shift toggle (ctrl-j) if hit once, otherwise activates shift
 // toggle layer.
-void TDToggleShift(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        SEND_STRING(SS_RCTL("j"));
+void TDToggleShift_hold(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
+    // Only run on finished (not on reset).
+    if (!finished) {
+        return;
+    }
+
+    // If we were interrupted, then we probably were actually just trying to tap the key.
+    if (state->interrupted && state->count == 1) {
+        tap_code16(C(KC_J));
+        return;
+    }
+
+    // Otherwise, it's a legit hold.
+    ToggleShift();
+    if (shift_toggled) {
+        SNG_COPY();
     } else {
-        ToggleShift();
+        SNG_PASTE();
     }
 }
 
