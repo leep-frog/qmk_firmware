@@ -23,6 +23,10 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
     bool     macro_1 = play_action == QK_DYNAMIC_MACRO_PLAY_1;
 
     bool valid = false;
+    // Note: we *only* press enter on initial recording save, and NOT on
+    // macro playback (to avoid accidentally putting passwords anywhere like
+    // in chats).
+    bool press_enter = false;
 
     switch (cur_dance(state, true)) {
         case SINGLE_TAP:
@@ -37,6 +41,7 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                     SNG_REC_2_END();
                 }
                 LEEP_SOLID_COLOR(GREEN, true);
+                press_enter = true;
             }
             break;
         case DOUBLE_TAP:
@@ -65,6 +70,10 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
         processing_macro = true;
         process_dynamic_macro(action, &kr);
         processing_macro = false;
+    }
+
+    if (press_enter) {
+        tap_code16(KC_ENTER);
     }
 }
 
