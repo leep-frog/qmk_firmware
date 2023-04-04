@@ -21,8 +21,6 @@ bool UntoggleShift(void) {
     return true;
 }
 
-// Runs emacs shift toggle (ctrl-j) if hit once, otherwise activates shift
-// toggle layer.
 void TDToggleShift_hold(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
     // Only run on finished (not on reset).
     if (!finished) {
