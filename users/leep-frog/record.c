@@ -39,9 +39,10 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                     SNG_REC_1_END();
                 } else {
                     SNG_REC_2_END();
+                    press_enter = true;
                 }
                 LEEP_SOLID_COLOR(GREEN, true);
-                press_enter = true;
+
             }
             break;
         case DOUBLE_TAP:
@@ -53,6 +54,8 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                 LEEP_COLOR_MODE(RED, RGB_MATRIX_RAINBOW_MOVING_CHEVRON, true);
             }
             break;
+        case TRIPLE_HOLD:
+            press_enter = true;
         case DOUBLE_HOLD:
             if (!recording) {
                 valid = true;
