@@ -1,5 +1,4 @@
-#ifndef LEEP_RECORD
-#define LEEP_RECORD
+#pragma once
 
 uint16_t blink_timer;
 bool     blink_on = false;
@@ -54,8 +53,6 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                 LEEP_COLOR_MODE(RED, RGB_MATRIX_RAINBOW_MOVING_CHEVRON, true);
             }
             break;
-        case TRIPLE_HOLD:
-            press_enter = true;
         case DOUBLE_HOLD:
             if (!recording) {
                 valid = true;
@@ -83,5 +80,3 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
 void recorder_1(tap_dance_state_t *state, void *user_data) { recorder_base(state, QK_DYNAMIC_MACRO_PLAY_1, QK_DYNAMIC_MACRO_RECORD_START_1); }
 
 void recorder_2(tap_dance_state_t *state, void *user_data) { recorder_base(state, QK_DYNAMIC_MACRO_PLAY_2, QK_DYNAMIC_MACRO_RECORD_START_2); }
-
-#endif
