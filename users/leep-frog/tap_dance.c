@@ -190,6 +190,9 @@ void un_tda(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_A)
 void tdb(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
         case SINGLE_HOLD:
+            SEND_STRING(SS_RCTL("b"));
+            break;
+        case DOUBLE_HOLD:
             // Bulleted list
             SEND_STRING(SS_RCTL(SS_RSFT("8")));
             break;
