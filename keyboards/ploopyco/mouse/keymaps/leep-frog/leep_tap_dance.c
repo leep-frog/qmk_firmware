@@ -18,6 +18,9 @@ void td_copy_finished(tap_dance_state_t *state, void *user_data) {
             SEND_STRING(SS_COPY);
             break;
         // case SINGLE_HOLD: layer_on(LR_KB) is done by [un]pressed functions
+        case SINGLE_HOLD:
+            SEND_STRING(SS_TAP(KC_BTN2));
+            break;
         case DOUBLE_TAP:
             URL_COPY();
             break;
