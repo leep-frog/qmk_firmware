@@ -1,18 +1,18 @@
 #ifndef LEEP_ENUMS
 #define LEEP_ENUMS
 
-enum layers {  // prefix LR
+enum layers { // prefix LR
     // Default layer
     LR_BASE,
     // The safe layer needs to stay in this position because this is the layer
     // from which we define combos (see 'COMBO_ONLY_FROM_LAYER 1' in config.h).
-    LR_SAFE,
+    LR_ELLA,
     LR_CTRL,
     LR_ALT,
-    LR_SYMB,        // symbols
-    LR_CTRL_X,      // layer activated temporarily after hitting x in the CTRL layer.
-    LR_SHORTCUTS,   // command for combination keystrokes.
-    LR_NAVIGATION,  // command for changing workspaces.
+    LR_SYMB,       // symbols
+    LR_CTRL_X,     // layer activated temporarily after hitting x in the CTRL layer.
+    LR_SHORTCUTS,  // command for combination keystrokes.
+    LR_NAVIGATION, // command for changing workspaces.
     LR_OUTLOOK,
     LR_CTRL_ALT,
     LR_ONE_HAND_LEFT,
@@ -28,7 +28,7 @@ enum layers {  // prefix LR
 #endif
 #define RGBLIGHT_MAX_LAYERS NUM_LAYERS
 
-enum td_keys {  // prefix TDK
+enum td_keys { // prefix TDK
     TDK_SHIFT_TOGGLE,
     TDK_KILL_LINE,
     TDK_MACRO_1,
@@ -56,6 +56,7 @@ enum td_keys {  // prefix TDK
     TDK_TO_OUTLOOK,
     TDK_TO_NAV,
     TDK_TO_SHORTCUT,
+    TDK_ELLA_MODE,
 };
 
 // Custom keycode enums
@@ -134,7 +135,7 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
 
 // Layer toggling
 // Defined here because needed by combo.c
-#define TO_SFTY TO(LR_SAFE)
+#define TO_ELLA TO(LR_ELLA)
 #define TO_CTAL MO(LR_CTRL_ALT)
 
 #endif

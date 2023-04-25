@@ -149,7 +149,7 @@ void to_ctrl_x_layer(bool pressed) {
     }
 }
 
-void _safe_layer(bool activated) {
+void _ella_layer(bool activated) {
     if (!activated) {
         return;
     }
@@ -191,7 +191,6 @@ typedef void (*processor_action_t)(bool activated);
 #define PROCESSOR_MACRO_STRING(num, e_start, prefix, max_string_size, dflt, ...) PROCESSOR_MACRO(char, num, e_start, prefix, [max_string_size], dflt, __VA_ARGS__)
 
 // Be sure to end each with "\0" character (string end character).
-
 
 PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
                        // KC_ESC actually sends a "`" (KC_GRAVE) character for some reason.
@@ -293,7 +292,7 @@ OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
                          // Start/end ctrl-alt layer on layer on/off.
                          LR_CTRL_ALT, &ctrl_alt_layer,
                          // Deactivate everything when going to safe layer.
-                         LR_SAFE, &_safe_layer)
+                         LR_ELLA, &_ella_layer)
 
 bool layers_status[NUM_LAYERS] = {
     [0]                    = true,
@@ -425,7 +424,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     for (int i = 0; i < NUM_LAYERS; i++) {
         bool current_state = layer_state_cmp(state, i);
         if (current_state != layers_status[i]) {
-            change = true;
+            change           = true;
             layers_status[i] = current_state;
             if (layer_processors[i]) {
                 layer_processors[i](current_state);

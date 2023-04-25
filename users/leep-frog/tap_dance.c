@@ -62,7 +62,9 @@ void shift_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void shift_reset(tap_dance_state_t *state, void *user_data) { shift_press_count = 0; }
+void shift_reset(tap_dance_state_t *state, void *user_data) {
+    shift_press_count = 0;
+}
 
 // SYMB TAP DANCE
 int symb_press_count = 0;
@@ -112,7 +114,9 @@ void symb_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void symb_reset(tap_dance_state_t *state, void *user_data) { symb_press_count = 0; }
+void symb_reset(tap_dance_state_t *state, void *user_data) {
+    symb_press_count = 0;
+}
 
 // Ctrl-t tap dance
 void td_ctrl_t(tap_dance_state_t *state, void *user_data) {
@@ -185,7 +189,9 @@ void tda(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void un_tda(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_A); }
+void un_tda(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_A);
+}
 
 void tdb(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
@@ -204,7 +210,9 @@ void tdb(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void un_tdb(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_B); }
+void un_tdb(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_B);
+}
 
 void tdc(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
@@ -224,7 +232,9 @@ void tdc(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void un_tdc(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_C); }
+void un_tdc(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_C);
+}
 
 void tdi(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
@@ -239,7 +249,9 @@ void tdi(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void un_tdi(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_I); }
+void un_tdi(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_I);
+}
 
 void tdu(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
@@ -254,7 +266,9 @@ void tdu(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void un_tdu(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_U); }
+void un_tdu(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_U);
+}
 
 void paste_or_type(tap_dance_state_t *state, void *user_data, uint16_t keycode) {
     switch (cur_dance(state, true)) {
@@ -276,13 +290,21 @@ void paste_or_type(tap_dance_state_t *state, void *user_data, uint16_t keycode) 
     }
 }
 
-void tdv(tap_dance_state_t *state, void *user_data) { paste_or_type(state, user_data, KC_V); }
+void tdv(tap_dance_state_t *state, void *user_data) {
+    paste_or_type(state, user_data, KC_V);
+}
 
-void un_tdv(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_V); }
+void un_tdv(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_V);
+}
 
-void tdy(tap_dance_state_t *state, void *user_data) { paste_or_type(state, user_data, KC_Y); }
+void tdy(tap_dance_state_t *state, void *user_data) {
+    paste_or_type(state, user_data, KC_Y);
+}
 
-void un_tdy(tap_dance_state_t *state, void *user_data) { unregister_code16(KC_Y); }
+void un_tdy(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_Y);
+}
 
 void oh_copy(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
@@ -341,7 +363,9 @@ void scroll_press_right(tap_dance_state_t *state, void *user_data) {
     SEND_STRING(SS_RCTL(SS_RGUI(SS_TAP(X_RIGHT))));
 }
 
-void scroll_unpress(tap_dance_state_t *state, void *user_data) { layer_off(LR_SCROLL); }
+void scroll_unpress(tap_dance_state_t *state, void *user_data) {
+    layer_off(LR_SCROLL);
+}
 
 void scroll_left_finished(tap_dance_state_t *state, void *user_data) {
     if (cur_dance(state, true) == SINGLE_TAP && !state->interrupted) {
@@ -352,6 +376,14 @@ void scroll_left_finished(tap_dance_state_t *state, void *user_data) {
 void scroll_right_finished(tap_dance_state_t *state, void *user_data) {
     if (cur_dance(state, true) == SINGLE_TAP && !state->interrupted) {
         SEND_STRING(SS_RCTL(SS_RGUI(SS_TAP(X_RIGHT))));
+    }
+}
+
+void ella_mode(tap_dance_state_t *state, void *user_data) {
+    switch (cur_dance(state, true)) {
+        case TRIPLE_TAP:
+            layer_off(LR_ELLA);
+            break;
     }
 }
 
@@ -405,6 +437,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_TO_NAV] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_LGUI, LR_NAVIGATION),
     // Shortcut or no key (for now)
     [TDK_TO_SHORTCUT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_NO, LR_SHORTCUTS),
+    // Shortcut or no key (for now)
+    [TDK_ELLA_MODE] = ACTION_TAP_DANCE_FN(ella_mode),
 };
 
 #define TGL_SHF TD(TDK_SHIFT_TOGGLE)
@@ -441,6 +475,8 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TO_OTLK TD(TDK_TO_OUTLOOK)
 #define TO_SHCT TD(TDK_TO_SHORTCUT)
 #define TO_NAV TD(TDK_TO_NAV)
+
+#define TO_BASE_FROM_ELLA TD(TDK_ELLA_MODE)
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {

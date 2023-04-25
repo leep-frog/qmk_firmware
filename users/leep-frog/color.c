@@ -28,8 +28,8 @@ int layer_colors[NUM_LAYERS][3] = {
          LEEP_C(GREEN)},
     // Base layer
     [LR_BASE] = {LEEP_C(CYAN)},
-    // Safe layer
-    [LR_SAFE] = {LEEP_C(GREEN)},
+    // Ella layer
+    [LR_ELLA] = {LEEP_C(GREEN)},
     // Ctrl layer
     [LR_CTRL] = {LEEP_C(SPRINGGREEN)},
     // Alt layer
@@ -50,12 +50,12 @@ int layer_colors[NUM_LAYERS][3] = {
     [LR_SCROLL] = {LEEP_C(RED)},
 };
 
-#else  // ifdef ENABLE_LEEP_COLOR
+#else // ifdef ENABLE_LEEP_COLOR
 
 #    define LEEP_LAYER_COLOR(lyr, force)
 #    define LEEP_SOLID_COLOR(clr, force)
 #    define LEEP_COLOR_MODE(clr, mde, force)
 
-#endif  // ifdef ENABLE_LEEP_COLOR
+#endif // ifdef ENABLE_LEEP_COLOR
 
-#endif  // ifndef LEEP_COLOR
+#endif // ifndef LEEP_COLOR
