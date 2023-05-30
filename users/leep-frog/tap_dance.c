@@ -23,6 +23,7 @@ void shift_each_press(tap_dance_state_t *state, void *user_data) {
             break;
         case 2:
             layer_on(LR_ONE_HAND_LEFT);
+            SymbolLayerOverlap_reset(&lr_left_handler);
             break;
         case 3:
             SEND_STRING(SS_TAP(X_ENTER) SS_TAP(X_ENTER));
@@ -73,10 +74,11 @@ void symb_each_press(tap_dance_state_t *state, void *user_data) {
     switch (++symb_press_count) {
         case 1:
             layer_on(LR_SYMB);
-            SymbolLayerOverlap_reset();
+            SymbolLayerOverlap_reset(&symbol_handler);
             break;
         case 2:
             layer_on(LR_ONE_HAND_RIGHT);
+            SymbolLayerOverlap_reset(&lr_right_handler);
             break;
         case 3:
             SEND_STRING(SS_TAP(X_SPACE) SS_TAP(X_SPACE));

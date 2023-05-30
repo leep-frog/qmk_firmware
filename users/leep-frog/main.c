@@ -343,7 +343,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     }
 
     Mute_handled(record);
-    if (SymbolLayerOverlap_handled(keycode, record) || AltTab_handled(keycode, record)) {
+    if (SymbolLayerOverlap_handled(&symbol_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_left_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_right_handler, keycode, record) || AltTab_handled(keycode, record)) {
         return false;
     }
     ToAlt_handled(keycode);
