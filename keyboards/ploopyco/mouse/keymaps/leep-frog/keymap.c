@@ -115,7 +115,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         return true;
     }
 
-    if (alt_is_active() && keycode != CK_ATAB && keycode != CK_SATAB) {
+    // Sometimes, we want to click while in the alt+tab mode, hence why KC_BTN1 was also added here.
+    if (alt_is_active() && keycode != CK_ATAB && keycode != CK_SATAB && keycode != KC_BTN1) {
         deactivate_alt();
         return false;
     }

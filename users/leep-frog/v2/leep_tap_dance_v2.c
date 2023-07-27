@@ -137,10 +137,6 @@ void leep_td_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-// Macro to create function for this
-#define LEEP_TD_CLICK_HOLD(start_fn, press_value, press_fn, hold_value, hold_fn) \
-    { .fn = {leep_td_each_press, leep_td_finished, leep_td_reset, leep_td_each_unpress}, .user_data = (void *)&((leep_td_user_data_t){start_fn, press_value, press_fn, hold_value, hold_fn}), }
-
 // press KC fn
 void leep_kc_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
     // Key is on first tap.
@@ -163,7 +159,6 @@ void leep_kc_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *h
         tap_code16(hv->td_int);
     }
 }
-#define LEEP_TD_CLICK_KC_HOLD_KC(kc, hold_kc) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(hold_kc), leep_kc_hold_fn)
 
 // Click to hold layer
 void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
@@ -173,6 +168,12 @@ void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t
         layer_off(hv->td_int);
     }
 }
+
+#define LEEP_TD_CLICK_HOLD(start_fn, press_value, press_fn, hold_value, hold_fn) \
+    { .fn = {leep_td_each_press, leep_td_finished, leep_td_reset, leep_td_each_unpress}, .user_data = (void *)&((leep_td_user_data_t){start_fn, press_value, press_fn, hold_value, hold_fn}), }
+
+#define LEEP_TD_CLICK_KC_HOLD_KC(kc, hold_kc) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(hold_kc), leep_kc_hold_fn)
+
 #define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
 
 #define LEEP_TD_CLICK_FN_HOLD_LAYER(press_fn, press_value, layer) LEEP_TD_CLICK_HOLD(NULL, press_value, press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
