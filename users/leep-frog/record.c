@@ -36,9 +36,9 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                 recording        = false;
                 if (macro_1) {
                     SNG_REC_1_END();
+                    press_enter = true;
                 } else {
                     SNG_REC_2_END();
-                    press_enter = true;
                 }
                 LEEP_SOLID_COLOR(GREEN, true);
 

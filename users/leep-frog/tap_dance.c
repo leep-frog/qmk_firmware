@@ -389,12 +389,55 @@ void ella_mode(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+bool pinky_shifted = false;
+
+void pinky_start_fn(tap_dance_state_t *state, leep_td_value_t *hold_value) {
+  pinky_shifted = get_mods() & MOD_MASK_SHIFT;
+}
+
+void pinky_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value) {
+  bool currently_shifted = get_mods() & MOD_MASK_SHIFT;
+  bool shift_override = false;
+  if (tap && pinky_shifted && !currently_shifted) {
+    add_mods(MOD_BIT(KC_RSFT));
+    shift_override = true;
+  }
+
+  leep_kc_press_fn(state, tap, hold_value);
+  if (shift_override) {
+    del_mods(MOD_BIT(KC_RSFT));
+  }
+}
+
+/*void pinky_tap_fn(tap_dance_state_t *state, void *user_data) {
+
+  uint8_t shift_mods = 0;
+  // Only change on tap/press, to ensure the same key code is properly released.
+  if (tap || state->pressed) {
+    shift_mods = get_mods() & MOD_MASK_SHIFT;
+    if (shift_mods) {
+      unregister_mods(shift_mods);
+      hv->td_int = KC_SCLN;
+    } else {
+      hv->td_int = KC_COLON;
+    }
+  }
+
+  leep_td_each_press(state, user_data);
+  if (shift_mods) {
+    register_mods(shift_mods);
+  }
+}
+
+tap_dance_action_t *pinky_td = LEEP_TD_CLICK_FN_HOLD_LAYER(pinky_fn, LEEP_TD_NOVAL(), LR_OUTLOOK);
+pinky_td->fn->on_each_tap = pinky_tap_fn;*/
+
 tap_dance_action_t tap_dance_actions[] = {
     // Shift toggle
     // [TDK_SHIFT_TOGGLE] = ACTION_TAP_DANCE_FN(TDToggleShift),
     [TDK_SHIFT_TOGGLE] = LEEP_TD_CLICK_KC_HOLD_FN(C(KC_J), TDToggleShift_hold, LEEP_TD_NOVAL()),
     // Kill line
-    [TDK_KILL_LINE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, TDKillLine_finished, TDKillLine_reset),
+    [TDK_KILL_LINE] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, TDKillLine_finished, TDKillLine_reset),
     // Record 1
     [TDK_MACRO_1] = ACTION_TAP_DANCE_FN(recorder_1),
     // Record 2
@@ -406,19 +449,19 @@ tap_dance_action_t tap_dance_actions[] = {
     // Reset keyboard
     [TDK_RESET] = ACTION_TAP_DANCE_FN(TDReset),
     // 'A' tap dance
-    [TDK_A] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, tda, un_tda),
+    [TDK_A] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tda, un_tda),
     // 'B' tap dance
-    [TDK_B] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, tdb, un_tdb),
+    [TDK_B] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdb, un_tdb),
     // 'C' tap dance
-    [TDK_C] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, tdc, un_tdc),
+    [TDK_C] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdc, un_tdc),
     // 'I' tap dance
-    [TDK_I] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, tdi, un_tdi),
+    [TDK_I] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdi, un_tdi),
     // 'U' tap dance
-    [TDK_U] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, tdu, un_tdu),
+    [TDK_U] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdu, un_tdu),
     // 'V' tap dance
-    [TDK_V] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, tdv, un_tdv),
+    [TDK_V] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdv, un_tdv),
     // 'Y' tap dance
-    [TDK_Y] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, NULL, tdy, un_tdy),
+    [TDK_Y] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdy, un_tdy),
     // Ctrl-t tap dance
     [TDK_CTL_T] = ACTION_TAP_DANCE_FN(td_ctrl_t),
     // One hand copy
@@ -426,15 +469,16 @@ tap_dance_action_t tap_dance_actions[] = {
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
     // Symbol layer
-    [TDK_SYMB_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(symb_each_press, symb_each_unpress, symb_finished, symb_reset),
+    [TDK_SYMB_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(symb_each_press, symb_each_unpress, symb_finished, symb_reset),
     // Shift layer
-    [TDK_SHIFT_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(shift_each_press, shift_each_unpress, shift_finished, shift_reset),
+    [TDK_SHIFT_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(shift_each_press, shift_each_unpress, shift_finished, shift_reset),
     // Scroll left layer
-    [TDK_SCROLL_LEFT] = ACTION_TAP_DANCE_FN_ADVANCED(scroll_press_left, scroll_unpress, scroll_left_finished, NULL),
+    [TDK_SCROLL_LEFT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(scroll_press_left, scroll_unpress, scroll_left_finished, NULL),
     // Scroll right layer
-    [TDK_SCROLL_RIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(scroll_press_right, scroll_unpress, scroll_right_finished, NULL),
+    [TDK_SCROLL_RIGHT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(scroll_press_right, scroll_unpress, scroll_right_finished, NULL),
     // Outlook or semi-colon
-    [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SCLN, LR_OUTLOOK),
+    // [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SCLN, LR_OUTLOOK),
+    [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_HOLD(pinky_start_fn, LEEP_TD_INT(KC_SCLN), pinky_press_fn, LEEP_TD_INT(LR_OUTLOOK), leep_layer_hold_fn),
     // Nav or windows key
     [TDK_TO_NAV] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_LGUI, LR_NAVIGATION),
     // Shortcut or no key (for now)

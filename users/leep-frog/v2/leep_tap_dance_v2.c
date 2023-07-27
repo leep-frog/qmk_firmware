@@ -69,7 +69,10 @@ typedef void (*leep_hold_fn_t)(tap_dance_state_t *state, bool finished, leep_td_
 // the dance is at.
 typedef void (*leep_press_fn_t)(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value);
 
+typedef void (*leep_dance_start_fn_t)(tap_dance_state_t *state, leep_td_value_t *hold_value);
+
 typedef struct {
+    leep_dance_start_fn_t dance_start_fn;
     leep_td_value_t press_value;
     leep_press_fn_t press_fn;
     leep_td_value_t hold_value;
@@ -81,7 +84,11 @@ void leep_td_noop_fn(tap_dance_state_t *state, bool arg, leep_td_value_t *user_d
 void leep_td_each_press(tap_dance_state_t *state, void *user_data) {
     leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
 
-    if (state->count > 1) {
+    if (state->count == 1) {
+      if (ud->dance_start_fn) {
+        ud->dance_start_fn(state, &(ud->press_value));
+      }
+    } else {
         // First click (count == 1) is sent on unpress, so only send subsequent clicks.
         // ~register_code16(ud->kc);
         if (ud->press_fn) {
@@ -131,8 +138,8 @@ void leep_td_reset(tap_dance_state_t *state, void *user_data) {
 }
 
 // Macro to create function for this
-#define LEEP_TD_CLICK_HOLD(press_value, press_fn, hold_value, hold_fn) \
-    { .fn = {leep_td_each_press, leep_td_each_unpress, leep_td_finished, leep_td_reset}, .user_data = (void *)&((leep_td_user_data_t){press_value, press_fn, hold_value, hold_fn}), }
+#define LEEP_TD_CLICK_HOLD(start_fn, press_value, press_fn, hold_value, hold_fn) \
+    { .fn = {leep_td_each_press, leep_td_finished, leep_td_reset, leep_td_each_unpress}, .user_data = (void *)&((leep_td_user_data_t){start_fn, press_value, press_fn, hold_value, hold_fn}), }
 
 // press KC fn
 void leep_kc_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
@@ -166,10 +173,10 @@ void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t
         layer_off(hv->td_int);
     }
 }
-#define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
+#define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
 
-#define LEEP_TD_CLICK_FN_HOLD_LAYER(press_fn, press_value, layer) LEEP_TD_CLICK_HOLD(press_value, press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
+#define LEEP_TD_CLICK_FN_HOLD_LAYER(press_fn, press_value, layer) LEEP_TD_CLICK_HOLD(NULL, press_value, press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
 
-#define LEEP_TD_CLICK_KC_HOLD_FN(kc, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(kc), leep_kc_press_fn, hold_value, hold_fn)
+#define LEEP_TD_CLICK_KC_HOLD_FN(kc, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, hold_value, hold_fn)
 
-#define LEEP_TD_CLICK_FN_HOLD_FN(press_fn, press_value, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(press_value, press_fn, hold_value, hold_fn)
+#define LEEP_TD_CLICK_FN_HOLD_FN(press_fn, press_value, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(NULL, press_value, press_fn, hold_value, hold_fn)

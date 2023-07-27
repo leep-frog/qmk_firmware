@@ -168,9 +168,9 @@ tap_dance_action_t tap_dance_actions[] = {
     // WS dance
     [TDK_WORKSPACE] = LEEP_TD_CLICK_FN_HOLD_LAYER(td_workspace_press_fn, LEEP_TD_NOVAL(), LR_WS),
     // Copy dance
-    [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED(td_copy_pressed, td_copy_unpressed, td_copy_finished, NULL),
+    [TDK_COPY] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(td_copy_pressed, td_copy_unpressed, td_copy_finished, NULL),
     // Paste dance
-    [TDK_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(td_paste_pressed, td_paste_unpressed, td_paste_finished, NULL),
+    [TDK_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(td_paste_pressed, td_paste_unpressed, td_paste_finished, NULL),
     // Open tab dance
     [TDK_OPEN_TAB] = ACTION_TAP_DANCE_FN(td_open_tab),
     // Close tab dance
