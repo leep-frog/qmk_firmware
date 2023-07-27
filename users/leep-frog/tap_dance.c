@@ -409,29 +409,6 @@ void pinky_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_va
   }
 }
 
-/*void pinky_tap_fn(tap_dance_state_t *state, void *user_data) {
-
-  uint8_t shift_mods = 0;
-  // Only change on tap/press, to ensure the same key code is properly released.
-  if (tap || state->pressed) {
-    shift_mods = get_mods() & MOD_MASK_SHIFT;
-    if (shift_mods) {
-      unregister_mods(shift_mods);
-      hv->td_int = KC_SCLN;
-    } else {
-      hv->td_int = KC_COLON;
-    }
-  }
-
-  leep_td_each_press(state, user_data);
-  if (shift_mods) {
-    register_mods(shift_mods);
-  }
-}
-
-tap_dance_action_t *pinky_td = LEEP_TD_CLICK_FN_HOLD_LAYER(pinky_fn, LEEP_TD_NOVAL(), LR_OUTLOOK);
-pinky_td->fn->on_each_tap = pinky_tap_fn;*/
-
 tap_dance_action_t tap_dance_actions[] = {
     // Shift toggle
     // [TDK_SHIFT_TOGGLE] = ACTION_TAP_DANCE_FN(TDToggleShift),
