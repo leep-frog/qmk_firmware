@@ -1,7 +1,8 @@
 #ifndef LEEP_MUSIC
 #define LEEP_MUSIC
 
-#define ENABLE_LEEP_MUSIC
+static bool _leep_mute = false;
+bool IsMuted(void) { return _leep_mute; }
 
 #ifdef ENABLE_LEEP_MUSIC
 
@@ -12,9 +13,6 @@
 #    define DEFINE_SONG(var_name, sound)      \
         float   var_name##_song[][2] = sound; \
         uint8_t var_name##_tempo     = TEMPO_DEFAULT;
-
-static bool _leep_mute = false;
-bool IsMuted(void) { return _leep_mute; }
 
 #    define LEEP_PLAY_SONG(sng, mute_sng) \
         if (!IsMuted()) {    \
@@ -30,6 +28,19 @@ bool IsMuted(void) { return _leep_mute; }
             set_tempo(sng##_tempo); \
             PLAY_SONG(sng##_song);  \
         }
+
+static bool _mute_just_colored = false;
+
+#else
+
+#    define DEFINE_SONG_WITH_TEMPO(var_name, sound, tempo)
+#    define DEFINE_SONG(var_name, sound)
+#    define LEEP_PLAY_SONG(sng, mute_sng)
+#    define LEEP_PLAY_LOOP(sng)
+#    define SONG(sng)
+bool is_playing_notes(void) { return false; }
+
+#endif
 
 // Explicitly only define each song once (not once per use) to limit memory usage.
 // All song uses should exclusively be used through references to these
@@ -71,9 +82,8 @@ DEFINE_SONG(leep_success, SONG(LEEP_SUCCESS));
 #    define SNG_PASTE() LEEP_PLAY_SONG(leep_end, leep_end)
 #    define SNG_DUD() LEEP_PLAY_SONG(leep_dud, leep_dud)
 
-static bool _mute_just_colored = false;
-
 static void mute_sound(bool pressed, bool with_sound) {
+    #ifdef ENABLE_LEEP_MUSIC
     if (!pressed) {
         return;
     }
@@ -102,9 +112,11 @@ static void mute_sound(bool pressed, bool with_sound) {
             SNG_MUTE();
         }
     }
+    #endif
 }
 
 void Mute_handled(keyrecord_t* record) {
+  #ifdef ENABLE_LEEP_MUSIC
     // Unpressing mute key
     if (!record->event.pressed) {
         return;
@@ -114,6 +126,7 @@ void Mute_handled(keyrecord_t* record) {
         LEEP_LAYER_COLOR(LR_BASE, false);
         _mute_just_colored = false;
     }
+    #endif
 }
 
 void LeepMute(void) { _leep_mute = true; }
@@ -121,12 +134,5 @@ void LeepMute(void) { _leep_mute = true; }
 void MuteWithoutSound(bool pressed) { mute_sound(pressed, false); }
 
 void MuteWithSound(bool pressed) { mute_sound(pressed, true); }
-
-#else  // ifdef ENABLE_LEEP_MUSIC
-
-#    define LEEP_PLAY_SONG(sng)
-#    define LEEP_PLAY_LOOP(sng)
-
-#endif  // ifdef ENABLE_LEEP_MUSIC
 
 #endif  // ifndef LEEP_MUSIC
