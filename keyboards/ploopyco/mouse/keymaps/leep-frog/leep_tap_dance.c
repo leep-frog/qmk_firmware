@@ -124,7 +124,10 @@ void tdk_ctrl_tab_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *h
         del_weak_mods(state->weak_mods);
         send_string(hv->td_string);
     } else {
+      // Only re-add ctrl if we're still in the control layer.
+      if (IS_LAYER_ON(LR_CTRL)) {
         SEND_STRING(SS_DOWN(X_RCTL));
+      }
     }
 }
 
