@@ -1,8 +1,6 @@
 #include QMK_KEYBOARD_H
 
-#ifdef SAFE_RANGE
-#define LEEP_SAFE_RANGE SAFE_RANGE
-#endif
+#define LEEP_SAFE_RANGE NEW_SAFE_RANGE
 
 #include "../../../../../../../users/leep-frog/main.c"
 
@@ -17,11 +15,11 @@
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [LR_BASE] = LAYOUT_ansi_84(
      KC_ESC,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  QK_BOOT/*KC_SNAP*/,  KC_DEL,   RGB_MOD,
-     KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
-     KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     TD_Y,     TD_U,     TD_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
-     TO_CTRL,  TD_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     TO_OTLK,  KC_QUOT,            KC_ENT,             KC_HOME,
-     KC_LSFT,            KC_Z,     KC_X,     TD_C,     TD_V,     TD_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,    KC_END,
-     KC_LCTL,  KC_LOPTN, KC_LCMMD,                               KC_SPC,                                 KC_RCMMD, _______ ,KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT
+     TO_ALT,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
+     TO_SYMB,  KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     TD_Y,     TD_U,     TD_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
+     TO_SFT,   TD_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     TO_OTLK,  KC_QUOT,            KC_ENT,             KC_HOME,
+     TO_CTRL,  KC_Z,     KC_X,     TD_C,     TD_V,     TD_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,    KC_END,
+     TO_SHCT,  KC_LOPTN, KC_LCMMD,                               KC_SPC,                                 KC_RCMMD, _______ , KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT
 ),
 
 [LR_ELLA] = LAYOUT_ansi_84(
@@ -35,11 +33,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [LR_CTRL] = LAYOUT_ansi_84(
      KC_ESC,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SNAP,  KC_DEL,   RGB_MOD,
-     CL(EQL),  CL(1),    CL(2),    CL(3),    CL(4),    CL(5),    CL(6),    CL(7),    CL(8),    CL(9),    CL(0),    KC_MINS,  KC_EQL,   CL(BSPC),            CL(PGUP),
-     CL(TAB),  CL(Q),    CL(W),    KC_END,   CL(R),    KC_T,     KC_Y,     CK_TABB,  CL(I),    CK_TABF,  KC_UP,    KC_LBRC,  KC_RBRC,  KC_BSLS,            CL(PGDN),
+     CL(EQL),  CL(1),    CL(2),    CL(3),    CL(4),    CL(5),    CL(6),    CL(7),    CL(8),    CL(9),    CL(0),    KC_MINS,  KC_EQL,   CL(BSPC),           CL(PGUP),
+     CL(TAB),  CL(Q),    CL(W),    KC_END,   CL(R),    CL(T),    CL(Y),    CK_TABB,  CL(I),    CK_TABF,  KC_UP,    KC_LBRC,  KC_RBRC,  KC_BSLS,            CL(PGDN),
      KC_CAPS,  KC_HOME,  CL(F),    KC_DEL,   KC_RGHT,  CK_CTLG,  KC_BSPC,  TGL_SHF,  CK_KILL,  KC_PGUP,  CL(SCLN), CL(QUOT),           CL(ENT),            CL(HOME),
      KC_LSFT,            CL(Z),    TO_CTLX,  CK_COPY,  KC_PGDN,  KC_LEFT,  KC_DOWN,  CL(M),    CL(COMM), CL(DOT),  CK_UNDO,            KC_RSFT,  KC_UP,    CL(END),
-     KC_LCTL,  KC_LOPTN, KC_LCMMD,                               KC_SPC,                                 KC_RCMMD, _______ ,KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT
+     KC_LCTL,  KC_LOPTN, KC_LCMMD,                               KC_SPC,                                 KC_RCMMD, _______ , KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT
 ),
 
 [LR_CTRL_X] = LAYOUT_ansi_84(
@@ -99,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [LR_SYMB] = LAYOUT_ansi_84(
      KC_ESC,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SNAP,  KC_DEL,   RGB_MOD,
      KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
-     KC_TAB,   KC_EXLM,  KC_COLN,  KC_EQL,   KC_CIRC,  KC_PIPE,  KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
+     _______,  KC_EXLM,  KC_COLN,  KC_EQL,   KC_CIRC,  KC_PIPE,  KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
      KC_CAPS,  KC_AMPR,  KC_ASTR,  KC_DLR,   KC_SLSH,  KC_LBRC,  CK_MDPS,  KC_4,     KC_5,     KC_6,     KC_0,     KC_QUOT,            KC_ENT,             KC_HOME,
      KC_LSFT,            KC_TILD,  KC_EXLM,  KC_AT,    KC_EQL,   KC_BSLS,  KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,    KC_END,
      KC_LCTL,  KC_LOPTN, KC_LCMMD,                               KC_SPC,                                 KC_RCMMD, _______ ,KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT
