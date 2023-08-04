@@ -58,11 +58,12 @@ static void pairing_key_timer_cb(void *arg) {
 }
 #endif
 
+// This function runs whenever the mac/windows toggle is pressed
 bool dip_switch_update_kb(uint8_t index, bool active) {
-    if (index == 0) {
+    /*if (index == 0) {
         default_layer_set(1UL << (active ? 0 : 2));
     }
-    dip_switch_update_user(index, active);
+    dip_switch_update_user(index, active);*/
 
     return true;
 }
