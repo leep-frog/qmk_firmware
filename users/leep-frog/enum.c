@@ -55,6 +55,7 @@ enum td_keys { // prefix TDK
     TDK_SCROLL_RIGHT,
     TDK_TO_OUTLOOK,
     TDK_TO_NAV,
+    TDK_TO_NAV_RCBR,
     TDK_TO_SHORTCUT,
     TDK_ELLA_MODE,
 };
