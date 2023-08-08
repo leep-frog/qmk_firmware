@@ -42,5 +42,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,     KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_DEL,
         KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,           KC_HOME,
         KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,     KC_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT, KC_UP,
-        KC_LCTL, KC_LALT,  KC_LGUI,           KC_SPC,           _______,     _______,       KC_SPC,            KC_RGUI,           KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LALT,  KC_LGUI,           TO_SFT,           TO_ALT,      TO_CTRL,       TO_SYMB,           KC_RGUI,           KC_LEFT, KC_DOWN, KC_RGHT),
+
+    [LR_CTRL] = LAYOUT_69_ansi(
+        CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         CL(INS),
+        CL(TAB), CL(Q),    CL(W),    CL(E),   CL(R),   CL(T),   CL(Y),    CL(U),   CL(I),   CL(O),   CL(P),    CL(LBRC), CL(RBRC), CL(BSLS),         CL(DEL),
+        CL(CAPS),CL(A),    CL(S),    CL(D),   CL(F),   CL(G),             CL(H),   CL(J),   CL(K),   CL(L),    CL(SCLN), CL(QUOT), CL(ENT),          CL(HOME),
+        CL(LSFT),          CL(Z),    CL(X),   CL(C),   CL(V),   CL(B),    CL(B),   CL(N),   CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
+        CL(LCTL),CL(LALT), CL(LGUI),          TO_SFT,           TO_ALT,      TO_CTRL,       TO_SYMB,           CL(RGUI),          CL(LEFT),CL(DOWN),CL(RGHT)),
 };
