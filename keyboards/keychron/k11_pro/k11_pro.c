@@ -41,14 +41,6 @@ static uint32_t factory_timer_buffer            = 0;
 #endif
 static uint32_t power_on_indicator_timer_buffer = 0;
 static uint32_t siri_timer_buffer               = 0;
-static uint8_t  mac_keycode[4]                  = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
-
-key_combination_t key_comb_list[4] = {
-    {2, {KC_LWIN, KC_TAB}},        // Task (win)
-    {2, {KC_LWIN, KC_E}},          // Files (win)
-    {3, {KC_LSFT, KC_LGUI, KC_4}}, // Snapshot (mac)
-    {2, {KC_LWIN, KC_C}}           // Cortana (win)
-};
 
 #ifdef KC_BLUETOOTH_ENABLE
 bool                   firstDisconnect  = true;
@@ -81,35 +73,6 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     if (!process_record_user(keycode, record)) { return false; }
 
     switch (keycode) {
-        case KC_LOPTN:
-        case KC_ROPTN:
-        case KC_LCMMD:
-        case KC_RCMMD:
-            if (record->event.pressed) {
-                register_code(mac_keycode[keycode - KC_LOPTN]);
-            } else {
-                unregister_code(mac_keycode[keycode - KC_LOPTN]);
-            }
-            return false; // Skip all further processing of this key)
-        case KC_TASK:
-        case KC_FILE:
-        case KC_SNAP:
-        case KC_CTANA:
-            if (record->event.pressed) {
-                for (uint8_t i = 0; i < key_comb_list[keycode - KC_TASK].len; i++)
-                    register_code(key_comb_list[keycode - KC_TASK].keycode[i]);
-            } else {
-                for (uint8_t i = 0; i < key_comb_list[keycode - KC_TASK].len; i++)
-                    unregister_code(key_comb_list[keycode - KC_TASK].keycode[i]);
-            }
-            return false; // Skip all further processing of this key
-        case KC_SIRI:
-            if (record->event.pressed && siri_timer_buffer == 0) {
-                register_code(KC_LGUI);
-                register_code(KC_SPACE);
-                siri_timer_buffer = sync_timer_read32() | 1;
-            }
-            return false; // Skip all further processing of this key
 #ifdef KC_BLUETOOTH_ENABLE
         case BT_HST1 ... BT_HST3:
             if (get_transport() == TRANSPORT_BLUETOOTH) {
