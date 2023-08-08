@@ -8,3 +8,6 @@ RGB_MATRIX_ENABLE = yes
 # AUDIO_ENABLE = yes
 #VPATH += keyboards/gboards/
 #CONSOLE_ENABLE = yes
+
+# This is for the knob
+ENCODER_MAP_ENABLE = yes
