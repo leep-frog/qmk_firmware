@@ -31,6 +31,9 @@
 #define I2C1_TIMINGR_SCLH 15U
 #define I2C1_TIMINGR_SCLL 51U
 
+#define BAT_LOW_LED_PIN B5
+#define BAT_LOW_LED_PIN_ON_STATE 1
+
 #ifdef KC_BLUETOOTH_ENABLE
 /* Hardware configuration */
 #    define USB_BT_MODE_SELECT_PIN A4
@@ -41,9 +44,6 @@
 
 #    define USB_POWER_SENSE_PIN B1
 #    define USB_POWER_CONNECTED_LEVEL 0
-
-#    define BAT_LOW_LED_PIN B5
-#    define BAT_LOW_LED_PIN_ON_STATE 1
 
 #    define HOST_DEVICES_COUNT 3
 

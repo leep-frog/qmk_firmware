@@ -70,13 +70,11 @@ bool dip_switch_update_kb(uint8_t index, bool active) {
 
 #ifdef KC_BLUETOOTH_ENABLE
 bool process_record_kb_bt(uint16_t keycode, keyrecord_t *record) {
+    static uint8_t host_idx = 0;
 #else
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 #endif
   if (!process_record_user(keycode, record)) { return false; }
-#ifdef KC_BLUETOOTH_ENABLE
-    static uint8_t host_idx = 0;
-#endif
 
     switch (keycode) {
         case KC_LOPTN:
@@ -138,9 +136,6 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 
 void keyboard_post_init_kb(void) {
     dip_switch_read(true);
-
-#    define BAT_LOW_LED_PIN A4
-#    define BAT_LOW_LED_PIN_ON_STATE 1
 
 #ifdef KC_BLUETOOTH_ENABLE
     /* Currently we don't use this reset pin */
@@ -250,7 +245,7 @@ void bluetooth_pre_task(void) {
 #endif
 
 void battery_calculte_voltage(uint16_t value) {
-#ifdef KC_BLUETOOTH_ENABLED
+#ifdef KC_BLUETOOTH_ENABLE
     uint16_t voltage = ((uint32_t)value) * 2246 / 1000;
 
 #ifdef LED_MATRIX_ENABLE

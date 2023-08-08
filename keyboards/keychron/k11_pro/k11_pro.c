@@ -36,7 +36,9 @@ typedef struct PACKED {
     uint8_t keycode[3];
 } key_combination_t;
 
+#ifdef KC_BLUETOOTH_ENABLE
 static uint32_t factory_timer_buffer            = 0;
+#endif
 static uint32_t power_on_indicator_timer_buffer = 0;
 static uint32_t siri_timer_buffer               = 0;
 static uint8_t  mac_keycode[4]                  = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
@@ -60,22 +62,23 @@ static void pairing_key_timer_cb(void *arg) {
 #endif
 
 bool dip_switch_update_kb(uint8_t index, bool active) {
-#ifdef INVERT_OS_SWITCH_STATE
+/*#ifdef INVERT_OS_SWITCH_STATE
     default_layer_set(1UL << (!active ? 0 : 1));
 #else
     default_layer_set(1UL << (active ? 0 : 1));
 #endif
-    dip_switch_update_user(index, active);
+    dip_switch_update_user(index, active);*/
 
     return true;
 }
 
 #ifdef KC_BLUETOOTH_ENABLE
 bool process_record_kb_bt(uint16_t keycode, keyrecord_t *record) {
+    static uint8_t host_idx = 0;
 #else
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 #endif
-    static uint8_t host_idx = 0;
+    if (!process_record_user(keycode, record)) { return false; }
 
     switch (keycode) {
         case KC_LOPTN:
@@ -175,6 +178,7 @@ void keyboard_post_init_kb(void) {
 }
 
 void matrix_scan_kb(void) {
+#ifdef KC_BLUETOOTH_ENABLE
     if (factory_timer_buffer && timer_elapsed32(factory_timer_buffer) > 2000) {
         factory_timer_buffer = 0;
         if (bt_factory_reset) {
@@ -184,6 +188,7 @@ void matrix_scan_kb(void) {
             palWriteLine(CKBT51_RESET_PIN, PAL_HIGH);
         }
     }
+#endif
 
     if (power_on_indicator_timer_buffer) {
         if (sync_timer_elapsed32(power_on_indicator_timer_buffer) > POWER_ON_LED_DURATION) {
@@ -267,6 +272,7 @@ void bluetooth_pre_task(void) {
 #endif
 
 void battery_calculte_voltage(uint16_t value) {
+#ifdef KC_BLUETOOTH_ENABLE
     uint16_t voltage = ((uint32_t)value) * 2246 / 1000;
 
 #ifdef LED_MATRIX_ENABLE
@@ -293,6 +299,7 @@ void battery_calculte_voltage(uint16_t value) {
     }
 #endif
     battery_set_voltage(voltage);
+#endif
 }
 
 bool via_command_kb(uint8_t *data, uint8_t length) {
