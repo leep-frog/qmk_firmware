@@ -46,8 +46,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         CL(INS),
+        CL(TAB), CL(Q),    CTRL_W,   KC_END,  CL(R),   TD_CTLT, CL(Y),    CK_TABB, CL(I),   CK_TABF, KC_UP,    CL(LBRC), CL(RBRC), CL(BSLS),         CL(DEL),
+        CL(CAPS),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), CL(QUOT), CL(ENT),          CL(HOME),
+        CL(LSFT),          CL(Z),    TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,  KC_LEFT, KC_DOWN, CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
+        CL(LCTL),CL(LALT), CL(LGUI),          TO_SFT,           TO_ALT,      TO_CTRL,       TO_SYMB,           CL(RGUI),          CL(LEFT),CL(DOWN),CL(RGHT)),
+
+    [LR_CTRL_X] = LAYOUT_69_ansi(
+        CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         CL(INS),
         CL(TAB), CL(Q),    CL(W),    CL(E),   CL(R),   CL(T),   CL(Y),    CL(U),   CL(I),   CL(O),   CL(P),    CL(LBRC), CL(RBRC), CL(BSLS),         CL(DEL),
         CL(CAPS),CL(A),    CL(S),    CL(D),   CL(F),   CL(G),             CL(H),   CL(J),   CL(K),   CL(L),    CL(SCLN), CL(QUOT), CL(ENT),          CL(HOME),
         CL(LSFT),          CL(Z),    CL(X),   CL(C),   CL(V),   CL(B),    CL(B),   CL(N),   CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          TO_SFT,           TO_ALT,      TO_CTRL,       TO_SYMB,           CL(RGUI),          CL(LEFT),CL(DOWN),CL(RGHT)),
+
+    [LR_ALT] = LAYOUT_69_ansi(
+        AL(ESC), AL(1),    AL(2),    AL(3),   AL(4),   AL(5),   AL(6),    AL(7),   AL(8),   AL(9),   AL(0),    AL(MINS), AL(EQL),  AL(BSPC),         AL(INS),
+        AL(TAB), AL(Q),    AL(W),    AL(E),   AL(R),   AL(T),   AL(Y),    AL(U),   AL(I),   AL(O),   AL(P),    AL(LBRC), AL(RBRC), AL(BSLS),         AL(DEL),
+        AL(CAPS),AL(A),    AL(S),    AL(D),   AL(F),   AL(G),             AL(H),   AL(J),   AL(K),   AL(L),    AL(SCLN), AL(QUOT), AL(ENT),          AL(HOME),
+        AL(LSFT),          AL(Z),    AL(X),   AL(C),   AL(V),   AL(B),    AL(B),   AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
+        AL(LCTL),AL(LALT), AL(LGUI),          TO_SFT,           TO_ALT,      TO_CTRL,       TO_SYMB,           AL(RGUI),          AL(LEFT),AL(DOWN),AL(RGHT)),
 };
