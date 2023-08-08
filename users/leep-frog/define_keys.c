@@ -10,8 +10,8 @@
 // Note: we use page down and page up because that works with chrome
 // and "tab" is a special character in some terminals and sometimes gets
 // modified or ignored when passed to processes inside of the terminal.
-#define CK_TABF RCTL(KC_PGDN)  // Next tab in chrome
-#define CK_TABB LCTL(KC_PGUP)    // Previous tab in chrome
+#define CK_TABF RCTL(KC_PGDN)    // Next tab in chrome (hold with shift for move tab)
+#define CK_TABB LCTL(KC_PGUP)    // Previous tab in chrome (hold with shift for move tab)
 #define CK_WWWF LALT(KC_RIGHT)   // Next page in chrome
 #define CK_WWWB LALT(KC_LEFT)    // Previous page in chrome
 

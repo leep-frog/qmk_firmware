@@ -6,8 +6,8 @@
 // Shift-combinations were too quick and causing a parentheses to be added.
 #ifdef TAPPING_TERM
 #    undef TAPPING_TERM
-#    define TAPPING_TERM 150
 #endif
+#define TAPPING_TERM 150
 // Allows us to define tapping term per key. See link for more details:
 // https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md#tapping-term
 #define TAPPING_TERM_PER_KEY
@@ -53,8 +53,8 @@
 #define STARTUP_SONG SONG()
 #define GOODBYE_SONG SONG()
 
-#define RGB_MATRIX_RAINBOW_PINWHEELS 0
-#define RGB_MATRIX_RAINDROPS 0
+#define ENABLE_RGB_MATRIX_RAINDROPS
+#define ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
 
 // MOUSE CURSOR
 
