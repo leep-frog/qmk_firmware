@@ -47,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         CL(INS),
         CL(TAB), CL(Q),    CTRL_W,   KC_END,  CL(R),   TD_CTLT, CL(Y),    CK_TABB, CL(I),   CK_TABF, KC_UP,    CL(LBRC), CL(RBRC), CL(BSLS),         _______,
-        CL(LPRN),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), CL(RPRN), CL(ENT),          _______,
+LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), RSFT_T(CL(RPRN)),CL(ENT),   _______,
         CL(LSFT),          CL(Z),    TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,  KC_LEFT, KC_DOWN, CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          CL(ENTER),        CL(TAB),           _______,          CL(SPACE),          CL(RGUI), CL(LEFT),CL(DOWN),CL(RGHT)),
 
@@ -61,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_ALT] = LAYOUT_69_ansi(
         AL(ESC), AL(1),    AL(2),    AL(3),   AL(4),   AL(5),   AL(6),    AL(7),   AL(8),   AL(9),   AL(0),    AL(MINS), AL(EQL),  AL(BSPC),         AL(INS),
         AL(TAB), AL(Q),    AL(F4),   AL(E),   AL(R),   CK_ALTT, CK_PSTE,  CK_SATB, AL(I),   CK_ATB,  AL(P),    AL(LBRC), AL(RBRC), AL(BSLS),         _______,
-        AL(LPRN),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, AL(J),   AL(K),   KC_WH_U,  AL(SCLN), AL(RPRN), AL(ENT),          _______,
+LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, AL(J),   AL(K),   KC_WH_U,  AL(SCLN), RSFT_T(AL(RPRN)),AL(ENT),   _______,
         AL(LSFT),          AL(Z),    AL(X),   AL(C),   KC_WH_D, CL(LEFT), CL(LEFT),AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
         AL(LCTL),AL(LALT), AL(LGUI),          AL(ENTER),        _______,         TO_CTAL,            AL(SPACE),          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
 
