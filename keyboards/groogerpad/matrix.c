@@ -9,14 +9,7 @@
 
 void matrix_init_custom(void) {
   uart_init(9600);
-  debug_enable=true;
-  xprintf("groog matrix init\n");
 }
-
-uint32_t groog_time = 0;
-int pressed = 0;
-
-bool first_press = true;
 
 // Copied from (TODO link);
 typedef struct __attribute__((packed)) {
@@ -37,64 +30,39 @@ typedef struct __attribute__((packed)) {
   // Misc buttons (from 0x0c (Consumer) and others)
   uint8_t misc_buttons;
 
-  int32_t gyro[3];
-  int32_t accel[3];
+  // Xbox controller doesn't have any accelerometer, so save
+  // data that needs to be sent and remove these.
+  /*int32_t gyro[3];
+  int32_t accel[3];*/
 } nina_gamepad_t;
 
+int print_times = 0;
+
 uint8_t matrix_scan_custom(matrix_row_t current_matrix[]) {
-  xprintf("HELLO\n");
-  if (first_press) {
-    SEND_STRING("A");
-    first_press = false;
+  if (print_times >= 3) {
+    return 0;
   }
 
   while (uart_available()) {
-    // SEND_STRING("R0");
-
-    // Comes in 28 byte groups (size of nina_gamepad_t)
-    // TODO: Use sizeof? Need to divide by anything?
-    // int buflen = 28;
-    // char xboxBuffer[buflen];
-    // for (int i = 0; i < xboxBuffer; i++) {
-      // xboxBuffer[i] = 0;
-    // }
-    // strcpy(dogBuf, message);
-
-    // TODO: Do while available if we have more recent controller stuff?
-    // SEND_STRING("R1");
-    // for (int i = 0; i < 28; i++) {
-      // xboxBuffer[i] = uart_read();
-    // }
-    // SEND_STRING("R2");
-    // nina_gamepad_t *gamepad = (nina_gamepad_t *)xboxBuffer;
-    // SEND_STRING("R3");
-    send_byte(uart_read());
+    int buflen = sizeof(nina_gamepad_t);
+    char xboxBuffer[buflen];
+    for (int i = 0; i < buflen; i++) {
+      xboxBuffer[i] = uart_read();
+    }
+    print_times++;
+    nina_gamepad_t *gamepad = (nina_gamepad_t *)xboxBuffer;
     // send_byte((uint8_t)gamepad->buttons);
-    // SEND_STRING("R4");
-    // send_byte((uint8_t)(gamepad->buttons / 256));
-    // SEND_STRING("R5");
-    // SEND_STRING("\n");
+    // send_byte((uint8_t)(gamepad->buttons/256));
   }
-    /*if (pressed > 0) {
-      wait_ms(10);
-      pressed--;
-      if (pressed == 0) {
-        current_matrix[0] = 0;
-        return true;
-      } else {
-        return false;
-      }
-    }
 
-    uint32_t new_time = timer_read32();
-    if (TIMER_DIFF_32(timer_read32(), groog_time) > 2500) {
-      SEND_STRING("YUP");
-      current_matrix[0] = 3;
-      pressed = 10;
-      groog_time = new_time;
-      return true;
-    }
-    // TODO: add matrix scanning routine here*/
-
-    return 0;
+  return 0;
 }
+
+/*
+Example data:
+00180000000d00000000000000140000000000000000000000000000
+001800000015000000f6ffffff260000000000000000000000000000
+001200000012000000f6ffffff2600000000000000000000000b0000
+PAST0b00PAST0200PAST0000
+
+*/
