@@ -1,16 +1,33 @@
 #include QMK_KEYBOARD_H
+#include "quantum.h"
 #include "matrix.h"
+#include "debug.h"
+#include "uart.h"
 #include "timer.h"
+#include "print.h"
+
 
 void matrix_init_custom(void) {
-    // TODO: initialize hardware here
+  uart_init(9600);
+  debug_enable=true;
+  xprintf("groog matrix init\n");
 }
 
 uint32_t groog_time = 0;
 int pressed = 0;
 
-bool matrix_scan_custom(matrix_row_t current_matrix[]) {
-    if (pressed > 0) {
+bool first_press = true;
+
+uint8_t matrix_scan_custom(matrix_row_t current_matrix[]) {
+  xprintf("HELLO\n");
+  if (first_press) {
+    SEND_STRING("A");
+    first_press = false;
+  }
+  while (uart_available()) {
+    send_byte(uart_read());
+  }
+    /*if (pressed > 0) {
       wait_ms(10);
       pressed--;
       if (pressed == 0) {
@@ -29,7 +46,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
       groog_time = new_time;
       return true;
     }
-    // TODO: add matrix scanning routine here
+    // TODO: add matrix scanning routine here*/
 
-    return false;
+    return 0;
 }
