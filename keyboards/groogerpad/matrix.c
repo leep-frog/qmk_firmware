@@ -8,11 +8,20 @@
 
 const int blink_time = 125;
 
-void blink_led(int times) {
+void led_on(void) {
+  writePinHigh(D4);
+}
+
+void led_off(void) {
+  writePinLow(D4);
+}
+
+
+void led_blink(int times) {
   for (int i = 0; i < times; i++) {
-    writePinHigh(D4);
+    led_on();
     wait_ms(blink_time);
-    writePinLow(D4);
+    led_off();
     wait_ms(blink_time);
   }
 }
@@ -28,7 +37,7 @@ void matrix_init_custom(void) {
     uart_read();
   }
 
-  blink_led(4);
+  led_blink(4);
 }
 
 #define CHECK_BUTTON(button, var, pos) ((var) & (1<<(pos)))
@@ -100,9 +109,9 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     uint16_t button_mask = gamepad.buttons;
 
     if (button_mask % 2 == 1) {
-      blink_led(1);
+      led_on();
     } else {
-      blink_led(2);
+      led_off();
     }
 
     bool changed = false;
