@@ -50,18 +50,20 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
 
   if (uart_available()) {
     xprintf("Loading controller");
-    int buflen = sizeof(nina_gamepad_t);
+    /*int buflen = sizeof(nina_gamepad_t);
     char xboxBuffer[buflen];
     for (int i = 0; i < buflen; i++) {
       xboxBuffer[i] = uart_read();
     }
+    nina_gamepad_t *gamepad = (nina_gamepad_t *)xboxBuffer;*/
+    nina_gamepad_t gamepad;
+    uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
     print_times++;
-    nina_gamepad_t *gamepad = (nina_gamepad_t *)xboxBuffer;
     if (thing) {
-      send_byte((uint8_t)gamepad->buttons);
-      send_byte((uint8_t)(gamepad->buttons/256));
+      send_byte((uint8_t)gamepad.buttons);
+      send_byte((uint8_t)(gamepad.buttons/256));
     }
-    if (gamepad->buttons % 2 == 1) {
+    if (gamepad.buttons % 2 == 1) {
       if (current_matrix[4] != 2) {
         // SEND_STRING("P");
         current_matrix[4] = 2;
