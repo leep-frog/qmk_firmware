@@ -70,27 +70,13 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
       send_byte((uint8_t)button_mask);
     }
     for (int i = 0; i < 1; i++) {
-      // SEND_STRING("X ");
       button_mapping_t bm = button_mappings[i];
       // If the key is marked as pressed
       bool gamepad_pressed = !!(((uint8_t)button_mask) & (bm.gamepad_button_bit));
       bool key_pressed = !!(current_matrix[bm.kb_matrix_row] & (bm.kb_matrix_row_bit));
 
-      if (key_pressed) {
-        SEND_STRING("K");
-      // } else {
-        // SEND_STRING("KU ");
-      }
-
-      if (gamepad_pressed) {
-        SEND_STRING("P");
-      // } else {
-        // SEND_STRING("GU ");
-      }
-
       // Toggle the bit if they don't match.
       if (key_pressed != gamepad_pressed) {
-        SEND_STRING("C");
         current_matrix[bm.kb_matrix_row] ^= (bm.kb_matrix_row_bit);
         changed = true;
       }
