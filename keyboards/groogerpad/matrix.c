@@ -9,7 +9,11 @@
 
 void matrix_init_custom(void) {
   uart_init(9600);
+  xprintf("Initializing groog controller");
+  xprintf("Initing");
 }
+
+#define CHECK_BUTTON(button, var, pos) ((var) & (1<<(pos)))
 
 // Copied from (TODO link);
 typedef struct __attribute__((packed)) {
@@ -37,13 +41,15 @@ typedef struct __attribute__((packed)) {
 } nina_gamepad_t;
 
 int print_times = 0;
+bool thing = false;
 
-uint8_t matrix_scan_custom(matrix_row_t current_matrix[]) {
-  if (print_times >= 3) {
-    return 0;
-  }
+bool matrix_scan_custom(matrix_row_t current_matrix[]) {
+  // if (print_times >= 3) {
+    // return 0;
+  // }
 
-  while (uart_available()) {
+  if (uart_available()) {
+    xprintf("Loading controller");
     int buflen = sizeof(nina_gamepad_t);
     char xboxBuffer[buflen];
     for (int i = 0; i < buflen; i++) {
@@ -51,11 +57,24 @@ uint8_t matrix_scan_custom(matrix_row_t current_matrix[]) {
     }
     print_times++;
     nina_gamepad_t *gamepad = (nina_gamepad_t *)xboxBuffer;
-    // send_byte((uint8_t)gamepad->buttons);
-    // send_byte((uint8_t)(gamepad->buttons/256));
+    if (thing) {
+      send_byte((uint8_t)gamepad->buttons);
+      send_byte((uint8_t)(gamepad->buttons/256));
+    }
+    if (gamepad->buttons % 2 == 1) {
+      if (current_matrix[4] != 2) {
+        SEND_STRING("P");
+        current_matrix[4] = 2;
+        return true;
+      }
+    } else if (current_matrix[4] != 0) {
+      SEND_STRING("U");
+      current_matrix[4] = 0;
+      return true;
+    }
   }
 
-  return 0;
+  return false;
 }
 
 /*

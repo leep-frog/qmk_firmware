@@ -9,14 +9,14 @@
  */
 
 /* disable debug print */
-#ifndef NO_DEBUG
-#define NO_DEBUG
-#endif
+// #ifndef NO_DEBUG
+// #define NO_DEBUG
+// #endif
 
 /* disable print */
-#ifndef NO_PRINT
-#define NO_PRINT
-#endif
+// #ifndef NO_PRINT
+// #define NO_PRINT
+// #endif
 
 /* disable action features */
 //#define NO_ACTION_LAYER
