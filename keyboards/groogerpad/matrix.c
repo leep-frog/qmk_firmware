@@ -95,7 +95,7 @@ button_mapping_t button_mappings[] = {
   IGNORE_BUTTON(),      // LT (get fuller data from other buttons)
   IGNORE_BUTTON(),      // RT ^^^
   BUTTON_MAPPING(3, 0), // Left joystick click
-  BUTTON_MAPPING(5, 2), // Left joystick click
+  BUTTON_MAPPING(5, 2), // Right joystick click
 };
 
 const uint8_t NUM_BUTTONS = sizeof(button_mappings) / sizeof(button_mappings[0]);
@@ -108,6 +108,28 @@ button_mapping_t misc_button_mappings[] = {
 
 const uint8_t NUM_MISC_BUTTONS = sizeof(misc_button_mappings) / sizeof(misc_button_mappings[0]);
 
+bool process_button_mask(matrix_row_t current_matrix[], button_mapping_t bms[], uint16_t button_mask, uint8_t size) {
+  bool changed = false;
+  for (int i = 0; i < size; i++) {
+    button_mapping_t bm = bms[i];
+    if (bm.ignore) {
+      button_mask >>= 1;
+      continue;
+    }
+    // If the key is marked as pressed
+    bool gamepad_pressed = !!(button_mask & 0x01);
+    bool key_pressed = !!(current_matrix[bm.kb_matrix_row] & (bm.kb_matrix_row_bit));
+
+    // Toggle the bit if they don't match.
+    if (key_pressed != gamepad_pressed) {
+      current_matrix[bm.kb_matrix_row] ^= (bm.kb_matrix_row_bit);
+      changed = true;
+    }
+    button_mask >>= 1;
+  }
+  return changed;
+}
+
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   bool changed = false;
 
@@ -118,36 +140,26 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   nina_gamepad_t gamepad;
   uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
 
-  // Process regular buttons
-  uint16_t button_mask = gamepad.buttons;
-  for (int i = 0; i < NUM_BUTTONS; i++) {
-    button_mapping_t bm = button_mappings[i];
-    // If the key is marked as pressed
-    bool gamepad_pressed = !!(button_mask & 1);
-    bool key_pressed = !!(current_matrix[bm.kb_matrix_row] & (bm.kb_matrix_row_bit));
+  /*if (gamepad.buttons) {
+    led_on();
+  } else {
+    led_off();
+  }*/
 
-    // Toggle the bit if they don't match.
-    if (key_pressed != gamepad_pressed) {
-      current_matrix[bm.kb_matrix_row] ^= (bm.kb_matrix_row_bit);
-      changed = true;
-    }
-    button_mask >>= 1;
+  bool turn_on_led = false;
+
+  // Process regular buttons
+  if (process_button_mask(current_matrix, button_mappings, gamepad.buttons, NUM_BUTTONS)) {
+    changed = true;
+  }
+  if (process_button_mask(current_matrix, misc_button_mappings, gamepad.misc_buttons, NUM_MISC_BUTTONS)) {
+    changed = true;
   }
 
-  // Process misc buttons
-  uint16_t misc_button_mask = gamepad.misc_buttons;
-  for (int i = 0; i < NUM_MISC_BUTTONS; i++) {
-    button_mapping_t bm = misc_button_mappings[i];
-    // If the key is marked as pressed
-    bool gamepad_pressed = !!(misc_button_mask & 1);
-    bool key_pressed = !!(current_matrix[bm.kb_matrix_row] & (bm.kb_matrix_row_bit));
-
-    // Toggle the bit if they don't match.
-    if (key_pressed != gamepad_pressed) {
-      current_matrix[bm.kb_matrix_row] ^= (bm.kb_matrix_row_bit);
-      changed = true;
-    }
-    misc_button_mask >>= 1;
+  if (turn_on_led) {
+    led_on();
+  } else {
+    led_off();
   }
   return changed;
 }
