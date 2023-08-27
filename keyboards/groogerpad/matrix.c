@@ -53,10 +53,12 @@ typedef struct {
 // This maps button bit order (least-significant bit first)
 // to [matrix_row, offset]
 button_mapping_t button_mappings[] = {
-  // A
-  // {1, 4, 2},
-  BUTTON_MAPPING(0, 4, 1),
+  BUTTON_MAPPING(0, 4, 1), // A
+  BUTTON_MAPPING(1, 3, 3), // B
+  BUTTON_MAPPING(2, 3, 2), // X
 };
+
+const uint8_t NUM_BUTTONS = sizeof(button_mappings) / sizeof(button_mappings[0]);
 
 bool blop = false;
 
@@ -72,7 +74,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
       send_byte(button_mappings[0].gamepad_button_bit);
       send_byte((uint8_t)button_mask);
     }
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < NUM_BUTTONS; i++) {
       button_mapping_t bm = button_mappings[i];
       // If the key is marked as pressed
       bool gamepad_pressed = !!(((uint8_t)button_mask) & (bm.gamepad_button_bit));
