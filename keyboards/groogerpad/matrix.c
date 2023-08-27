@@ -6,11 +6,29 @@
 #include "timer.h"
 #include "print.h"
 
+const int blink_time = 125;
+
+void blink_led(int times) {
+  for (int i = 0; i < times; i++) {
+    writePinHigh(D4);
+    wait_ms(blink_time);
+    writePinLow(D4);
+    wait_ms(blink_time);
+  }
+}
 
 void matrix_init_custom(void) {
   uart_init(9600);
   xprintf("Initializing groog controller");
   xprintf("Initing");
+  setPinOutput(D4);
+
+  // Clear the buffer;
+  while (uart_available()) {
+    uart_read();
+  }
+
+  blink_led(4);
 }
 
 #define CHECK_BUTTON(button, var, pos) ((var) & (1<<(pos)))
@@ -61,20 +79,38 @@ button_mapping_t button_mappings[] = {
 const uint8_t NUM_BUTTONS = sizeof(button_mappings) / sizeof(button_mappings[0]);
 
 bool blop = false;
+int m_count = 0;
 
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
-  if (uart_available()) {
-    xprintf("Loading controller");
+  /*if (m_count == 1) {
+    SEND_STRING("0");
+    m_count++;
+  } else if (m_count == 50) {
+    SEND_STRING("5");
+    m_count++;
+  } else if (m_count <= 50) {
+    m_count++;
+  }*/
+  uart_write(1);
+  // if (uart_available()) {
+    // SEND_STRING("H");
+    // xprintf("Loading controller");
     nina_gamepad_t gamepad;
     uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
     uint16_t button_mask = gamepad.buttons;
+
+    if (button_mask % 2 == 1) {
+      blink_led(1);
+    } else {
+      blink_led(2);
+    }
 
     bool changed = false;
     if (blop) {
       send_byte(button_mappings[0].gamepad_button_bit);
       send_byte((uint8_t)button_mask);
     }
-    for (int i = 0; i < NUM_BUTTONS; i++) {
+    for (int i = 0; i < 1; i++) {
       button_mapping_t bm = button_mappings[i];
       // If the key is marked as pressed
       bool gamepad_pressed = !!(((uint8_t)button_mask) & (bm.gamepad_button_bit));
@@ -87,7 +123,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
       }
     }
     return changed;
-  }
+  // }
 
   return false;
 }
