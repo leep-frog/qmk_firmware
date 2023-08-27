@@ -73,20 +73,24 @@ typedef struct __attribute__((packed)) {
 
 typedef struct {
   // 0-indexed bit position starting at the least-significant bit
-  uint8_t gamepad_button_bit;
+  // uint8_t gamepad_button_bit;
   uint8_t kb_matrix_row;
   // 0-indexed bit position starting at the least-significant bit
   uint8_t kb_matrix_row_bit;
 } button_mapping_t;
 
-#define BUTTON_MAPPING(gamepad_bit, matrix_row, matrix_col) {1 << gamepad_bit, matrix_row, 1 << matrix_col}
+#define BUTTON_MAPPING(matrix_row, matrix_col) {matrix_row, 1 << matrix_col}
 
 // This maps button bit order (least-significant bit first)
 // to [matrix_row, offset]
 button_mapping_t button_mappings[] = {
-  BUTTON_MAPPING(0, 4, 1), // A
-  BUTTON_MAPPING(1, 3, 3), // B
-  BUTTON_MAPPING(2, 3, 2), // X
+  // Ordering determined from here:
+  // https://github.com/ricardoquesada/bluepad32-arduino/blob/b026e813baf386fab596d4dc247afe268b79e40a/src/Controller.h#L71
+  BUTTON_MAPPING(4, 1), // A
+  BUTTON_MAPPING(3, 3), // B
+  BUTTON_MAPPING(3, 2), // X
+  BUTTON_MAPPING(2, 0), // Y
+  BUTTON_MAPPING(1, 0), // LB
 };
 
 const uint8_t NUM_BUTTONS = sizeof(button_mappings) / sizeof(button_mappings[0]);
@@ -120,13 +124,14 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
 
     bool changed = false;
     if (blop) {
-      send_byte(button_mappings[0].gamepad_button_bit);
+      // send_byte(button_mappings[0].gamepad_button_bit);
       send_byte((uint8_t)button_mask);
     }
     for (int i = 0; i < NUM_BUTTONS; i++) {
       button_mapping_t bm = button_mappings[i];
       // If the key is marked as pressed
-      bool gamepad_pressed = !!(((uint8_t)button_mask) & (bm.gamepad_button_bit));
+      // bool gamepad_pressed = !!(((uint8_t)button_mask) & (bm.gamepad_button_bit));
+      bool gamepad_pressed = !!(button_mask & 1);
       bool key_pressed = !!(current_matrix[bm.kb_matrix_row] & (bm.kb_matrix_row_bit));
 
       // Toggle the bit if they don't match.
@@ -134,6 +139,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
         current_matrix[bm.kb_matrix_row] ^= (bm.kb_matrix_row_bit);
         changed = true;
       }
+      button_mask >>= 1;
     }
     return changed;
   // }
