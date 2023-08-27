@@ -63,12 +63,12 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     }
     if (gamepad->buttons % 2 == 1) {
       if (current_matrix[4] != 2) {
-        SEND_STRING("P");
+        // SEND_STRING("P");
         current_matrix[4] = 2;
         return true;
       }
     } else if (current_matrix[4] != 0) {
-      SEND_STRING("U");
+      // SEND_STRING("U");
       current_matrix[4] = 0;
       return true;
     }
