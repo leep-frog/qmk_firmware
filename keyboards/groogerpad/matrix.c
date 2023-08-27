@@ -37,6 +37,10 @@ void matrix_init_custom(void) {
     uart_read();
   }
 
+  // Wait until the other board starts first (to avoid both blocking issue);
+  // TODO: find a better way to avoid this behavior
+  wait_ms(5000);
+
   led_blink(4);
 }
 
@@ -119,7 +123,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
       send_byte(button_mappings[0].gamepad_button_bit);
       send_byte((uint8_t)button_mask);
     }
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < NUM_BUTTONS; i++) {
       button_mapping_t bm = button_mappings[i];
       // If the key is marked as pressed
       bool gamepad_pressed = !!(((uint8_t)button_mask) & (bm.gamepad_button_bit));
