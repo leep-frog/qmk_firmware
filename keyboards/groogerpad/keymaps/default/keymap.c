@@ -25,10 +25,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_xbox(
                 KC_L,                               KC_R,
                 S(KC_L),                            S(KC_R),
-                                                    KC_Y,
-                         KC_S,    S(KC_S), KC_X,             KC_B,
+                                  KC_H,             KC_Y,
+                KC_J,    KC_S,    S(KC_S), KC_X,             KC_B,
                 KC_UP,                              KC_A,
-       KC_LEFT,          KC_RIGHT,
+       KC_LEFT,          KC_RIGHT,                  S(KC_J),
                 KC_DOWN
     )
 };

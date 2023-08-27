@@ -75,9 +75,11 @@ typedef struct {
   uint8_t kb_matrix_row;
   // 0-indexed bit position starting at the least-significant bit
   uint8_t kb_matrix_row_bit;
+  bool ignore;
 } button_mapping_t;
 
-#define BUTTON_MAPPING(matrix_row, matrix_col) {matrix_row, 1 << matrix_col}
+#define BUTTON_MAPPING(matrix_row, matrix_col) {matrix_row, 1 << matrix_col, false}
+#define IGNORE_BUTTON() {0, 0, true}
 
 // This maps button bit order (least-significant bit first)
 // to [matrix_row, offset]
@@ -85,28 +87,39 @@ button_mapping_t button_mappings[] = {
   // Ordering determined from here:
   // https://github.com/ricardoquesada/bluepad32-arduino/blob/b026e813baf386fab596d4dc247afe268b79e40a/src/Controller.h#L71
   BUTTON_MAPPING(4, 1), // A
-  BUTTON_MAPPING(3, 3), // B
-  BUTTON_MAPPING(3, 2), // X
-  BUTTON_MAPPING(2, 0), // Y
+  BUTTON_MAPPING(3, 4), // B
+  BUTTON_MAPPING(3, 3), // X
+  BUTTON_MAPPING(2, 1), // Y
   BUTTON_MAPPING(1, 0), // LB
+  BUTTON_MAPPING(1, 1), // RB
+  // IGNORE_BUTTON(),      // LT (get fuller data from other buttons)
+  // IGNORE_BUTTON(),      // RT ^^^
+  BUTTON_MAPPING(3, 0), // Left joystick click
+  BUTTON_MAPPING(5, 2), // Left joystick click
 };
 
 const uint8_t NUM_BUTTONS = sizeof(button_mappings) / sizeof(button_mappings[0]);
 
+button_mapping_t misc_button_mappings[] = {
+  BUTTON_MAPPING(2, 0), // Xbox button
+  BUTTON_MAPPING(3, 1), // Select
+  BUTTON_MAPPING(3, 2), // Start
+};
+
+const uint8_t NUM_MISC_BUTTONS = sizeof(misc_button_mappings) / sizeof(misc_button_mappings[0]);
+
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
+  bool changed = false;
+
+  // Request data
   uart_write(1);
 
+  // Receive data
   nina_gamepad_t gamepad;
   uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
+
+  // Process regular buttons
   uint16_t button_mask = gamepad.buttons;
-
-  if (button_mask % 2 == 1) {
-    led_on();
-  } else {
-    led_off();
-  }
-
-  bool changed = false;
   for (int i = 0; i < NUM_BUTTONS; i++) {
     button_mapping_t bm = button_mappings[i];
     // If the key is marked as pressed
@@ -119,6 +132,22 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
       changed = true;
     }
     button_mask >>= 1;
+  }
+
+  // Process misc buttons
+  uint16_t misc_button_mask = gamepad.misc_buttons;
+  for (int i = 0; i < NUM_MISC_BUTTONS; i++) {
+    button_mapping_t bm = misc_button_mappings[i];
+    // If the key is marked as pressed
+    bool gamepad_pressed = !!(misc_button_mask & 1);
+    bool key_pressed = !!(current_matrix[bm.kb_matrix_row] & (bm.kb_matrix_row_bit));
+
+    // Toggle the bit if they don't match.
+    if (key_pressed != gamepad_pressed) {
+      current_matrix[bm.kb_matrix_row] ^= (bm.kb_matrix_row_bit);
+      changed = true;
+    }
+    misc_button_mask >>= 1;
   }
   return changed;
 }
