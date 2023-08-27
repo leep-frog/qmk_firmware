@@ -92,8 +92,8 @@ button_mapping_t button_mappings[] = {
   BUTTON_MAPPING(2, 1), // Y
   BUTTON_MAPPING(1, 0), // LB
   BUTTON_MAPPING(1, 1), // RB
-  // IGNORE_BUTTON(),      // LT (get fuller data from other buttons)
-  // IGNORE_BUTTON(),      // RT ^^^
+  IGNORE_BUTTON(),      // LT (get fuller data from other buttons)
+  IGNORE_BUTTON(),      // RT ^^^
   BUTTON_MAPPING(3, 0), // Left joystick click
   BUTTON_MAPPING(5, 2), // Left joystick click
 };
