@@ -48,11 +48,14 @@ typedef struct {
   uint8_t kb_matrix_row_bit;
 } button_mapping_t;
 
+#define BUTTON_MAPPING(gamepad_bit, matrix_row, matrix_col) {1 << gamepad_bit, matrix_row, 1 << matrix_col}
+
 // This maps button bit order (least-significant bit first)
 // to [matrix_row, offset]
 button_mapping_t button_mappings[] = {
   // A
-  {1, 4, 2},
+  // {1, 4, 2},
+  BUTTON_MAPPING(0, 4, 1),
 };
 
 bool blop = false;
