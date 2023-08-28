@@ -16,6 +16,9 @@ void led_off(void) {
   writePinLow(D4);
 }
 
+__attribute__((weak)) void handle_left_stick(int32_t axis_x, int32_t axis_y) {
+}
+
 
 void led_blink(int times) {
   for (int i = 0; i < times; i++) {
@@ -27,7 +30,7 @@ void led_blink(int times) {
 }
 
 void matrix_init_custom(void) {
-  uart_init(9600);
+  uart_init(115200);
   xprintf("Initializing groog controller");
   xprintf("Initing");
   setPinOutput(D4);
@@ -142,6 +145,8 @@ bool process_button_mask(matrix_row_t current_matrix[], button_mapping_t bms[], 
   return changed;
 }
 
+nina_gamepad_t gamepad;
+
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   bool changed = false;
 
@@ -149,7 +154,6 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   uart_write(1);
 
   // Receive data
-  nina_gamepad_t gamepad;
   uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
 
   /*if (gamepad.buttons) {
@@ -178,3 +182,39 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   }
   return changed;
 }
+
+/***************
+ * Mouse logic *
+ ***************/
+
+const int mouse_denom = 64;
+
+bool pointing_device_task(void) {
+    // motion_delta_t delta = readSensor();
+
+    report_mouse_t report = pointing_device_get_report();
+
+    /*if(delta.motion_ind) {
+        // clamp deltas from -127 to 127
+        report.x = delta.delta_x < -127 ? -127 : delta.delta_x > 127 ? 127 : delta.delta_x;
+        report.x = -report.x;
+        report.y = delta.delta_y < -127 ? -127 : delta.delta_y > 127 ? 127 : delta.delta_y;
+    }*/
+
+    report.x = gamepad.axis_x / mouse_denom;
+    report.y = gamepad.axis_y / mouse_denom;
+
+    pointing_device_set_report(report);
+    return pointing_device_send();
+}
+
+// report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
+//   if (gamepad.buttons) {
+//     SEND_STRING("o");
+//     mouse_report.x = 10;
+//   } else {
+//     mouse_report.x = -10;
+//   }
+//   // mouse_report.x = gamepad.axis_x / 10;
+//   return mouse_report;
+// }

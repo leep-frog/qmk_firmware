@@ -1,6 +1,8 @@
 # This file intentionally left blank
 CONSOLE_ENABLE = yes
 CUSTOM_MATRIX = lite
-SRC += matrix.c
 SEND_STRING_ENABLE = yes
 QUANTUM_LIB_SRC += uart.c
+POINTING_DEVICE_ENABLE = yes
+POINTING_DEVICE_DRIVER = custom
+SRC += matrix.c
