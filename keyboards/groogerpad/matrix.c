@@ -98,7 +98,9 @@ button_mapping_t button_mappings[] = {
   BUTTON_MAPPING(5, 2), // Right joystick click
 };
 
-const uint8_t NUM_BUTTONS = sizeof(button_mappings) / sizeof(button_mappings[0]);
+#define GET_NUM_BUTTONS(arr) sizeof( arr ) / sizeof( arr[0] )
+
+const uint8_t NUM_BUTTONS = GET_NUM_BUTTONS(button_mappings);
 
 button_mapping_t misc_button_mappings[] = {
   BUTTON_MAPPING(2, 0), // Xbox button
@@ -106,7 +108,17 @@ button_mapping_t misc_button_mappings[] = {
   BUTTON_MAPPING(3, 2), // Start
 };
 
-const uint8_t NUM_MISC_BUTTONS = sizeof(misc_button_mappings) / sizeof(misc_button_mappings[0]);
+const uint8_t NUM_MISC_BUTTONS = GET_NUM_BUTTONS(misc_button_mappings);
+
+// TODO: Join dpad and misc buttons for smaller data packets
+button_mapping_t dpad_button_mappings[] = {
+  BUTTON_MAPPING(4, 0), // Up
+  BUTTON_MAPPING(6, 0), // Down
+  BUTTON_MAPPING(5, 1), // Right
+  BUTTON_MAPPING(5, 0), // Left
+};
+
+const uint8_t NUM_DPAD_BUTTONS = GET_NUM_BUTTONS(dpad_button_mappings);
 
 bool process_button_mask(matrix_row_t current_matrix[], button_mapping_t bms[], uint16_t button_mask, uint8_t size) {
   bool changed = false;
@@ -153,6 +165,9 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     changed = true;
   }
   if (process_button_mask(current_matrix, misc_button_mappings, gamepad.misc_buttons, NUM_MISC_BUTTONS)) {
+    changed = true;
+  }
+  if (process_button_mask(current_matrix, dpad_button_mappings, gamepad.dpad, NUM_DPAD_BUTTONS)) {
     changed = true;
   }
 
