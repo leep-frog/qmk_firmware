@@ -87,16 +87,16 @@ typedef struct {
 button_mapping_t button_mappings[] = {
   // Ordering determined from here:
   // https://github.com/ricardoquesada/bluepad32-arduino/blob/b026e813baf386fab596d4dc247afe268b79e40a/src/Controller.h#L71
-  BUTTON_MAPPING(4, 1), // A
-  BUTTON_MAPPING(3, 4), // B
-  BUTTON_MAPPING(3, 3), // X
-  BUTTON_MAPPING(2, 1), // Y
-  BUTTON_MAPPING(1, 0), // LB
-  BUTTON_MAPPING(1, 1), // RB
+  BUTTON_MAPPING(3, 1), // A
+  BUTTON_MAPPING(2, 4), // B
+  BUTTON_MAPPING(2, 3), // X
+  BUTTON_MAPPING(1, 1), // Y
+  BUTTON_MAPPING(0, 0), // LB
+  BUTTON_MAPPING(0, 1), // RB
   IGNORE_BUTTON(),      // LT (get fuller data from other buttons)
   IGNORE_BUTTON(),      // RT ^^^
-  BUTTON_MAPPING(3, 0), // Left joystick click
-  BUTTON_MAPPING(5, 2), // Right joystick click
+  BUTTON_MAPPING(2, 0), // Left joystick click
+  BUTTON_MAPPING(4, 2), // Right joystick click
 };
 
 #define GET_NUM_BUTTONS(arr) sizeof( arr ) / sizeof( arr[0] )
@@ -104,19 +104,19 @@ button_mapping_t button_mappings[] = {
 const uint8_t NUM_BUTTONS = GET_NUM_BUTTONS(button_mappings);
 
 button_mapping_t misc_button_mappings[] = {
-  BUTTON_MAPPING(2, 0), // Xbox button
-  BUTTON_MAPPING(3, 1), // Select
-  BUTTON_MAPPING(3, 2), // Start
+  BUTTON_MAPPING(1, 0), // Xbox button
+  BUTTON_MAPPING(2, 1), // Select
+  BUTTON_MAPPING(2, 2), // Start
 };
 
 const uint8_t NUM_MISC_BUTTONS = GET_NUM_BUTTONS(misc_button_mappings);
 
 // TODO: Join dpad and misc buttons for smaller data packets
 button_mapping_t dpad_button_mappings[] = {
-  BUTTON_MAPPING(4, 0), // Up
-  BUTTON_MAPPING(6, 0), // Down
-  BUTTON_MAPPING(5, 1), // Right
-  BUTTON_MAPPING(5, 0), // Left
+  BUTTON_MAPPING(3, 0), // Up
+  BUTTON_MAPPING(5, 0), // Down
+  BUTTON_MAPPING(4, 1), // Right
+  BUTTON_MAPPING(4, 0), // Left
 };
 
 const uint8_t NUM_DPAD_BUTTONS = GET_NUM_BUTTONS(dpad_button_mappings);

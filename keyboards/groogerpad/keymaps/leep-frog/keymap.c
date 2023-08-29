@@ -4,8 +4,7 @@
 #include QMK_KEYBOARD_H
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    // Roughly the shape of an xbox controller
-    [0] = LAYOUT_xbox(
+    [LR_BASE] = LAYOUT_xbox(
                 C(G(KC_LEFT)),                               C(G(KC_RIGHT)),
                                   KC_H,                      KC_Y,
                 KC_J,    QK_BOOT,          S(KC_S), KC_X,             KC_B,
