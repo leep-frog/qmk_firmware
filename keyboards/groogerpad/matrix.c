@@ -201,54 +201,69 @@ void print_int(int32_t number) {
   send_string(intBuf);
 }
 
-// The lowest mouse speed is still too fast. This allows us to mimic
-// a slower speed by incrementing/decrementing the speed during a proprtional
-// number of cycles when we want our speed to be an intermediate of provided speeds.
-const int num_mouse_speeds = 32; // Power of 2
-const int mouse_cycles = 8; // Power of 2 less than num_mouse_speeds
+/* Mouse speed logic description
+
+Mouse speed per cycle = controller_speed * (max_virtual_mouse_speed / max_controller_speed) * (throttle_multiplier_effect[1]) * (virtual_mouse_granularity_effect[2])
+                       (^speed per cycle^)
+                       ( ---------------- ^virtual mouse speed per cycle^ --------------- )
+                       ( -------------------- ^virtual mouse speed per cycle with throttle multiplier^ -------------------- )
+                       ( ----------------------------------------- ^actual mouse speed per cycle with throttle multiplier^ ---------------------------------------- )
+
+[1] "throttle_multiplier_effect" is a bit tricky. We want no throttle to result in a 1x multiplier and full throttle
+to result in a (max_throttle_multiplier) multiplier. The following is the way to achieve that:
+throttle_effect = (actual_throttle * (throttle_multiplier - 1) / max_throttle) + 1
+                = (actual_throttle * (throttle_multiplier - 1) + max_throttle) / max_throttle
+
+[2] virtual_mouse_granularity_effect is a way for us to emulate more granular (and slower) speeds than the mouse report allows.
+For example, let's say we want 5x the granularity (so a value of 15 in our virtual speed equals a 3 in actual speed,
+a value of 7 virtual results in 1.4 actual). The way we do this is by tracking the cycle index (mod granularity)
+and rounding up/down the proportional number of times to achieve the fraction we want.
+virtual_mouse_granularity_effect = 1 / granularity_multiplier
+
+// Full equation
+
+                        [                    ( max_virtual_mouse_speed )   ( actual_throttle * (throttle_multiplier - 1) + max_controller_throttle )                   ]   (           1            )
+Mouse speed per cycle = [ controller_speed * ( ----------------------- ) * ( --------------------------------------------------------------------- ) + mouse_cycle_idx ] * ( ---------------------- )
+                        [                    (  max_controller_speed   )   (                     max_controller_throttle                           )                   ]   ( granularity_multiplier )
+*/
+
+// Fixed
+const uint64_t max_controller_speed = 512;
+const uint64_t max_controller_throttle = 1024;
+
+// Configurable
+const int32_t drift_deadzone = 64;
+const uint64_t max_virtual_mouse_speed = 8; // Speed increases proprtional to this
+const uint64_t throttle_multiplier = 8;
+// This must be a power of 2
+const uint64_t granularity_multiplier = 16; // Speed decreses proportional to this
+/* To make mouse granular speed smoother, we increment by [ (granularity_multiplier - 1) / 2 ]
+ * Consider the case with 8 granularity and virtual speed of 3. We would round up if mouse index is >= 5:
+ *
+ * Then we get the following with the different approaches (^ for round up, v for round down):
+ * Increment by 1:                 01234567 (vvvvv^^^)
+ * Increment by other (8-1)/2=3:   03614725 (vv^vv^v^)
+ */
+const int mouse_cycle_incrementer = (granularity_multiplier-1)/2; // Speed decreses proportional to this
+
 int mouse_cycle_idx = 0;
 
-const int axis_drift_buffer = 32; // the analog stick dead-zone.
-const int mouse_max_throttle_multiplier = 4;
+int32_t get_mouse_speed(int32_t controller_speed, uint64_t controller_throttle) {
+  if (controller_speed < drift_deadzone && controller_speed > -drift_deadzone) {
+    return 0;
+  }
+  return (((controller_speed * max_virtual_mouse_speed * (controller_throttle * (throttle_multiplier - 1) + max_controller_throttle)) / (max_controller_speed * max_controller_throttle)) + mouse_cycle_idx) / granularity_multiplier;
+}
 
 bool pointing_device_task(void) {
-  mouse_cycle_idx++;
-  mouse_cycle_idx %= mouse_cycles;
+  mouse_cycle_idx += mouse_cycle_incrementer;
+  mouse_cycle_idx %= granularity_multiplier;
 
-  // Keep separate numerator and denominator variables until the end to get the best precision.
-
-  uint64_t x_numerator = (gamepad.axis_x < axis_drift_buffer && gamepad.axis_x > -axis_drift_buffer) ? 0 : gamepad.axis_x; // - axis_drift_buffer;
-  uint64_t y_numerator = (gamepad.axis_y < axis_drift_buffer && gamepad.axis_y > -axis_drift_buffer) ? 0 : gamepad.axis_y; // - axis_drift_buffer;
-
-  // We want to convert [xy]_speed from 0 to max_axis_[xy] to an integer from 0 to num_mouse_speeds.
-  // In order to do that, we divide by (max_axis = 512)
-  //                   and multiply by (num_mouse_speeds)
-  uint64_t speed_denominator = /* 1024 * */ 512 / num_mouse_speeds;
-
-
-  // 0 = 1x; 1024 = full multiplier,
-  // [xy]_speed *= (throttle * (mouse_max_throttle_multiplier-1) / 1024) + 1
-  // [xy]_speed *= (throttle * (mouse_max_throttle_multiplier-1) + 1024) / 1024)
-  x_numerator *= (gamepad.throttle * (mouse_max_throttle_multiplier-1)) + 1024;
-  y_numerator *= (gamepad.throttle * (mouse_max_throttle_multiplier-1)) + 1024;
-  speed_denominator *= 1024;
-
-  // Now [xy]_speed is between -num_mouse_speeds and mouse_speeds.
   report_mouse_t report = pointing_device_get_report();
-  // Add mouse_cycle_idxs so the average is the exact speed we want
-  report.x = ((x_numerator/speed_denominator) + mouse_cycle_idx) / mouse_cycles;
-  report.y = ((y_numerator/speed_denominator) + mouse_cycle_idx) / mouse_cycles;
+  report.x = get_mouse_speed(gamepad.axis_x, gamepad.throttle);
+  report.y = get_mouse_speed(gamepad.axis_y, gamepad.throttle);
+  // report.h = get_mouse_speed(gamepad.axis_rx, gamepad.throttle);
+  // report.v = get_mouse_speed(gamepad.axis_ry, gamepad.throttle);
   pointing_device_set_report(report);
   return pointing_device_send();
 }
-
-// report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
-//   if (gamepad.buttons) {
-//     SEND_STRING("o");
-//     mouse_report.x = 10;
-//   } else {
-//     mouse_report.x = -10;
-//   }
-//   // mouse_report.x = gamepad.axis_x / 10;
-//   return mouse_report;
-// }
