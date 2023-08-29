@@ -225,14 +225,16 @@ a value of 7 virtual results in 1.4 actual). The way we do this is by tracking t
 and rounding up/down the proportional number of times to achieve the fraction we want.
 virtual_mouse_granularity_effect = 1 / granularity_multiplier
 
-// Full equation
+================================ Full equation ================================
 
                         [                                       (           max_virtual_speed           )   ( actual_throttle * (throttle_multiplier - 1) + max_controller_throttle )             ]   (           1            )
 Mouse speed per cycle = [ (controller_speed - drift_deadzone) * ( ------------------------------------- ) * ( --------------------------------------------------------------------- ) + cycle_idx ] * ( ---------------------- )
                         [                                       ( max_controller_speed - drift_deadzone )   (                     max_controller_throttle                           )             ]   ( granularity_multiplier )
 
+===============================================================================
 
-// Note the maximum value this can be is: (max_virtual_speed * throttle_multiplier / granularity_multiplier).  As long as that is less than 2^7, then we're fine
+Note: the maximum value this can be is: (max_virtual_speed * throttle_multiplier / granularity_multiplier).
+As long as that can fit in int8_t (i.e. less than 2^7), then we're fine.
 */
 
 // Fixed
@@ -244,7 +246,7 @@ typedef struct {
   // Need a smaller type to ensure multiplication overflow doesn't happen later
   uint8_t max_virtual_speed; // Proportional to speed
   uint8_t throttle_multiplier;
-  // This must be a power of 2 (does it??)
+  // Based on how cycles affect movements, this usually runs smoothest when this is a power of 2.
   uint8_t granularity_multiplier; // Inversely proportional to actual speed
   uint8_t cycle_incrementer;
   uint8_t cycle_idx;
@@ -256,35 +258,31 @@ typedef struct {
  * Then we get the following with the different approaches (^ for round up, v for round down):
  * Increment by 1:                 01234567 (vvvvv^^^)
  * Increment by other (8-1)/2=3:   03614725 (vv^vv^v^)
+ *
+ * By forcing granularity_multiplier to be a power of 2, we ensure the cycle_incrementer always has the best result.
  */
-#define GRANULARITY_MULTIPLIER(granularity) .granularity_multiplier = granularity, .cycle_incrementer = (granularity - 1) / 2, .cycle_idx = 0
+#define GRANULARITY_MULTIPLIER(granularity) .granularity_multiplier = (1 << granularity), .cycle_incrementer = ((1 << granularity) - 1) / 2, .cycle_idx = 0
 
 joystick_config_t mouse_config = {
   .drift_deadzone = 64,
   .max_virtual_speed = 8,
   .throttle_multiplier = 8,
-  GRANULARITY_MULTIPLIER(16),
+  GRANULARITY_MULTIPLIER(4),
 };
 
 joystick_config_t scroll_config = {
   .drift_deadzone = 64,
   .max_virtual_speed = 4,
-  .throttle_multiplier = 2,
-  GRANULARITY_MULTIPLIER(16),
+  .throttle_multiplier = 8,
+  GRANULARITY_MULTIPLIER(6),
 };
 
 // Note the types for numbers that may be negative need to remain consistent, otherwise we get unexpected behavior
 // e.g. 8bit negative three (10000011) becomes positive 131 in 16bit (0000000010000011)
 int64_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_controller_speed, int32_t signed_controller_throttle) {
-  // if (controller_speed < joystick_config->drift_deadzone && controller_speed > -joystick_config->drift_deadzone) {
-    // return 0;
-  // }
+  // Work in uint64_t until the end to avoid type casting issues in intermediate calculations.
 
-  // Max numerator size = ((controller_speed) * joystick_config->max_virtual_speed * (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle))
-  //                    = ((      2^9       ) *    (2^8 max; enforce via type?)    * (         2^10       *             2^8                            + 2^10                   )
-  //                    = ((      2^9       ) *    (         2^8              )    * (         2^(18+epsilon)                )
-  //                    = 2^(9+8+18+epsilon) = 2^(9+8+18+1) = 2^36;
-  // Therefore, need to be careful of signs and use
+  // Flip negative if necessary.
   bool negative = signed_controller_speed < 0;
   uint64_t controller_speed = signed_controller_speed;
   // This isn't expected to ever be negative.
@@ -293,9 +291,13 @@ int64_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_co
     negative = true;
     controller_speed = -signed_controller_speed;
   }
+
+  // To get the best precision, we calculate the full numerator and denominator separately (since rounding many several smaller operations can cause us to lose many fraction results).
   uint64_t numer = controller_speed * joystick_config->max_virtual_speed * (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle);
   uint64_t denom = max_controller_speed * max_controller_throttle;
   uint64_t res = ((numer / denom) + joystick_config->cycle_idx) / joystick_config->granularity_multiplier;
+
+  // Revert back to the proper type and make negative if relevant.
   int8_t signedRes = (int8_t) res;
   if (negative) {
     return -signedRes;
@@ -310,13 +312,13 @@ void update_joystick_config(joystick_config_t *joystick_config) {
 
 bool pointing_device_task(void) {
   update_joystick_config(&mouse_config);
-  // update_joystick_config(&scroll_config);
+  update_joystick_config(&scroll_config);
 
   report_mouse_t report = pointing_device_get_report();
   report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle);
   report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle);
-  // report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
-  // report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
+  report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
+  report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
   pointing_device_set_report(report);
   return pointing_device_send();
 }
