@@ -279,7 +279,7 @@ joystick_config_t scroll_config = {
 
 // Note the types for numbers that may be negative need to remain consistent, otherwise we get unexpected behavior
 // e.g. 8bit negative three (10000011) becomes positive 131 in 16bit (0000000010000011)
-int64_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_controller_speed, int32_t signed_controller_throttle) {
+int8_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_controller_speed, int32_t signed_controller_throttle) {
   // Work in uint64_t until the end to avoid type casting issues in intermediate calculations.
 
   // Flip negative if necessary.
@@ -292,9 +292,14 @@ int64_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_co
     controller_speed = -signed_controller_speed;
   }
 
+  // Ignore movement if in drift deadzone
+  if (controller_speed < joystick_config->drift_deadzone) {
+    return 0;
+  }
+
   // To get the best precision, we calculate the full numerator and denominator separately (since rounding many several smaller operations can cause us to lose many fraction results).
-  uint64_t numer = controller_speed * joystick_config->max_virtual_speed * (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle);
-  uint64_t denom = max_controller_speed * max_controller_throttle;
+  uint64_t numer = (controller_speed - joystick_config->drift_deadzone) * joystick_config->max_virtual_speed * (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle);
+  uint64_t denom = (max_controller_speed - joystick_config->drift_deadzone) * max_controller_throttle;
   uint64_t res = ((numer / denom) + joystick_config->cycle_idx) / joystick_config->granularity_multiplier;
 
   // Revert back to the proper type and make negative if relevant.
