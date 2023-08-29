@@ -205,11 +205,11 @@ void print_int(int32_t number) {
 // a slower speed by incrementing/decrementing the speed during a proprtional
 // number of cycles when we want our speed to be an intermediate of provided speeds.
 const int num_mouse_speeds = 32; // Power of 2
-const int mouse_cycles = 4; // Power of 2 less than num_mouse_speeds
+const int mouse_cycles = 8; // Power of 2 less than num_mouse_speeds
 int mouse_cycle_idx = 0;
 
 const int axis_drift_buffer = 32; // the analog stick dead-zone.
-const int mouse_max_throttle_multiplier = 2;
+const int mouse_max_throttle_multiplier = 4;
 
 bool pointing_device_task(void) {
   mouse_cycle_idx++;
