@@ -201,31 +201,45 @@ void print_int(int32_t number) {
   send_string(intBuf);
 }
 
+// The lowest mouse speed is still too fast. This allows us to mimic
+// a slower speed by incrementing/decrementing the speed during a proprtional
+// number of cycles when we want our speed to be an intermediate of provided speeds.
+const int num_mouse_speeds = 32; // Power of 2
+const int mouse_cycles = 4; // Power of 2 less than num_mouse_speeds
+int mouse_cycle_idx = 0;
 
-const int mouse_denom = 256;
+const int axis_drift_buffer = 32; // the analog stick dead-zone.
+const int mouse_max_throttle_multiplier = 2;
 
 bool pointing_device_task(void) {
-    // motion_delta_t delta = readSensor();
+  mouse_cycle_idx++;
+  mouse_cycle_idx %= mouse_cycles;
 
-    report_mouse_t report = pointing_device_get_report();
+  // Keep separate numerator and denominator variables until the end to get the best precision.
 
-    /*if(delta.motion_ind) {
-        // clamp deltas from -127 to 127
-        report.x = delta.delta_x < -127 ? -127 : delta.delta_x > 127 ? 127 : delta.delta_x;
-        report.x = -report.x;
-        report.y = delta.delta_y < -127 ? -127 : delta.delta_y > 127 ? 127 : delta.delta_y;
-    }*/
+  uint64_t x_numerator = (gamepad.axis_x < axis_drift_buffer && gamepad.axis_x > -axis_drift_buffer) ? 0 : gamepad.axis_x; // - axis_drift_buffer;
+  uint64_t y_numerator = (gamepad.axis_y < axis_drift_buffer && gamepad.axis_y > -axis_drift_buffer) ? 0 : gamepad.axis_y; // - axis_drift_buffer;
 
-    // 4x multiplier
+  // We want to convert [xy]_speed from 0 to max_axis_[xy] to an integer from 0 to num_mouse_speeds.
+  // In order to do that, we divide by (max_axis = 512)
+  //                   and multiply by (num_mouse_speeds)
+  uint64_t speed_denominator = /* 1024 * */ 512 / num_mouse_speeds;
 
-    // axis_x goes from -512 to 512 (actually like +-511)
 
-    report.x = gamepad.axis_x / mouse_denom;
-    report.y = gamepad.axis_y / mouse_denom;
-    // TODO: Use gamepad.throttle
+  // 0 = 1x; 1024 = full multiplier,
+  // [xy]_speed *= (throttle * (mouse_max_throttle_multiplier-1) / 1024) + 1
+  // [xy]_speed *= (throttle * (mouse_max_throttle_multiplier-1) + 1024) / 1024)
+  x_numerator *= (gamepad.throttle * (mouse_max_throttle_multiplier-1)) + 1024;
+  y_numerator *= (gamepad.throttle * (mouse_max_throttle_multiplier-1)) + 1024;
+  speed_denominator *= 1024;
 
-    pointing_device_set_report(report);
-    return pointing_device_send();
+  // Now [xy]_speed is between -num_mouse_speeds and mouse_speeds.
+  report_mouse_t report = pointing_device_get_report();
+  // Add mouse_cycle_idxs so the average is the exact speed we want
+  report.x = ((x_numerator/speed_denominator) + mouse_cycle_idx) / mouse_cycles;
+  report.y = ((y_numerator/speed_denominator) + mouse_cycle_idx) / mouse_cycles;
+  pointing_device_set_report(report);
+  return pointing_device_send();
 }
 
 // report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
