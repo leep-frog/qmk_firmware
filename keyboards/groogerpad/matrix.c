@@ -40,10 +40,6 @@ void matrix_init_custom(void) {
     uart_read();
   }
 
-  // Wait until the other board starts first (to avoid both blocking issue);
-  // TODO: find a better way to avoid this behavior
-  wait_ms(5000);
-
   led_blink(4);
 }
 
@@ -53,12 +49,14 @@ void matrix_init_custom(void) {
 typedef struct __attribute__((packed)) {
   // Usage Page: 0x01 (Generic Desktop Controls)
   uint8_t dpad;
+  // -512 to 512 (or 511)
   int32_t axis_x;
   int32_t axis_y;
   int32_t axis_rx;
   int32_t axis_ry;
 
   // Usage Page: 0x02 (Sim controls)
+  // 0 to 1024
   int32_t brake;
   int32_t throttle;
 
@@ -187,7 +185,24 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
  * Mouse logic *
  ***************/
 
-const int mouse_denom = 64;
+const int intBufLen = 18;
+
+void print_int(int32_t number) {
+  char intBuf[intBufLen];
+  int i = 0;
+  // TODO: Reverse buffer afterwards
+  for (; number > 0; i++) {
+    intBuf[i] = '0' + (number % 10);
+    number /= 10;
+  }
+  intBuf[i+1] = 'X';
+  intBuf[i+2] = '\n';
+  intBuf[i+3] = '\0';
+  send_string(intBuf);
+}
+
+
+const int mouse_denom = 256;
 
 bool pointing_device_task(void) {
     // motion_delta_t delta = readSensor();
@@ -201,8 +216,13 @@ bool pointing_device_task(void) {
         report.y = delta.delta_y < -127 ? -127 : delta.delta_y > 127 ? 127 : delta.delta_y;
     }*/
 
+    // 4x multiplier
+
+    // axis_x goes from -512 to 512 (actually like +-511)
+
     report.x = gamepad.axis_x / mouse_denom;
     report.y = gamepad.axis_y / mouse_denom;
+    // TODO: Use gamepad.throttle
 
     pointing_device_set_report(report);
     return pointing_device_send();
