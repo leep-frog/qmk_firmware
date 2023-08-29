@@ -203,11 +203,16 @@ void print_int(int32_t number) {
 
 /* Mouse speed logic description
 
-Mouse speed per cycle = controller_speed * (max_virtual_mouse_speed / max_controller_speed) * (throttle_multiplier_effect[1]) * (virtual_mouse_granularity_effect[2])
+Mouse speed per cycle = controller_speed[0] * (max_virtual_speed / max_controller_speed[0]) * (throttle_multiplier_effect[1]) * (virtual_mouse_granularity_effect[2])
                        (^speed per cycle^)
-                       ( ---------------- ^virtual mouse speed per cycle^ --------------- )
-                       ( -------------------- ^virtual mouse speed per cycle with throttle multiplier^ -------------------- )
-                       ( ----------------------------------------- ^actual mouse speed per cycle with throttle multiplier^ ---------------------------------------- )
+                       ( ------------- ^virtual mouse speed per cycle^ ------------ )
+                       ( ----------------- ^virtual mouse speed per cycle with throttle multiplier^ ----------------- )
+                       ( -------------------------------------- ^actual mouse speed per cycle with throttle multiplier^ ------------------------------------- )
+
+[0] We also need to account for drift deadzone. If we just ignore all numbers in the deadzone AND don't change
+the equation, then we can have issues. Namely, if the deadzone is equivalent to 7 virtual speed incrementations, then
+our movement speed STARTS at 8! (not factorial haha, just excalamation point).
+To account for this, we need to normalize the controller_speed relative to the drift by decrementing controller_speed and max_controller_speed accordingly
 
 [1] "throttle_multiplier_effect" is a bit tricky. We want no throttle to result in a 1x multiplier and full throttle
 to result in a (max_throttle_multiplier) multiplier. The following is the way to achieve that:
@@ -222,21 +227,29 @@ virtual_mouse_granularity_effect = 1 / granularity_multiplier
 
 // Full equation
 
-                        [                    ( max_virtual_mouse_speed )   ( actual_throttle * (throttle_multiplier - 1) + max_controller_throttle )                   ]   (           1            )
-Mouse speed per cycle = [ controller_speed * ( ----------------------- ) * ( --------------------------------------------------------------------- ) + mouse_cycle_idx ] * ( ---------------------- )
-                        [                    (  max_controller_speed   )   (                     max_controller_throttle                           )                   ]   ( granularity_multiplier )
+                        [                                       (           max_virtual_speed           )   ( actual_throttle * (throttle_multiplier - 1) + max_controller_throttle )             ]   (           1            )
+Mouse speed per cycle = [ (controller_speed - drift_deadzone) * ( ------------------------------------- ) * ( --------------------------------------------------------------------- ) + cycle_idx ] * ( ---------------------- )
+                        [                                       ( max_controller_speed - drift_deadzone )   (                     max_controller_throttle                           )             ]   ( granularity_multiplier )
+
+
 */
 
 // Fixed
-const uint64_t max_controller_speed = 512;
-const uint64_t max_controller_throttle = 1024;
+const int64_t max_controller_speed = 512;
+const int64_t max_controller_throttle = 1024;
 
-// Configurable
-const int32_t drift_deadzone = 64;
-const uint64_t max_virtual_mouse_speed = 8; // Speed increases proprtional to this
-const uint64_t throttle_multiplier = 8;
-// This must be a power of 2
-const uint64_t granularity_multiplier = 16; // Speed decreses proportional to this
+// We explicitly use big type, but most of these numbers are assumed to be small (otherwise may get weird behavior)
+typedef struct {
+  int64_t drift_deadzone;
+  // Need a smaller type to ensure multiplication overflow doesn't happen later
+  int64_t max_virtual_speed; // Proportional to speed
+  int64_t throttle_multiplier;
+  // This must be a power of 2
+  int64_t granularity_multiplier; // Inversely proportional to actual speed
+  int64_t cycle_incrementer;
+  int64_t cycle_idx;
+} joystick_config_t;
+
 /* To make mouse granular speed smoother, we increment by [ (granularity_multiplier - 1) / 2 ]
  * Consider the case with 8 granularity and virtual speed of 3. We would round up if mouse index is >= 5:
  *
@@ -244,26 +257,60 @@ const uint64_t granularity_multiplier = 16; // Speed decreses proportional to th
  * Increment by 1:                 01234567 (vvvvv^^^)
  * Increment by other (8-1)/2=3:   03614725 (vv^vv^v^)
  */
-const int mouse_cycle_incrementer = (granularity_multiplier-1)/2; // Speed decreses proportional to this
+#define GRANULARITY_MULTIPLIER(granularity) .granularity_multiplier = granularity, .cycle_incrementer = (granularity - 1) / 2, .cycle_idx = 0
 
-int mouse_cycle_idx = 0;
+joystick_config_t mouse_config = {
+  .drift_deadzone = 64,
+  .max_virtual_speed = 8,
+  .throttle_multiplier = 8,
+  GRANULARITY_MULTIPLIER(16),
+};
 
-int32_t get_mouse_speed(int32_t controller_speed, uint64_t controller_throttle) {
-  if (controller_speed < drift_deadzone && controller_speed > -drift_deadzone) {
-    return 0;
-  }
-  return (((controller_speed * max_virtual_mouse_speed * (controller_throttle * (throttle_multiplier - 1) + max_controller_throttle)) / (max_controller_speed * max_controller_throttle)) + mouse_cycle_idx) / granularity_multiplier;
+joystick_config_t scroll_config = {
+  .drift_deadzone = 64,
+  .max_virtual_speed = 4,
+  .throttle_multiplier = 2,
+  GRANULARITY_MULTIPLIER(16),
+};
+
+// Note the types for numbers that may be negative need to remain consistent, otherwise we get unexpected behavior
+// e.g. 8bit negative three (10000011) becomes positive 131 in 16bit (0000000010000011)
+int8_t get_joystick_speed(joystick_config_t *joystick_config, int64_t controller_speed, int64_t controller_throttle) {
+  // if (controller_speed < joystick_config->drift_deadzone && controller_speed > -joystick_config->drift_deadzone) {
+    // return 0;
+  // }
+
+  // Max numerator size = ((controller_speed) * joystick_config->max_virtual_speed * (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle))
+  //                    = ((      2^9       ) *    (2^8 max; enforce via type?)    * (         2^10       *             2^8                            + 2^10                   )
+  //                    = ((      2^9       ) *    (         2^8              )    * (         2^(18+epsilon)                )
+  //                    = 2^(9+8+18+epsilon) = 2^(9+8+18+1) = 2^36;
+  // Therefore, need to be careful of signs and use
+  return ((((controller_speed) * joystick_config->max_virtual_speed * (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle)) / ((max_controller_speed) * max_controller_throttle)) + joystick_config->cycle_idx) / joystick_config->granularity_multiplier;
+  // return -((int8_t) r);
+}
+
+void update_joystick_config(joystick_config_t *joystick_config) {
+  joystick_config->cycle_idx += joystick_config->cycle_incrementer;
+  joystick_config->cycle_idx %= joystick_config->granularity_multiplier;
 }
 
 bool pointing_device_task(void) {
-  mouse_cycle_idx += mouse_cycle_incrementer;
-  mouse_cycle_idx %= granularity_multiplier;
+  update_joystick_config(&mouse_config);
+  // update_joystick_config(&scroll_config);
 
   report_mouse_t report = pointing_device_get_report();
-  report.x = get_mouse_speed(gamepad.axis_x, gamepad.throttle);
-  report.y = get_mouse_speed(gamepad.axis_y, gamepad.throttle);
-  // report.h = get_mouse_speed(gamepad.axis_rx, gamepad.throttle);
-  // report.v = get_mouse_speed(gamepad.axis_ry, gamepad.throttle);
+  if (gamepad.axis_x >= 0) {
+    report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle);
+  } else {
+    report.x = -get_joystick_speed(&mouse_config, -gamepad.axis_x, gamepad.throttle);
+  }
+  if (gamepad.axis_y >= 0) {
+    report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle);
+  } else {
+    report.y = -get_joystick_speed(&mouse_config, -gamepad.axis_y, gamepad.throttle);
+  }
+  // report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
+  // report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
   pointing_device_set_report(report);
   return pointing_device_send();
 }
