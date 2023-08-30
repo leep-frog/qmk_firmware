@@ -2,7 +2,7 @@
 
 ![groogerpad](imgur.com image replace me!)
 
-*A short description of the keyboard/project*
+Running QMK with an Xbox controller!
 
 * Keyboard Maintainer: [leep-frog](https://github.com/leep-frog)
 * Hardware Supported: *The PCBs, controllers supported*
@@ -25,3 +25,13 @@ Enter the bootloader in 3 ways:
 * **Bootmagic reset**: Hold down the key at (0,0) in the matrix (usually the top left key or Escape) and plug in the keyboard
 * **Physical reset button**: Briefly press the button on the back of the PCB - some may have pads you must short instead
 * **Keycode in layout**: Press the key mapped to `QK_BOOT` if it is available
+
+## Circuit Board Setup Instructions
+
+* Install arduino-fwuploader
+* See full list of board options with `.\arduino-fwuploader.exe firmware list`
+* Set the board by running `set BOARD=arduino:samd:nano_33_iot`
+* Run the following command to flash the NINA board with the proper logic:
+```
+.\arduino-fwuploader.exe firmware flash -b arduino:samd:mkrwifi1010 -a COM8 -i ..\bluepad32-nina-v3.8.3.tar\bluepad32-nina-v3.8.3\bluepad32-nina-v3.8.3\bluepad32-nina-full-v3.8.3.bin
+```
