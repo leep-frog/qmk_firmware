@@ -131,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 TK_LB,                                                TK_RB,
                                            KC_H,                      KC_TAB,
-                TK_COPY,          TK_SLCT,          TK_STRT, S(KC_TAB),        KC_B,
+                TK_COPY,          TK_SLCT,          TK_STRT, SH(TAB),          KC_BTN2,
                 CK_STAB,                                              KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
                 CK_ATAB
@@ -152,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
                 _______,                                              OL_NEXT,
        _______,          _______,                   _______,
-                _______
+                GU(TAB)
     ),
 
     [LR_TYPE] = LAYOUT_xbox(
@@ -163,4 +163,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_LEFT,          KC_RIGHT,                  _______,
                 KC_DOWN
     ),
+
+    /*[LR_TYPE_2] = LAYOUT_xbox(
+                _______,                                              _______,
+                                           _______,                   CL(DEL),
+                _______,          _______,          _______, CL(BSPC),         KC_END,
+                _______,                                              _______,
+       CL(LEFT),         CL(RIGHT),                 _______,
+                _______
+    ),*/
 };
