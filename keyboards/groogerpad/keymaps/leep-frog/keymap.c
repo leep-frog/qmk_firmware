@@ -13,6 +13,7 @@ enum layers {
   LR_BASE,
   LR_ALT,
   LR_OUTLOOK,
+  LR_TYPE,
 };
 
 const uint16_t AltLayer = LR_ALT;
@@ -32,6 +33,7 @@ enum leep_tap_dances {
   TDK_RIGHT_DPAD,
   TDK_SELECT,
   TDK_START,
+  TDK_LB,
   TDK_RB,
 };
 
@@ -49,6 +51,8 @@ tap_dance_action_t tap_dance_actions[] = {
   [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_CLOSE, QK_BOOT),
   // Start dance
   [TDK_START] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWW_REOPEN),
+  // LB dance
+  [TDK_LB] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_LEFT, LR_TYPE),
   // RB dance
   [TDK_RB] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_RIGHT, LR_OUTLOOK),
 };
@@ -59,6 +63,7 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TK_RGHT TD(TDK_RIGHT_DPAD)
 #define TK_SLCT TD(TDK_SELECT)
 #define TK_STRT TD(TDK_START)
+#define TK_LB TD(TDK_LB)
 #define TK_RB TD(TDK_RB)
 
 /*********************
@@ -124,29 +129,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
-                WS_LEFT,                                     TK_RB,
-                                  KC_H,                      KC_Y,
-                TK_COPY, TK_SLCT,          TK_STRT, KC_X,             KC_B,
-                CK_STAB,                                     KC_BTN1,
-       TK_LEFT,          TK_RGHT,                            TK_PSTE,
+                TK_LB,                                                TK_RB,
+                                           KC_H,                      KC_TAB,
+                TK_COPY,          TK_SLCT,          TK_STRT, S(KC_TAB),        KC_B,
+                CK_STAB,                                              KC_BTN1,
+       TK_LEFT,          TK_RGHT,                   TK_PSTE,
                 CK_ATAB
     ),
 
     [LR_ALT] = LAYOUT_xbox(
-                _______,                                     _______,
-                                  _______,                   _______,
-                _______, _______,          _______, _______,          CK_ALTB,
-                CK_STAB,                                     _______,
-       _______,          _______,                            _______,
+                _______,                                              _______,
+                                           _______,                   _______,
+                _______,          _______,          _______, _______,          CK_ALTB,
+                CK_STAB,                                              _______,
+       _______,          _______,                   _______,
                 CK_ATAB
     ),
 
     [LR_OUTLOOK] = LAYOUT_xbox(
-                _______,                                     _______,
-                                  _______,                   OL_PREV,
-                _______, _______,          CK_OLRL, OL_DEL,           _______,
-                _______,                                     OL_NEXT,
-       _______,          _______,                            _______,
+                _______,                                              _______,
+                                           _______,                   OL_PREV,
+                _______,          _______,          CK_OLRL, OL_DEL,           _______,
+                _______,                                              OL_NEXT,
+       _______,          _______,                   _______,
                 _______
+    ),
+
+    [LR_TYPE] = LAYOUT_xbox(
+                _______,                                              _______,
+                                           _______,                   KC_DEL,
+                _______,          KC_ESC,           KC_ENT,  KC_BSPC,          KC_END,
+                KC_UP,                                                KC_HOME,
+       KC_LEFT,          KC_RIGHT,                  _______,
+                KC_DOWN
     ),
 };
