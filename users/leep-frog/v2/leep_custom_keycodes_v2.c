@@ -10,10 +10,6 @@ bool process_custom_keycodes(uint16_t keycode, keyrecord_t* record) {
     return true;
   }
 
-  if (CUSTOM_KEYCODE_START + custom_keycode_handlers_count() == 2) {
-    SEND_STRING("R");
-  }
-
   uint16_t relative_keycode = keycode - CUSTOM_KEYCODE_START;
   custom_keycode_fn_t fn = custom_keycode_handlers_get(relative_keycode);
   if (fn) {
