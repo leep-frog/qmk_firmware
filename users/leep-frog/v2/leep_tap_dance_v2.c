@@ -12,9 +12,6 @@ enum {
     TRIPLE_HOLD       = 7
 };
 
-#define SS_COPY SS_RCTL(SS_TAP(X_INSERT))
-#define SS_PASTE SS_RSFT(SS_TAP(X_INSERT))
-
 int cur_dance(tap_dance_state_t *state, bool interrupt_matters) {
     if (state->count == 1) {
         if ((interrupt_matters && state->interrupted) || !state->pressed) {

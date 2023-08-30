@@ -1,7 +1,4 @@
-#ifndef LEEP_DK
-#define LEEP_DK
-
-// TODO: enums should be CK_*, defined should be DK_*
+#pragma once
 
 #define CTRL_W RCTL(KC_W)
 
@@ -29,13 +26,12 @@
 // Copy with ctrl+c (instead of ctrl+<insert>) so ctrl+c functionality
 // still works (like cancelling in bash terminal).
 #define CK_COPY RCTL(KC_C)
-#define CK_PSTE RSFT(KC_INSERT)
+#define CK_PASTE RSFT(KC_INSERT)
+#define CK_PSTE CK_PASTE
 
 // These use IFTTT and use custom keyboard shortcuts under the hood.
 #define LGHT_ON RCTL(RALT(RSFT(KC_8)))
 #define LGHT_OF RCTL(RALT(RSFT(KC_9)))
 
-#define SS_PASTE SS_RSFT(SS_TAP(X_INSERT))
 #define SS_COPY SS_RCTL(SS_TAP(X_INSERT))
-
-#endif
+#define SS_PASTE SS_RSFT(SS_TAP(X_INSERT))

@@ -1,4 +1,0 @@
-enum LAYERS {
-  LR_BASE,
-  NUM_LAYERS,
-}
