@@ -1,7 +1,5 @@
 #pragma once
 
-#define CTRL_W RCTL(KC_W)
-
 #define CK_UNDO CL(Z)
 
 // Note: we use page down and page up because that works with chrome
@@ -11,6 +9,9 @@
 #define CK_TABB LCTL(KC_PGUP)    // Previous tab in chrome (hold with shift for move tab)
 #define CK_WWWF LALT(KC_RIGHT)   // Next page in chrome
 #define CK_WWWB LALT(KC_LEFT)    // Previous page in chrome
+#define CK_WWW_CLOSE RCTL(KC_W)
+#define CK_WWW_NEW RCTL(KC_T)
+#define CK_WWW_REOPEN RCTL(RSFT(KC_T))
 
 // Mouse movements
 #define MS_LEFT KC_MS_BTN1

@@ -29,6 +29,8 @@ enum leep_tap_dances {
   TDK_PASTE,
   TDK_LEFT_DPAD,
   TDK_RIGHT_DPAD,
+  TDK_SELECT,
+  TDK_START,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
@@ -41,12 +43,18 @@ tap_dance_action_t tap_dance_actions[] = {
   [TDK_LEFT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABB, CK_WWWB),
   // Right DPAD dance
   [TDK_RIGHT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABF, CK_WWWF),
+  // Select dance TODO: QK_BOOT fix?
+  [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_CLOSE, QK_BOOT),
+  // Start dance
+  [TDK_START] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWW_REOPEN),
 };
 
 #define TK_COPY TD(TDK_COPY)
 #define TK_PSTE TD(TDK_PASTE)
 #define TK_LEFT TD(TDK_LEFT_DPAD)
 #define TK_RGHT TD(TDK_RIGHT_DPAD)
+#define TK_SLCT TD(TDK_SELECT)
+#define TK_STRT TD(TDK_START)
 
 /*********************
  * Main process loop *
@@ -110,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 C(G(KC_LEFT)),                               C(G(KC_RIGHT)),
                                   KC_H,                      KC_Y,
-                TK_COPY, QK_BOOT,          S(KC_S), KC_X,             KC_B,
+                TK_COPY, TK_SLCT,          TK_STRT, KC_X,             KC_B,
                 CK_STAB,                                     KC_BTN1,
        TK_LEFT,          TK_RGHT,                            TK_PSTE,
                 CK_ATAB
