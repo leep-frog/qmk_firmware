@@ -55,3 +55,19 @@ combo_t* combo_get_raw(uint16_t combo_idx);
 combo_t* combo_get(uint16_t combo_idx);
 
 #endif // defined(COMBO_ENABLE)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// leep-frog stuff (just copied from combo section)
+
+// Custom keycodes
+#include "action.h"
+typedef bool (*custom_keycode_fn_t) (keyrecord_t *record);
+
+uint16_t custom_keycode_handlers_count(void);
+
+custom_keycode_fn_t custom_keycode_handlers_get(uint16_t idx);
+
+// Alt mode list
+uint16_t Alt_keycodes_count(void);
+
+uint16_t Alt_keycodes_get(uint16_t idx);

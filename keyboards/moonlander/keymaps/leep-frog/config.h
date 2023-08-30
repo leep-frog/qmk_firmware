@@ -2,8 +2,6 @@
 
 #include "../../config.h"
 
-#define ENABLE_LEEP_MUSIC
-
 // How long it takes for a tap to become a hold. Primarily added because
 // Shift-combinations were too quick and causing a parentheses to be added.
 #ifdef TAPPING_TERM

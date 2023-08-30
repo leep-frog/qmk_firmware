@@ -331,9 +331,11 @@ void TDReset(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
         case SINGLE_TAP:
             SNG_RESET();
+            #ifdef AUDIO_ENABLE
             while (is_playing_notes()) {
                 wait_ms(75);
             }
+            #endif
             break;
         case SINGLE_HOLD:
             SEND_STRING("moonlander_leep-frog.bin" SS_TAP(X_ENTER));

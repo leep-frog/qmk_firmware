@@ -91,3 +91,36 @@ __attribute__((weak)) combo_t* combo_get(uint16_t combo_idx) {
 }
 
 #endif // defined(COMBO_ENABLE)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// leep-frog stuff (just copied from combo section)
+
+// Custom keycodes
+uint16_t custom_keycode_handlers_count(void) {
+    return sizeof(custom_keycode_handlers) / sizeof(custom_keycode_fn_t);
+}
+// __attribute__((weak)) uint16_t custom_keycode_handlers_count(void) {
+    // return custom_keycode_handlers_count_raw();
+// }
+
+custom_keycode_fn_t custom_keycode_handlers_get(uint16_t idx) {
+    return custom_keycode_handlers[idx];
+}
+// __attribute__((weak)) custom_keycode_fn_t custom_keycode_handlers_get(uint16_t idx) {
+    // return custom_keycode_handlers_get_raw(idx);
+// }
+
+// ALt mode list
+uint16_t Alt_keycodes_count(void) {
+    return sizeof(Alt_keycodes) / sizeof(uint16_t);
+}
+// __attribute__((weak)) uint16_t custom_keycode_handlers_count(void) {
+    // return custom_keycode_handlers_count_raw();
+// }
+
+uint16_t Alt_keycodes_get(uint16_t idx) {
+    return Alt_keycodes[idx];
+}
+// __attribute__((weak)) custom_keycode_fn_t custom_keycode_handlers_get(uint16_t idx) {
+    // return custom_keycode_handlers_get_raw(idx);
+// }

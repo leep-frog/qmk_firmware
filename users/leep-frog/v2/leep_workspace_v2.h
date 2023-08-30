@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef LEEP_WORKSPACE
 #define LEEP_WORKSPACE
 

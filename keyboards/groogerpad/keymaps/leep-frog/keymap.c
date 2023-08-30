@@ -3,19 +3,14 @@
 
 #include QMK_KEYBOARD_H
 
-#include "../../../../users/leep-frog/v2/leep_index_v2.c"
-
-enum LAYERS {
-  LR_BASE = 0,
-  NUM_LAYERS,
-};
+#include "../../../../users/leep-frog/v2/leep_index_v2.h"
 
 /**********
  * Layers *
  **********/
 
-layer_change_fn_t layer_handlers[] = {
-  [0 ... NUM_LAYERS - 1] = NULL,
+enum layers {
+  LR_BASE,
 };
 
 /**************
@@ -38,13 +33,56 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TK_PSTE TD(TDK_PASTE)
 
 
+/*********************
+ * Main process loop *
+ *********************/
+
+enum custom_keycodes {
+  ALT_TAB,
+  SHIFT_ALT_TAB,
+};
+
+custom_keycode_fn_t custom_keycode_handlers[] = {
+  [ALT_TAB] = &AltTabHandler,
+  [SHIFT_ALT_TAB] = &AltShiftTabHandler,
+};
+
+#define CK_ATAB CK(ALT_TAB)
+#define CK_STAB CK(SHIFT_ALT_TAB)
+
+uint16_t Alt_keycodes[] = {
+  CK_ATAB,
+  CK_STAB,
+  KC_BTN1,
+};
+
+/*********************
+ * Main process loop *
+ *********************/
+
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+  if (Alt_block_processing(keycode)) {
+    return false;
+  }
+
+  if (!process_custom_keycodes(keycode, record)) {
+    return false;
+  }
+
+  return true;
+}
+
+/***********
+ * Keymaps *
+ ***********/
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 C(G(KC_LEFT)),                               C(G(KC_RIGHT)),
                                   KC_H,                      KC_Y,
                 TK_COPY, QK_BOOT,          S(KC_S), KC_X,             KC_B,
-                KC_UP,                                       KC_BTN1,
-       KC_LEFT,          KC_RIGHT,                           TK_PSTE,
-                KC_DOWN
+                CK_STAB,                                       KC_BTN1,
+       CK_TABB,          CK_TABF,                              TK_PSTE,
+                CK_ATAB
     )
 };

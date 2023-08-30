@@ -1,37 +1,24 @@
-#pragma once
+#include "leep_custom_keycodes_v2.h"
+#include "keymap_introspection.h"
 
-#define CTRL_W RCTL(KC_W)
+// Use of keymap_introspection was inspired by the below commit, which removed the
+// need for users to explicitly define combo count (and instead just infer it).
+// https://github.com/qmk/qmk_firmware/commit/5faa23d54ca1e3ab83097f2a07922f48800616e6
 
-#define CK_UNDO CL(Z)
+bool process_custom_keycodes(uint16_t keycode, keyrecord_t* record) {
+  if (keycode < CUSTOM_KEYCODE_START || keycode >= CUSTOM_KEYCODE_START + custom_keycode_handlers_count()) {
+    return true;
+  }
 
-// Note: we use page down and page up because that works with chrome
-// and "tab" is a special character in some terminals and sometimes gets
-// modified or ignored when passed to processes inside of the terminal.
-#define CK_TABF RCTL(KC_PGDN)    // Next tab in chrome (hold with shift for move tab)
-#define CK_TABB LCTL(KC_PGUP)    // Previous tab in chrome (hold with shift for move tab)
-#define CK_WWWF LALT(KC_RIGHT)   // Next page in chrome
-#define CK_WWWB LALT(KC_LEFT)    // Previous page in chrome
+  if (CUSTOM_KEYCODE_START + custom_keycode_handlers_count() == 2) {
+    SEND_STRING("R");
+  }
 
-// Mouse movements
-#define MS_LEFT KC_MS_BTN1
-#define MS_RGHT KC_MS_BTN2
-#define MS_MID KC_MS_BTN3
-#define MS_SMID RSFT(KC_MS_BTN3)
+  uint16_t relative_keycode = keycode - CUSTOM_KEYCODE_START;
+  custom_keycode_fn_t fn = custom_keycode_handlers_get(relative_keycode);
+  if (fn) {
+    return fn(record);
+  }
 
-#define CK_NEW RCTL(RSFT(KC_N))
-
-// Windows snip (screenshot)
-#define CK_SNIP RGUI(RSFT(KC_S))
-
-// Copy with ctrl+c (instead of ctrl+<insert>) so ctrl+c functionality
-// still works (like cancelling in bash terminal).
-#define CK_COPY RCTL(KC_C)
-#define CK_PASTE RSFT(KC_INSERT)
-#define CK_PSTE CK_PASTE
-
-// These use IFTTT and use custom keyboard shortcuts under the hood.
-#define LGHT_ON RCTL(RALT(RSFT(KC_8)))
-#define LGHT_OF RCTL(RALT(RSFT(KC_9)))
-
-#define SS_COPY SS_RCTL(SS_TAP(X_INSERT))
-#define SS_PASTE SS_RSFT(SS_TAP(X_INSERT))
+  return true;
+}

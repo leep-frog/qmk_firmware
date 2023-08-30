@@ -2,7 +2,7 @@
 
 // URLWait waits a short amount of time to allow the
 // internet browser to run actions (like opening a new tab).
-void URLWait(void) { wait_ms(80); }
+#define URLWait() wait_ms(80)
 
 #define NEW_TAB()              \
     SEND_STRING(SS_RCTL("t")); \

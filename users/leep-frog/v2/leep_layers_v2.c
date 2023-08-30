@@ -1,21 +1,24 @@
 #pragma once
 
-#ifndef NUM_LAYERS
-#    error Must define NUM_LAYERS (just make it the last enum in layer enum type)
-#endif
+#include "leep_layers_v2.h"
 
-bool layers_statuses[NUM_LAYERS] = {
+layer_change_fn_t layer_handlers[MAX_NUM_LAYERS] = {
+    [0 ... MAX_NUM_LAYERS-1] = NULL,
+};
+
+// Max number of
+bool layer_statuses[MAX_NUM_LAYERS] = {
     [0]                    = true,
-    [1 ... NUM_LAYERS - 1] = false,
+    [1 ... MAX_NUM_LAYERS-1] = false,
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  for (int i = 0; i < NUM_LAYERS; i++) {
+  for (int i = 0; i < MAX_NUM_LAYERS; i++) {
     // If layer state changed
     bool current_state = layer_state_cmp(state, i);
-    if (current_state != layers_statuses[i]) {
+    if (current_state != layer_statuses[i]) {
       // Update the layer status
-      layers_statuses[i] = current_state;
+      layer_statuses[i] = current_state;
 
       // Apply the layer handler (if present)
 
@@ -26,4 +29,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
       }
     }
   }
+
+  return state;
 }
