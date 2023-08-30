@@ -27,18 +27,26 @@ void keyboard_post_init_user(void) {
 enum leep_tap_dances {
   TDK_COPY = 0,
   TDK_PASTE,
+  TDK_LEFT_DPAD,
+  TDK_RIGHT_DPAD,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
-    // Copy dance
-    [TDK_COPY] = LEEP_TD_CLICK_KC_HOLD_FN(CK_COPY, LeepTD_url_copy_fn, LEEP_TD_NOVAL()),
-    // Paste dance
-    [TDK_PASTE] = LEEP_TD_CLICK_KC_HOLD_FN(CK_PASTE, LeepTD_url_paste_fn, LEEP_TD_NOVAL()),
+  // Include comments for line separation when formatting.
+  // Copy dance
+  [TDK_COPY] = LEEP_TD_CLICK_KC_HOLD_FN(CK_COPY, LeepTD_url_copy_fn, LEEP_TD_NOVAL()),
+  // Paste dance
+  [TDK_PASTE] = LEEP_TD_CLICK_KC_HOLD_FN(CK_PASTE, LeepTD_url_paste_fn, LEEP_TD_NOVAL()),
+  // Left DPAD dance
+  [TDK_LEFT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABB, CK_WWWB),
+  // Right DPAD dance
+  [TDK_RIGHT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABF, CK_WWWF),
 };
 
 #define TK_COPY TD(TDK_COPY)
 #define TK_PSTE TD(TDK_PASTE)
-
+#define TK_LEFT TD(TDK_LEFT_DPAD)
+#define TK_RGHT TD(TDK_RIGHT_DPAD)
 
 /*********************
  * Main process loop *
@@ -104,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                   KC_H,                      KC_Y,
                 TK_COPY, QK_BOOT,          S(KC_S), KC_X,             KC_B,
                 CK_STAB,                                     KC_BTN1,
-       CK_TABB,          CK_TABF,                            TK_PSTE,
+       TK_LEFT,          TK_RGHT,                            TK_PSTE,
                 CK_ATAB
     ),
 
