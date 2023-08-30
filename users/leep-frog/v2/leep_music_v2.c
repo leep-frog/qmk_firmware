@@ -1,5 +1,4 @@
-#ifndef LEEP_MUSIC
-#define LEEP_MUSIC
+#pragma once
 
 static bool _leep_mute = false;
 bool IsMuted(void) { return _leep_mute; }
@@ -134,5 +133,3 @@ void LeepMute(void) { _leep_mute = true; }
 void MuteWithoutSound(bool pressed) { mute_sound(pressed, false); }
 
 void MuteWithSound(bool pressed) { mute_sound(pressed, true); }
-
-#endif  // ifndef LEEP_MUSIC

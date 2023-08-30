@@ -178,3 +178,19 @@ void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t
 #define LEEP_TD_CLICK_KC_HOLD_FN(kc, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, hold_value, hold_fn)
 
 #define LEEP_TD_CLICK_FN_HOLD_FN(press_fn, press_value, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(NULL, press_value, press_fn, hold_value, hold_fn)
+
+/***************************************
+ * Below are common tap dance handlers *
+ ***************************************/
+
+void LeepTD_url_copy_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
+  if (finished) {
+    URL_COPY();
+  }
+}
+
+void LeepTD_url_paste_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
+  if (finished) {
+    URL_PASTE();
+  }
+}

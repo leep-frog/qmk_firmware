@@ -6,7 +6,7 @@
 #include "../../../../users/leep-frog/v2/leep_index_v2.c"
 
 enum LAYERS {
-  LR_BASE,
+  LR_BASE = 0,
   NUM_LAYERS,
 };
 
@@ -29,9 +29,9 @@ enum leep_tap_dances {
 
 tap_dance_action_t tap_dance_actions[] = {
     // Copy dance
-    [TDK_COPY] = LEEP_TD_CLICK_KC_HOLD_KC(CK_COPY, KC_C),
+    [TDK_COPY] = LEEP_TD_CLICK_KC_HOLD_FN(CK_COPY, LeepTD_url_copy_fn, LEEP_TD_NOVAL()),
     // Paste dance
-    [TDK_PASTE] = LEEP_TD_CLICK_KC_HOLD_KC(CK_PASTE, KC_P),
+    [TDK_PASTE] = LEEP_TD_CLICK_KC_HOLD_FN(CK_PASTE, LeepTD_url_paste_fn, LEEP_TD_NOVAL()),
 };
 
 #define TK_COPY TD(TDK_COPY)
