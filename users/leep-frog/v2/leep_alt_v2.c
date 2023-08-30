@@ -1,17 +1,26 @@
 #pragma once
 
 #include "leep_alt_v2.h"
+#include "leep_layers_v2.h"
 #include "keymap_introspection.h"
 
-bool leep_alt_pressed = false;
-
-bool Alt_is_active(void) {
-    return leep_alt_pressed;
+void AltLayerHandler(bool activated) {
+  if (activated) {
+    writePinHigh(D4);
+    register_code16(KC_RALT);
+  } else {
+    writePinLow(D4);
+    unregister_code16(KC_RALT);
+  }
 }
 
-bool Alt_block_processing(uint16_t keycode) {
+bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
+  if (!record->event.pressed) {
+    return false;
+  }
+
   // Only check if alt is active
-  if (!Alt_is_active()) {
+  if (!layer_statuses[AltLayer]) {
     return false;
   }
 
@@ -23,18 +32,8 @@ bool Alt_block_processing(uint16_t keycode) {
   }
 
   // Pressing a key to break the alt mode
-  Alt_deactivate();
+  layer_off(AltLayer);
   return true;
-}
-
-void Alt_activate(void) {
-    leep_alt_pressed = true;
-    register_code16(KC_RALT);
-}
-
-void Alt_deactivate(void) {
-    leep_alt_pressed = false;
-    unregister_code16(KC_RALT);
 }
 
 // The below functions implement custom handlers
@@ -44,7 +43,9 @@ bool AltTabHandler(keyrecord_t* record) {
     return true;
   }
 
-  Alt_activate();
+  if (!layer_statuses[AltLayer]) {
+    layer_on(AltLayer);
+  }
   register_code16(KC_TAB);
   return true;
 }
@@ -55,7 +56,9 @@ bool AltShiftTabHandler(keyrecord_t* record) {
     return true;
   }
 
-  Alt_activate();
+  if (!layer_statuses[AltLayer]) {
+    layer_on(AltLayer);
+  }
   register_code16(S(KC_TAB));
   return true;
 }

@@ -160,8 +160,6 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     led_off();
   }*/
 
-  bool turn_on_led = false;
-
   // Process regular buttons
   if (process_button_mask(current_matrix, button_mappings, gamepad.buttons, NUM_BUTTONS)) {
     changed = true;
@@ -173,11 +171,6 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     changed = true;
   }
 
-  if (turn_on_led) {
-    led_on();
-  } else {
-    led_off();
-  }
   return changed;
 }
 
