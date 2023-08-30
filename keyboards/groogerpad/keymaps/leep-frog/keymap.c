@@ -12,6 +12,7 @@
 enum layers {
   LR_BASE,
   LR_ALT,
+  LR_OUTLOOK,
 };
 
 const uint16_t AltLayer = LR_ALT;
@@ -31,6 +32,7 @@ enum leep_tap_dances {
   TDK_RIGHT_DPAD,
   TDK_SELECT,
   TDK_START,
+  TDK_RB,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
@@ -47,6 +49,8 @@ tap_dance_action_t tap_dance_actions[] = {
   [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_CLOSE, QK_BOOT),
   // Start dance
   [TDK_START] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWW_REOPEN),
+  // RB dance
+  [TDK_RB] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_RIGHT, LR_OUTLOOK),
 };
 
 #define TK_COPY TD(TDK_COPY)
@@ -55,6 +59,7 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TK_RGHT TD(TDK_RIGHT_DPAD)
 #define TK_SLCT TD(TDK_SELECT)
 #define TK_STRT TD(TDK_START)
+#define TK_RB TD(TDK_RB)
 
 /*********************
  * Main process loop *
@@ -76,17 +81,20 @@ enum custom_keycodes {
   ALT_TAB,
   SHIFT_ALT_TAB,
   LR_ALT_B_BUTTON,
+  OUTLOOK_RELOAD,
 };
 
 custom_keycode_fn_t custom_keycode_handlers[] = {
   [ALT_TAB] = &AltTabHandler,
   [SHIFT_ALT_TAB] = &AltShiftTabHandler,
   [LR_ALT_B_BUTTON] = &AltBButtonHandler,
+  [OUTLOOK_RELOAD] = &OutlookTodayHandler,
 };
 
 #define CK_ALTB CK(LR_ALT_B_BUTTON)
 #define CK_ATAB CK(ALT_TAB)
 #define CK_STAB CK(SHIFT_ALT_TAB)
+#define CK_OLRL CK(OUTLOOK_RELOAD)
 
 uint16_t Alt_keycodes[] = {
   CK_ATAB,
@@ -116,7 +124,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
-                C(G(KC_LEFT)),                               C(G(KC_RIGHT)),
+                WS_LEFT,                                     TK_RB,
                                   KC_H,                      KC_Y,
                 TK_COPY, TK_SLCT,          TK_STRT, KC_X,             KC_B,
                 CK_STAB,                                     KC_BTN1,
@@ -131,5 +139,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 CK_STAB,                                     _______,
        _______,          _______,                            _______,
                 CK_ATAB
+    ),
+
+    [LR_OUTLOOK] = LAYOUT_xbox(
+                _______,                                     _______,
+                                  _______,                   OL_PREV,
+                _______, _______,          CK_OLRL, OL_DEL,           _______,
+                _______,                                     OL_NEXT,
+       _______,          _______,                            _______,
+                _______
     ),
 };

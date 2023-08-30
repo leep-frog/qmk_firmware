@@ -3,8 +3,9 @@
 #ifndef LEEP_WORKSPACE
 #define LEEP_WORKSPACE
 
-#define WS_RGHT RCTL(RGUI(KC_RGHT))  // Slide to next workspace
-#define WS_LEFT LCTL(LGUI(KC_LEFT))  // Slide to previous workspace
+#define WS_RIGHT C(G(KC_RGHT))  // Slide to next workspace
+#define WS_RGHT WS_RIGHT
+#define WS_LEFT C(G(KC_LEFT))  // Slide to previous workspace
 #define WS_BACK RGUI(KC_B)
 
 #define WS_1 RCTL(RALT(RSFT(KC_1)))
