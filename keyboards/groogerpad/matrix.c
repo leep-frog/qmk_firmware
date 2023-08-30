@@ -154,12 +154,6 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   // Receive data
   uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
 
-  /*if (gamepad.buttons) {
-    led_on();
-  } else {
-    led_off();
-  }*/
-
   // Process regular buttons
   if (process_button_mask(current_matrix, button_mappings, gamepad.buttons, NUM_BUTTONS)) {
     changed = true;

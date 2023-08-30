@@ -4,16 +4,6 @@
 #include "leep_layers_v2.h"
 #include "keymap_introspection.h"
 
-void AltLayerHandler(bool activated) {
-  if (activated) {
-    writePinHigh(D4);
-    register_code16(KC_RALT);
-  } else {
-    writePinLow(D4);
-    unregister_code16(KC_RALT);
-  }
-}
-
 bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
   if (!record->event.pressed) {
     return false;
@@ -36,7 +26,17 @@ bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
   return true;
 }
 
-// The below functions implement custom handlers
+void AltLayerHandler(bool activated) {
+  if (activated) {
+    writePinHigh(D4);
+    register_code16(KC_RALT);
+  } else {
+    writePinLow(D4);
+    unregister_code16(KC_RALT);
+  }
+}
+
+// The below functions implement custom keycode handlers
 bool AltTabHandler(keyrecord_t* record) {
   if (!record->event.pressed) {
     unregister_code16(KC_TAB);
