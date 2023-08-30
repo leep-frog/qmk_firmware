@@ -132,15 +132,25 @@ void update_joystick_config(joystick_config_t *joystick_config) {
   joystick_config->cycle_idx %= joystick_config->granularity_multiplier;
 }
 
-bool pointing_device_task(void) {
-  update_joystick_config(&mouse_config);
-  update_joystick_config(&scroll_config);
+// Overridable function for enabling/disabling mouse and scrolling
+__attribute__((weak)) bool joystick_mouse_enabled(void) { return true; }
+__attribute__((weak)) bool joystick_scroll_enabled(void) { return true; }
 
+bool pointing_device_task(void) {
   report_mouse_t report = pointing_device_get_report();
-  report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle);
-  report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle);
-  report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
-  report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
+
+  if (joystick_mouse_enabled()) {
+    update_joystick_config(&mouse_config);
+    report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle);
+    report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle);
+  }
+
+  if (joystick_scroll_enabled()) {
+    update_joystick_config(&scroll_config);
+    report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
+    report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
+  }
+
   pointing_device_set_report(report);
   return pointing_device_send();
 }

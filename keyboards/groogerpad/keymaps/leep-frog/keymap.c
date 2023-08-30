@@ -111,6 +111,9 @@ uint16_t Alt_keycodes[] = {
  * Main process loop *
  *********************/
 
+bool joystick_mouse_enabled(void) { return get_highest_layer(layer_state) == 0; }
+bool joystick_scroll_enabled(void) { return get_highest_layer(layer_state) == 0; }
+
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   if (AltBlockProcessing(keycode, record)) {
     return false;
