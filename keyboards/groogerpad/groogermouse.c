@@ -211,14 +211,14 @@ void update_joystick_config(joystick_config_t *joystick_config, uint8_t *joystic
 bool pointing_device_task(void) {
   report_mouse_t report = pointing_device_get_report();
 
+  update_joystick_config(&mouse_config, &left_joystick_direction, gamepad.axis_x, gamepad.axis_y, left_joystick_handler);
   if (joystick_mouse_enabled()) {
-    update_joystick_config(&mouse_config, &left_joystick_direction, gamepad.axis_x, gamepad.axis_y, left_joystick_handler);
     report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle);
     report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle);
   }
 
+  update_joystick_config(&scroll_config, &right_joystick_direction, gamepad.axis_rx, gamepad.axis_ry, right_joystick_handler);
   if (joystick_scroll_enabled()) {
-    update_joystick_config(&scroll_config, &right_joystick_direction, gamepad.axis_rx, gamepad.axis_ry, right_joystick_handler);
     report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
     report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
   }

@@ -6,6 +6,24 @@
 #include "../../../../users/leep-frog/v2/leep_index_v2.h"
 #include "groogermouse.h"
 
+/**********
+ * Layers *
+ **********/
+
+enum layers {
+  LR_BASE,
+  LR_ALT,
+  LR_OUTLOOK,
+  LR_TYPE,
+  LR_TYPE_2,
+};
+
+const uint16_t AltLayer = LR_ALT;
+
+void keyboard_post_init_user(void) {
+  SET_LAYER_HANDLER(LR_ALT, AltLayerHandler);
+}
+
 /****************
  * Word Buttons *
  ****************/
@@ -42,23 +60,21 @@ void left_joystick_handler(enum joystick_direction_t direction) {
   }
 }
 
-/**********
- * Layers *
- **********/
-
-enum layers {
-  LR_BASE,
-  LR_ALT,
-  LR_OUTLOOK,
-  LR_TYPE,
-  LR_TYPE_2,
-};
-
-const uint16_t AltLayer = LR_ALT;
-
-void keyboard_post_init_user(void) {
-  SET_LAYER_HANDLER(LR_ALT, AltLayerHandler);
+#define WORD_HANDLER_DEFINE(word_layer) bool WordLayerHandler_##word_layer (keyrecord_t* record) { \
+  word_buttons[word_layer] = record->event.pressed; \
+  if (record->event.pressed) { \
+    /* TODO: Shift */ \
+    send_char(words[word_layer][left_joystick_direction]); \
+  } \
+  return false; \
 }
+
+WORD_HANDLER_DEFINE(0)
+WORD_HANDLER_DEFINE(1)
+WORD_HANDLER_DEFINE(2)
+WORD_HANDLER_DEFINE(3)
+
+#define WORD_HANDLER_FUNC(word_layer) &WordLayerHandler_##word_layer
 
 /**************
  * Tap Dances *
@@ -114,9 +130,9 @@ combo_t key_combos[] = {
     // COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too!
 };
 
-/*********************
- * Main process loop *
- *********************/
+/*******************
+ * Custom keycodes *
+ *******************/
 
 bool AltBButtonHandler(keyrecord_t* record) {
   if (record->event.pressed) {
@@ -135,30 +151,32 @@ enum custom_keycodes {
   SHIFT_ALT_TAB,
   LR_ALT_B_BUTTON,
   OUTLOOK_RELOAD,
-  WORD_LAYER_A,
+  CUSTOM_KEYCODE_END,
+  WORD_LAYER_0,
+  WORD_LAYER_1,
+  WORD_LAYER_2,
+  WORD_LAYER_3,
 };
-
-bool WordLayerAHandler(keyrecord_t* record) {
-  if (record->event.pressed) {
-    word_buttons[word_layer_A] = !word_buttons[word_layer_A];
-    SEND_STRING("3");
-  }
-  return false;
-}
 
 custom_keycode_fn_t custom_keycode_handlers[] = {
   [ALT_TAB] = &AltTabHandler,
   [SHIFT_ALT_TAB] = &AltShiftTabHandler,
   [LR_ALT_B_BUTTON] = &AltBButtonHandler,
   [OUTLOOK_RELOAD] = &OutlookTodayHandler,
-  [WORD_LAYER_A] = &WordLayerAHandler,
+  [WORD_LAYER_0] = WORD_HANDLER_FUNC(0),
+  [WORD_LAYER_1] = WORD_HANDLER_FUNC(1),
+  [WORD_LAYER_2] = WORD_HANDLER_FUNC(2),
+  [WORD_LAYER_3] = WORD_HANDLER_FUNC(3),
 };
 
 #define CK_ALTB CK(LR_ALT_B_BUTTON)
 #define CK_ATAB CK(ALT_TAB)
 #define CK_STAB CK(SHIFT_ALT_TAB)
 #define CK_OLRL CK(OUTLOOK_RELOAD)
-#define CK_WLA CK(WORD_LAYER_A)
+#define CK_WL_0 CK(WORD_LAYER_0)
+#define CK_WL_1 CK(WORD_LAYER_1)
+#define CK_WL_2 CK(WORD_LAYER_2)
+#define CK_WL_3 CK(WORD_LAYER_3)
 
 uint16_t Alt_keycodes[] = {
   CK_ATAB,
@@ -228,9 +246,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_TYPE_2] = LAYOUT_xbox(
                 _______,                                              _______,
-                                           _______,                   CL(DEL),
-                _______,          _______,          _______, KC_J,             KC_K,
-                _______,                                              _______,
+                                           _______,                   CK_WL_3,
+                _______,          _______,          _______, CK_WL_1,             CK_WL_2,
+                _______,                                              CK_WL_0,
        CL(LEFT),         CL(RIGHT),                 _______,
                 _______
     ),
