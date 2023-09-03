@@ -1,8 +1,24 @@
-/***************
- * Mouse logic *
- ***************/
-
 #include "groogermouse.h"
+
+/**************
+ * Interfaces *
+ **************/
+
+// Overridable function for enabling/disabling mouse and scrolling
+__attribute__((weak)) bool joystick_mouse_enabled(void) { return true; }
+__attribute__((weak)) bool joystick_scroll_enabled(void) { return true; }
+
+// Functions for handling joystick direction changes
+__attribute__((weak)) void left_joystick_handler(enum joystick_direction_t direction) { }
+__attribute__((weak)) void right_joystick_handler(enum joystick_direction_t direction) { }
+
+// Joystick directions
+uint8_t left_joystick_direction = CENTER;
+uint8_t right_joystick_direction = CENTER;
+
+/************
+ * Printing *
+ ************/
 
 const int intBufLen = 18;
 
@@ -24,6 +40,10 @@ void print_int(int32_t number) {
   intBuf[i+3] = '\0';
   send_string(intBuf);
 }
+
+/***************
+ * Mouse Logic *
+ ***************/
 
 /* Mouse speed logic description
 
@@ -134,9 +154,6 @@ int8_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_con
   return signedRes;
 }
 
-uint8_t left_joystick_direction = CENTER;
-uint8_t right_joystick_direction = CENTER;
-
 void update_joystick_config(joystick_config_t *joystick_config, uint8_t *joystick_direction, int32_t x, int32_t y, joystick_direction_handler_t handler) {
   joystick_config->cycle_idx += joystick_config->cycle_incrementer;
   joystick_config->cycle_idx %= joystick_config->granularity_multiplier;
@@ -186,10 +203,6 @@ void update_joystick_config(joystick_config_t *joystick_config, uint8_t *joystic
     handler(new_direction);
   };
 }
-
-// Overridable function for enabling/disabling mouse and scrolling
-__attribute__((weak)) bool joystick_mouse_enabled(void) { return true; }
-__attribute__((weak)) bool joystick_scroll_enabled(void) { return true; }
 
 bool pointing_device_task(void) {
   report_mouse_t report = pointing_device_get_report();

@@ -178,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),*/
 };
 
-void left_joystick_handlerF(uint8_t direction) {
+void left_joystick_handler(enum joystick_direction_t direction) {
   switch(direction) {
     case CENTER:
     SEND_STRING("C");
@@ -189,12 +189,7 @@ void left_joystick_handlerF(uint8_t direction) {
     case NORTHWEST:
       SEND_STRING("NW");
     break;
+    default:
+    break;
   }
 }
-
-void right_joystick_handlerF(uint8_t direction) {
-
-}
-
-joystick_direction_handler_t left_joystick_handler = &left_joystick_handlerF;
-joystick_direction_handler_t right_joystick_handler = &right_joystick_handlerF;
