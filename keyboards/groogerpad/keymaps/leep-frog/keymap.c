@@ -31,6 +31,9 @@ const char words[NUM_WORD_LAYERS][9] = {
 };
 
 void left_joystick_handler(enum joystick_direction_t direction) {
+  if (get_highest_layer(layer_state) != LR_TYPE_2) {
+    return;
+  }
   for (int word_layer = 0; word_layer < NUM_WORD_LAYERS; word_layer++) {
     if (word_buttons[word_layer]) {
       // TODO: Shift
@@ -48,6 +51,7 @@ enum layers {
   LR_ALT,
   LR_OUTLOOK,
   LR_TYPE,
+  LR_TYPE_2,
 };
 
 const uint16_t AltLayer = LR_ALT;
@@ -99,6 +103,16 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TK_STRT TD(TDK_START)
 #define TK_LB TD(TDK_LB)
 #define TK_RB TD(TDK_RB)
+
+/**********
+ * Combos *
+ **********/
+
+const uint16_t PROGMEM test_combo1[] = {TK_LB, TK_RB, COMBO_END};
+combo_t key_combos[] = {
+    COMBO(test_combo1, TG(LR_TYPE_2)),
+    // COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too!
+};
 
 /*********************
  * Main process loop *
@@ -178,8 +192,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 TK_LB,                                                TK_RB,
-                                           KC_H,                      KC_TAB,
-                TK_COPY,          TK_SLCT,          TK_STRT, SH(TAB),          KC_BTN2,
+                                           KC_H,                      SH(TAB),
+                TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
                 CK_STAB,                                              KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
                 CK_ATAB
@@ -195,7 +209,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_OUTLOOK] = LAYOUT_xbox(
-                CK_WLA,                                         _______,
+                _______,                                         _______,
                                            _______,                   OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
                 _______,                                              OL_NEXT,
@@ -212,12 +226,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 KC_DOWN
     ),
 
-    /*[LR_TYPE_2] = LAYOUT_xbox(
+    [LR_TYPE_2] = LAYOUT_xbox(
                 _______,                                              _______,
                                            _______,                   CL(DEL),
-                _______,          _______,          _______, CL(BSPC),         KC_END,
+                _______,          _______,          _______, KC_J,             KC_K,
                 _______,                                              _______,
        CL(LEFT),         CL(RIGHT),                 _______,
                 _______
-    ),*/
+    ),
 };
