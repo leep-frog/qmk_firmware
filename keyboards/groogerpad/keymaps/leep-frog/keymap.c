@@ -6,6 +6,39 @@
 #include "../../../../users/leep-frog/v2/leep_index_v2.h"
 #include "groogermouse.h"
 
+/****************
+ * Word Buttons *
+ ****************/
+
+enum word_button_layers_t {
+  word_layer_A,
+  word_layer_B,
+  word_layer_X,
+  word_layer_Y,
+  NUM_WORD_LAYERS,
+};
+
+bool word_buttons[NUM_WORD_LAYERS] = {
+  [0 ... NUM_WORD_LAYERS - 1] = false,
+};
+
+const char words[NUM_WORD_LAYERS][9] = {
+  // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
+  "+ycinvk_z",
+  "+wtherp__",
+  "+bladmx__",
+  "+ugsofj_q",
+};
+
+void left_joystick_handler(enum joystick_direction_t direction) {
+  for (int word_layer = 0; word_layer < NUM_WORD_LAYERS; word_layer++) {
+    if (word_buttons[word_layer]) {
+      // TODO: Shift
+      send_char(words[word_layer][direction]);
+    }
+  }
+}
+
 /**********
  * Layers *
  **********/
@@ -88,19 +121,30 @@ enum custom_keycodes {
   SHIFT_ALT_TAB,
   LR_ALT_B_BUTTON,
   OUTLOOK_RELOAD,
+  WORD_LAYER_A,
 };
+
+bool WordLayerAHandler(keyrecord_t* record) {
+  if (record->event.pressed) {
+    word_buttons[word_layer_A] = !word_buttons[word_layer_A];
+    SEND_STRING("3");
+  }
+  return false;
+}
 
 custom_keycode_fn_t custom_keycode_handlers[] = {
   [ALT_TAB] = &AltTabHandler,
   [SHIFT_ALT_TAB] = &AltShiftTabHandler,
   [LR_ALT_B_BUTTON] = &AltBButtonHandler,
   [OUTLOOK_RELOAD] = &OutlookTodayHandler,
+  [WORD_LAYER_A] = &WordLayerAHandler,
 };
 
 #define CK_ALTB CK(LR_ALT_B_BUTTON)
 #define CK_ATAB CK(ALT_TAB)
 #define CK_STAB CK(SHIFT_ALT_TAB)
 #define CK_OLRL CK(OUTLOOK_RELOAD)
+#define CK_WLA CK(WORD_LAYER_A)
 
 uint16_t Alt_keycodes[] = {
   CK_ATAB,
@@ -151,7 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_OUTLOOK] = LAYOUT_xbox(
-                _______,                                              _______,
+                CK_WLA,                                         _______,
                                            _______,                   OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
                 _______,                                              OL_NEXT,
@@ -177,19 +221,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______
     ),*/
 };
-
-void left_joystick_handler(enum joystick_direction_t direction) {
-  switch(direction) {
-    case CENTER:
-    SEND_STRING("C");
-    break;
-    case SOUTH:
-    SEND_STRING("S");
-    break;
-    case NORTHWEST:
-      SEND_STRING("NW");
-    break;
-    default:
-    break;
-  }
-}

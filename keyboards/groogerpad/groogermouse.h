@@ -1,6 +1,8 @@
 
 #pragma once
 
+// Order of chars is center, then clockwise starting from west.
+// (Note: changing this requires changing the word ordering in keymap.c)
 enum joystick_direction_t {
   CENTER = 0,
   WEST,
