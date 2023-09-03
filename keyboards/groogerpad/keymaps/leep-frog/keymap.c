@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 
 #include "../../../../users/leep-frog/v2/leep_index_v2.h"
+#include "groogermouse.h"
 
 /**********
  * Layers *
@@ -176,3 +177,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______
     ),*/
 };
+
+void left_joystick_handlerF(uint8_t direction) {
+  switch(direction) {
+    case CENTER:
+    SEND_STRING("C");
+    break;
+    case SOUTH:
+    SEND_STRING("S");
+    break;
+    case NORTHWEST:
+      SEND_STRING("NW");
+    break;
+  }
+}
+
+void right_joystick_handlerF(uint8_t direction) {
+
+}
+
+joystick_direction_handler_t left_joystick_handler = &left_joystick_handlerF;
+joystick_direction_handler_t right_joystick_handler = &right_joystick_handlerF;

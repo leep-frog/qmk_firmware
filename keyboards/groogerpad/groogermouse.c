@@ -2,11 +2,18 @@
  * Mouse logic *
  ***************/
 
+#include "groogermouse.h"
+
 const int intBufLen = 18;
 
 void print_int(int32_t number) {
   char intBuf[intBufLen];
   int i = 0;
+  if (number < 0) {
+    intBuf[i] = '-';
+    number = -number;
+    i++;
+  }
   // TODO: Reverse buffer afterwards
   for (; number > 0; i++) {
     intBuf[i] = '0' + (number % 10);
@@ -127,9 +134,57 @@ int8_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_con
   return signedRes;
 }
 
-void update_joystick_config(joystick_config_t *joystick_config) {
+uint8_t left_joystick_direction = CENTER;
+uint8_t right_joystick_direction = CENTER;
+
+void update_joystick_config(joystick_config_t *joystick_config, uint8_t *joystick_direction, int32_t x, int32_t y, joystick_direction_handler_t handler) {
   joystick_config->cycle_idx += joystick_config->cycle_incrementer;
   joystick_config->cycle_idx %= joystick_config->granularity_multiplier;
+
+  // Check if in the deadzone
+  // TODO: Change deadzone checks (here and elsewhere) to be a circle, not square
+  // uint8_t deadzone = joystick_config->drift_deadzone;
+  uint8_t deadzone = 128;
+  uint8_t new_direction = CENTER;
+  if (x < -deadzone || x > deadzone || y < -deadzone || y > deadzone) {
+    // sin(22.5) = 0.38268
+    int32_t numer =  383;
+    int32_t denom = 1000;
+
+    // Split circle by four lines:
+    // y = +-0.38268*x     = +- x*(38268/100000)
+    // y = +-(1/0.38268)*x = +- x*(100000/38268)
+    // line# is true if y is above the line.
+    bool line1 = y > (x*numer)/denom;
+    bool line2 = y > -(x*numer)/denom;
+    bool line3 = y > (x*denom)/numer;
+    bool line4 = y > -(x*denom)/numer;
+
+    // North and south are inverted (-y means joystick is pointing up)
+    // Therefore, we flip all N/S occurrences
+    if (line1 && !line2) {
+      new_direction = WEST;
+    } else if (!line1 && line2) {
+      new_direction = EAST;
+    } else if (line1 && !line3) {
+      new_direction = SOUTHEAST;
+    } else if (!line1 && line3) {
+      new_direction = NORTHWEST;
+    } else if (line3 && line4) {
+      new_direction = SOUTH;
+    } else if (!line3 && !line4) {
+      new_direction = NORTH;
+    } else if (line2 && !line4) {
+      new_direction = SOUTHWEST;
+    } else {
+      new_direction = NORTHEAST;
+    }
+  }
+
+  if (*joystick_direction != new_direction) {
+    *joystick_direction = new_direction;
+    handler(new_direction);
+  };
 }
 
 // Overridable function for enabling/disabling mouse and scrolling
@@ -140,13 +195,13 @@ bool pointing_device_task(void) {
   report_mouse_t report = pointing_device_get_report();
 
   if (joystick_mouse_enabled()) {
-    update_joystick_config(&mouse_config);
+    update_joystick_config(&mouse_config, &left_joystick_direction, gamepad.axis_x, gamepad.axis_y, left_joystick_handler);
     report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle);
     report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle);
   }
 
   if (joystick_scroll_enabled()) {
-    update_joystick_config(&scroll_config);
+    update_joystick_config(&scroll_config, &right_joystick_direction, gamepad.axis_rx, gamepad.axis_ry, right_joystick_handler);
     report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
     report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
   }
