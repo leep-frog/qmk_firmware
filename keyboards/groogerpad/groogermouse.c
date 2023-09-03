@@ -31,7 +31,9 @@ void print_int(int32_t number) {
     i++;
   }
   // TODO: Reverse buffer afterwards
-  for (; number > 0; i++) {
+  bool possibly_zero = true;
+  for (; posibly_zero || number > 0; i++) {
+    possibly_zero = false;
     intBuf[i] = '0' + (number % 10);
     number /= 10;
   }
