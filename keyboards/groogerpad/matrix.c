@@ -152,6 +152,15 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   uart_write(1);
 
   // Receive data
+  for (int i = 0; !uart_available(); i++) {
+    wait_ms(1);
+    // Send more data in case the previous packet got sent
+    // before the other circuit board started
+    if (i == 2500) {
+      uart_write(1);
+      i = 0;
+    }
+  }
   uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
 
   // Process regular buttons
