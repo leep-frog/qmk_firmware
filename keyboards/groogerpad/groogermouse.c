@@ -87,6 +87,8 @@ const int64_t max_controller_throttle = 1024;
 
 typedef struct {
   uint8_t drift_deadzone;
+  // int32_t to match other types, but it gets squared so it should be less than 2^8
+  int32_t direction_drift_deadzone;
   // Need a smaller type to ensure multiplication overflow doesn't happen later
   uint8_t max_virtual_speed; // Proportional to speed
   uint8_t throttle_multiplier;
@@ -109,6 +111,7 @@ typedef struct {
 
 joystick_config_t mouse_config = {
   .drift_deadzone = 64,
+  .direction_drift_deadzone = 400,
   .max_virtual_speed = 8,
   .throttle_multiplier = 8,
   GRANULARITY_MULTIPLIER(4),
@@ -116,6 +119,7 @@ joystick_config_t mouse_config = {
 
 joystick_config_t scroll_config = {
   .drift_deadzone = 64,
+  .direction_drift_deadzone = 400,
   .max_virtual_speed = 4,
   .throttle_multiplier = 8,
   GRANULARITY_MULTIPLIER(6),
@@ -159,11 +163,9 @@ void update_joystick_config(joystick_config_t *joystick_config, uint8_t *joystic
   joystick_config->cycle_idx %= joystick_config->granularity_multiplier;
 
   // Check if in the deadzone
-  // TODO: Change deadzone checks (here and elsewhere) to be a circle, not square
-  // uint8_t deadzone = joystick_config->drift_deadzone;
-  uint8_t deadzone = 128;
+  int32_t deadzone = joystick_config->direction_drift_deadzone;
   uint8_t new_direction = CENTER;
-  if (x < -deadzone || x > deadzone || y < -deadzone || y > deadzone) {
+  if (x*x + y*y > deadzone*deadzone) {
     // sin(22.5) = 0.38268
     int32_t numer =  383;
     int32_t denom = 1000;
