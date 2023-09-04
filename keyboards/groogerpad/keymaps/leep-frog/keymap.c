@@ -113,6 +113,12 @@ enum leep_tap_dances {
   TDK_RB,
 };
 
+void disconnectController(tap_dance_state_t *state, bool finished, leep_td_value_t *hold_value) {
+  if (finished) {
+    uart_write(UART_CODE_DISCONNECT);
+  }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
   // Include comments for line separation when formatting.
   // Copy dance
@@ -124,7 +130,7 @@ tap_dance_action_t tap_dance_actions[] = {
   // Right DPAD dance
   [TDK_RIGHT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABF, CK_WWWF),
   // Select dance TODO: QK_BOOT fix?
-  [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_CLOSE, QK_BOOT),
+  [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_FN(CK_WWW_CLOSE, &disconnectController, LEEP_TD_NOVAL()),
   // Start dance
   [TDK_START] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWW_REOPEN),
   // LB dance
