@@ -11,6 +11,9 @@ const int trigger_threshold = 900;
 
 const int blink_time = 125;
 
+#define UART_CODE_RUMBLE 'r'
+#define UART_CODE_DATA 'd'
+
 void led_on(void) {
   writePinHigh(D4);
 }
@@ -157,7 +160,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   for (int i = 0; !uart_available(); i++) {
     if (first) {
       first = false;
-      uart_write(1);
+      uart_write(UART_CODE_DATA);
       continue;
     }
 
@@ -165,11 +168,15 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     // Send more data in case the previous packet got sent
     // before the other circuit board started
     if (i == 2500) {
-      uart_write(1);
+      uart_write(UART_CODE_DATA);
       i = 0;
     }
   }
   uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
+  // Clear any extra data in the buffer, if relevant
+  while (uart_available()) {
+    uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
+  }
 
   // Process regular buttons
   if (process_button_mask(current_matrix, button_mappings, gamepad.buttons, NUM_BUTTONS)) {
