@@ -42,10 +42,10 @@ bool word_buttons[NUM_WORD_LAYERS] = {
 
 const char words[NUM_WORD_LAYERS][9] = {
   // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
-  "+ycinvk_z",
-  "+wtherp__",
-  "+bladmx__",
-  "+ugsofj_q",
+  /* bs */"_zquickx",
+  " _wtherop",
+  "\n__blandv",
+  /* del */"_jfgsym_",
 };
 
 void left_joystick_handler(enum joystick_direction_t direction) {
