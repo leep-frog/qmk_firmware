@@ -124,6 +124,13 @@ button_mapping_t dpad_button_mappings[] = {
 
 const uint8_t NUM_DPAD_BUTTONS = GET_NUM_BUTTONS(dpad_button_mappings);
 
+#define CHECK_KEY_BIT(activated, matrix_row, matrix_row_bit) \
+/*  (           pressed_in_matrix                     ) != (activated) */ \
+if ((!!(current_matrix[matrix_row] & (matrix_row_bit))) != (activated)) { \
+current_matrix[matrix_row] ^= (matrix_row_bit); \
+changed = true; \
+}
+
 bool process_button_mask(matrix_row_t current_matrix[], button_mapping_t bms[], uint16_t button_mask, uint8_t size) {
   bool changed = false;
   for (int i = 0; i < size; i++) {
@@ -134,13 +141,7 @@ bool process_button_mask(matrix_row_t current_matrix[], button_mapping_t bms[], 
     }
     // If the key is marked as pressed
     bool gamepad_pressed = !!(button_mask & 0x01);
-    bool key_pressed = !!(current_matrix[bm.kb_matrix_row] & (bm.kb_matrix_row_bit));
-
-    // Toggle the bit if they don't match.
-    if (key_pressed != gamepad_pressed) {
-      current_matrix[bm.kb_matrix_row] ^= (bm.kb_matrix_row_bit);
-      changed = true;
-    }
+    CHECK_KEY_BIT(gamepad_pressed, bm.kb_matrix_row, bm.kb_matrix_row_bit)
     button_mask >>= 1;
   }
   return changed;
@@ -182,14 +183,8 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   }
 
   // Left and right triggers
-  if (gamepad.brake >= trigger_threshold) {
-    current_matrix[0] ^= (1);
-    changed = true;
-  }
-  if (gamepad.throttle >= trigger_threshold) {
-    current_matrix[0] ^= (2);
-    changed = true;
-  }
+  CHECK_KEY_BIT(gamepad.brake >= trigger_threshold, 0, 1)
+  CHECK_KEY_BIT(gamepad.throttle >= trigger_threshold, 0, 2)
 
   return changed;
 }
