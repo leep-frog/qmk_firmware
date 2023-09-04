@@ -20,8 +20,17 @@ enum layers {
 
 const uint16_t AltLayer = LR_ALT;
 
+void TypeLayerHandler(bool activated) {
+  if (activated) {
+    writePinHigh(D4);
+  } else {
+    writePinLow(D4);
+  }
+}
+
 void keyboard_post_init_user(void) {
   SET_LAYER_HANDLER(LR_ALT, AltLayerHandler);
+  SET_LAYER_HANDLER(LR_TYPE_2, TypeLayerHandler);
 }
 
 /****************
@@ -222,6 +231,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
+                _______,                                              _______,
                 TK_LB,                                                TK_RB,
                                            KC_H,                      SH(TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
@@ -232,6 +242,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_ALT] = LAYOUT_xbox(
                 _______,                                              _______,
+                _______,                                              _______,
                                            _______,                   _______,
                 _______,          _______,          _______, _______,          CK_ALTB,
                 CK_STAB,                                              _______,
@@ -240,6 +251,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_OUTLOOK] = LAYOUT_xbox(
+                _______,                                         _______,
                 _______,                                         _______,
                                            _______,                   OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
@@ -250,6 +262,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_TYPE] = LAYOUT_xbox(
                 _______,                                              _______,
+                _______,                                              _______,
                                            _______,                   KC_DEL,
                 _______,          KC_ESC,           _______, KC_BSPC,          KC_ENT,
                 KC_UP,                                                KC_SPACE,
@@ -258,6 +271,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_TYPE_2] = LAYOUT_xbox(
+                _______,                                              KC_RSFT,
                 _______,                                              CK_WL_4,
                                            _______,                   CK_WL_3,
                 KC_0,             KC_ESC,           _______, CK_WL_1,             CK_WL_2,
