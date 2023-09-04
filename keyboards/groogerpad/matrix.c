@@ -5,14 +5,12 @@
 #include "uart.h"
 #include "timer.h"
 #include "print.h"
+#include "groogerpad.h"
 
 // Max is 1023
 const int trigger_threshold = 900;
 
 const int blink_time = 125;
-
-#define UART_CODE_RUMBLE 'r'
-#define UART_CODE_DATA 'd'
 
 void led_on(void) {
   writePinHigh(D4);

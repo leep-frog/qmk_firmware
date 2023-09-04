@@ -5,6 +5,8 @@
 
 #include "../../../../users/leep-frog/v2/leep_index_v2.h"
 #include "groogermouse.h"
+#include "uart.h"
+#include "groogerpad.h"
 
 /**********
  * Layers *
@@ -22,6 +24,7 @@ const uint16_t AltLayer = LR_ALT;
 
 void TypeLayerHandler(bool activated) {
   if (activated) {
+    uart_write(UART_CODE_RUMBLE);
     writePinHigh(D4);
   } else {
     writePinLow(D4);
