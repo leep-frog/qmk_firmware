@@ -61,9 +61,9 @@ bool word_buttons[NUM_WORD_LAYERS] = {
   [0 ... NUM_WORD_LAYERS - 1] = false,
 };
 
-/*TODO: uint16_t word_layer_registered_codes[NUM_WORD_LAYERS] = {
+uint16_t word_layer_registered_codes[NUM_WORD_LAYERS] = {
   [0 ... NUM_WORD_LAYERS - 1] = 0,
-};*/
+};
 
 const uint16_t words[NUM_WORD_LAYERS][9] = {
   // TODO: Shift (RT)
@@ -95,8 +95,11 @@ void left_joystick_handler(enum joystick_direction_t direction) {
   }
   for (int word_layer = 0; word_layer <= LAST_LEFT_LAYER; word_layer++) {
     if (word_buttons[word_layer]) {
-      // TODO: Shift
-      tap_code16(words[word_layer][direction]);
+      // Unregister key we are leaving from
+      unregister_code16(word_layer_registered_codes[word_layer]);
+      // Register key we are entering into
+      register_code16(words[word_layer][direction]);
+      word_layer_registered_codes[word_layer] = words[word_layer][direction];
     }
   }
 }
@@ -107,21 +110,24 @@ void right_joystick_handler(enum joystick_direction_t direction) {
   }
   for (int word_layer = LAST_LEFT_LAYER+1; word_layer < NUM_WORD_LAYERS; word_layer++) {
     if (word_buttons[word_layer]) {
-      // TODO: Shift
-      tap_code16(words[word_layer][direction]);
+      // Unregister key we are leaving from
+      unregister_code16(word_layer_registered_codes[word_layer]);
+      // Register key we are entering into
+      register_code16(words[word_layer][direction]);
+      word_layer_registered_codes[word_layer] = words[word_layer][direction];
     }
   }
 }
 
 #define WORD_HANDLER_DEFINE(word_layer, dir) \
-uint16_t prev_tap_word_layer##word_layer = 0; \
 bool WordLayerHandler_##word_layer (keyrecord_t* record) { \
   word_buttons[word_layer] = record->event.pressed; \
   if (record->event.pressed) { \
-    prev_tap_word_layer##word_layer = words[word_layer][dir##_joystick_direction]; \
-    register_code16(prev_tap_word_layer##word_layer); \
+    register_code16(words[word_layer][dir##_joystick_direction]); \
+    word_layer_registered_codes[word_layer] = words[word_layer][dir##_joystick_direction]; \
   } else { \
-    unregister_code16(prev_tap_word_layer##word_layer); \
+    unregister_code16(word_layer_registered_codes[word_layer]); \
+    word_layer_registered_codes[word_layer] = KC_NO; \
   } \
   return false; \
 }
