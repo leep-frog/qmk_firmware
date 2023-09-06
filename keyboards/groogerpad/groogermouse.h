@@ -25,3 +25,8 @@ bool joystick_scroll_enabled(void);
 
 extern joystick_direction_handler_t left_joystick_handler;
 extern joystick_direction_handler_t right_joystick_handler;
+
+void joystick_mouse_speed_increment(uint8_t offset);
+void joystick_mouse_speed_decrement(uint8_t offset);
+void joystick_scroll_speed_increment(uint8_t offset);
+void joystick_scroll_speed_decrement(uint8_t offset);

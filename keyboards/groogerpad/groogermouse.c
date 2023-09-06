@@ -127,6 +127,27 @@ joystick_config_t scroll_config = {
   GRANULARITY_MULTIPLIER(6),
 };
 
+void joystick_mouse_speed_increment(uint8_t offset) {
+  if (offset <= (255 - mouse_config.max_virtual_speed)) {
+    mouse_config.max_virtual_speed += offset;
+  }
+}
+void joystick_mouse_speed_decrement(uint8_t offset) {
+  if (offset <= mouse_config.max_virtual_speed) {
+    mouse_config.max_virtual_speed -= offset;
+  }
+}
+void joystick_scroll_speed_increment(uint8_t offset) {
+  if (offset <= (255 - scroll_config.max_virtual_speed)) {
+    scroll_config.max_virtual_speed += offset;
+  }
+}
+void joystick_scroll_speed_decrement(uint8_t offset) {
+  if (offset <= scroll_config.max_virtual_speed) {
+    scroll_config.max_virtual_speed -= offset;
+  }
+}
+
 // Note the types for numbers that may be negative need to remain consistent, otherwise we get unexpected behavior
 // e.g. 8bit negative three (10000011) becomes positive 131 in 16bit (0000000010000011)
 int8_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_controller_speed, int32_t signed_controller_throttle) {

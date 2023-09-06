@@ -18,15 +18,16 @@ enum layers {
   LR_OUTLOOK,
   LR_TYPE,
   LR_TYPE_2,
+  LR_SETTINGS,
 };
 
 const uint16_t AltLayer = LR_ALT;
 
 void TypeLayerHandler(bool activated) {
   if (activated) {
-    uart_write(UART_CODE_RUMBLE);
     writePinHigh(D4);
   } else {
+    uart_write(UART_CODE_RUMBLE);
     writePinLow(D4);
   }
 }
@@ -113,12 +114,6 @@ enum leep_tap_dances {
   TDK_RB,
 };
 
-void disconnectController(tap_dance_state_t *state, bool finished, leep_td_value_t *hold_value) {
-  if (finished) {
-    uart_write(UART_CODE_DISCONNECT);
-  }
-}
-
 tap_dance_action_t tap_dance_actions[] = {
   // Include comments for line separation when formatting.
   // Copy dance
@@ -130,7 +125,7 @@ tap_dance_action_t tap_dance_actions[] = {
   // Right DPAD dance
   [TDK_RIGHT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABF, CK_WWWF),
   // Select dance TODO: QK_BOOT fix?
-  [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_FN(CK_WWW_CLOSE, &disconnectController, LEEP_TD_NOVAL()),
+  [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_LAYER(CK_WWW_CLOSE, LR_SETTINGS),
   // Start dance
   [TDK_START] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWW_REOPEN),
   // LB dance
@@ -174,6 +169,13 @@ bool AltBButtonHandler(keyrecord_t* record) {
   return false;
 }
 
+bool DisconnectControllerHandler(keyrecord_t *record) {
+  if (record->event.pressed) {
+    uart_write(UART_CODE_DISCONNECT);
+  }
+  return false;
+}
+
 enum custom_keycodes {
   ALT_TAB,
   SHIFT_ALT_TAB,
@@ -185,7 +187,37 @@ enum custom_keycodes {
   WORD_LAYER_2,
   WORD_LAYER_3,
   WORD_LAYER_4,
+  DISCONNECT_CONTROLLER,
+  MOUSE_SPEED_UP,
+  MOUSE_SPEED_DOWN,
+  SCROLL_SPEED_UP,
+  SCROLL_SPEED_DOWN,
 };
+
+bool IncrementMouseSpeed(keyrecord_t *record) {
+  if (record->event.pressed) {
+    joystick_mouse_speed_increment(1);
+  }
+  return false;
+}
+bool DecrementMouseSpeed(keyrecord_t *record) {
+  if (record->event.pressed) {
+    joystick_mouse_speed_decrement(1);
+  }
+  return false;
+}
+bool IncrementScrollSpeed(keyrecord_t *record) {
+  if (record->event.pressed) {
+    joystick_scroll_speed_increment(1);
+  }
+  return false;
+}
+bool DecrementScrollSpeed(keyrecord_t *record) {
+  if (record->event.pressed) {
+    joystick_scroll_speed_decrement(1);
+  }
+  return false;
+}
 
 custom_keycode_fn_t custom_keycode_handlers[] = {
   [ALT_TAB] = &AltTabHandler,
@@ -197,6 +229,11 @@ custom_keycode_fn_t custom_keycode_handlers[] = {
   [WORD_LAYER_2] = WORD_HANDLER_FUNC(2),
   [WORD_LAYER_3] = WORD_HANDLER_FUNC(3),
   [WORD_LAYER_4] = WORD_HANDLER_FUNC(4),
+  [DISCONNECT_CONTROLLER] = &DisconnectControllerHandler,
+  [MOUSE_SPEED_UP] = &IncrementMouseSpeed,
+  [MOUSE_SPEED_DOWN] = &DecrementMouseSpeed,
+  [SCROLL_SPEED_UP] = &IncrementScrollSpeed,
+  [SCROLL_SPEED_DOWN] = &DecrementScrollSpeed,
 };
 
 #define CK_ALTB CK(LR_ALT_B_BUTTON)
@@ -208,6 +245,11 @@ custom_keycode_fn_t custom_keycode_handlers[] = {
 #define CK_WL_2 CK(WORD_LAYER_2)
 #define CK_WL_3 CK(WORD_LAYER_3)
 #define CK_WL_4 CK(WORD_LAYER_4)
+#define CK_DSCN CK(DISCONNECT_CONTROLLER)
+#define CK_MSUP CK(MOUSE_SPEED_UP)
+#define CK_MSDN CK(MOUSE_SPEED_DOWN)
+#define CK_SCUP CK(SCROLL_SPEED_UP)
+#define CK_SCDN CK(SCROLL_SPEED_DOWN)
 
 uint16_t Alt_keycodes[] = {
   CK_ATAB,
@@ -283,9 +325,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              KC_RSFT,
                 _______,                                              CK_WL_4,
                                            _______,                   CK_WL_3,
-                KC_0,             KC_ESC,           _______, CK_WL_1,             CK_WL_2,
+                KC_0,             KC_ESC,           _______, CK_WL_2,             CK_WL_1,
                 KC_UP,                                                CK_WL_0,
        KC_LEFT,          KC_RIGHT,                  _______,
                 KC_DOWN
+    ),
+
+    [LR_SETTINGS] = LAYOUT_xbox(
+                _______,                                              _______,
+                _______,                                              _______,
+                                           _______,                   _______,
+                _______,          _______,         CK_DSCN, _______,             _______,
+                CK_MSUP,                                              _______,
+       CK_SCDN,          CK_SCUP,                  _______,
+                CK_MSDN
     ),
 };
