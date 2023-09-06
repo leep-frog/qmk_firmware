@@ -94,7 +94,7 @@ button_mapping_t button_mappings[] = {
   BUTTON_MAPPING(4, 1), // A
   BUTTON_MAPPING(3, 4), // B
   BUTTON_MAPPING(3, 3), // X
-  BUTTON_MAPPING(2, 1), // Y
+  BUTTON_MAPPING(2, 0), // Y
   BUTTON_MAPPING(1, 0), // LB
   BUTTON_MAPPING(1, 1), // RB
   IGNORE_BUTTON(),      // LT (get fuller data from other buttons)
@@ -108,7 +108,14 @@ button_mapping_t button_mappings[] = {
 const uint8_t NUM_BUTTONS = GET_NUM_BUTTONS(button_mappings);
 
 button_mapping_t misc_button_mappings[] = {
-  BUTTON_MAPPING(2, 0), // Xbox button
+  // While the first bit 'techincally' maps to the xbox button,
+  // it doesn't actually work as advertised. However, if you hold the xbox
+  // button for ~5 seconds it disconnects so just think of it as the "disconnect"
+  // button (conceptually but not actually in QMK code).
+  // See this issue for possible fixes: https://github.com/ricardoquesada/bluepad32-arduino/issues/7
+  // TODO: Connect controller to xbox
+  // TODO: Verify issue with another controller
+  IGNORE_BUTTON(),
   BUTTON_MAPPING(3, 1), // Select
   BUTTON_MAPPING(3, 2), // Start
 };

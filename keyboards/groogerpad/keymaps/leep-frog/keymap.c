@@ -209,13 +209,6 @@ bool AltBButtonHandler(keyrecord_t* record) {
   return false;
 }
 
-bool DisconnectControllerHandler(keyrecord_t *record) {
-  if (record->event.pressed) {
-    uart_write(UART_CODE_DISCONNECT);
-  }
-  return false;
-}
-
 enum custom_keycodes {
   ALT_TAB,
   SHIFT_ALT_TAB,
@@ -230,7 +223,6 @@ enum custom_keycodes {
   WORD_LAYER_5,
   WORD_LAYER_6,
   WORD_LAYER_7,
-  DISCONNECT_CONTROLLER,
   MOUSE_SPEED_UP,
   MOUSE_SPEED_DOWN,
   SCROLL_SPEED_UP,
@@ -275,7 +267,6 @@ custom_keycode_fn_t custom_keycode_handlers[] = {
   [WORD_LAYER_5] = WORD_HANDLER_FUNC(5),
   [WORD_LAYER_6] = WORD_HANDLER_FUNC(6),
   [WORD_LAYER_7] = WORD_HANDLER_FUNC(7),
-  [DISCONNECT_CONTROLLER] = &DisconnectControllerHandler,
   [MOUSE_SPEED_UP] = &IncrementMouseSpeed,
   [MOUSE_SPEED_DOWN] = &DecrementMouseSpeed,
   [SCROLL_SPEED_UP] = &IncrementScrollSpeed,
@@ -294,7 +285,6 @@ custom_keycode_fn_t custom_keycode_handlers[] = {
 #define CK_WL_5 CK(WORD_LAYER_5)
 #define CK_WL_6 CK(WORD_LAYER_6)
 #define CK_WL_7 CK(WORD_LAYER_7)
-#define CK_DSCN CK(DISCONNECT_CONTROLLER)
 #define CK_MSUP CK(MOUSE_SPEED_UP)
 #define CK_MSDN CK(MOUSE_SPEED_DOWN)
 #define CK_SCUP CK(SCROLL_SPEED_UP)
@@ -333,7 +323,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 _______,                                              _______,
                 TK_LB,                                                TK_RB,
-                                           KC_H,                      SH(TAB),
+                                                                      SH(TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
                 CK_ATAB,                                              KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
@@ -343,7 +333,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_ALT] = LAYOUT_xbox(
                 _______,                                              _______,
                 _______,                                              _______,
-                                           _______,                   _______,
+                                                                      _______,
                 _______,          _______,          _______, _______,          CK_ALTB,
                 CK_ATAB,                                              _______,
        _______,          _______,                   _______,
@@ -353,7 +343,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_OUTLOOK] = LAYOUT_xbox(
                 _______,                                         _______,
                 _______,                                         _______,
-                                           _______,                   OL_PREV,
+                                                                 OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
                 _______,                                              OL_NEXT,
        _______,          _______,                   _______,
@@ -363,7 +353,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_TYPE] = LAYOUT_xbox(
                 MO(LR_SYMB),                                          KC_RSFT,
                 _______,                                              CK_WL_4,
-                                           _______,                   CK_WL_3,
+                                                                      CK_WL_3,
                 KC_0,             KC_ESC,           _______, CK_WL_2,             CK_WL_1,
                 CK_WL_6,                                                CK_WL_0,
        CK_WL_5,          KC_RIGHT,                  _______,
@@ -373,7 +363,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_SYMB] = LAYOUT_xbox(
                 _______,                                              KC_RSFT,
                 _______,                                              CK_WL_4,
-                                           _______,                   CK_WL_3,
+                                                                      CK_WL_3,
                 KC_0,             KC_ESC,           _______, CK_WL_2,             CK_WL_1,
                 KC_UP,                                                KC_X,
        KC_LEFT,          KC_RIGHT,                  _______,
@@ -383,8 +373,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_SETTINGS] = LAYOUT_xbox(
                 _______,                                              _______,
                 _______,                                              _______,
-                                           _______,                   _______,
-                _______,          _______,         CK_DSCN, _______,             _______,
+                                                                      _______,
+                _______,          _______,         _______, _______,             _______,
                 CK_MSUP,                                              _______,
        CK_SCDN,          CK_SCUP,                  _______,
                 CK_MSDN
