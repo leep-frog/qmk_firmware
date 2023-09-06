@@ -335,9 +335,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 TK_LB,                                                TK_RB,
                                            KC_H,                      SH(TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
-                CK_STAB,                                              KC_BTN1,
+                CK_ATAB,                                              KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
-                CK_ATAB
+                CK_STAB
     ),
 
     [LR_ALT] = LAYOUT_xbox(
@@ -345,9 +345,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              _______,
                                            _______,                   _______,
                 _______,          _______,          _______, _______,          CK_ALTB,
-                CK_STAB,                                              _______,
+                CK_ATAB,                                              _______,
        _______,          _______,                   _______,
-                CK_ATAB
+                CK_STAB
     ),
 
     [LR_OUTLOOK] = LAYOUT_xbox(
