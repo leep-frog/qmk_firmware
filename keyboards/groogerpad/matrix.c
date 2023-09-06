@@ -114,7 +114,6 @@ button_mapping_t misc_button_mappings[] = {
   // button for ~5 seconds it disconnects so just think of it as the "disconnect"
   // button (conceptually but not actually in QMK code).
   // See this issue for possible fixes: https://github.com/ricardoquesada/bluepad32-arduino/issues/7
-  // TODO: Connect controller to xbox
   // TODO: Verify issue with another controller
   IGNORE_BUTTON(),
   BUTTON_MAPPING(3, 1), // Select
