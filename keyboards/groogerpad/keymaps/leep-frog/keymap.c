@@ -19,6 +19,7 @@ enum layers {
   LR_TYPE,
   LR_TYPE_2,
   LR_SETTINGS,
+  LR_SYMB,
 };
 
 const uint16_t AltLayer = LR_ALT;
@@ -42,19 +43,25 @@ void keyboard_post_init_user(void) {
  ****************/
 
 enum word_button_layers_t {
+  // Left joystick with buttons
   word_layer_A,
   word_layer_B,
   word_layer_X,
   word_layer_Y,
-  word_layer_RB,
+  word_layer_RB, // If add another left layer, be sure to update LAST_LEFT_LAYER below
+  // Right joystick with dpad
+  symb_layer_left,
+  symb_layer_up,
+  symb_layer_down,
   NUM_WORD_LAYERS,
 };
+#define LAST_LEFT_LAYER word_layer_RB
 
 bool word_buttons[NUM_WORD_LAYERS] = {
   [0 ... NUM_WORD_LAYERS - 1] = false,
 };
 
-const uint8_t words[NUM_WORD_LAYERS][9] = {
+const uint16_t words[NUM_WORD_LAYERS][9] = {
   // TODO: Shift (RT)
   // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
 /*{ CENTER,  WEST,    NW,      NORTH,   NE,      EAST,    SE,      SOUTH,   SW       } */
@@ -63,18 +70,26 @@ const uint8_t words[NUM_WORD_LAYERS][9] = {
   // B button
   { KC_ENTER,KC_B,    KC_L,    KC_A,    KC_N,    KC_D,    KC_V,    KC_DOT, KC_COMMA },
   // X button
-  { KC_BSPC, KC_Q,    KC_U,    KC_I,    KC_C,    KC_K,    KC_X,    _______, KC_Z },
+  { KC_BSPC, KC_Q,    KC_U,    KC_I,    KC_C,    KC_K,    KC_X,    KC_BSLS, KC_Z },
   // Y button
-  { KC_DEL,  KC_F,    KC_G,    KC_S,    KC_Y,    KC_M,    _______, _______, KC_J },
+  { KC_DEL,  KC_F,    KC_G,    KC_S,    KC_Y,    KC_M,    KC_SCLN, KC_QUOT, KC_J },
   // RB. Setup is the number pad (0 is click joystick)
   { KC_5,    KC_4,    KC_7,    KC_8,    KC_9,    KC_6,    KC_3,    KC_2,    KC_1 },
+
+  // TODO: Make right joystick work with dpad?
+  { KC_LEFT, KC_GRV,  KC_QUOT, KC_DOT,  KC_COMM, KC_EQL,  KC_MINS, KC_SCLN, KC_SLSH },
+  { KC_UP,   KC_DLR,  KC_HASH, KC_ASTR, KC_AT,   KC_AMPR, KC_CIRC, KC_PERC, KC_EXLM },
+  { KC_DOWN, KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC, KC_RCBR, KC_LCBR, KC_BSLS, KC_PIPE },
+  /*                                            ^ Swap order for second half because left and right is reversed here */
+
+
 };
 
 void left_joystick_handler(enum joystick_direction_t direction) {
   if (get_highest_layer(layer_state) != LR_TYPE_2) {
     return;
   }
-  for (int word_layer = 0; word_layer < NUM_WORD_LAYERS; word_layer++) {
+  for (int word_layer = 0; word_layer <= LAST_LEFT_LAYER; word_layer++) {
     if (word_buttons[word_layer]) {
       // TODO: Shift
       tap_code16(words[word_layer][direction]);
@@ -82,20 +97,35 @@ void left_joystick_handler(enum joystick_direction_t direction) {
   }
 }
 
-#define WORD_HANDLER_DEFINE(word_layer) bool WordLayerHandler_##word_layer (keyrecord_t* record) { \
+void right_joystick_handler(enum joystick_direction_t direction) {
+  if (get_highest_layer(layer_state) != LR_TYPE_2) {
+    return;
+  }
+  for (int word_layer = LAST_LEFT_LAYER+1; word_layer < NUM_WORD_LAYERS; word_layer++) {
+    if (word_buttons[word_layer]) {
+      // TODO: Shift
+      tap_code16(words[word_layer][direction]);
+    }
+  }
+}
+
+#define WORD_HANDLER_DEFINE(word_layer, dir) bool WordLayerHandler_##word_layer (keyrecord_t* record) { \
   word_buttons[word_layer] = record->event.pressed; \
   if (record->event.pressed) { \
     /* TODO: Shift */ \
-    tap_code16(words[word_layer][left_joystick_direction]); \
+    tap_code16(words[word_layer][dir##_joystick_direction]); \
   } \
   return false; \
 }
 
-WORD_HANDLER_DEFINE(0)
-WORD_HANDLER_DEFINE(1)
-WORD_HANDLER_DEFINE(2)
-WORD_HANDLER_DEFINE(3)
-WORD_HANDLER_DEFINE(4)
+WORD_HANDLER_DEFINE(0, left)
+WORD_HANDLER_DEFINE(1, left)
+WORD_HANDLER_DEFINE(2, left)
+WORD_HANDLER_DEFINE(3, left)
+WORD_HANDLER_DEFINE(4, left)
+WORD_HANDLER_DEFINE(5, right)
+WORD_HANDLER_DEFINE(6, right)
+WORD_HANDLER_DEFINE(7, right)
 
 #define WORD_HANDLER_FUNC(word_layer) &WordLayerHandler_##word_layer
 
@@ -187,6 +217,9 @@ enum custom_keycodes {
   WORD_LAYER_2,
   WORD_LAYER_3,
   WORD_LAYER_4,
+  WORD_LAYER_5,
+  WORD_LAYER_6,
+  WORD_LAYER_7,
   DISCONNECT_CONTROLLER,
   MOUSE_SPEED_UP,
   MOUSE_SPEED_DOWN,
@@ -229,6 +262,9 @@ custom_keycode_fn_t custom_keycode_handlers[] = {
   [WORD_LAYER_2] = WORD_HANDLER_FUNC(2),
   [WORD_LAYER_3] = WORD_HANDLER_FUNC(3),
   [WORD_LAYER_4] = WORD_HANDLER_FUNC(4),
+  [WORD_LAYER_5] = WORD_HANDLER_FUNC(5),
+  [WORD_LAYER_6] = WORD_HANDLER_FUNC(6),
+  [WORD_LAYER_7] = WORD_HANDLER_FUNC(7),
   [DISCONNECT_CONTROLLER] = &DisconnectControllerHandler,
   [MOUSE_SPEED_UP] = &IncrementMouseSpeed,
   [MOUSE_SPEED_DOWN] = &DecrementMouseSpeed,
@@ -245,6 +281,9 @@ custom_keycode_fn_t custom_keycode_handlers[] = {
 #define CK_WL_2 CK(WORD_LAYER_2)
 #define CK_WL_3 CK(WORD_LAYER_3)
 #define CK_WL_4 CK(WORD_LAYER_4)
+#define CK_WL_5 CK(WORD_LAYER_5)
+#define CK_WL_6 CK(WORD_LAYER_6)
+#define CK_WL_7 CK(WORD_LAYER_7)
 #define CK_DSCN CK(DISCONNECT_CONTROLLER)
 #define CK_MSUP CK(MOUSE_SPEED_UP)
 #define CK_MSDN CK(MOUSE_SPEED_DOWN)
@@ -322,11 +361,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_TYPE_2] = LAYOUT_xbox(
+                MO(LR_SYMB),                                          KC_RSFT,
+                _______,                                              CK_WL_4,
+                                           _______,                   CK_WL_3,
+                KC_0,             KC_ESC,           _______, CK_WL_2,             CK_WL_1,
+                CK_WL_6,                                                CK_WL_0,
+       CK_WL_5,          KC_RIGHT,                  _______,
+                CK_WL_7
+    ),
+
+    [LR_SYMB] = LAYOUT_xbox(
                 _______,                                              KC_RSFT,
                 _______,                                              CK_WL_4,
                                            _______,                   CK_WL_3,
                 KC_0,             KC_ESC,           _______, CK_WL_2,             CK_WL_1,
-                KC_UP,                                                CK_WL_0,
+                KC_UP,                                                KC_X,
        KC_LEFT,          KC_RIGHT,                  _______,
                 KC_DOWN
     ),
