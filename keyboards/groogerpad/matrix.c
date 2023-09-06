@@ -49,7 +49,7 @@ void matrix_init_custom(void) {
 
 #define CHECK_BUTTON(button, var, pos) ((var) & (1<<(pos)))
 
-// Copied from (TODO link);
+// Copied from (https://github.com/ricardoquesada/bluepad32-arduino/blob/b026e813baf386fab596d4dc247afe268b79e40a/src/ControllerData.h#L20-L40);
 typedef struct __attribute__((packed)) {
   // Usage Page: 0x01 (Generic Desktop Controls)
   uint8_t dpad;
@@ -71,7 +71,8 @@ typedef struct __attribute__((packed)) {
   uint8_t misc_buttons;
 
   // Xbox controller doesn't have any accelerometer, so save
-  // data that needs to be sent and remove these.
+  // data that needs to be sent and remove these (note these were
+  // also removed in the Bluepad32 code for the sending library).
   /*int32_t gyro[3];
   int32_t accel[3];*/
 } nina_gamepad_t;
