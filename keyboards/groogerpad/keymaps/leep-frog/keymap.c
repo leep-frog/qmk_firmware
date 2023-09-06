@@ -17,7 +17,6 @@ enum layers {
   LR_ALT,
   LR_OUTLOOK,
   LR_TYPE,
-  LR_TYPE_2,
   LR_SETTINGS,
   LR_SYMB,
 };
@@ -35,7 +34,7 @@ void TypeLayerHandler(bool activated) {
 
 void keyboard_post_init_user(void) {
   SET_LAYER_HANDLER(LR_ALT, AltLayerHandler);
-  SET_LAYER_HANDLER(LR_TYPE_2, TypeLayerHandler);
+  SET_LAYER_HANDLER(LR_TYPE, TypeLayerHandler);
 }
 
 /****************
@@ -90,7 +89,7 @@ const uint16_t words[NUM_WORD_LAYERS][9] = {
 };
 
 void left_joystick_handler(enum joystick_direction_t direction) {
-  if (get_highest_layer(layer_state) != LR_TYPE_2) {
+  if (get_highest_layer(layer_state) != LR_TYPE) {
     return;
   }
   for (int word_layer = 0; word_layer <= LAST_LEFT_LAYER; word_layer++) {
@@ -105,7 +104,7 @@ void left_joystick_handler(enum joystick_direction_t direction) {
 }
 
 void right_joystick_handler(enum joystick_direction_t direction) {
-  if (get_highest_layer(layer_state) != LR_TYPE_2) {
+  if (get_highest_layer(layer_state) != LR_TYPE) {
     return;
   }
   for (int word_layer = LAST_LEFT_LAYER+1; word_layer < NUM_WORD_LAYERS; word_layer++) {
@@ -193,8 +192,7 @@ tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM test_combo1[] = {TK_LB, TK_RB, COMBO_END};
 combo_t key_combos[] = {
-    COMBO(test_combo1, TG(LR_TYPE_2)),
-    // COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too!
+    COMBO(test_combo1, TG(LR_TYPE)),
 };
 
 /*******************
@@ -365,16 +363,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_TYPE] = LAYOUT_xbox(
-                _______,                                              _______,
-                _______,                                              _______,
-                                           _______,                   KC_DEL,
-                _______,          KC_ESC,           _______, KC_BSPC,          KC_ENT,
-                KC_UP,                                                KC_SPACE,
-       KC_LEFT,          KC_RIGHT,                  _______,
-                KC_DOWN
-    ),
-
-    [LR_TYPE_2] = LAYOUT_xbox(
                 MO(LR_SYMB),                                          KC_RSFT,
                 _______,                                              CK_WL_4,
                                            _______,                   CK_WL_3,
