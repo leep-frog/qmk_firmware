@@ -61,6 +61,10 @@ bool word_buttons[NUM_WORD_LAYERS] = {
   [0 ... NUM_WORD_LAYERS - 1] = false,
 };
 
+/*TODO: uint16_t word_layer_registered_codes[NUM_WORD_LAYERS] = {
+  [0 ... NUM_WORD_LAYERS - 1] = 0,
+};*/
+
 const uint16_t words[NUM_WORD_LAYERS][9] = {
   // TODO: Shift (RT)
   // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
@@ -109,11 +113,15 @@ void right_joystick_handler(enum joystick_direction_t direction) {
   }
 }
 
-#define WORD_HANDLER_DEFINE(word_layer, dir) bool WordLayerHandler_##word_layer (keyrecord_t* record) { \
+#define WORD_HANDLER_DEFINE(word_layer, dir) \
+uint16_t prev_tap_word_layer##word_layer = 0; \
+bool WordLayerHandler_##word_layer (keyrecord_t* record) { \
   word_buttons[word_layer] = record->event.pressed; \
   if (record->event.pressed) { \
-    /* TODO: Shift */ \
-    tap_code16(words[word_layer][dir##_joystick_direction]); \
+    prev_tap_word_layer##word_layer = words[word_layer][dir##_joystick_direction]; \
+    register_code16(prev_tap_word_layer##word_layer); \
+  } else { \
+    unregister_code16(prev_tap_word_layer##word_layer); \
   } \
   return false; \
 }
