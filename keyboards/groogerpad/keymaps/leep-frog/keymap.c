@@ -65,7 +65,6 @@ uint16_t word_layer_registered_codes[NUM_WORD_LAYERS] = {
 };
 
 const uint16_t words[NUM_WORD_LAYERS][9] = {
-  // TODO: Shift (RT)
   // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
 /*{ CENTER,  WEST,    NW,      NORTH,   NE,      EAST,    SE,      SOUTH,   SW       } */
   // A button
@@ -79,7 +78,6 @@ const uint16_t words[NUM_WORD_LAYERS][9] = {
   // RB. Setup is the number pad (0 is click joystick)
   { KC_5,    KC_4,    KC_7,    KC_8,    KC_9,    KC_6,    KC_3,    KC_2,    KC_1 },
 
-  // TODO: Make right joystick work with dpad?
   { KC_LEFT, KC_GRV,  KC_QUOT, KC_DOT,  KC_COMM, KC_EQL,  KC_MINS, KC_SCLN, KC_SLSH },
   { KC_UP,   KC_DLR,  KC_HASH, KC_ASTR, KC_AT,   KC_AMPR, KC_CIRC, KC_PERC, KC_EXLM },
   { KC_DOWN, KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC, KC_RCBR, KC_LCBR, KC_BSLS, KC_PIPE },
@@ -167,7 +165,7 @@ tap_dance_action_t tap_dance_actions[] = {
   [TDK_LEFT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABB, CK_WWWB),
   // Right DPAD dance
   [TDK_RIGHT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABF, CK_WWWF),
-  // Select dance TODO: QK_BOOT fix?
+  // Select dance
   [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_LAYER(CK_WWW_CLOSE, LR_SETTINGS),
   // Start dance
   [TDK_START] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWW_REOPEN),
