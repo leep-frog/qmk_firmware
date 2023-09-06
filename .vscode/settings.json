@@ -36,10 +36,10 @@
         "path": "/home/qmk/qmk_firmware/keyboards/groogerpad/matrix.c"
       },
       {
-        "path": "/home/qmk/qmk_firmware/users/leep-frog/v2/leep_tap_dance_v2.c"
+        "path": "/home/qmk/qmk_firmware/keyboards/groogerpad/keymaps/leep-frog/keymap.c"
       },
       {
-        "path": "/home/qmk/qmk_firmware/keyboards/groogerpad/keymaps/leep-frog/keymap.c"
+        "path": "/home/qmk/qmk_firmware/users/leep-frog/v2/leep_tap_dance_v2.c"
       }
     ]
 }

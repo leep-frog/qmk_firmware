@@ -27,7 +27,6 @@ void TypeLayerHandler(bool activated) {
   if (activated) {
     writePinHigh(D4);
   } else {
-    uart_write(UART_CODE_RUMBLE);
     writePinLow(D4);
   }
 }
