@@ -118,7 +118,13 @@ button_mapping_t misc_button_mappings[] = {
 
 const uint8_t NUM_MISC_BUTTONS = GET_NUM_BUTTONS(misc_button_mappings);
 
-// TODO: Join dpad and misc buttons for smaller data packets
+// I initially had the idea to combine all of the following bitmasks to save on space:
+// * buttons (10 out of 16 bits used)
+// * misc_buttons (3 out of 8 bits used)
+// * dpad_buttons (4 out of 8 bits used)
+// * * * * Total: (17 out of 32 bits used)
+// As the math shows, we would have to rework a lot more to actually save space (since options are 1 bytes or 2 bytes).
+// Try to do something clever here isn't worth the work, savings, or risk of causing other issues.
 button_mapping_t dpad_button_mappings[] = {
   BUTTON_MAPPING(4, 0), // Up
   BUTTON_MAPPING(6, 0), // Down
