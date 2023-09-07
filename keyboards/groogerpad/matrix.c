@@ -95,7 +95,7 @@ button_mapping_t button_mappings[] = {
   BUTTON_MAPPING(4, 1), // A
   BUTTON_MAPPING(3, 4), // B
   BUTTON_MAPPING(3, 3), // X
-  BUTTON_MAPPING(2, 0), // Y
+  BUTTON_MAPPING(2, 1), // Y
   BUTTON_MAPPING(1, 0), // LB
   BUTTON_MAPPING(1, 1), // RB
   IGNORE_BUTTON(),      // LT (get fuller data from other buttons)
@@ -109,13 +109,9 @@ button_mapping_t button_mappings[] = {
 const uint8_t NUM_BUTTONS = GET_NUM_BUTTONS(button_mappings);
 
 button_mapping_t misc_button_mappings[] = {
-  // While the first bit 'techincally' maps to the xbox button,
-  // it doesn't actually work as advertised. However, if you hold the xbox
-  // button for ~5 seconds it disconnects so just think of it as the "disconnect"
-  // button (conceptually but not actually in QMK code).
-  // See this issue for possible fixes: https://github.com/ricardoquesada/bluepad32-arduino/issues/7
-  // TODO: Verify issue with another controller
-  IGNORE_BUTTON(),
+  // Note: the Xbox button only works on newer controllers (that have the additional small button sorta in between select and start)
+  // See this issue for addition of logic on controllers for older models: https://github.com/ricardoquesada/bluepad32-arduino/issues/7
+  BUTTON_MAPPING(2, 0), // Xbox button
   BUTTON_MAPPING(3, 1), // Select
   BUTTON_MAPPING(3, 2), // Start
 };
@@ -165,7 +161,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   for (int i = 0; !uart_available(); i++) {
     if (first) {
       first = false;
-      uart_write(UART_CODE_DATA);
+      UART_WRITE_SEND_DATA();
       continue;
     }
 
@@ -173,7 +169,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     // Send more data in case the previous packet got sent
     // before the other circuit board started
     if (i == 2500) {
-      uart_write(UART_CODE_DATA);
+      UART_WRITE_SEND_DATA();
       i = 0;
     }
   }
