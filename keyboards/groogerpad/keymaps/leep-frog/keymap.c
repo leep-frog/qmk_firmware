@@ -318,6 +318,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
  * Keymaps *
  ***********/
 
+/* TODO:
+- ctrl-click
+- ctrl-shift-click
+- GU(TAB)
+- ctrl+f
+- links
+  - chime
+  - id grabber (press url_copy key n times for n-th id?)
+*/
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 _______,                                              _______,
@@ -340,13 +349,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_OUTLOOK] = LAYOUT_xbox(
-                _______,                                         _______,
-                _______,                                         _______,
-                                           _______,              OL_PREV,
+                _______,                                              _______,
+                _______,                                              _______,
+                                           _______,                   OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
                 _______,                                              OL_NEXT,
        _______,          _______,                   _______,
-                GU(TAB)
+                _______
+                // TODO: Dpad for calendar functions (left, right, today)
     ),
 
     [LR_TYPE] = LAYOUT_xbox(
