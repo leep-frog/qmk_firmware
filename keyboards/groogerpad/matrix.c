@@ -157,20 +157,15 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   bool changed = false;
 
   // Only request data if there isn't anything already available
-  bool first = true;
-  for (int i = 0; !uart_available(); i++) {
-    if (first) {
-      first = false;
-      UART_WRITE_SEND_DATA();
-      continue;
-    }
-
-    wait_ms(1); // TODO: Use timer
+  UART_WRITE_SEND_DATA();
+  uint16_t last_write = timer_read();
+  while (!uart_available()) {
     // Send more data in case the previous packet got sent
     // before the other circuit board started
-    if (i == 2500) {
+    if (timer_elapsed(last_write) >= 2500) {
+      led_blink(2);
       UART_WRITE_SEND_DATA();
-      i = 0;
+      last_write = timer_read();
     }
   }
   uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
