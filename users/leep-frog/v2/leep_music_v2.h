@@ -41,42 +41,17 @@ void MuteWithSound(bool pressed);
 
 #endif
 
-// Explicitly only define each song once (not once per use) to limit memory usage.
-// All song uses should exclusively be used through references to these
-// existing songs (and not by creating new song instances).
-DEFINE_SONG(zelda_discover, SONG(ZELDA_DISCOVERY));
-// DEFINE_SONG(zelda_guardian_battle_song, SONG(ZELDA_GUARDIAN_BATTLE));
-DEFINE_SONG(zelda_item_found, SONG(ZELDA_ITEM_FOUND));
-DEFINE_SONG(zelda_spirit_orb, SONG(ZELDA_SPIRIT_ORB));
-
-DEFINE_SONG(leep_start, SONG(LEEP_START_SNG));
-DEFINE_SONG(leep_end, SONG(LEEP_END_SNG));
-
-DEFINE_SONG(mario_1_up, SONG(MARIO_1_UP));
-DEFINE_SONG(mario_lost_a_life, SONG(MARIO_LOST_A_LIFE));
-DEFINE_SONG(mario_game_over, SONG(MARIO_GAME_OVER));
-
-DEFINE_SONG(mario_uw_1, SONG(MARIO_UNDERWORLD_1));
-DEFINE_SONG(mario_uw_2, SONG(MARIO_UNDERWORLD_2));
-
-DEFINE_SONG(leep_dud, SONG(LEEP_DUD));
-
-DEFINE_SONG(leep_silence, SONG());
-DEFINE_SONG(leep_success, SONG(LEEP_SUCCESS));
-
-// We define our own start-up song (instead of using STARTUP_SONG)
-// so we can add logic that disables the custom startup song.
-#    define SNG_STARTUP() LEEP_PLAY_SONG(zelda_discover, leep_silence)
-#    define SNG_RESET() LEEP_PLAY_SONG(mario_game_over, leep_dud)
-#    define SNG_MUTE() LEEP_PLAY_SONG(mario_lost_a_life, leep_silence)
-#    define SNG_UNMUTE() LEEP_PLAY_SONG(mario_1_up, leep_silence)
-#    define SNG_REC_START() LEEP_PLAY_SONG(leep_start, leep_start)
-#    define SNG_REC_1_END() LEEP_PLAY_SONG(zelda_item_found, leep_end)
-#    define SNG_REC_2_END() LEEP_PLAY_SONG(mario_1_up, leep_end)
-#    define SNG_REC_1_PLAY() LEEP_PLAY_SONG(zelda_spirit_orb, leep_success)
-#    define SNG_REC_2_PLAY() LEEP_PLAY_SONG(zelda_discover, leep_success)
-#    define SNG_EYE_START() LEEP_PLAY_SONG(mario_uw_1, leep_success)
-#    define SNG_EYE_END() LEEP_PLAY_SONG(mario_uw_2, leep_success)
-#    define SNG_COPY() LEEP_PLAY_SONG(leep_start, leep_start)
-#    define SNG_PASTE() LEEP_PLAY_SONG(leep_end, leep_end)
-#    define SNG_DUD() LEEP_PLAY_SONG(leep_dud, leep_dud)
+void SNG_STARTUP(void);
+void SNG_RESET(void);
+void SNG_MUTE(void);
+void SNG_UNMUTE(void);
+void SNG_REC_START(void);
+void SNG_REC_1_END(void);
+void SNG_REC_2_END(void);
+void SNG_REC_1_PLAY(void);
+void SNG_REC_2_PLAY(void);
+void SNG_EYE_START(void);
+void SNG_EYE_END(void);
+void SNG_COPY(void);
+void SNG_PASTE(void);
+void SNG_DUD(void);
