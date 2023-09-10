@@ -26,3 +26,12 @@ bool _ck_string_handler(keyrecord_t *record, custom_keycode_value_t *v) {
   }
   return false;
 }
+
+// Use CK_HANDLER_URL_STRING instead of this.
+bool _ck_url_string_handler(keyrecord_t *record, custom_keycode_value_t *v) {
+  if (record->event.pressed) {
+    NEW_TAB();
+    send_string(v->ck_string);
+  }
+  return false;
+}

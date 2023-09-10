@@ -200,7 +200,7 @@ PROCESSOR_MACRO_STRING(3, CU_ENUM_START, cu, 46, "",
 
 PROCESSOR_MACRO_STRING(3, CN_ENUM_START, cn, 12, "",
                        // Paste clipboard contents into the URL bar
-                       URL_PST, SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER),
+                       URL_PST, ,
                        // Open CL
                        CK_CL, "cl/" SS_TAP(X_ENTER),
                        // Open Moma
@@ -286,6 +286,7 @@ enum custom_keycode_handlers {
   // String handlers
   CK_UNBS_HANDLER,
   CK_LOGS_HANDLER,
+  URL_PST_HANDLER,
 };
 
 // bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
@@ -310,6 +311,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   // String handlers
   [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC))),
   [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp asc"),
+  [URL_PST_HANDLER] = CK_HANDLER_STRING(SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
 };
 
 #define TO_ALT CK(TO_ALT_HANDLER)
@@ -332,7 +334,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 // TODO:
 #define CK_MOMA _______
 #define CK_CL _______
-#define URL_PST _______
+#define URL_PST CK(URL_PST_HANDLER)
 #define URL_ICP _______
 #define CK_URLC _______
 #define URL_CRI _______
