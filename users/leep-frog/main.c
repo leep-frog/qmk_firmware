@@ -11,20 +11,11 @@ void print_int(int k) {
 #include <stdio.h>
 #include "./keyboard-main/leep_index_kb.h"
 #include "./v2/leep_index_v2.h"
-// #include "interface.c"
-// #include "enum.c"
-// #include "./features/features.c"
-// #include "color.c"
-// #include "music.c"
-// #include "google.c"
-// #include "workspace.c"
-// #include "url.c"
-// #include "combo.c"
-// #include "tap_dance.c"
-// #include "record.c" included by tap_dance
-// #include "shift.c"
-// #include "ctrl.c"
-// #include "slack.c"
+
+bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
+custom_keycode_handler_t custom_keycode_handlers[] = {
+  [0] = CK_HANDLER_FN(nooooop),
+};
 
 // Note: wally sometimes crashes if the keyboard is plugged into the workstation,
 // but behaves fine if the keyboard is plugged directly into the laptop.
