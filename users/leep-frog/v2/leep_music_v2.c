@@ -49,10 +49,10 @@ bool IsMuted(void) { return _leep_mute; }
 static bool _mute_just_colored = false;
 #endif
 
-static void mute_sound(bool pressed, bool with_sound) {
+static bool mute_sound(keyrecord_t *record, bool with_sound) {
     #ifdef AUDIO_ENABLE
-    if (!pressed) {
-        return;
+    if (!record->event.pressed) {
+        return true;
     }
 
     _mute_just_colored = true;
@@ -80,6 +80,8 @@ static void mute_sound(bool pressed, bool with_sound) {
         }
     }
     #endif
+
+    return true;
 }
 
 void Mute_handled(keyrecord_t* record) {
@@ -98,6 +100,6 @@ void Mute_handled(keyrecord_t* record) {
 
 void LeepMute(void) { _leep_mute = true; }
 
-void MuteWithoutSound(bool pressed) { mute_sound(pressed, false); }
+bool MuteWithoutSound(keyrecord_t *record, uint16_t _) { return mute_sound(record, false); }
 
-void MuteWithSound(bool pressed) { mute_sound(pressed, true); }
+bool MuteWithSound(keyrecord_t *record, uint16_t _) { return mute_sound(record, true); }

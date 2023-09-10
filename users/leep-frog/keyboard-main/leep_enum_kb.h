@@ -63,7 +63,7 @@ enum td_keys { // prefix TDK
 };
 
 // Custom keycode enums
-#define LEEP_ENUM(name, prefix, start, ...) \
+/*#define LEEP_ENUM(name, prefix, start, ...) \
     enum name {                             \
         prefix##_ENUM_START = start - 1,    \
         __VA_ARGS__ prefix##_ENUM_END,      \
@@ -133,13 +133,8 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
           CK_SATB,
           // To LR_CTRL_X
           TO_CTLX,
-          // Ctrl+w
-          CTRL_W,
           // Trailing comma
-)
-
-const uint16_t ToAltKeycode = TO_ALT;
-const uint16_t ToCtrlKeycode = TO_CTRL;
+)*/
 
 // Layer toggling
 // Defined here because needed by combo.c

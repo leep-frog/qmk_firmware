@@ -8,8 +8,8 @@ void ToCtrl_handled(uint16_t keycode) {
     }
 }
 
-void ToCtrl_run(bool pressed) {
-    if (pressed) {
+bool ToCtrl_run(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
         ctrl_interrupted = false;
         ctrl_timer       = timer_read();
         layer_on(CtrlLayer);
@@ -19,4 +19,5 @@ void ToCtrl_run(bool pressed) {
             tap_code16(KC_TAB);
         }
     }
+    return false;
 }

@@ -17,8 +17,8 @@ void ToAlt_handled(uint16_t keycode) {
     }
 }
 
-void ToAlt_run(bool pressed) {
-    if (pressed) {
+bool ToAlt_run(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
         alt_interrupted = false;
         alt_timer       = timer_read();
         layer_on(AltLayer);
@@ -28,6 +28,7 @@ void ToAlt_run(bool pressed) {
             tap_code16(KC_ENTER);
         }
     }
+    return false;
 }
 
 /****************
@@ -80,8 +81,8 @@ void AltLayerDeactivationHandler(bool activated) {
 
 // The below functions implement custom keycode handlers
 
-bool _AltTabHandler(bool pressed) {
-  if (pressed) {
+bool AltTabHandler(keyrecord_t* record, uint16_t _) {
+  if (record->event.pressed) {
     _start_alt_tab_mode();
     register_code16(KC_TAB);
   } else {
@@ -91,17 +92,8 @@ bool _AltTabHandler(bool pressed) {
   return true;
 }
 
-bool AltTabHandler(keyrecord_t* record) {
-  return _AltTabHandler(record->event.pressed);
-}
-
-void AltTabHandler_old(bool pressed) {
-  _AltTabHandler(pressed);
-}
-
-
-bool _AltShiftTabHandler(bool pressed) {
-  if (pressed) {
+bool AltShiftTabHandler(keyrecord_t* record, uint16_t _) {
+  if (record->event.pressed) {
     _start_alt_tab_mode();
     register_code16(S(KC_TAB));
   } else {
@@ -109,12 +101,4 @@ bool _AltShiftTabHandler(bool pressed) {
   }
 
   return true;
-}
-
-bool AltShiftTabHandler(keyrecord_t* record) {
-  return _AltShiftTabHandler(record->event.pressed);
-}
-
-void AltShiftTabHandler_old(bool pressed) {
-  _AltShiftTabHandler(pressed);
 }

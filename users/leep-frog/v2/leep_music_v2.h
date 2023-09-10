@@ -3,8 +3,8 @@
 bool IsMuted(void);
 void Mute_handled(keyrecord_t* record);
 void LeepMute(void);
-void MuteWithoutSound(bool pressed);
-void MuteWithSound(bool pressed);
+bool MuteWithoutSound(keyrecord_t* record, uint16_t _);
+bool MuteWithSound(keyrecord_t* record, uint16_t _);
 
 #ifdef AUDIO_ENABLE
 

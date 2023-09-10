@@ -4,4 +4,4 @@ extern const uint16_t CtrlLayer;
 extern const uint16_t ToCtrlKeycode;
 
 void ToCtrl_handled(uint16_t keycode);
-void ToCtrl_run(bool pressed);
+bool ToCtrl_run(keyrecord_t *record, uint16_t _);

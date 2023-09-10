@@ -12,11 +12,6 @@ void print_int(int k) {
 #include "./keyboard-main/leep_index_kb.h"
 #include "./v2/leep_index_v2.h"
 
-bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
-custom_keycode_handler_t custom_keycode_handlers[] = {
-  [0] = CK_HANDLER_FN(nooooop),
-};
-
 // Note: wally sometimes crashes if the keyboard is plugged into the workstation,
 // but behaves fine if the keyboard is plugged directly into the laptop.
 
@@ -30,45 +25,33 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 
 #endif
 
-void _ctrl_w_new(bool pressed) {
-  if (!pressed) {
-    return;
-  }
-  if (!IsShiftToggled()) {
-    SEND_STRING(SS_RCTL("w"));
-  } else {
-    UntoggleShift();
-    // Copy contents
-    SEND_STRING(SS_COPY);
-    // Delete selected text.
-    SEND_STRING(SS_TAP(X_DELETE));
-  }
-}
-
-void _leep_keyboard_off(bool pressed) {
-    if (pressed) {
+bool _leep_keyboard_off(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
         LEEP_SOLID_COLOR(OFF, true);
         SetPlayedStartupSong(false);
     }
+    return false;
 }
 
-void _leep_lock(bool pressed) {
-    if (pressed) {
+bool _leep_lock(keyrecord_t *record, uint16_t v) {
+    if (record->event.pressed) {
         SEND_STRING(SS_LGUI("l"));
-        _leep_keyboard_off(pressed);
+        _leep_keyboard_off(record, v);
     }
+    return false;
 }
 
-void _leep_wait(bool pressed) {
-    if (pressed) {
+bool _leep_wait(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
         wait_ms(100);
     }
+    return false;
 }
 
 static int leep_acl = 0;
 
-void _change_mouse_speed(bool pressed) {
-    if (pressed) {
+bool _change_mouse_speed(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
         // Default speed is fast, then medium, then slow (and reset on layer change)
         if (leep_acl == 0) {
             tap_code16(KC_ACL1);
@@ -79,11 +62,12 @@ void _change_mouse_speed(bool pressed) {
         }
         leep_acl = (leep_acl + 1) % 3;
     }
+    return false;
 }
 
-void _alt_t_new(bool pressed) {
-    if (!pressed) {
-        return;
+bool _alt_t_new(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
+        return true;
     }
 
     if (get_mods() & MOD_MASK_SHIFT) {
@@ -96,11 +80,12 @@ void _alt_t_new(bool pressed) {
         // Otherwise, send new tab command (ctrl+shift+t)
         SEND_STRING(SS_RCTL(SS_RSFT("t")));
     }
+    return false;
 }
 
-void _ctrl_click(bool pressed) {
-    if (!pressed) {
-        return;
+bool _ctrl_click(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
+        return true;
     }
     // Used to have the following line
     // #define MS_CTRL RCTL(KC_MS_BTN1)
@@ -110,10 +95,11 @@ void _ctrl_click(bool pressed) {
     wait_ms(50);
     SEND_STRING(SS_TAP(X_MS_BTN1));
     SEND_STRING(SS_UP(X_RCTL));
+    return false;
 }
 
-void _eye_care(bool pressed) {
-    if (pressed) {
+bool _eye_care(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
         // The color change takes effect after the keycode is processed, so we can't
         // change the color twice in the _eye_care function.
         // Instead we set the first color on key down.
@@ -124,6 +110,7 @@ void _eye_care(bool pressed) {
         LEEP_SOLID_COLOR(GREEN, false);
         SNG_EYE_END();
     }
+    return false;
 }
 
 static uint16_t ck_timer;
@@ -136,11 +123,12 @@ void _ck_timer(bool pressed) {
     }
 }
 
-void to_ctrl_x_layer(bool pressed) {
-    if (pressed) {
+bool to_ctrl_x_layer(keyrecord_t *record, uint16_t _) {
+    if (record->event.pressed) {
         SEND_STRING(SS_RCTL("x"));
         ActivateOneshot(LR_CTRL_X);
     }
+    return false;
 }
 
 void _ella_layer(bool activated) {
@@ -187,7 +175,7 @@ typedef void (*processor_action_t)(bool activated);
 
 // Be sure to end each with "\0" character (string end character).
 
-PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
+/*PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
                        // KC_ESC actually sends a "`" (KC_GRAVE) character for some reason.
                        // Maybe it's something to do with KC_GESC overlapping or something?
                        // Who knows why, but we do need this custom keycode regardless to get around that.
@@ -219,43 +207,7 @@ PROCESSOR_MACRO_STRING(3, CN_ENUM_START, cn, 12, "",
                        // Open Moma
                        CK_MOMA, "moma " SS_TAP(X_ENTER)
                        // Trailing comma
-)
-
-PROCESSOR_MACRO(processor_action_t, 16, CK_ENUM_START, ck, , NULL,
-                // Ctrl g
-                CK_CTLG, &_ctrl_g_new,
-                // Mute
-                CK_MUT, &MuteWithoutSound,
-                // Mute with Sound
-                CK_MUTS, &MuteWithSound,
-                // Alt-tab
-                CK_ALTT, &_alt_t_new,
-                // Ctrl-click
-                MS_CTRL, &_ctrl_click,
-                // Look away for 20 seconds
-                CK_EYE, &_eye_care,
-                // Keyboard off
-                KB_OFF, &_leep_keyboard_off,
-                // To the alt layer
-                TO_ALT, &ToAlt_run,
-                // To the ctrl layer
-                TO_CTRL, &ToCtrl_run,
-                // Lock the keyboard
-                CK_LOCK, &_leep_lock,
-                // Change the mouse speed
-                CK_ACL, &_change_mouse_speed,
-                // alt+tab
-                CK_ATB, &AltTabHandler_old,
-                // shift+alt+tab
-                CK_SATB, &AltShiftTabHandler_old,
-                // Wait for some milliseconds (useful for record).
-                CK_WAIT, &_leep_wait,
-                // Ctrl+w
-                CTRL_W, &_ctrl_w_new,
-                // To LR_CTRL_X
-                TO_CTLX, &to_ctrl_x_layer
-                // Trailing comma
-)
+)*/
 
 void one_hand_layer_change(bool activated) {
   AltLayerDeactivationHandler(activated);
@@ -273,7 +225,7 @@ void ctrl_alt_layer(bool activated) {
     }
 }
 
-OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
+/*OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
                          // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
                          LR_ALT, &AltLayerDeactivationHandler,
 
@@ -290,7 +242,99 @@ OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
                          // Start/end ctrl-alt layer on layer on/off.
                          LR_CTRL_ALT, &ctrl_alt_layer,
                          // Deactivate everything when going to safe layer.
-                         LR_ELLA, &_ella_layer)
+                         LR_ELLA, &_ella_layer)*/
+
+/*******************
+ * Custom keycodes *
+ *******************/
+
+bool CtrlWHandler(keyrecord_t* record, uint16_t _) {
+  if (!record->event.pressed) {
+    return true;
+  }
+  if (!IsShiftToggled()) {
+    SEND_STRING(SS_RCTL("w"));
+  } else {
+    UntoggleShift();
+    // Copy contents
+    SEND_STRING(SS_COPY);
+    // Delete selected text.
+    SEND_STRING(SS_TAP(X_DELETE));
+  }
+  return false;
+}
+
+enum custom_keycode_handlers {
+  TO_ALT_HANDLER,
+  TO_CTRL_HANDLER,
+  TO_CTLX_HANDLER,
+  CTRL_W_HANDLER,
+  CK_WAIT_HANDLER,
+  CK_ATB_HANDLER,
+  CK_SATB_HANDLER,
+  CK_ACL_HANDLER,
+  CK_LOCK_HANDLER,
+  KB_OFF_HANDLER,
+  CK_EYE_HANDLER,
+  MS_CTRL_HANDLER,
+  CK_ALTT_HANDLER,
+  CK_MUTS_HANDLER,
+  CK_MUT_HANDLER,
+  CK_CTLG_HANDLER,
+};
+
+bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
+custom_keycode_handler_t custom_keycode_handlers[] = {
+  [TO_ALT_HANDLER] = CK_HANDLER_FN(ToAlt_run),
+  [TO_CTRL_HANDLER] = CK_HANDLER_FN(ToCtrl_run),
+  [TO_CTLX_HANDLER] = CK_HANDLER_FN(to_ctrl_x_layer),
+  [CTRL_W_HANDLER] = CK_HANDLER_FN(CtrlWHandler),
+  [CK_WAIT_HANDLER] = CK_HANDLER_FN(_leep_wait),
+  [CK_ATB_HANDLER] = CK_HANDLER_FN(AltTabHandler),
+  [CK_SATB_HANDLER] = CK_HANDLER_FN(AltShiftTabHandler),
+  [CK_ACL_HANDLER] = CK_HANDLER_FN(_change_mouse_speed),
+  [CK_LOCK_HANDLER] = CK_HANDLER_FN(_leep_lock),
+  [KB_OFF_HANDLER] = CK_HANDLER_FN(_leep_keyboard_off),
+  [CK_EYE_HANDLER] = CK_HANDLER_FN(_eye_care),
+  [MS_CTRL_HANDLER] = CK_HANDLER_FN(_ctrl_click),
+  [CK_ALTT_HANDLER] = CK_HANDLER_FN(_alt_t_new),
+  [CK_MUTS_HANDLER] = CK_HANDLER_FN(MuteWithSound),
+  [CK_MUT_HANDLER] = CK_HANDLER_FN(MuteWithoutSound),
+  [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
+};
+
+#define TO_ALT CK(TO_ALT_HANDLER)
+#define TO_CTRL CK(TO_CTRL_HANDLER)
+#define TO_CTLX CK(TO_CTLX_HANDLER)
+#define CTRL_W CK(CTRL_W_HANDLER)
+#define CK_WAIT CK(CK_WAIT_HANDLER)
+#define CK_ATB CK(CK_ATB_HANDLER)
+#define CK_SATB CK(CK_SATB_HANDLER)
+#define CK_ACL CK(CK_ACL_HANDLER)
+#define CK_LOCK CK(CK_LOCK_HANDLER)
+#define KB_OFF CK(KB_OFF_HANDLER)
+#define CK_EYE CK(CK_EYE_HANDLER)
+#define MS_CTRL CK(MS_CTRL_HANDLER)
+#define CK_ALTT CK(CK_ALTT_HANDLER)
+#define CK_MUTS CK(CK_MUTS_HANDLER)
+#define CK_MUT CK(CK_MUT_HANDLER)
+#define CK_CTLG CK(CK_CTLG_HANDLER)
+
+// TODO:
+#define CK_MOMA _______
+#define CK_CL _______
+#define URL_PST _______
+#define URL_ICP _______
+#define CK_URLC _______
+#define URL_CRI _______
+#define CK_ESC _______
+#define OL_TDAY _______
+#define CK_UNBS _______
+#define CK_LOGS _______
+
+
+const uint16_t ToAltKeycode = TO_ALT;
+const uint16_t ToCtrlKeycode = TO_CTRL;
 
 bool layers_status[NUM_LAYERS] = {
     [0]                    = true,
@@ -367,7 +411,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     Oneshot_handled(record);
 
     // Return if this is being run on key un-pressed.
-    if (!record->event.pressed) {
+    /*if (!record->event.pressed) {
         // Run unpress events for custom keycodes
         switch (keycode) {
             case LEEP_ENUM_CASE(CK):
@@ -378,11 +422,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         }
 
         return true;
-    }
+    }*/
 
     // Untoggle shift the layer for all non-movement keys
     bool untoggle_shift = false;
-    if (keycode >= CK_ENUM_START && keycode <= CK_ENUM_END) {
+    /*if (keycode >= CK_ENUM_START && keycode <= CK_ENUM_END) {
         switch (keycode) {
             case TO_ALT:
             case TO_CTRL:
@@ -392,7 +436,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             default:
                 untoggle_shift = true;
         }
-    } else {
+    } else {*/
         switch (keycode & QK_BASIC_MAX) {
             case KC_HOME ... KC_UP:
                 break;
@@ -401,15 +445,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
                 // (and not send ctrl+g afterwards too)
                 untoggle_shift = true;
         }
-    }
+    // }
     if (untoggle_shift) {
-        UntoggleShift();
+      UntoggleShift();
+    }
+
+    if (!process_custom_keycodes(keycode, record)) {
+      return false;
     }
 
     // We explicitly want all keycodes to return something to
     // 1) prevent custom keycodes from having logic in this switch and in run_array_processor
     // 2) prevent regular keycode logic from getting to custom keycodes (shouldn't actually be a problem but jic)
-    switch (keycode) {
+    /*switch (keycode) {
         case LEEP_ENUM_CASE(CS):
             send_string(cs_processors[LEEP_ENUM_OFFSET(CS, keycode)]);
             return false;
@@ -428,7 +476,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
                 ck_processors[LEEP_ENUM_OFFSET(CK, keycode)](true);
             }
             return false;
-    }
+    }*/
     return true;
 }
 
