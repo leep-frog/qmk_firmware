@@ -64,7 +64,7 @@ combo_t* combo_get(uint16_t combo_idx);
 typedef union {
     uint16_t ck_int;
     // TODO: Make this a pointer to save space?
-    char ck_string[13];
+    char ck_string[26];
 } custom_keycode_value_t;
 typedef bool (*custom_keycode_fn_t) (keyrecord_t *record, custom_keycode_value_t *value);
 typedef struct {

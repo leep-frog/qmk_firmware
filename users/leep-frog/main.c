@@ -182,10 +182,9 @@ typedef void (*processor_action_t)(bool activated);
                        CK_ESC, SS_TAP(X_ESC) "\0",
                        // Outlook today
                        OL_TDAY, SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D) "\0",
-                       // Universal backspace
-                       CK_UNBS, SS_RCTL(SS_TAP(X_BSPC)) "\0",
+
                        // Log filter text
-                       CK_LOGS, SS_TAP(X_ENTER) " | sort @timestamp asc\0"
+                       CK_LOGS,
                        // Trailing comma
 )
 
@@ -286,6 +285,7 @@ enum custom_keycode_handlers {
   CK_CTLG_HANDLER,
   // String handlers
   CK_UNBS_HANDLER,
+  CK_LOGS_HANDLER,
 };
 
 // bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
@@ -308,7 +308,8 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_MUT_HANDLER] = CK_HANDLER_FN(MuteWithoutSound),
   [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
   // String handlers
-  [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC)) "\0"),
+  [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC))),
+  [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp asc"),
 };
 
 #define TO_ALT CK(TO_ALT_HANDLER)
@@ -338,7 +339,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 #define CK_ESC _______
 #define OL_TDAY _______
 #define CK_UNBS CK(CK_UNBS_HANDLER)
-#define CK_LOGS _______
+#define CK_LOGS CK(CK_LOGS_HANDLER)
 
 
 const uint16_t ToAltKeycode = TO_ALT;
