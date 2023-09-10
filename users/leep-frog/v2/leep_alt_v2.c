@@ -72,9 +72,6 @@ bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
   return true;
 }
 
-void AltLayerHandler(bool activated) {
-}
-
 void AltLayerDeactivationHandler(bool activated) {
   if (!activated) {
     _end_alt_tab_mode();
