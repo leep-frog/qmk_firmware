@@ -97,9 +97,9 @@ __attribute__((weak)) combo_t* combo_get(uint16_t combo_idx) {
 
 // Custom keycodes
 uint16_t custom_keycode_handlers_count(void) {
-    return sizeof(custom_keycode_handlers) / sizeof(custom_keycode_fn_t);
+    return sizeof(custom_keycode_handlers) / sizeof(custom_keycode_handler_t*);
 }
-custom_keycode_fn_t custom_keycode_handlers_get(uint16_t idx) {
+custom_keycode_handler_t custom_keycode_handlers_get(uint16_t idx) {
     return custom_keycode_handlers[idx];
 }
 

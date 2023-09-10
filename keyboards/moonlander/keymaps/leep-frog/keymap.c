@@ -5,10 +5,7 @@
 #define LEEP_SAFE_RANGE SAFE_RANGE
 
 #include "keymap_introspection.h"
-bool nooooop(keyrecord_t *record) { return false; }
-custom_keycode_fn_t custom_keycode_handlers[] = {
-  [0] = &nooooop,
-};
+
 // custom_keycode_fn_t custom_keycode_handlers[] = {};
 
 #include "../../../../users/leep-frog/main.c"
