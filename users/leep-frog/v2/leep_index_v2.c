@@ -9,3 +9,4 @@
 #include "./leep_shift_v2.c"
 #include "./leep_record_v2.c"
 #include "./leep_color_v2.c"
+#include "./leep_oneshot_v2.c"

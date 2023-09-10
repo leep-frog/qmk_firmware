@@ -21,6 +21,9 @@ enum layers { // prefix LR
     NUM_LAYERS,
 };
 
+const uint16_t AltLayer = LR_ALT;
+const uint16_t CtrlLayer = LR_CTRL;
+
 // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_rgblight.md#defining-lighting-layers-iddefining-lighting-layers
 #ifdef RGBLIGHT_MAX_LAYERS
 #    undef RGBLIGHT_MAX_LAYERS
@@ -134,6 +137,9 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
           CTRL_W,
           // Trailing comma
 )
+
+const uint16_t ToAltKeycode = TO_ALT;
+const uint16_t ToCtrlKeycode = TO_CTRL;
 
 // Layer toggling
 // Defined here because needed by combo.c

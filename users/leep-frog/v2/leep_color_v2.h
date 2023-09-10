@@ -2,6 +2,9 @@
 
 extern int layer_colors[][3];
 
+bool PlayedStartupSong(void);
+void SetPlayedStartupSong(bool b);
+
 // TODO: Move to config file
 #define ENABLE_LEEP_COLOR
 

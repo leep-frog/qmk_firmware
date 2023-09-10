@@ -7,3 +7,4 @@
 #include "./leep_tap_dance_kb.h"
 #include "./leep_combo_kb.h"
 #include "./leep_symbol_layer_overlap_kb.h"
+#include "./leep_to_ctrl_kb.h"

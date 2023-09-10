@@ -17,7 +17,7 @@ uint16_t Alt_keycodes[] = {
   // CK_ALTB,
 };
 
-#include "../../../../users/leep-frog/keyboard-main/leep_index_kb.h"
+#include "../../../../users/leep-frog/main.c"
 #include "../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
 
 // Can't evaluate macro in macro, so use this to ignore bottom row of keyboard

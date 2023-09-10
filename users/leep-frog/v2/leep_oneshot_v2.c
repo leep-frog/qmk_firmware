@@ -3,7 +3,6 @@
 // be activated while in oneshot mode, so the code in the ctrl layer
 // would be sent regardless if implemented via my layer hook logic
 // or as a custom keycode.
-#pragma once
 
 static uint16_t leep_oneshot_layer = 0;
 static bool leep_oneshot_key_pressed = false;

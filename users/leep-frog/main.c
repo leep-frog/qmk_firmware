@@ -39,23 +39,22 @@ void print_int(int k) {
 
 #endif
 
-bool _ctrl_w_new(void) {
-    if (!shift_toggled) {
-        return true;
-    }
-    // Clear toggle
-    ToggleShift();
-    // Copy contents
-    SEND_STRING(SS_COPY);
-    // Delete selected text.
-    SEND_STRING(SS_TAP(X_DELETE));
-    return false;
+void _ctrl_w_new(bool pressed) {
+  if (!pressed) {
+    return;
+  }
+  // Clear toggle
+  UntoggleShift();
+  // Copy contents
+  SEND_STRING(SS_COPY);
+  // Delete selected text.
+  SEND_STRING(SS_TAP(X_DELETE));
 }
 
 void _leep_keyboard_off(bool pressed) {
     if (pressed) {
         LEEP_SOLID_COLOR(OFF, true);
-        played_startup_song = false;
+        SetPlayedStartupSong(false);
     }
 }
 
@@ -155,7 +154,7 @@ void _ella_layer(bool activated) {
         return;
     }
 
-    if (shift_toggled) {
+    if (IsShiftToggled()) {
         ToggleShift();
     }
     clear_mods();
@@ -184,6 +183,7 @@ typedef void (*processor_action_t)(bool activated);
 #define PROCESSOR_VALUE13(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE12(start, __VA_ARGS__)
 #define PROCESSOR_VALUE14(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE13(start, __VA_ARGS__)
 #define PROCESSOR_VALUE15(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE14(start, __VA_ARGS__)
+#define PROCESSOR_VALUE16(start, key, value, ...) PROCESSOR_VALUE1(start, key, value) PROCESSOR_VALUE15(start, __VA_ARGS__)
 
 #define OPTIONAL_PROCESSOR_MACRO(_type_, sz, num_provided, e_start, prefix, suffix, dflt, ...) const _type_ PROGMEM prefix##_processors[sz] suffix = {[0 ... sz - 1] = dflt, PROCESSOR_VALUE##num_provided(e_start, __VA_ARGS__)};
 
@@ -227,7 +227,7 @@ PROCESSOR_MACRO_STRING(3, CN_ENUM_START, cn, 12, "",
                        // Trailing comma
 )
 
-PROCESSOR_MACRO(processor_action_t, 15, CK_ENUM_START, ck, , NULL,
+PROCESSOR_MACRO(processor_action_t, 16, CK_ENUM_START, ck, , NULL,
                 // Ctrl g
                 CK_CTLG, &_ctrl_g_new,
                 // Mute
@@ -251,18 +251,20 @@ PROCESSOR_MACRO(processor_action_t, 15, CK_ENUM_START, ck, , NULL,
                 // Change the mouse speed
                 CK_ACL, &_change_mouse_speed,
                 // alt+tab
-                CK_ATB, &AltTab_run,
+                CK_ATB, &AltTabHandler_old,
                 // shift+alt+tab
-                CK_SATB, &AltTab_runShift,
+                CK_SATB, &AltShiftTabHandler_old,
                 // Wait for some milliseconds (useful for record).
                 CK_WAIT, &_leep_wait,
+                // Ctrl+w
+                CTRL_W, &_ctrl_w_new,
                 // To LR_CTRL_X
                 TO_CTLX, &to_ctrl_x_layer
                 // Trailing comma
 )
 
 void one_hand_layer_change(bool activated) {
-    AltTab_deactivate(activated);
+    // AltTab_deactivate(activated);
     if (activated) {
         leep_acl = 0;
         tap_code16(KC_ACL2);
@@ -277,15 +279,16 @@ void ctrl_alt_layer(bool activated) {
     }
 }
 
-OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
+OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 6, -1, layer, , NULL,
                          // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
-                         LR_ALT, &AltTab_deactivate,
+                         //  LR_ALT, &AltTab_deactivate,
+
                          // Only want combos to be enabled in the base layer (even though we
                          // define "COMBO_ONLY_FROM_LAYER 1", but we do that only so we can use the
                          // simple keycodes defined in the safe layer).
                          LR_BASE, &activate_base_layer_combo,
                          // Deactivate alt when exiting navigation layer.
-                         LR_NAVIGATION, &AltTab_deactivate,
+                         LR_NAVIGATION, &AltLayerDeactivationHandler,
                          // Left one-hand layer changes.
                          LR_ONE_HAND_LEFT, &one_hand_layer_change,
                          // Right one-hand layer changes.
@@ -303,14 +306,14 @@ bool layers_status[NUM_LAYERS] = {
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
 void keyboard_post_init_user(void) {
-    if (!played_startup_song) {
+    if (!PlayedStartupSong()) {
         LEEP_STARTUP_COLOR_MODE();
     }
 }
 
 // Returns whether or not the key should be processed as normal or if we should just return
 bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
-    if (played_startup_song || keycode == KB_OFF || keycode == CK_LOCK) {
+    if (PlayedStartupSong() || keycode == KB_OFF || keycode == CK_LOCK) {
         return true;
     }
 
@@ -322,13 +325,13 @@ bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
         case KC_J:
         case KC_F:
             SNG_STARTUP();
-            played_startup_song = true;
+            SetPlayedStartupSong(true);
             LEEP_LAYER_COLOR(LR_BASE, false);
             break;
         case KC_K:
         case KC_D:
             LeepMute();
-            played_startup_song = true;
+            SetPlayedStartupSong(true);
             LEEP_LAYER_COLOR(LR_BASE, false);
             break;
         default:
@@ -344,7 +347,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     }
 
     Mute_handled(record);
-    if (SymbolLayerOverlap_handled(&symbol_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_left_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_right_handler, keycode, record) || AltTab_handled(keycode, record)) {
+    if (SymbolLayerOverlap_handled(&symbol_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_left_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_right_handler, keycode, record) || AltBlockProcessing(keycode, record)) {
         return false;
     }
     ToAlt_handled(keycode);
@@ -394,8 +397,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     // 1) prevent custom keycodes from having logic in this switch and in run_array_processor
     // 2) prevent regular keycode logic from getting to custom keycodes (shouldn't actually be a problem but jic)
     switch (keycode) {
-        case (CTRL_W):
-            return _ctrl_w_new();
         case LEEP_ENUM_CASE(CS):
             send_string(cs_processors[LEEP_ENUM_OFFSET(CS, keycode)]);
             return false;
@@ -419,7 +420,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 }
 
 // Runs whenever there is a layer state change.
-layer_state_t layer_state_set_user(layer_state_t state) {
+/*layer_state_t layer_state_set_user(layer_state_t state) {
     // Run processors
     bool change = false;
     for (int i = 0; i < NUM_LAYERS; i++) {
@@ -438,6 +439,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     }
 
     return state;
-}
+}*/
 
 #endif
