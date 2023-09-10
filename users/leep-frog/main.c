@@ -43,12 +43,15 @@ void _ctrl_w_new(bool pressed) {
   if (!pressed) {
     return;
   }
-  // Clear toggle
-  UntoggleShift();
-  // Copy contents
-  SEND_STRING(SS_COPY);
-  // Delete selected text.
-  SEND_STRING(SS_TAP(X_DELETE));
+  if (!IsShiftToggled()) {
+    SEND_STRING(SS_RCTL("w"));
+  } else {
+    UntoggleShift();
+    // Copy contents
+    SEND_STRING(SS_COPY);
+    // Delete selected text.
+    SEND_STRING(SS_TAP(X_DELETE));
+  }
 }
 
 void _leep_keyboard_off(bool pressed) {
@@ -264,11 +267,11 @@ PROCESSOR_MACRO(processor_action_t, 16, CK_ENUM_START, ck, , NULL,
 )
 
 void one_hand_layer_change(bool activated) {
-    // AltTab_deactivate(activated);
-    if (activated) {
-        leep_acl = 0;
-        tap_code16(KC_ACL2);
-    }
+  AltLayerDeactivationHandler(activated);
+  if (activated) {
+    leep_acl = 0;
+    tap_code16(KC_ACL2);
+  }
 }
 
 void ctrl_alt_layer(bool activated) {
@@ -279,9 +282,9 @@ void ctrl_alt_layer(bool activated) {
     }
 }
 
-OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 6, -1, layer, , NULL,
+OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
                          // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
-                         //  LR_ALT, &AltTab_deactivate,
+                         LR_ALT, &AltLayerDeactivationHandler,
 
                          // Only want combos to be enabled in the base layer (even though we
                          // define "COMBO_ONLY_FROM_LAYER 1", but we do that only so we can use the
@@ -309,6 +312,24 @@ void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
         LEEP_STARTUP_COLOR_MODE();
     }
+
+    // Add Layer handlers
+    // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
+    SET_LAYER_HANDLER(LR_ALT, AltLayerDeactivationHandler);
+    // Only want combos to be enabled in the base layer (even though we
+    // define "COMBO_ONLY_FROM_LAYER 1", but we do that only so we can use the
+    // simple keycodes defined in the safe layer).
+    SET_LAYER_HANDLER(LR_BASE, activate_base_layer_combo);
+    // Deactivate alt when exiting navigation layer.
+    SET_LAYER_HANDLER(LR_NAVIGATION, AltLayerDeactivationHandler);
+    // Left one-hand layer changes.
+    SET_LAYER_HANDLER(LR_ONE_HAND_LEFT, one_hand_layer_change);
+    // Right one-hand layer changes.
+    SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, one_hand_layer_change);
+    // Start/end ctrl-alt layer on layer on/off.
+    SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
+    // Deactivate everything when going to safe layer.
+    SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
 }
 
 // Returns whether or not the key should be processed as normal or if we should just return

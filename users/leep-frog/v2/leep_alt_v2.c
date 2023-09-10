@@ -8,6 +8,9 @@
 static uint16_t alt_timer;
 static bool     alt_interrupted = false;
 
+/****************
+ * TO_ALT logic *
+ ****************/
 void ToAlt_handled(uint16_t keycode) {
     if (keycode != ToAltKeycode) {
         alt_interrupted = true;
@@ -27,6 +30,25 @@ void ToAlt_run(bool pressed) {
     }
 }
 
+/****************
+ * TO_ALT logic *
+ ****************/
+
+bool alt_tab_mode_active = false;
+
+void _end_alt_tab_mode(void) {
+  if (alt_tab_mode_active) {
+    alt_tab_mode_active = false;
+    unregister_code16(KC_RALT);
+  }
+}
+
+void _start_alt_tab_mode(void) {
+  if (!alt_tab_mode_active) {
+    alt_tab_mode_active = true;
+    register_code16(KC_RALT);
+  }
+}
 
 bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
   if (!record->event.pressed) {
@@ -34,7 +56,7 @@ bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
   }
 
   // Only check if alt is active
-  if (!layer_statuses[AltLayer]) {
+  if (!alt_tab_mode_active) {
     return false;
   }
 
@@ -46,36 +68,29 @@ bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
   }
 
   // Pressing a key to break the alt mode
-  layer_off(AltLayer);
+  _end_alt_tab_mode();
   return true;
 }
 
 void AltLayerHandler(bool activated) {
-  if (activated) {
-    register_code16(KC_RALT);
-  } else {
-    unregister_code16(KC_RALT);
-  }
 }
 
 void AltLayerDeactivationHandler(bool activated) {
   if (!activated) {
-    unregister_code16(KC_RALT);
+    _end_alt_tab_mode();
   }
 }
 
 // The below functions implement custom keycode handlers
 
 bool _AltTabHandler(bool pressed) {
-  if (!pressed) {
+  if (pressed) {
+    _start_alt_tab_mode();
+    register_code16(KC_TAB);
+  } else {
     unregister_code16(KC_TAB);
-    return true;
   }
 
-  if (!layer_statuses[AltLayer]) {
-    layer_on(AltLayer);
-  }
-  register_code16(KC_TAB);
   return true;
 }
 
@@ -89,15 +104,13 @@ void AltTabHandler_old(bool pressed) {
 
 
 bool _AltShiftTabHandler(bool pressed) {
-  if (!pressed) {
+  if (pressed) {
+    _start_alt_tab_mode();
+    register_code16(S(KC_TAB));
+  } else {
     unregister_code16(S(KC_TAB));
-    return true;
   }
 
-  if (!layer_statuses[AltLayer]) {
-    layer_on(AltLayer);
-  }
-  register_code16(S(KC_TAB));
   return true;
 }
 

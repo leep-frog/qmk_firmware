@@ -10,15 +10,14 @@ custom_keycode_fn_t custom_keycode_handlers[] = {
   [0] = &nooooop,
 };
 // custom_keycode_fn_t custom_keycode_handlers[] = {};
-uint16_t Alt_keycodes[] = {
-  0,
-  // CK_ATAB,
-  // CK_STAB,
-  // CK_ALTB,
-};
 
 #include "../../../../users/leep-frog/main.c"
 #include "../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
+
+uint16_t Alt_keycodes[] = {
+  CK_ATB,
+  CK_SATB,
+};
 
 // Can't evaluate macro in macro, so use this to ignore bottom row of keyboard
 // https://stackoverflow.com/questions/35114050/is-there-a-way-to-force-c-preprocessor-to-evaluate-macro-arguments-before-the-ma
