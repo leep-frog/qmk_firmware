@@ -63,7 +63,7 @@ combo_t* combo_get(uint16_t combo_idx);
 #include "action.h"
 typedef union {
     uint16_t ck_int;
-    // TODO: Make this a pointer to save space
+    // TODO: Make this a pointer to save space?
     char ck_string[13];
 } custom_keycode_value_t;
 typedef bool (*custom_keycode_fn_t) (keyrecord_t *record, custom_keycode_value_t *value);

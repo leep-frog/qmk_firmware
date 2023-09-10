@@ -264,7 +264,10 @@ bool CtrlWHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   return false;
 }
 
+// Note: we don't need to organize by handler type,
+// but do so for readability.
 enum custom_keycode_handlers {
+  // Fn handlers
   TO_ALT_HANDLER,
   TO_CTRL_HANDLER,
   TO_CTLX_HANDLER,
@@ -281,10 +284,13 @@ enum custom_keycode_handlers {
   CK_MUTS_HANDLER,
   CK_MUT_HANDLER,
   CK_CTLG_HANDLER,
+  // String handlers
+  CK_UNBS_HANDLER,
 };
 
 // bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
 custom_keycode_handler_t custom_keycode_handlers[] = {
+  // Fn handlers
   [TO_ALT_HANDLER] = CK_HANDLER_FN(ToAlt_run),
   [TO_CTRL_HANDLER] = CK_HANDLER_FN(ToCtrl_run),
   [TO_CTLX_HANDLER] = CK_HANDLER_FN(to_ctrl_x_layer),
@@ -301,6 +307,8 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_MUTS_HANDLER] = CK_HANDLER_FN(MuteWithSound),
   [CK_MUT_HANDLER] = CK_HANDLER_FN(MuteWithoutSound),
   [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
+  // String handlers
+  [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC)) "\0"),
 };
 
 #define TO_ALT CK(TO_ALT_HANDLER)
@@ -329,7 +337,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 #define URL_CRI _______
 #define CK_ESC _______
 #define OL_TDAY _______
-#define CK_UNBS _______
+#define CK_UNBS CK(CK_UNBS_HANDLER)
 #define CK_LOGS _______
 
 

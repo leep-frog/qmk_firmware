@@ -18,3 +18,11 @@ bool process_custom_keycodes(uint16_t keycode, keyrecord_t* record) {
 
   return true;
 }
+
+// Use CK_HANDLER_STRING instead of this.
+bool _ck_string_handler(keyrecord_t *record, custom_keycode_value_t *v) {
+  if (record->event.pressed) {
+    send_string(v->ck_string);
+  }
+  return false;
+}
