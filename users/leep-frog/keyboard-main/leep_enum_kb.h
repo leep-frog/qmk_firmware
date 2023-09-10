@@ -1,5 +1,4 @@
-#ifndef LEEP_ENUMS
-#define LEEP_ENUMS
+#pragma once
 
 enum layers { // prefix LR
     // Default layer
@@ -131,6 +130,8 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
           CK_SATB,
           // To LR_CTRL_X
           TO_CTLX,
+          // Ctrl+w
+          CTRL_W,
           // Trailing comma
 )
 
@@ -138,5 +139,3 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
 // Defined here because needed by combo.c
 #define TO_ELLA TO(LR_ELLA)
 #define TO_CTAL MO(LR_CTRL_ALT)
-
-#endif

@@ -5,8 +5,8 @@
 #define OL_DEL KC_DEL
 #define OL_PREV C(KC_COMMA)
 #define OL_NEXT C(KC_DOT)
-// TODO: Verify this one
-#define OL_TDAY A(KC_H)
+// Outlook today is taken care of as custom keycode
+
 /* TODO:
 OL_REMOVE_FROM_CALENDAR
 OL_ACCEPT_INVITE_DONT_SEND

@@ -1,7 +1,6 @@
-#ifndef LEEP_COMBOS
-#define LEEP_COMBOS
 
-#include "tap_dance.c"
+// #include "../leep_tap_dance_v2.h"
+// #include "tap_dance.c"
 // TODO: eventually use dictionary stuff
 // #include "g/keymap_combo.h"
 // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_combo.md#dictionary-management
@@ -99,5 +98,3 @@ void activate_base_layer_combo(bool activated) {
         combo_disable();
     }
 }
-
-#endif

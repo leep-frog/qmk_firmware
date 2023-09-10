@@ -1,4 +1,5 @@
-#include "leep_music_v2.h"
+#include "./leep_music_v2.h"
+#include "./leep_color_v2.h"
 
 static bool _leep_mute = false;
 bool IsMuted(void) { return _leep_mute; }
@@ -48,7 +49,7 @@ void Mute_handled(keyrecord_t* record) {
     }
 
     if (_mute_just_colored) {
-        LEEP_LAYER_COLOR(LR_BASE, false);
+        LEEP_LAYER_COLOR(0, false);
         _mute_just_colored = false;
     }
     #endif

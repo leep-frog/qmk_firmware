@@ -9,21 +9,22 @@ void print_int(int k) {
 #define PRINT_INT(i) print_int(i);
 
 #include <stdio.h>
-#include "interface.c"
-#include "enum.c"
-#include "./features/features.c"
-#include "./v2/leep_index_v2.c"
-#include "color.c"
-#include "music.c"
-#include "google.c"
-#include "workspace.c"
-#include "url.c"
-#include "combo.c"
-#include "tap_dance.c"
+#include "./keyboard-main/leep_index_kb.h"
+#include "./v2/leep_index_v2.h"
+// #include "interface.c"
+// #include "enum.c"
+// #include "./features/features.c"
+// #include "color.c"
+// #include "music.c"
+// #include "google.c"
+// #include "workspace.c"
+// #include "url.c"
+// #include "combo.c"
+// #include "tap_dance.c"
 // #include "record.c" included by tap_dance
-#include "shift.c"
-#include "ctrl.c"
-#include "slack.c"
+// #include "shift.c"
+// #include "ctrl.c"
+// #include "slack.c"
 
 // Note: wally sometimes crashes if the keyboard is plugged into the workstation,
 // but behaves fine if the keyboard is plugged directly into the laptop.

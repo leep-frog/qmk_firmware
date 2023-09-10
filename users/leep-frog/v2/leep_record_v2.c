@@ -1,7 +1,11 @@
-#pragma once
 
 uint16_t blink_timer;
 bool     blink_on = false;
+bool recording    = false;
+
+bool IsRecording(void) {
+  return recording;
+}
 
 // Press twice, record
 // Press once, stop if recording, otherwise play
@@ -77,6 +81,6 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
     }
 }
 
-void recorder_1(tap_dance_state_t *state, void *user_data) { recorder_base(state, QK_DYNAMIC_MACRO_PLAY_1, QK_DYNAMIC_MACRO_RECORD_START_1); }
+void Record1Function(tap_dance_state_t *state, void *user_data) { recorder_base(state, QK_DYNAMIC_MACRO_PLAY_1, QK_DYNAMIC_MACRO_RECORD_START_1); }
 
-void recorder_2(tap_dance_state_t *state, void *user_data) { recorder_base(state, QK_DYNAMIC_MACRO_PLAY_2, QK_DYNAMIC_MACRO_RECORD_START_2); }
+void Record2Function(tap_dance_state_t *state, void *user_data) { recorder_base(state, QK_DYNAMIC_MACRO_PLAY_2, QK_DYNAMIC_MACRO_RECORD_START_2); }

@@ -11,3 +11,7 @@
 #include "./leep_workspace_v2.h"
 #include "./leep_outlook_v2.h"
 #include "./leep_modifiers_v2.h"
+#include "./leep_slack_v2.h"
+#include "./leep_shift_v2.h"
+#include "./leep_record_v2.h"
+#include "./leep_color_v2.h"

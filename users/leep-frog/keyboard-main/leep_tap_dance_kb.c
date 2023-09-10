@@ -1,8 +1,8 @@
 #pragma once
 
-#include "./v2/leep_tap_dance_v2.c"
-#include "record.c"
-#include "shift.c"
+#include "../v2/leep_tap_dance_v2.h"
+// #include "record.c"
+// #include "shift.c"
 
 // The shift and symbol tap dances change layers which requires special logic.
 // If we just use the logic above (SINGLE_TAP, DOUBLE_TAP, etc. cases), then we
@@ -418,9 +418,9 @@ tap_dance_action_t tap_dance_actions[] = {
     // Kill line
     [TDK_KILL_LINE] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, TDKillLine_finished, TDKillLine_reset),
     // Record 1
-    [TDK_MACRO_1] = ACTION_TAP_DANCE_FN(recorder_1),
+    [TDK_MACRO_1] = ACTION_TAP_DANCE_FN(Record1Function),
     // Record 2
-    [TDK_MACRO_2] = ACTION_TAP_DANCE_FN(recorder_2),
+    [TDK_MACRO_2] = ACTION_TAP_DANCE_FN(Record2Function),
     // Markdown paste
     [TDK_MARKDOWN_PASTE] = ACTION_TAP_DANCE_FN(TDMarkdownPaste),
     // Outlook reload
@@ -512,7 +512,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case CK_MCR1:
         case CK_MCR2:
             // If not recording give extra time to double tap to start recording.
-            if (!recording) {
+            if (!IsRecording()) {
                 return TAPPING_TERM + 200;
             }
     }

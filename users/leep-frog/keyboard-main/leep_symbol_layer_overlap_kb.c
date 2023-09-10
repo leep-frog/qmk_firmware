@@ -1,5 +1,5 @@
-#ifndef LEEP_FEATURE_SYMBOL_LAYER_OVERLAP
-#define LEEP_FEATURE_SYMBOL_LAYER_OVERLAP
+// TODO: Move this to v2 and let each keyboard implement
+// actual instances individually.
 
 // NOTE: This doesn't work with some keycodes such as tap dance keys that exist in the
 // second layer (e.g. TO_SCRL/SCRR in LR_ONE_HAND_LEFT/RIGHT)
@@ -24,14 +24,6 @@ Test cases:
    This tests the issue where we resolve the first_symb_press due to another key being pressed (as
    opposed to unpressing the first_symb_press).
 */
-
-typedef struct {
-    keypos_t first_symb_press_key;
-    bool     first_symb_press;
-    bool     resolved_first_symb_press;
-    uint16_t layer;
-    char    *keycode;
-} layer_overlap_handler_t;
 
 layer_overlap_handler_t symbol_handler = {
     .first_symb_press_key      = {},
@@ -119,5 +111,3 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
     }
     return false;
 }
-
-#endif
