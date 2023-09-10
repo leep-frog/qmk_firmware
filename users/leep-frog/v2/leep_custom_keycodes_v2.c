@@ -13,7 +13,7 @@ bool process_custom_keycodes(uint16_t keycode, keyrecord_t* record) {
   uint16_t relative_keycode = keycode - CUSTOM_KEYCODE_START;
   custom_keycode_handler_t h = custom_keycode_handlers_get(relative_keycode);
   if (h.fn) {
-    return h.fn(record, h.v);
+    return h.fn(record, &h.v);
   }
 
   return true;

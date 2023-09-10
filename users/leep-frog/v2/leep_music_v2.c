@@ -100,6 +100,6 @@ void Mute_handled(keyrecord_t* record) {
 
 void LeepMute(void) { _leep_mute = true; }
 
-bool MuteWithoutSound(keyrecord_t *record, uint16_t _) { return mute_sound(record, false); }
+bool MuteWithoutSound(keyrecord_t *record, custom_keycode_value_t *_) { return mute_sound(record, false); }
 
-bool MuteWithSound(keyrecord_t *record, uint16_t _) { return mute_sound(record, true); }
+bool MuteWithSound(keyrecord_t *record, custom_keycode_value_t *_) { return mute_sound(record, true); }

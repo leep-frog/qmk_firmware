@@ -8,7 +8,7 @@ void ToCtrl_handled(uint16_t keycode) {
     }
 }
 
-bool ToCtrl_run(keyrecord_t *record, uint16_t _) {
+bool ToCtrl_run(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         ctrl_interrupted = false;
         ctrl_timer       = timer_read();

@@ -25,7 +25,7 @@ void print_int(int k) {
 
 #endif
 
-bool _leep_keyboard_off(keyrecord_t *record, uint16_t _) {
+bool _leep_keyboard_off(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         LEEP_SOLID_COLOR(OFF, true);
         SetPlayedStartupSong(false);
@@ -33,7 +33,7 @@ bool _leep_keyboard_off(keyrecord_t *record, uint16_t _) {
     return false;
 }
 
-bool _leep_lock(keyrecord_t *record, uint16_t v) {
+bool _leep_lock(keyrecord_t *record, custom_keycode_value_t *v) {
     if (record->event.pressed) {
         SEND_STRING(SS_LGUI("l"));
         _leep_keyboard_off(record, v);
@@ -41,7 +41,7 @@ bool _leep_lock(keyrecord_t *record, uint16_t v) {
     return false;
 }
 
-bool _leep_wait(keyrecord_t *record, uint16_t _) {
+bool _leep_wait(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         wait_ms(100);
     }
@@ -50,7 +50,7 @@ bool _leep_wait(keyrecord_t *record, uint16_t _) {
 
 static int leep_acl = 0;
 
-bool _change_mouse_speed(keyrecord_t *record, uint16_t _) {
+bool _change_mouse_speed(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         // Default speed is fast, then medium, then slow (and reset on layer change)
         if (leep_acl == 0) {
@@ -65,7 +65,7 @@ bool _change_mouse_speed(keyrecord_t *record, uint16_t _) {
     return false;
 }
 
-bool _alt_t_new(keyrecord_t *record, uint16_t _) {
+bool _alt_t_new(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         return true;
     }
@@ -83,7 +83,7 @@ bool _alt_t_new(keyrecord_t *record, uint16_t _) {
     return false;
 }
 
-bool _ctrl_click(keyrecord_t *record, uint16_t _) {
+bool _ctrl_click(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         return true;
     }
@@ -98,7 +98,7 @@ bool _ctrl_click(keyrecord_t *record, uint16_t _) {
     return false;
 }
 
-bool _eye_care(keyrecord_t *record, uint16_t _) {
+bool _eye_care(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         // The color change takes effect after the keycode is processed, so we can't
         // change the color twice in the _eye_care function.
@@ -123,7 +123,7 @@ void _ck_timer(bool pressed) {
     }
 }
 
-bool to_ctrl_x_layer(keyrecord_t *record, uint16_t _) {
+bool to_ctrl_x_layer(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         SEND_STRING(SS_RCTL("x"));
         ActivateOneshot(LR_CTRL_X);
@@ -248,7 +248,7 @@ void ctrl_alt_layer(bool activated) {
  * Custom keycodes *
  *******************/
 
-bool CtrlWHandler(keyrecord_t* record, uint16_t _) {
+bool CtrlWHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   if (!record->event.pressed) {
     return true;
   }
@@ -283,7 +283,7 @@ enum custom_keycode_handlers {
   CK_CTLG_HANDLER,
 };
 
-bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
+// bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
 custom_keycode_handler_t custom_keycode_handlers[] = {
   [TO_ALT_HANDLER] = CK_HANDLER_FN(ToAlt_run),
   [TO_CTRL_HANDLER] = CK_HANDLER_FN(ToCtrl_run),

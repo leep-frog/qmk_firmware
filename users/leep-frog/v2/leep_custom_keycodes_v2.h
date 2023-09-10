@@ -15,4 +15,4 @@ extern custom_keycode_handler_t custom_keycode_handlers[];
 
 #define CK(i) CUSTOM_KEYCODE_START + i
 
-#define CK_HANDLER_FN(handler) { .fn = &handler, .v = 0 }
+#define CK_HANDLER_FN(handler) { .fn = &handler, .v = { .ck_int = 0 } }

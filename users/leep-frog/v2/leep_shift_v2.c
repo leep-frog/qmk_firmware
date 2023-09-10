@@ -87,7 +87,7 @@ void TDKillLine_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-bool _ctrl_g_new(keyrecord_t *record, uint16_t _) {
+bool _ctrl_g_new(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         if (shift_toggled) {
             ToggleShift();

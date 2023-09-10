@@ -1,10 +1,12 @@
 #pragma once
 
+#include "keymap_introspection.h"
+
 bool IsMuted(void);
 void Mute_handled(keyrecord_t* record);
 void LeepMute(void);
-bool MuteWithoutSound(keyrecord_t* record, uint16_t _);
-bool MuteWithSound(keyrecord_t* record, uint16_t _);
+bool MuteWithoutSound(keyrecord_t* record, custom_keycode_value_t *_);
+bool MuteWithSound(keyrecord_t* record, custom_keycode_value_t *_);
 
 #ifdef AUDIO_ENABLE
 

@@ -17,7 +17,7 @@ void ToAlt_handled(uint16_t keycode) {
     }
 }
 
-bool ToAlt_run(keyrecord_t *record, uint16_t _) {
+bool ToAlt_run(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         alt_interrupted = false;
         alt_timer       = timer_read();
@@ -81,7 +81,7 @@ void AltLayerDeactivationHandler(bool activated) {
 
 // The below functions implement custom keycode handlers
 
-bool AltTabHandler(keyrecord_t* record, uint16_t _) {
+bool AltTabHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     _start_alt_tab_mode();
     register_code16(KC_TAB);
@@ -92,7 +92,7 @@ bool AltTabHandler(keyrecord_t* record, uint16_t _) {
   return true;
 }
 
-bool AltShiftTabHandler(keyrecord_t* record, uint16_t _) {
+bool AltShiftTabHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     _start_alt_tab_mode();
     register_code16(S(KC_TAB));
