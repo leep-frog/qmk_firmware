@@ -4,9 +4,9 @@
 // internet browser to run actions (like opening a new tab).
 #define URLWait() wait_ms(80)
 
-#define NEW_TAB()              \
-    SEND_STRING(SS_RCTL("t")); \
-    URLWait()
+#define NEW_TAB_STRING() SS_RCTL("t") SS_DELAY(80)
+
+#define NEW_TAB() SEND_STRING(NEW_TAB_STRING())
 
 #define URL_COPY()                    \
     SEND_STRING(SS_DOWN(X_RCTL) "l"); \

@@ -310,8 +310,8 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
   // String handlers
   [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC))),
-  [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp asc"),
-  [URL_PST_HANDLER] = CK_HANDLER_STRING(SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
+  [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp ascy"),
+  [URL_PST_HANDLER] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
 };
 
 #define TO_ALT CK(TO_ALT_HANDLER)
