@@ -201,25 +201,6 @@ void ctrl_alt_layer(bool activated) {
     }
 }
 
-/*OPTIONAL_PROCESSOR_MACRO(processor_action_t, NUM_LAYERS, 7, -1, layer, , NULL,
-                         // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
-                         LR_ALT, &AltLayerDeactivationHandler,
-
-                         // Only want combos to be enabled in the base layer (even though we
-                         // define "COMBO_ONLY_FROM_LAYER 1", but we do that only so we can use the
-                         // simple keycodes defined in the safe layer).
-                         LR_BASE, &activate_base_layer_combo,
-                         // Deactivate alt when exiting navigation layer.
-                         LR_NAVIGATION, &AltLayerDeactivationHandler,
-                         // Left one-hand layer changes.
-                         LR_ONE_HAND_LEFT, &one_hand_layer_change,
-                         // Right one-hand layer changes.
-                         LR_ONE_HAND_RIGHT, &one_hand_layer_change,
-                         // Start/end ctrl-alt layer on layer on/off.
-                         LR_CTRL_ALT, &ctrl_alt_layer,
-                         // Deactivate everything when going to safe layer.
-                         LR_ELLA, &_ella_layer)*/
-
 /*******************
  * Custom keycodes *
  *******************/
@@ -312,7 +293,6 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 #define CK_MUT CK(CK_MUT_HANDLER)
 #define CK_CTLG CK(CK_CTLG_HANDLER)
 
-// TODO:
 #define URL_PST CK(URL_PST_HANDLER)
 #define URL_CPY CK(URL_CPY_HANDLER)
 #define OL_TDAY CK(OL_TDAY_HANDLER)
@@ -386,6 +366,8 @@ bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
     return false;
 }
 
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!leep_startup_mode(keycode, record)) {
         return false;
@@ -399,73 +381,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     ToCtrl_handled(keycode);
     Oneshot_handled(record);
 
-    // Return if this is being run on key un-pressed.
-    /*if (!record->event.pressed) {
-        // Run unpress events for custom keycodes
-        switch (keycode) {
-            case LEEP_ENUM_CASE(CK):
-                if (ck_processors[LEEP_ENUM_OFFSET(CK, keycode)]) {
-                    ck_processors[LEEP_ENUM_OFFSET(CK, keycode)](false);
-                }
-                return false;
-        }
 
-        return true;
-    }*/
-
-    // Untoggle shift the layer for all non-movement keys
-    bool untoggle_shift = false;
-    /*if (keycode >= CK_ENUM_START && keycode <= CK_ENUM_END) {
-        switch (keycode) {
-            case TO_ALT:
-            case TO_CTRL:
-            case CK_CTLG:
-            case CTRL_W:
-                break;
-            default:
-                untoggle_shift = true;
+    switch (keycode & QK_BASIC_MAX) {
+      // All non-movement keys don't untoggle
+      case KC_HOME ... KC_UP:
+      // Don't untoggle for ctrl g since that should *only* deactivate the shift layer
+      // (and not send ctrl+g afterwards too)
+      case CK_CTLG:
+        break;
+      default:
+        if (!IsToggleShiftTapDance(keycode)) {
+          UntoggleShift();
         }
-    } else {*/
-        switch (keycode & QK_BASIC_MAX) {
-            case KC_HOME ... KC_UP:
-                break;
-            default:
-                // Don't untoggle for ctrl g since that should *only* deactivate the shift layer
-                // (and not send ctrl+g afterwards too)
-                untoggle_shift = true;
-        }
-    // }
-    if (untoggle_shift) {
-      UntoggleShift();
     }
 
     if (!process_custom_keycodes(keycode, record)) {
       return false;
     }
 
-    // We explicitly want all keycodes to return something to
-    // 1) prevent custom keycodes from having logic in this switch and in run_array_processor
-    // 2) prevent regular keycode logic from getting to custom keycodes (shouldn't actually be a problem but jic)
-    /*switch (keycode) {
-        case LEEP_ENUM_CASE(CS):
-            send_string(cs_processors[LEEP_ENUM_OFFSET(CS, keycode)]);
-            return false;
-        case LEEP_ENUM_CASE(CU):
-            SEND_STRING(SS_DOWN(X_RCTL) "l");
-            URLWait();
-            send_string(cu_processors[LEEP_ENUM_OFFSET(CU, keycode)]);
-            SEND_STRING(SS_UP(X_RCTL));
-            return false;
-        case LEEP_ENUM_CASE(CN):
-            NEW_TAB();
-            send_string(cn_processors[LEEP_ENUM_OFFSET(CN, keycode)]);
-            return false;
-        case LEEP_ENUM_CASE(CK):
-            if (ck_processors[LEEP_ENUM_OFFSET(CK, keycode)]) {
-                ck_processors[LEEP_ENUM_OFFSET(CK, keycode)](true);
-            }
-            return false;
-    }*/
     return true;
 }
 

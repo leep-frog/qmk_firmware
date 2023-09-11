@@ -469,6 +469,11 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 
 #define TGL_SHF TD(TDK_SHIFT_TOGGLE)
+
+bool IsToggleShiftTapDance(uint16_t keycode) {
+  return (keycode == TGL_SHF);
+}
+
 #define CK_KILL TD(TDK_KILL_LINE)
 #define CK_MCR1 TD(TDK_MACRO_1)
 #define CK_MCR2 TD(TDK_MACRO_2)
