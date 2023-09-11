@@ -365,6 +365,15 @@ bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
     }
 
     if (record->event.pressed) {
+      switch (keycode) {
+        case CK_MCR1:
+        case CK_MCR2:
+          LeepMute();
+          SetPlayedStartupSong(true);
+          LEEP_LAYER_COLOR(LR_BASE, false);
+          // Return true so macro behavior continues as normal
+          return true;
+      }
         return false;
     }
 
