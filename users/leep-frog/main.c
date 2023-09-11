@@ -173,18 +173,6 @@ typedef void (*processor_action_t)(bool activated);
 
 #define PROCESSOR_MACRO_STRING(num, e_start, prefix, max_string_size, dflt, ...) PROCESSOR_MACRO(char, num, e_start, prefix, [max_string_size], dflt, __VA_ARGS__)
 
-/*
-
-PROCESSOR_MACRO_STRING(3, CN_ENUM_START, cn, 12, "",
-                       // Paste clipboard contents into the URL bar
-                       URL_PST, ,
-                       // Open CL
-                       CK_CL, "cl/" SS_TAP(X_ENTER),
-                       // Open Moma
-                       CK_MOMA, "moma " SS_TAP(X_ENTER)
-                       // Trailing comma
-)*/
-
 void one_hand_layer_change(bool activated) {
   AltLayerDeactivationHandler(activated);
   if (activated) {
@@ -200,6 +188,34 @@ void ctrl_alt_layer(bool activated) {
         SEND_STRING(SS_UP(X_RCTL) SS_UP(X_RALT));
     }
 }
+
+int layer_colors[NUM_LAYERS][3] = {
+    [0 ... NUM_LAYERS - 1] =
+        {//
+         LEEP_C(GREEN)},
+    // Base layer
+    [LR_BASE] = {LEEP_C(CYAN)},
+    // Ella layer
+    [LR_ELLA] = {LEEP_C(GREEN)},
+    // Ctrl layer
+    [LR_CTRL] = {LEEP_C(SPRINGGREEN)},
+    // Alt layer
+    [LR_ALT] = {LEEP_C(MAGENTA)},
+    // Ctrl+X layer
+    [LR_CTRL_X] = {LEEP_C(CHARTREUSE)},
+    // Ctrl+Alt layer
+    [LR_CTRL_ALT] = {LEEP_C(GOLD)},
+    // Nav layer
+    [LR_NAVIGATION] = {LEEP_C(CORAL)},
+    // Shortcut layer
+    [LR_SHORTCUTS] = {LEEP_C(TURQUOISE)},
+    // Symbol layer
+    [LR_SYMB] = {LEEP_C(ORANGE)},
+    // Outlook layer
+    [LR_OUTLOOK] = {LEEP_C(BLUE)},
+    // Scroll layer
+    [LR_SCROLL] = {LEEP_C(RED)},
+};
 
 /*******************
  * Custom keycodes *
@@ -301,6 +317,11 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 
 // TODO: Tap dance for this
 #define URL_CRI _______
+
+uint16_t Alt_keycodes[] = {
+  CK_ATB,
+  CK_SATB,
+};
 
 const uint16_t ToAltKeycode = TO_ALT;
 const uint16_t ToCtrlKeycode = TO_CTRL;

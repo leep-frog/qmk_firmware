@@ -11,11 +11,6 @@
 #include "../../../../users/leep-frog/main.c"
 #include "../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
 
-uint16_t Alt_keycodes[] = {
-  CK_ATB,
-  CK_SATB,
-};
-
 // Can't evaluate macro in macro, so use this to ignore bottom row of keyboard
 // https://stackoverflow.com/questions/35114050/is-there-a-way-to-force-c-preprocessor-to-evaluate-macro-arguments-before-the-ma
 #define ML_LAYOUT(...) LAYOUT_moonlander(__VA_ARGS__)
@@ -23,34 +18,6 @@ uint16_t Alt_keycodes[] = {
 // The tap dances defined for TO_SFT and TO_SYMB require that those keys are at the
 // same spot in all layers. See the tap_dance.c file for more info.
 #define THUMB_ROW(LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE) TO_SFT, LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE, TO_SYMB
-
-int layer_colors[NUM_LAYERS][3] = {
-    [0 ... NUM_LAYERS - 1] =
-        {//
-         LEEP_C(GREEN)},
-    // Base layer
-    [LR_BASE] = {LEEP_C(CYAN)},
-    // Ella layer
-    [LR_ELLA] = {LEEP_C(GREEN)},
-    // Ctrl layer
-    [LR_CTRL] = {LEEP_C(SPRINGGREEN)},
-    // Alt layer
-    [LR_ALT] = {LEEP_C(MAGENTA)},
-    // Ctrl+X layer
-    [LR_CTRL_X] = {LEEP_C(CHARTREUSE)},
-    // Ctrl+Alt layer
-    [LR_CTRL_ALT] = {LEEP_C(GOLD)},
-    // Nav layer
-    [LR_NAVIGATION] = {LEEP_C(CORAL)},
-    // Shortcut layer
-    [LR_SHORTCUTS] = {LEEP_C(TURQUOISE)},
-    // Symbol layer
-    [LR_SYMB] = {LEEP_C(ORANGE)},
-    // Outlook layer
-    [LR_OUTLOOK] = {LEEP_C(BLUE)},
-    // Scroll layer
-    [LR_SCROLL] = {LEEP_C(RED)},
-};
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
