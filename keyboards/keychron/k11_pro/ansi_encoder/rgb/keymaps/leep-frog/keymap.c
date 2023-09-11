@@ -18,15 +18,10 @@
 
 #define LEEP_SAFE_RANGE NEW_SAFE_RANGE
 
-#include "../../../../../../../users/leep-frog/main.c"
+#include "keymap_introspection.h"
 
-// enum layers{
-//     MAC_BASE,
-//     WIN_BASE,
-//     MAC_FN1,
-//     WIN_FN1,
-//     FN2,
-// };
+#include "../../../../../../../users/leep-frog/main.c"
+#include "../../../../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -66,7 +61,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
         AL(LCTL),AL(LALT), AL(LGUI),          AL(ENTER),        _______,         TO_CTAL,            AL(SPACE),          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
 
     [LR_SYMB] = LAYOUT_69_ansi(
-        KC_ESC,  KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,    KC_F7,   KC_F8,   ...KC_F9,   KC_F10,   KC_F11,   KC_F12,   KC_BSPC,          KC_INS,
+        KC_ESC,  KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   KC_BSPC,          KC_INS,
         KC_TAB,  KC_EXLM,  KC_COLN,  KC_EQL,  KC_CIRC, KC_PIPE, KC_PIPE,  KC_7,    KC_8,    KC_9,    KC_PERC,  KC_LBRC,  KC_RBRC,  KC_BSLS,          _______,
         KC_CAPS, KC_AMPR,  KC_ASTR,  KC_DLR,  KC_SLSH, KC_LBRC,           CK_MDPS, KC_4,    KC_5,    KC_6,     KC_0,     KC_QUOT,  KC_ENT,           _______,
         KC_LSFT,           KC_TILD,  KC_EXLM, KC_AT,   KC_EQL,  KC_BSLS,  KC_LCBR, KC_RCBR, KC_1,    KC_2,     KC_3,     KC_SLSH,  KC_RSFT, KC_UP,

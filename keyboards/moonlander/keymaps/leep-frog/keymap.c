@@ -6,8 +6,6 @@
 
 #include "keymap_introspection.h"
 
-// custom_keycode_fn_t custom_keycode_handlers[] = {};
-
 #include "../../../../users/leep-frog/main.c"
 #include "../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
 
