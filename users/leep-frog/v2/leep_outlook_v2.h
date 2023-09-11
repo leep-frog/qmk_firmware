@@ -7,6 +7,8 @@
 #define OL_NEXT C(KC_DOT)
 // Outlook today is taken care of as custom keycode
 
+#define OL_TDAY_STRING() SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D)
+
 /* TODO:
 OL_REMOVE_FROM_CALENDAR
 OL_ACCEPT_INVITE_DONT_SEND

@@ -4,7 +4,11 @@
 // internet browser to run actions (like opening a new tab).
 #define URLWait() wait_ms(80)
 
-#define NEW_TAB_STRING() SS_RCTL("t") SS_DELAY(80)
+#define URL_WAIT_STRING() SS_DELAY(80)
+
+#define NEW_TAB_STRING() SS_RCTL("t") URL_WAIT_STRING()
+
+#define FOCUS_TAB_STRING() SS_RCTL("l") URL_WAIT_STRING()
 
 #define NEW_TAB() SEND_STRING(NEW_TAB_STRING())
 
@@ -16,7 +20,6 @@
 
 #define URL_PASTE() \
     NEW_TAB();      \
-    URLWait();      \
     SEND_STRING(SS_PASTE SS_TAP(X_ENTER));
 
 #define NTH_URL_ID(k) SS_TAP(X_LEFT) REPEAT_##k(SS_TAP(X_RIGHT)) SS_RSFT(SS_TAP(X_RIGHT)) SS_UP(X_RCTL) SS_RSFT(SS_TAP(X_LEFT)) SS_DOWN(X_RCTL) "c"

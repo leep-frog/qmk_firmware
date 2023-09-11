@@ -55,7 +55,7 @@ int layer_colors[NUM_LAYERS][3] = {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = ML_LAYOUT(
-        CK_LOCK, KC_1, KC_2, KC_3, KC_4, KC_5, WS_LEFT,       CK_ESC,  KC_6, KC_7, KC_8,    KC_9,   KC_0,    TG(LR_ELLA),
+        CK_LOCK, KC_1, KC_2, KC_3, KC_4, KC_5, WS_LEFT,       KC_ESC,  KC_6, KC_7, KC_8,    KC_9,   KC_0,    TG(LR_ELLA),
         _______, KC_Q, KC_W, KC_E, KC_R, KC_T, LGHT_ON,       LGHT_OF, TD_Y, TD_U, TD_I,    KC_O,   KC_P,    _______,
         SC_LSPO, TD_A, KC_S, KC_D, KC_F, KC_G, WS_LEFT,       WS_RGHT, KC_H, KC_J, KC_K,    KC_L,   TO_OTLK, SC_RSPC,
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
@@ -76,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [LR_CTRL] = ML_LAYOUT(
-        CL(EQL),  CL(1),   CL(2),   CL(3),   CL(4),   CL(5),   RCTL(WS_LEFT),  CK_ESC,  CL(6),   CL(7),   CL(8),   CL(9),    CL(0),    TO_ELLA,
+        CL(EQL),  CL(1),   CL(2),   CL(3),   CL(4),   CL(5),   RCTL(WS_LEFT),  KC_ESC,  CL(6),   CL(7),   CL(8),   CL(9),    CL(0),    TO_ELLA,
         CL(TAB),  CL(Q),   CTRL_W,  KC_END,  CL(R),   TD_CTLT, KC_LEFT,        KC_RGHT, CL(Y),   CK_TABB, CL(I),   CK_TABF,  KC_UP,    CL(BSLS),
 LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _______, KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), RSFT_T(CL(RPRN)),
         CL(LCBR), CL(Z),   TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,                                   KC_DOWN, CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RCBR),
@@ -87,7 +87,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
     ),
 
     [LR_CTRL_X] = ML_LAYOUT(
-        _______,  CL(1), CL(2), CL(3), CL(4), CL(5), RCTL(WS_LEFT),           RCTL(CK_ESC),      CL(6), CL(7), CL(8),     CL(9),    CL(0),    TO_ELLA,
+        _______,  CL(1), CL(2), CL(3), CL(4), CL(5), RCTL(WS_LEFT),           RCTL(KC_ESC),      CL(6), CL(7), CL(8),     CL(9),    CL(0),    TO_ELLA,
         CL(TAB),  CL(Q), CL(W), CL(E), CL(R), CL(T), KC_LEFT,                 KC_RIGHT, CK_PSTE, CL(U), CL(I), CL(O),     CL(P),    CL(BSLS),
         CL(LPRN), CL(A), CL(S), CL(D), CL(F), CL(G), RCTL(WS_LEFT),           RCTL(WS_RGHT),     CL(H), CL(J), CL(K),     CL(L),    CL(SCLN), CL(RPRN),
         CL(LCBR), CL(Z), CL(X), CL(C), CL(V), CL(B),                                             CL(N), CL(M), CL(COMMA), CL(DOT),  CL(SLSH), CL(RCBR),
@@ -98,7 +98,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
     ),
 
     [LR_ALT] = ML_LAYOUT(
-        AL(EQL),  AL(1), AL(2),  AL(3),   AL(4),     AL(5),   RALT(WS_LEFT),        RALT(CK_ESC),  AL(6),   AL(7),   AL(8),    AL(9),   AL(0),    TO_ELLA,
+        AL(EQL),  AL(1), AL(2),  AL(3),   AL(4),     AL(5),   RALT(WS_LEFT),        RALT(KC_ESC),  AL(6),   AL(7),   AL(8),    AL(9),   AL(0),    TO_ELLA,
         AL(TAB),  AL(Q), AL(F4), AL(E),   AL(R),     CK_ALTT, KC_LEFT,              KC_RIGHT,      CK_PSTE, CK_SATB, AL(I),    CK_ATB,  AL(P),    AL(BSLS),
 LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),        RALT(WS_RGHT), CK_UNBS, AL(J),   AL(K),    KC_WH_U, AL(SCLN), RSFT_T(AL(RPRN)),
         AL(LCBR), AL(Z), AL(X),  AL(C),   KC_WH_D,   CL(LEFT),                                     AL(N),   AL(M),   AL(COMM), AL(DOT), AL(SLSH), AL(RCBR),
@@ -110,7 +110,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
     // This layer is basically identical to the safe layer aside from the thumb keys.
     [LR_CTRL_ALT] = ML_LAYOUT(
-        CK_LOCK, KC_1, KC_2, KC_3, KC_4, KC_5, _______,       CK_ESC,  KC_6, KC_7, KC_8,    KC_9,   KC_0,    TO_ELLA,
+        CK_LOCK, KC_1, KC_2, KC_3, KC_4, KC_5, _______,       KC_ESC,  KC_6, KC_7, KC_8,    KC_9,   KC_0,    TO_ELLA,
         KC_TAB,  KC_Q, KC_W, KC_E, KC_R, KC_T, LGHT_ON,       LGHT_OF, KC_Y, KC_U, KC_I,    KC_O,   KC_P,    KC_BSLS,
         KC_LPRN, KC_A, KC_S, KC_D, KC_F, KC_G, WS_LEFT,       WS_RGHT, KC_H, KC_J, KC_K,    KC_L,   KC_SCLN, KC_RPRN,
         KC_LCBR, KC_Z, KC_X, KC_C, KC_V, KC_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
@@ -122,7 +122,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
    [LR_SHORTCUTS] = ML_LAYOUT(
         _______,  _______, _______, _______, _______, _______, _______,           _______, _______, _______,  _______, _______, _______, TO_ELLA,
-        _______,  _______, CK_WWWB, MS_MID,  CK_WWWF, _______, _______,           _______, KC_WH_U, CK_URLC, KC_MS_U, CK_MOMA, CK_CL,   _______,
+        _______,  _______, CK_WWWB, MS_MID,  CK_WWWF, _______, _______,           _______, KC_WH_U, URL_CPY, KC_MS_U,  _______, _______, _______,
         KC_ENTER, _______, CK_LOGS, KC_ACL1, KC_ACL0, _______, _______,           _______, KC_WH_D, KC_MS_L,  KC_MS_D, KC_MS_R, KC_RCTL, _______,
         _______,  _______, _______, MS_CTRL, _______, GD_BULT,                             CK_NEW,  GD_HD_1,  GD_HD_2, GD_HD_3, _______, _______,
 
@@ -164,7 +164,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
     [LR_ONE_HAND_LEFT] = ML_LAYOUT(
         _______, _______, _______, TD_RST,  _______, _______, _______,           _______, _______, _______,  _______, _______, _______, TO_ELLA,
-       KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, _______,           _______, KC_WH_U, CK_URLC, KC_MS_U, _______, _______, _______,
+       KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, _______,           _______, KC_WH_U, URL_CPY, KC_MS_U, _______, _______, _______,
        KC_ENTER, TO_SCRL, CL(R),   CK_TABB, CK_TABF, WS_RGHT, _______,           _______, KC_WH_D, KC_MS_L,  KC_MS_D, KC_MS_R, KC_RCTL, _______,
        _______,  CK_WWWB, CK_WWWF, OH_COPY, OH_PSTE, _______,                             _______, KC_BTN1,  KC_BTN3, KC_BTN2, _______, _______,
 
@@ -175,7 +175,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
     [LR_ONE_HAND_RIGHT] = ML_LAYOUT(
         _______, _______, _______, _______, _______,  _______, _______,           _______, _______, _______, TD_RST,  _______, _______, TO_ELLA,
-        _______, _______, _______, KC_MS_U, CK_URLC, KC_WH_U, _______,           _______, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, KC_BSPC, KC_TAB,
+        _______, _______, _______, KC_MS_U, URL_CPY, KC_WH_U, _______,           _______, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, KC_BSPC, KC_TAB,
         _______, KC_RCTL, KC_MS_L, KC_MS_D, KC_MS_R,  KC_WH_D, _______,           _______, WS_LEFT, CK_TABB, CK_TABF, CL(R),   TO_SCRR, KC_ENTER,
         _______, _______, KC_BTN2, KC_BTN3, KC_BTN1,  _______,                             _______, OH_COPY, OH_PSTE, CK_WWWB, CK_WWWF, _______,
 

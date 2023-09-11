@@ -173,30 +173,7 @@ typedef void (*processor_action_t)(bool activated);
 
 #define PROCESSOR_MACRO_STRING(num, e_start, prefix, max_string_size, dflt, ...) PROCESSOR_MACRO(char, num, e_start, prefix, [max_string_size], dflt, __VA_ARGS__)
 
-// Be sure to end each with "\0" character (string end character).
-
-/*PROCESSOR_MACRO_STRING(4, CS_ENUM_START, cs, 26, "",
-                       // KC_ESC actually sends a "`" (KC_GRAVE) character for some reason.
-                       // Maybe it's something to do with KC_GESC overlapping or something?
-                       // Who knows why, but we do need this custom keycode regardless to get around that.
-                       CK_ESC, SS_TAP(X_ESC) "\0",
-                       // Outlook today
-                       OL_TDAY, SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D) "\0",
-
-                       // Log filter text
-                       CK_LOGS,
-                       // Trailing comma
-)
-
-PROCESSOR_MACRO_STRING(3, CU_ENUM_START, cu, 46, "",
-                       // Copy URL
-                       URL_COPY, "c",
-                       // Copy URL ID
-                       URL_ICP, SS_TAP(X_RIGHT) SS_RSFT(SS_TAP(X_LEFT)) "c",
-                       // Copy URL CR ID
-                       URL_CRI, NTH_URL_ID(6)
-                       // Trailing comma
-)
+/*
 
 PROCESSOR_MACRO_STRING(3, CN_ENUM_START, cn, 12, "",
                        // Paste clipboard contents into the URL bar
@@ -287,6 +264,8 @@ enum custom_keycode_handlers {
   CK_UNBS_HANDLER,
   CK_LOGS_HANDLER,
   URL_PST_HANDLER,
+  URL_CPY_HANDLER,
+  OL_TDAY_HANDLER,
 };
 
 // bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
@@ -312,6 +291,8 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC))),
   [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp ascy"),
   [URL_PST_HANDLER] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
+  [URL_CPY_HANDLER] = CK_HANDLER_STRING(FOCUS_TAB_STRING() SS_RCTL("c")),
+  [OL_TDAY_HANDLER] = CK_HANDLER_STRING(OL_TDAY_STRING()),
 };
 
 #define TO_ALT CK(TO_ALT_HANDLER)
@@ -332,17 +313,14 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 #define CK_CTLG CK(CK_CTLG_HANDLER)
 
 // TODO:
-#define CK_MOMA _______
-#define CK_CL _______
 #define URL_PST CK(URL_PST_HANDLER)
-#define URL_ICP _______
-#define CK_URLC _______
-#define URL_CRI _______
-#define CK_ESC _______
-#define OL_TDAY _______
+#define URL_CPY CK(URL_CPY_HANDLER)
+#define OL_TDAY CK(OL_TDAY_HANDLER)
 #define CK_UNBS CK(CK_UNBS_HANDLER)
 #define CK_LOGS CK(CK_LOGS_HANDLER)
 
+// TODO: Tap dance for this
+#define URL_CRI _______
 
 const uint16_t ToAltKeycode = TO_ALT;
 const uint16_t ToCtrlKeycode = TO_CTRL;
