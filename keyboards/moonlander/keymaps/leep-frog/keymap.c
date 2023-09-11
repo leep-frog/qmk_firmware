@@ -4,10 +4,7 @@
 // interface.c requirements
 #define LEEP_SAFE_RANGE SAFE_RANGE
 
-#include "keymap_introspection.h"
-
 #include "../../../../users/leep-frog/main.c"
-#include "../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
 
 // Can't evaluate macro in macro, so use this to ignore bottom row of keyboard
 // https://stackoverflow.com/questions/35114050/is-there-a-way-to-force-c-preprocessor-to-evaluate-macro-arguments-before-the-ma

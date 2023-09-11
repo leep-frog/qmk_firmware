@@ -18,10 +18,7 @@
 
 #define LEEP_SAFE_RANGE NEW_SAFE_RANGE
 
-#include "keymap_introspection.h"
-
 #include "../../../../../../../users/leep-frog/main.c"
-#include "../../../../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {

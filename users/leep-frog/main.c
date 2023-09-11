@@ -10,6 +10,7 @@ void print_int(int k) {
 
 #include <stdio.h>
 #include "./keyboard-main/leep_index_kb.h"
+#include "../../../../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
 #include "./v2/leep_index_v2.h"
 
 // Note: wally sometimes crashes if the keyboard is plugged into the workstation,
