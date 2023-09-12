@@ -4,9 +4,9 @@
 #include "leep_url_v2.h"
 #include "leep_aliases_v2.h"
 
-int cur_dance(tap_dance_state_t *state, bool interrupt_matters) {
+int cur_dance(tap_dance_state_t *state, bool interrupt_while_holding_means_tap) {
     if (state->count == 1) {
-        if ((interrupt_matters && state->interrupted) || !state->pressed) {
+        if (!state->pressed || (interrupt_while_holding_means_tap && state->interrupted)) {
             return SINGLE_TAP;
             // key has not been interrupted, but they key is still held. Means you want to send a 'HOLD'.
         } else {
@@ -17,13 +17,12 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_matters) {
         // action when hitting 'pp'. Suggested use case for this return value is when you want to send two
         // keystrokes of the key, and not the 'double tap' action/macro.
 
-        // NOTE: These lines have also been changed (check state->pressed before checking state->interrupted)
-        if (state->pressed) {
-            return DOUBLE_HOLD;
-        } else if (state->interrupted) {
-            return DOUBLE_SINGLE_TAP;
+        if (!state->pressed) {
+          return DOUBLE_TAP;
+        } else if (interrupt_while_holding_means_tap && state->interrupted) {
+          return DOUBLE_SINGLE_TAP;
         } else {
-            return DOUBLE_TAP;
+          return DOUBLE_HOLD;
         }
     }
     // Assumes no one is trying to type the same letter three times (at least not quickly).
