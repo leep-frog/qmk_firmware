@@ -412,13 +412,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     ToCtrl_handled(keycode);
     Oneshot_handled(record);
 
-
-    switch (keycode & QK_BASIC_MAX) {
+    switch (keycode) {
       // All non-movement keys don't untoggle
-      case KC_HOME ... KC_UP:
+      // KC_HOME ... KC_UP includes KC_DELETE, so we just ignore that by
+      // the following two lines:
+      case KC_HOME ... (KC_DELETE - 1):
+      case (KC_DELETE + 1) ... KC_UP:
+      // Control with movement
+      case LCTL(KC_HOME) ... LCTL(KC_DELETE - 1):
+      case LCTL(KC_DELETE + 1) ... LCTL(KC_UP):
+      case RCTL(KC_HOME) ... RCTL(KC_DELETE - 1):
+      case RCTL(KC_DELETE + 1) ... RCTL(KC_UP):
       // Don't untoggle for ctrl g since that should *only* deactivate the shift layer
       // (and not send ctrl+g afterwards too)
       case CK_CTLG:
+      // Don't untoggle for these layer changes
+      case TO_CTRL:
+      case TO_ALT:
         break;
       default:
         if (!IsToggleShiftTapDance(keycode)) {
