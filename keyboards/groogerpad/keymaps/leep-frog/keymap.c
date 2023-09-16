@@ -332,7 +332,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 TK_LB,                                                TK_RB,
                                            _______,                   SH(TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
-                CK_ATAB,                   _______,                   KC_BTN1,
+                CK_ATAB,                   KC_PRINT_SCREEN,           KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
                 CK_STAB
     ),
