@@ -6,11 +6,12 @@
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Roughly the shape of an xbox controller
     [0] = LAYOUT_xbox(
-                C(G(KC_LEFT)),                               C(G(KC_RIGHT)),
-                                  KC_H,                      KC_Y,
-                KC_J,    QK_BOOT,          S(KC_S), KC_X,             KC_B,
-                KC_UP,                                       KC_BTN1,
-       KC_LEFT,          KC_RIGHT,                           S(KC_J),
-                KC_DOWN
+                _______,                                              _______,
+                C(G(KC_LEFT)),                                        C(G(KC_RIGHT)),
+                                           _______,                   KC_Y,
+                C(KC_C),          KC_BTN2,          KC_BTN2, KC_X,             KC_B,
+                CK_UP,                     _______,                   KC_A,
+       KC_LEFT,          CK_RGHT,                   C(V),
+                CK_DOWN
     )
 };

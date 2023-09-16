@@ -17,4 +17,5 @@ OL_CALENDAR_LEFT
 OL_CALENDAR_RIGHT
 */
 
-bool OutlookTodayHandler(keyrecord_t *record);
+bool OutlookReloadHandler(keyrecord_t* record, custom_keycode_value_t *_);
+bool OutlookTodayHandler(keyrecord_t* record, custom_keycode_value_t *_);

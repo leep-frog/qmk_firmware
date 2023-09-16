@@ -5,9 +5,6 @@ extern int layer_colors[][3];
 bool PlayedStartupSong(void);
 void SetPlayedStartupSong(bool b);
 
-// TODO: Move to config file
-#define ENABLE_LEEP_COLOR
-
 #ifdef ENABLE_LEEP_COLOR
 
 void leep_change_color(uint16_t a, uint8_t b, uint8_t c, uint8_t mode, bool force);

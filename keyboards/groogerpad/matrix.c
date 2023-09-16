@@ -92,7 +92,7 @@ typedef struct {
 button_mapping_t button_mappings[] = {
   // Ordering determined from here:
   // https://github.com/ricardoquesada/bluepad32-arduino/blob/b026e813baf386fab596d4dc247afe268b79e40a/src/Controller.h#L71
-  BUTTON_MAPPING(4, 1), // A
+  BUTTON_MAPPING(4, 2), // A
   BUTTON_MAPPING(3, 4), // B
   BUTTON_MAPPING(3, 3), // X
   BUTTON_MAPPING(2, 1), // Y
@@ -114,6 +114,7 @@ button_mapping_t misc_button_mappings[] = {
   BUTTON_MAPPING(2, 0), // Xbox button
   BUTTON_MAPPING(3, 1), // Select
   BUTTON_MAPPING(3, 2), // Start
+  BUTTON_MAPPING(4, 1), // Extra button
 };
 
 const uint8_t NUM_MISC_BUTTONS = GET_NUM_BUTTONS(misc_button_mappings);

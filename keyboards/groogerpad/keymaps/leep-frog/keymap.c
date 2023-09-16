@@ -32,7 +32,6 @@ void TypeLayerHandler(bool activated) {
 }
 
 void keyboard_post_init_user(void) {
-  SET_LAYER_HANDLER(LR_ALT, AltLayerHandler);
   SET_LAYER_HANDLER(LR_TYPE, TypeLayerHandler);
 }
 
@@ -116,7 +115,7 @@ void right_joystick_handler(enum joystick_direction_t direction) {
 }
 
 #define WORD_HANDLER_DEFINE(word_layer, dir) \
-bool WordLayerHandler_##word_layer (keyrecord_t* record) { \
+bool WordLayerHandler_##word_layer (keyrecord_t* record, custom_keycode_value_t *_) { \
   word_buttons[word_layer] = record->event.pressed; \
   if (record->event.pressed) { \
     register_code16(words[word_layer][dir##_joystick_direction]); \
@@ -137,7 +136,7 @@ WORD_HANDLER_DEFINE(5, right)
 WORD_HANDLER_DEFINE(6, right)
 WORD_HANDLER_DEFINE(7, right)
 
-#define WORD_HANDLER_FUNC(word_layer) &WordLayerHandler_##word_layer
+#define WORD_HANDLER_FUNC(word_layer) CK_HANDLER_FN(WordLayerHandler_##word_layer)
 
 /**************
  * Tap Dances *
@@ -196,7 +195,7 @@ combo_t key_combos[] = {
  * Custom keycodes *
  *******************/
 
-bool AltBButtonHandler(keyrecord_t* record) {
+bool AltBButtonHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     register_code16(KC_ESCAPE);
     wait_ms(100);
@@ -208,86 +207,86 @@ bool AltBButtonHandler(keyrecord_t* record) {
   return false;
 }
 
-enum custom_keycodes {
-  ALT_TAB,
-  SHIFT_ALT_TAB,
-  LR_ALT_B_BUTTON,
-  OUTLOOK_RELOAD,
-  CUSTOM_KEYCODE_END,
-  WORD_LAYER_0,
-  WORD_LAYER_1,
-  WORD_LAYER_2,
-  WORD_LAYER_3,
-  WORD_LAYER_4,
-  WORD_LAYER_5,
-  WORD_LAYER_6,
-  WORD_LAYER_7,
-  MOUSE_SPEED_UP,
-  MOUSE_SPEED_DOWN,
-  SCROLL_SPEED_UP,
-  SCROLL_SPEED_DOWN,
+enum custom_keycode_handlers {
+  ALT_TAB_HANDLER,
+  SHIFT_ALT_TAB_HANDLER,
+  LR_ALT_B_BUTTON_HANDLER,
+  OUTLOOK_RELOAD_HANDLER,
+  CUSTOM_KEYCODE_END_HANDLER,
+  WORD_LAYER_0_HANDLER,
+  WORD_LAYER_1_HANDLER,
+  WORD_LAYER_2_HANDLER,
+  WORD_LAYER_3_HANDLER,
+  WORD_LAYER_4_HANDLER,
+  WORD_LAYER_5_HANDLER,
+  WORD_LAYER_6_HANDLER,
+  WORD_LAYER_7_HANDLER,
+  MOUSE_SPEED_UP_HANDLER,
+  MOUSE_SPEED_DOWN_HANDLER,
+  SCROLL_SPEED_UP_HANDLER,
+  SCROLL_SPEED_DOWN_HANDLER,
 };
 
-bool IncrementMouseSpeed(keyrecord_t *record) {
+bool IncrementMouseSpeed(keyrecord_t *record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     joystick_mouse_speed_increment(1);
   }
   return false;
 }
-bool DecrementMouseSpeed(keyrecord_t *record) {
+bool DecrementMouseSpeed(keyrecord_t *record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     joystick_mouse_speed_decrement(1);
   }
   return false;
 }
-bool IncrementScrollSpeed(keyrecord_t *record) {
+bool IncrementScrollSpeed(keyrecord_t *record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     joystick_scroll_speed_increment(1);
   }
   return false;
 }
-bool DecrementScrollSpeed(keyrecord_t *record) {
+bool DecrementScrollSpeed(keyrecord_t *record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     joystick_scroll_speed_decrement(1);
   }
   return false;
 }
 
-custom_keycode_fn_t custom_keycode_handlers[] = {
-  [ALT_TAB] = &AltTabHandler,
-  [SHIFT_ALT_TAB] = &AltShiftTabHandler,
-  [LR_ALT_B_BUTTON] = &AltBButtonHandler,
-  [OUTLOOK_RELOAD] = &OutlookTodayHandler,
-  [WORD_LAYER_0] = WORD_HANDLER_FUNC(0),
-  [WORD_LAYER_1] = WORD_HANDLER_FUNC(1),
-  [WORD_LAYER_2] = WORD_HANDLER_FUNC(2),
-  [WORD_LAYER_3] = WORD_HANDLER_FUNC(3),
-  [WORD_LAYER_4] = WORD_HANDLER_FUNC(4),
-  [WORD_LAYER_5] = WORD_HANDLER_FUNC(5),
-  [WORD_LAYER_6] = WORD_HANDLER_FUNC(6),
-  [WORD_LAYER_7] = WORD_HANDLER_FUNC(7),
-  [MOUSE_SPEED_UP] = &IncrementMouseSpeed,
-  [MOUSE_SPEED_DOWN] = &DecrementMouseSpeed,
-  [SCROLL_SPEED_UP] = &IncrementScrollSpeed,
-  [SCROLL_SPEED_DOWN] = &DecrementScrollSpeed,
+custom_keycode_handler_t custom_keycode_handlers[] = {
+  [ALT_TAB_HANDLER] = CK_HANDLER_FN(AltTabHandler),
+  [SHIFT_ALT_TAB_HANDLER] = CK_HANDLER_FN(AltShiftTabHandler),
+  [LR_ALT_B_BUTTON_HANDLER] = CK_HANDLER_FN(AltBButtonHandler),
+  [OUTLOOK_RELOAD_HANDLER] = CK_HANDLER_FN(OutlookTodayHandler),
+  [WORD_LAYER_0_HANDLER] = WORD_HANDLER_FUNC(0),
+  [WORD_LAYER_1_HANDLER] = WORD_HANDLER_FUNC(1),
+  [WORD_LAYER_2_HANDLER] = WORD_HANDLER_FUNC(2),
+  [WORD_LAYER_3_HANDLER] = WORD_HANDLER_FUNC(3),
+  [WORD_LAYER_4_HANDLER] = WORD_HANDLER_FUNC(4),
+  [WORD_LAYER_5_HANDLER] = WORD_HANDLER_FUNC(5),
+  [WORD_LAYER_6_HANDLER] = WORD_HANDLER_FUNC(6),
+  [WORD_LAYER_7_HANDLER] = WORD_HANDLER_FUNC(7),
+  [MOUSE_SPEED_UP_HANDLER] = CK_HANDLER_FN(IncrementMouseSpeed),
+  [MOUSE_SPEED_DOWN_HANDLER] = CK_HANDLER_FN(DecrementMouseSpeed),
+  [SCROLL_SPEED_UP_HANDLER] = CK_HANDLER_FN(IncrementScrollSpeed),
+  [SCROLL_SPEED_DOWN_HANDLER] = CK_HANDLER_FN(DecrementScrollSpeed),
 };
 
-#define CK_ALTB CK(LR_ALT_B_BUTTON)
-#define CK_ATAB CK(ALT_TAB)
-#define CK_STAB CK(SHIFT_ALT_TAB)
-#define CK_OLRL CK(OUTLOOK_RELOAD)
-#define CK_WL_0 CK(WORD_LAYER_0)
-#define CK_WL_1 CK(WORD_LAYER_1)
-#define CK_WL_2 CK(WORD_LAYER_2)
-#define CK_WL_3 CK(WORD_LAYER_3)
-#define CK_WL_4 CK(WORD_LAYER_4)
-#define CK_WL_5 CK(WORD_LAYER_5)
-#define CK_WL_6 CK(WORD_LAYER_6)
-#define CK_WL_7 CK(WORD_LAYER_7)
-#define CK_MSUP CK(MOUSE_SPEED_UP)
-#define CK_MSDN CK(MOUSE_SPEED_DOWN)
-#define CK_SCUP CK(SCROLL_SPEED_UP)
-#define CK_SCDN CK(SCROLL_SPEED_DOWN)
+#define CK_ALTB CK(LR_ALT_B_BUTTON_HANDLER)
+#define CK_ATAB CK(ALT_TAB_HANDLER)
+#define CK_STAB CK(SHIFT_ALT_TAB_HANDLER)
+#define CK_OLRL CK(OUTLOOK_RELOAD_HANDLER)
+#define CK_WL_0 CK(WORD_LAYER_0_HANDLER)
+#define CK_WL_1 CK(WORD_LAYER_1_HANDLER)
+#define CK_WL_2 CK(WORD_LAYER_2_HANDLER)
+#define CK_WL_3 CK(WORD_LAYER_3_HANDLER)
+#define CK_WL_4 CK(WORD_LAYER_4_HANDLER)
+#define CK_WL_5 CK(WORD_LAYER_5_HANDLER)
+#define CK_WL_6 CK(WORD_LAYER_6_HANDLER)
+#define CK_WL_7 CK(WORD_LAYER_7_HANDLER)
+#define CK_MSUP CK(MOUSE_SPEED_UP_HANDLER)
+#define CK_MSDN CK(MOUSE_SPEED_DOWN_HANDLER)
+#define CK_SCUP CK(SCROLL_SPEED_UP_HANDLER)
+#define CK_SCDN CK(SCROLL_SPEED_DOWN_HANDLER)
 
 uint16_t Alt_keycodes[] = {
   CK_ATAB,
@@ -333,7 +332,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 TK_LB,                                                TK_RB,
                                            _______,                   SH(TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
-                CK_ATAB,                                              KC_BTN1,
+                CK_ATAB,                   _______,                   KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
                 CK_STAB
     ),
@@ -343,7 +342,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              _______,
                                            _______,                   _______,
                 _______,          _______,          _______, _______,          CK_ALTB,
-                CK_ATAB,                                              _______,
+                CK_ATAB,                   _______,                   _______,
        _______,          _______,                   _______,
                 CK_STAB
     ),
@@ -353,7 +352,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              _______,
                                            _______,                   OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
-                _______,                                              OL_NEXT,
+                _______,                   _______,                   OL_NEXT,
        _______,          _______,                   _______,
                 _______
                 // TODO: Dpad for calendar functions (left, right, today)
@@ -364,7 +363,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              CK_WL_4,
                                            _______,                   CK_WL_3,
                 KC_0,             KC_ESC,           _______, CK_WL_2,             CK_WL_1,
-                CK_WL_6,                                                CK_WL_0,
+                CK_WL_6,                   _______,                   CK_WL_0,
        CK_WL_5,          KC_RIGHT,                  _______,
                 CK_WL_7
     ),
@@ -374,7 +373,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              CK_WL_4,
                                            _______,                   CK_WL_3,
                 KC_0,             KC_ESC,           _______, CK_WL_2,             CK_WL_1,
-                KC_UP,                                                KC_X,
+                KC_UP,                     _______,                   KC_X,
        KC_LEFT,          KC_RIGHT,                  _______,
                 KC_DOWN
     ),
@@ -384,7 +383,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              _______,
                                            _______,                   _______,
                 _______,          _______,         _______, _______,             _______,
-                CK_MSUP,                                              _______,
+                CK_MSUP,                   _______,                   _______,
        CK_SCDN,          CK_SCUP,                  _______,
                 CK_MSDN
     ),

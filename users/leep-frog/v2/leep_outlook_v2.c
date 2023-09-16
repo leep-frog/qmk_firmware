@@ -1,6 +1,6 @@
 
-bool OutlookReloadHandler(bool pressed) {
-  if (pressed) {
+bool OutlookReloadHandler(keyrecord_t* record, custom_keycode_value_t *_) {
+  if (record->event.pressed) {
     // Switch panes
     send_string(SS_RCTL(SS_RSFT(SS_TAP(X_TAB))));
     // Reload
@@ -12,7 +12,7 @@ bool OutlookReloadHandler(bool pressed) {
   return true;
 }
 
-bool OutlookTodayHandler(keyrecord_t *record) {
+bool OutlookTodayHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     SEND_STRING(
       // Switch panes
