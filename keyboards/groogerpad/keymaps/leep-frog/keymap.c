@@ -3,7 +3,24 @@
 
 #include QMK_KEYBOARD_H
 
-#include "../../../../users/leep-frog/v2/leep_index_v2.h"
+/* #include "../../../../users/leep-frog/v2/leep_index_v2.h" */
+// #include "../../../../users/leep-frog/v2/leep_music_v2.h"
+#include "../../../../users/leep-frog/v2/leep_custom_keycodes_v2.h"
+#include "../../../../users/leep-frog/v2/leep_layers_v2.h"
+#include "../../../../users/leep-frog/v2/leep_tap_dance_v2.h"
+#include "../../../../users/leep-frog/v2/leep_alt_v2.h"
+#include "../../../../users/leep-frog/v2/leep_aliases_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_google_v2.h"
+#include "../../../../users/leep-frog/v2/leep_url_v2.h"
+#include "../../../../users/leep-frog/v2/leep_workspace_v2.h"
+#include "../../../../users/leep-frog/v2/leep_outlook_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_modifiers_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_slack_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_shift_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_record_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_color_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_oneshot_v2.h"
+
 #include "groogermouse.h"
 #include "uart.h"
 #include "groogerpad.h"
@@ -62,7 +79,7 @@ uint16_t word_layer_registered_codes[NUM_WORD_LAYERS] = {
   [0 ... NUM_WORD_LAYERS - 1] = 0,
 };
 
-const uint16_t words[NUM_WORD_LAYERS][9] = {
+const uint16_t PROGMEM words[NUM_WORD_LAYERS][9] = {
   // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
 /*{ CENTER,  WEST,    NW,      NORTH,   NE,      EAST,    SE,      SOUTH,   SW       } */
   // A button
@@ -186,7 +203,7 @@ tap_dance_action_t tap_dance_actions[] = {
  * Combos *
  **********/
 
-const uint16_t PROGMEM test_combo1[] = {TK_LB, TK_RB, COMBO_END};
+const uint16_t PROGMEM test_combo1[] = {KC_L, KC_R, COMBO_END};
 combo_t key_combos[] = {
     COMBO(test_combo1, TG(LR_TYPE)),
 };
@@ -212,7 +229,6 @@ enum custom_keycode_handlers {
   SHIFT_ALT_TAB_HANDLER,
   LR_ALT_B_BUTTON_HANDLER,
   OUTLOOK_RELOAD_HANDLER,
-  CUSTOM_KEYCODE_END_HANDLER,
   WORD_LAYER_0_HANDLER,
   WORD_LAYER_1_HANDLER,
   WORD_LAYER_2_HANDLER,
@@ -313,24 +329,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   return true;
 }
 
-/***********
- * Keymaps *
- ***********/
-
-/* TODO:
-- ctrl-click
-- ctrl-shift-click
-- GU(TAB)
-- ctrl+f
-- links
-  - chime
-  - id grabber (press url_copy key n times for n-th id?)
-*/
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 _______,                                              _______,
                 TK_LB,                                                TK_RB,
-                                           _______,                   SH(TAB),
+                                           _______,                   S(KC_TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
                 CK_ATAB,                   KC_PRINT_SCREEN,           KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
