@@ -44,7 +44,7 @@ void matrix_init_custom(void) {
     uart_read();
   }
 
-  led_blink(4);
+  // led_blink(4);
 }
 
 #define CHECK_BUTTON(button, var, pos) ((var) & (1<<(pos)))
@@ -160,8 +160,26 @@ bool process_button_mask(matrix_row_t current_matrix[], button_mapping_t bms[], 
 
 nina_gamepad_t gamepad;
 
+uint16_t led_toggle_duration = 3000;
+uint16_t led_toggle_timer = 0;
+bool led_toggle_on = false;
+bool led_toggle_init = true;
+
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   bool changed = false;
+
+  if (led_toggle_init || timer_elapsed(led_toggle_timer) >= led_toggle_duration) {
+    led_toggle_init = false;
+    led_toggle_on = !led_toggle_on;
+    if (led_toggle_on) {
+      led_off();
+      UART_WRITE_LED_ON();
+    } else {
+      led_on();
+      UART_WRITE_LED_OFF();
+    }
+    led_toggle_timer = timer_read();
+  }
 
   // Only request data if there isn't anything already available
   UART_WRITE_SEND_DATA();
@@ -181,11 +199,11 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     uart_receive((uint8_t *)(&gamepad), sizeof(nina_gamepad_t));
   }
 
-  if (gamepad.buttons) {
-    led_on();
-  } else {
-    led_off();
-  }
+  // if (gamepad.buttons) {
+  //   led_on();
+  // } else {
+  //   led_off();
+  // }
 
   // Process regular buttons
   if (process_button_mask(current_matrix, button_mappings, gamepad.buttons, NUM_BUTTONS)) {

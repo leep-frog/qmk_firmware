@@ -1,11 +1,12 @@
 #pragma once
 
-extern int layer_colors[][3];
 
 bool PlayedStartupSong(void);
 void SetPlayedStartupSong(bool b);
 
 #ifdef ENABLE_LEEP_COLOR
+
+extern int layer_colors[][3];
 
 void leep_change_color(uint16_t a, uint8_t b, uint8_t c, uint8_t mode, bool force);
 

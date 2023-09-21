@@ -3,34 +3,27 @@
 
 #include QMK_KEYBOARD_H
 
-// #include "keymap_introspection.h"
-
-/*#include "../../../../users/leep-frog/v2/leep_color_v2.h"
-#include "../../../../users/leep-frog/v2/leep_color_v2.c"
-#include "../../../../users/leep-frog/v2/leep_layers_v2.h"
-#include "../../../../users/leep-frog/v2/leep_layers_v2.c"
+/* #include "../../../../users/leep-frog/v2/leep_index_v2.h" */
+// #include "../../../../users/leep-frog/v2/leep_music_v2.h"
 #include "../../../../users/leep-frog/v2/leep_custom_keycodes_v2.h"
-#include "../../../../users/leep-frog/v2/leep_custom_keycodes_v2.c"
-#include "../../../../users/leep-frog/v2/leep_alt_v2.h"
-#include "../../../../users/leep-frog/v2/leep_alt_v2.c"
-#include "../../../../users/leep-frog/v2/leep_outlook_v2.h"
-#include "../../../../users/leep-frog/v2/leep_outlook_v2.c"
+#include "../../../../users/leep-frog/v2/leep_layers_v2.h"
 #include "../../../../users/leep-frog/v2/leep_tap_dance_v2.h"
-#include "../../../../users/leep-frog/v2/leep_tap_dance_v2.c"
-
-#include "../../../../users/leep-frog/v2/leep_workspace_v2.h"*/
-
-#include "../../../../users/leep-frog/v2/leep_index_v2.h"
-// #include "../../../../users/leep-frog/v2/leep_index_v2.c"
+#include "../../../../users/leep-frog/v2/leep_alt_v2.h"
+#include "../../../../users/leep-frog/v2/leep_aliases_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_google_v2.h"
+#include "../../../../users/leep-frog/v2/leep_url_v2.h"
+#include "../../../../users/leep-frog/v2/leep_workspace_v2.h"
+#include "../../../../users/leep-frog/v2/leep_outlook_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_modifiers_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_slack_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_shift_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_record_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_color_v2.h"
+// #include "../../../../users/leep-frog/v2/leep_oneshot_v2.h"
 
 #include "groogermouse.h"
 #include "uart.h"
 #include "groogerpad.h"
-
-// combo_t key_combos[] = {};
-// custom_keycode_handler_t custom_keycode_handlers[] = {};
-// uint16_t Alt_keycodes[] = {};
-// tap_dance_action_t tap_dance_actions[] = {};
 
 /**********
  * Layers *
@@ -86,7 +79,7 @@ uint16_t word_layer_registered_codes[NUM_WORD_LAYERS] = {
   [0 ... NUM_WORD_LAYERS - 1] = 0,
 };
 
-const uint16_t words[NUM_WORD_LAYERS][9] = {
+const uint16_t PROGMEM words[NUM_WORD_LAYERS][9] = {
   // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
 /*{ CENTER,  WEST,    NW,      NORTH,   NE,      EAST,    SE,      SOUTH,   SW       } */
   // A button
@@ -138,30 +131,7 @@ void right_joystick_handler(enum joystick_direction_t direction) {
   }
 }
 
-bool generic_word_layer_handler(keyrecord_t* record, uint8_t word_layer, uint8_t joystick_direction) {
-  word_buttons[word_layer] = record->event.pressed;
-  if (joystick_direction >= 9) {
-    tap_code16(KC_Z);
-    return false;
-  }
-  if (word_layer >= 4) {
-    tap_code16(KC_Q);
-    return false;
-  }
-  if (record->event.pressed) {
-    register_code16(words[word_layer][joystick_direction]);
-    word_layer_registered_codes[word_layer] = words[word_layer][joystick_direction];
-  } else {
-    unregister_code16(word_layer_registered_codes[word_layer]);
-    word_layer_registered_codes[word_layer] = KC_NO;
-  }
-  return false;
-}
-
-#define WORD_HANDLER_DEFINE(word_layer, dir) bool WordLayerHandler_##word_layer (keyrecord_t* record, custom_keycode_value_t *_) { return generic_word_layer_handler(record, word_layer, dir##_joystick_direction); }
-
-
-/*#define WORD_HANDLER_DEFINE(word_layer, dir) \
+#define WORD_HANDLER_DEFINE(word_layer, dir) \
 bool WordLayerHandler_##word_layer (keyrecord_t* record, custom_keycode_value_t *_) { \
   word_buttons[word_layer] = record->event.pressed; \
   if (record->event.pressed) { \
@@ -172,7 +142,7 @@ bool WordLayerHandler_##word_layer (keyrecord_t* record, custom_keycode_value_t 
     word_layer_registered_codes[word_layer] = KC_NO; \
   } \
   return false; \
-}*/
+}
 
 WORD_HANDLER_DEFINE(0, left)
 WORD_HANDLER_DEFINE(1, left)
@@ -233,10 +203,9 @@ tap_dance_action_t tap_dance_actions[] = {
  * Combos *
  **********/
 
-const uint16_t test_combo1[] = {TK_LB, TK_RB, COMBO_END};
+const uint16_t PROGMEM test_combo1[] = {KC_L, KC_R, COMBO_END};
 combo_t key_combos[] = {
-    // COMBO(test_combo1, TG(LR_TYPE)),
-    COMBO(test_combo1, KC_Q),
+    COMBO(test_combo1, TG(LR_TYPE)),
 };
 
 /*******************
