@@ -1,6 +1,12 @@
 // Copyright 2023 QMK
 // SPDX-License-Identifier: GPL-2.0-or-later
 
+/*******************************************************************************
+ * NOTE: Do NOT use PROGMEM in anything other than the keymap declaration.     *
+ * It caused all sorts of weird behavior (at least I think that's what did b/c *
+ * adding PROGMEM to the combos or word layers caused weird things to happen). *
+ *******************************************************************************/
+
 #include QMK_KEYBOARD_H
 
 // #include "keymap_introspection.h"
