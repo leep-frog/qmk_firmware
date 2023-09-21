@@ -5,12 +5,12 @@
 // Note: we use page down and page up because that works with chrome
 // and "tab" is a special character in some terminals and sometimes gets
 // modified or ignored when passed to processes inside of the terminal.
-#define CK_TABF RCTL(KC_PGDN)    // Next tab in chrome
-#define CK_TABB LCTL(KC_PGUP)    // Previous tab in chrome
-#define CK_MTBF RCTL(KC_PGDN)    // Move tab right in chrome
-#define CK_MTBB RCTL(KC_PGUP)    // Move left right in chrome
-#define CK_WWWF LALT(KC_RIGHT)   // Next page in chrome
-#define CK_WWWB LALT(KC_LEFT)    // Previous page in chrome
+#define CK_TABF RCTL(KC_PGDN)       // Next tab in chrome
+#define CK_TABB LCTL(KC_PGUP)       // Previous tab in chrome
+#define CK_MTBF RCTL(RSFT(KC_PGDN)) // Move tab right in chrome
+#define CK_MTBB RCTL(RSFT(KC_PGUP)) // Move left right in chrome
+#define CK_WWWF LALT(KC_RIGHT)      // Next page in chrome
+#define CK_WWWB LALT(KC_LEFT)       // Previous page in chrome
 #define CK_WWW_CLOSE RCTL(KC_W)
 #define CK_WWW_NEW RCTL(KC_T)
 #define CK_WWW_REOPEN RCTL(RSFT(KC_T))
