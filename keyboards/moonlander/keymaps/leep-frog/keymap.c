@@ -126,8 +126,8 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
     [LR_ONE_HAND_LEFT] = ML_LAYOUT(
         _______, _______, _______, TD_RST,  _______, _______, _______,           _______, _______, _______,  _______, _______, _______, TO_ELLA,
-       KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, _______,           _______, KC_WH_U, URL_CPY, KC_MS_U, _______, _______, _______,
-       KC_ENTER, TO_SCRL, CL(R),   CK_TABB, CK_TABF, WS_RGHT, _______,           _______, KC_WH_D, KC_MS_L,  KC_MS_D, KC_MS_R, KC_RCTL, _______,
+       KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, _______,           _______, KC_WH_U, URL_CPY,  KC_MS_U, _______, _______, _______,
+       KC_LSFT,  TO_SCRL, CL(R),   CK_TABB, CK_TABF, WS_RGHT, _______,           _______, KC_WH_D, KC_MS_L,  KC_MS_D, KC_MS_R, KC_RCTL, _______,
        _______,  CK_WWWB, CK_WWWF, OH_COPY, OH_PSTE, _______,                             _______, KC_BTN1,  KC_BTN3, KC_BTN2, _______, _______,
 
                                                                       BOTTOM_ROW,
@@ -137,8 +137,8 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
     [LR_ONE_HAND_RIGHT] = ML_LAYOUT(
         _______, _______, _______, _______, _______,  _______, _______,           _______, _______, _______, TD_RST,  _______, _______, TO_ELLA,
-        _______, _______, _______, KC_MS_U, URL_CPY, KC_WH_U, _______,           _______, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, KC_BSPC, KC_TAB,
-        _______, KC_RCTL, KC_MS_L, KC_MS_D, KC_MS_R,  KC_WH_D, _______,           _______, WS_LEFT, CK_TABB, CK_TABF, CL(R),   TO_SCRR, KC_ENTER,
+        _______, _______, _______, KC_MS_U, URL_CPY,  KC_WH_U, _______,           _______, CL(W),   CK_SATB, CK_ATB,  TD_CTLT, KC_BSPC, KC_TAB,
+        _______, KC_RCTL, KC_MS_L, KC_MS_D, KC_MS_R,  KC_WH_D, _______,           _______, WS_LEFT, CK_TABB, CK_TABF, CL(R),   TO_SCRR, KC_RSFT,
         _______, _______, KC_BTN2, KC_BTN3, KC_BTN1,  _______,                             _______, OH_COPY, OH_PSTE, CK_WWWB, CK_WWWF, _______,
 
                                                                       BOTTOM_ROW,

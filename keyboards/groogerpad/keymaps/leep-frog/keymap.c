@@ -362,7 +362,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                            _______,                   OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
                 _______,                   _______,                   OL_NEXT,
-       _______,          _______,                   _______,
+       CK_MTBB,          CK_MTBF,                   _______,
                 _______
                 // TODO: Dpad for calendar functions (left, right, today)
     ),

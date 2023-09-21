@@ -91,7 +91,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
     [LR_ONE_HAND_LEFT] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
         _______, _______,  CL(W),    CK_SATB, CK_ATB,  TD_CTLT, CL(W),    CK_SATB, CK_ATB,  TD_CTLT, _______,  _______,  _______,  _______,          _______,
-        _______, WS_LEFT,  CL(R),    CK_TABB, CK_TABF, WS_RGHT,           WS_LEFT, CK_TABB, CK_TABF, CL(R),    TO_SCRR,  _______,  _______,          _______,
+        KC_LSFT, WS_LEFT,  CL(R),    CK_TABB, CK_TABF, WS_RGHT,           WS_LEFT, CK_TABB, CK_TABF, CL(R),    TO_SCRR,  KC_RSFT,  _______,          _______,
         _______,           CK_WWWB,  CK_WWWF, OH_COPY, OH_PSTE, _______,  _______, OH_COPY, OH_PSTE, CK_WWWB,  CK_WWWF,  _______,  _______, _______,
         _______, _______,  _______,           _______,          _______,           _______,          _______,            _______,  _______, _______, _______),
 
@@ -99,7 +99,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
     [LR_ONE_HAND_RIGHT] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
         _______, _______,  CL(W),    CK_SATB, CK_ATB,  TD_CTLT, CL(W),    CK_SATB, CK_ATB,  TD_CTLT, _______,  _______,  _______,  _______,          _______,
-        _______, WS_LEFT,  CL(R),    CK_TABB, CK_TABF, WS_RGHT,           WS_LEFT, CK_TABB, CK_TABF, CL(R),    TO_SCRR,  _______,  _______,          _______,
+        KC_LSFT, WS_LEFT,  CL(R),    CK_TABB, CK_TABF, WS_RGHT,           WS_LEFT, CK_TABB, CK_TABF, CL(R),    TO_SCRR,  KC_RSFT,  _______,          _______,
         _______,           CK_WWWB,  CK_WWWF, OH_COPY, OH_PSTE, _______,  _______, OH_COPY, OH_PSTE, CK_WWWB,  CK_WWWF,  _______,  _______, _______,
         _______, _______,  _______,           _______,          _______,           _______,          _______,            _______,  _______, _______, _______),
 

@@ -53,6 +53,8 @@
 #define STARTUP_SONG SONG()
 #define GOODBYE_SONG SONG()
 
+#define ENABLE_LEEP_COLOR
+
 #define DISABLE_RGB_MATRIX_SOLID_COLOR          // Static single hue, no speed support
 #define DISABLE_RGB_MATRIX_ALPHAS_MODS          // Static dual hue, speed is hue for secondary hue
 #define DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN     // Static gradient top to bottom, speed controls how much gradient changes
