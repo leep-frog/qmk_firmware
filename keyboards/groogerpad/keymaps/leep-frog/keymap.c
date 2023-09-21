@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 /*******************************************************************************
- * NOTE: Do NOT use PROGMEM in anything other than the keymap declaration.     *
+ * NOTE: Do NOT use PROGMEM in anything other than keymap and combos objects.  *
  * It caused all sorts of weird behavior (at least I think that's what did b/c *
  * adding PROGMEM to the combos or word layers caused weird things to happen). *
  *******************************************************************************/
@@ -92,7 +92,7 @@ uint16_t word_layer_registered_codes[NUM_WORD_LAYERS] = {
   [0 ... NUM_WORD_LAYERS - 1] = 0,
 };
 
-const uint16_t words[NUM_WORD_LAYERS][9] = {
+const uint16_t words[NUM_WORD_LAYERS][NUM_JOYSTICK_DIRECTIONS] = {
   // Order of chars is based on definition of joystick_direction_t (center, then clockwise starting from west)
 /*{ CENTER,  WEST,    NW,      NORTH,   NE,      EAST,    SE,      SOUTH,   SW       } */
   // A button
@@ -146,12 +146,10 @@ void right_joystick_handler(enum joystick_direction_t direction) {
 
 bool generic_word_layer_handler(keyrecord_t* record, uint8_t word_layer, uint8_t joystick_direction) {
   word_buttons[word_layer] = record->event.pressed;
-  if (joystick_direction >= 9) {
-    tap_code16(KC_Z);
+  if (joystick_direction >= NUM_JOYSTICK_DIRECTIONS) {
     return false;
   }
-  if (word_layer >= 4) {
-    tap_code16(KC_Q);
+  if (word_layer >= NUM_WORD_LAYERS) {
     return false;
   }
   if (record->event.pressed) {
@@ -165,20 +163,6 @@ bool generic_word_layer_handler(keyrecord_t* record, uint8_t word_layer, uint8_t
 }
 
 #define WORD_HANDLER_DEFINE(word_layer, dir) bool WordLayerHandler_##word_layer (keyrecord_t* record, custom_keycode_value_t *_) { return generic_word_layer_handler(record, word_layer, dir##_joystick_direction); }
-
-
-/*#define WORD_HANDLER_DEFINE(word_layer, dir) \
-bool WordLayerHandler_##word_layer (keyrecord_t* record, custom_keycode_value_t *_) { \
-  word_buttons[word_layer] = record->event.pressed; \
-  if (record->event.pressed) { \
-    register_code16(words[word_layer][dir##_joystick_direction]); \
-    word_layer_registered_codes[word_layer] = words[word_layer][dir##_joystick_direction]; \
-  } else { \
-    unregister_code16(word_layer_registered_codes[word_layer]); \
-    word_layer_registered_codes[word_layer] = KC_NO; \
-  } \
-  return false; \
-}*/
 
 WORD_HANDLER_DEFINE(0, left)
 WORD_HANDLER_DEFINE(1, left)
@@ -239,10 +223,9 @@ tap_dance_action_t tap_dance_actions[] = {
  * Combos *
  **********/
 
-const uint16_t test_combo1[] = {TK_LB, TK_RB, COMBO_END};
+const uint16_t PROGMEM test_combo1[] = {TK_LB, TK_RB, COMBO_END};
 combo_t key_combos[] = {
-    // COMBO(test_combo1, TG(LR_TYPE)),
-    COMBO(test_combo1, KC_Q),
+    COMBO(test_combo1, TG(LR_TYPE)),
 };
 
 /*******************

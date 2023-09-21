@@ -13,6 +13,7 @@ enum joystick_direction_t {
   SOUTHEAST,
   SOUTH,
   SOUTHWEST,
+  NUM_JOYSTICK_DIRECTIONS,
 };
 
 extern uint8_t left_joystick_direction;
