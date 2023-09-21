@@ -44,14 +44,11 @@
 
 enum layers {
   LR_BASE,
-  LR_ALT,
   LR_OUTLOOK,
   LR_TYPE,
   LR_SETTINGS,
   LR_SYMB,
 };
-
-const uint16_t AltLayer = LR_ALT;
 
 void TypeLayerHandler(bool activated) {
   if (activated) {
@@ -236,7 +233,6 @@ bool AltBButtonHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   if (record->event.pressed) {
     register_code16(KC_ESCAPE);
     wait_ms(100);
-    layer_off(LR_ALT);
   } else {
     unregister_code16(KC_ESCAPE);
   }
@@ -357,16 +353,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
                 CK_ATAB,                   KC_PRINT_SCREEN,           KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
-                CK_STAB
-    ),
-
-    [LR_ALT] = LAYOUT_xbox(
-                _______,                                              _______,
-                _______,                                              _______,
-                                           _______,                   _______,
-                _______,          _______,          _______, _______,          CK_ALTB,
-                CK_ATAB,                   _______,                   _______,
-       _______,          _______,                   _______,
                 CK_STAB
     ),
 
