@@ -11,7 +11,3 @@ TAP_DANCE_ENABLE = yes
 
 # From: https://docs.qmk.fm/#/squeezing_avr
 LTO_ENABLE = yes
-CONSOLE_ENABLE = no
-COMMAND_ENABLE = no
-MOUSEKEY_ENABLE = no
-EXTRAKEY_ENABLE = no

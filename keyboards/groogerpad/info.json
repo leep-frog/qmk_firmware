@@ -8,8 +8,8 @@
         "bootmagic": true,
         "command": false,
         "console": false,
-        "extrakey": true,
-        "mousekey": true,
+        "extrakey": false,
+        "mousekey": false,
         "nkro": true
     },
     "matrix_pins": {
