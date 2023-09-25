@@ -4,7 +4,7 @@
 
 bool IsMuted(void);
 void Mute_handled(keyrecord_t* record);
-void LeepMute(void);
+void LeepMute(bool mute);
 bool MuteWithoutSound(keyrecord_t* record, custom_keycode_value_t *_);
 bool MuteWithSound(keyrecord_t* record, custom_keycode_value_t *_);
 

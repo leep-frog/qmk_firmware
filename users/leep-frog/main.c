@@ -360,41 +360,35 @@ void keyboard_post_init_user(void) {
 
 // Returns whether or not the key should be processed as normal or if we should just return
 bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
-    if (PlayedStartupSong() || keycode == KB_OFF || keycode == CK_LOCK) {
+  if (PlayedStartupSong() || keycode == KB_OFF || keycode == CK_LOCK) {
+    return true;
+  }
+
+  if (record->event.pressed) {
+    switch (keycode) {
+      case CK_MCR1:
+      case CK_MCR2:
+        LeepUnlock(false);
+        // Return true so macro behavior continues as normal
         return true;
     }
-
-    if (record->event.pressed) {
-      switch (keycode) {
-        case CK_MCR1:
-        case CK_MCR2:
-          LeepMute();
-          SetPlayedStartupSong(true);
-          LEEP_LAYER_COLOR(LR_BASE, false);
-          // Return true so macro behavior continues as normal
-          return true;
-      }
-        return false;
-    }
-
-    switch (keycode) {
-        case KC_J:
-        case KC_F:
-            SNG_STARTUP();
-            SetPlayedStartupSong(true);
-            LEEP_LAYER_COLOR(LR_BASE, false);
-            break;
-        case KC_K:
-        case KC_D:
-            LeepMute();
-            SetPlayedStartupSong(true);
-            LEEP_LAYER_COLOR(LR_BASE, false);
-            break;
-        default:
-            LEEP_STARTUP_COLOR_MODE();
-            break;
-    }
     return false;
+  }
+
+  switch (keycode) {
+    case KC_J:
+    case KC_F:
+      LeepUnlock(true);
+      break;
+    case KC_K:
+    case KC_D:
+      LeepUnlock(false);
+      break;
+    default:
+      LEEP_STARTUP_COLOR_MODE();
+      break;
+  }
+  return false;
 }
 
 

@@ -98,7 +98,7 @@ void Mute_handled(keyrecord_t* record) {
     #endif
 }
 
-void LeepMute(void) { _leep_mute = true; }
+void LeepMute(bool mute) { _leep_mute = mute; }
 
 bool MuteWithoutSound(keyrecord_t *record, custom_keycode_value_t *_) { return mute_sound(record, false); }
 

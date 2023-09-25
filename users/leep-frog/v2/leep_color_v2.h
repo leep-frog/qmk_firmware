@@ -1,8 +1,12 @@
 #pragma once
 
+typedef bool (*unlock_fn_t) (keyrecord_t *record);
+
+unlock_fn_t CustomUnlocker;
 
 bool PlayedStartupSong(void);
 void SetPlayedStartupSong(bool b);
+void LeepUnlock(bool play_music);
 
 #ifdef ENABLE_LEEP_COLOR
 
