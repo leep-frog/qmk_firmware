@@ -358,12 +358,7 @@ void keyboard_post_init_user(void) {
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
 }
 
-// Returns whether or not the key should be processed as normal or if we should just return
-bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
-  if (PlayedStartupSong() || keycode == KB_OFF || keycode == CK_LOCK) {
-    return true;
-  }
-
+__attribute__((weak)) bool CustomUnlocker(uint16_t keycode, keyrecord_t* record) {
   if (record->event.pressed) {
     switch (keycode) {
       case CK_MCR1:
@@ -389,6 +384,15 @@ bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
       break;
   }
   return false;
+}
+
+// Returns whether or not the key should be processed as normal or if we should just return
+bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
+  if (PlayedStartupSong() || keycode == KB_OFF || keycode == CK_LOCK) {
+    return true;
+  }
+
+  return CustomUnlocker(keycode, record);
 }
 
 

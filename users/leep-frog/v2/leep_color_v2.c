@@ -2,7 +2,6 @@
 #include "./leep_record_v2.h"
 
 bool played_startup_song = false;
-unlock_fn_t CustomUnlocker = NULL;
 
 void leep_change_color(uint16_t a, uint8_t b, uint8_t c, uint8_t mode, bool force) {
   #ifdef ENABLE_LEEP_COLOR
