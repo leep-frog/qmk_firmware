@@ -1,5 +1,6 @@
 #pragma once
 
+#include "./leep_codes_v2.h"
 #include "./leep_music_v2.h"
 #include "./leep_custom_keycodes_v2.h"
 #include "./leep_layers_v2.h"
