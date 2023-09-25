@@ -20,6 +20,38 @@
 
 #include "../../../../../../../users/leep-frog/main.c"
 
+uint8_t unlock_idx = 0;
+const uint16_t unlock_code[] = { KC_H, KC_O, KC_W, KC_D, TD_Y };
+const uint8_t last_unlock_idx = sizeof(unlock_code) / sizeof(unlock_code[0]);
+
+bool codeUnlocker(uint16_t keycode, keyrecord_t* record) {
+  if (!record->event.pressed) {
+    return false;
+  }
+
+  // This shouldn't ever be the case, but include as a safeguard just in case.
+  if (unlock_idx >= last_unlock_idx) {
+    unlock_idx = 0;
+    return false;
+  }
+
+  if (keycode != unlock_code[unlock_idx]) {
+    unlock_idx = 0;
+    // If it's also not the first key, then return; otherwise proceed.
+    if (keycode != unlock_code[unlock_idx]) {
+      return false;
+    }
+  }
+
+  if (++unlock_idx == last_unlock_idx) {
+    LeepUnlock(false);
+  }
+
+  return false;
+}
+custom_unlocker_fn_t CustomUnlocker = &codeUnlocker;
+
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_ELLA] = LAYOUT_69_ansi(

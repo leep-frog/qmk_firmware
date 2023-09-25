@@ -358,7 +358,10 @@ void keyboard_post_init_user(void) {
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
 }
 
-__attribute__((weak)) bool CustomUnlocker(uint16_t keycode, keyrecord_t* record) {
+// For some reason the `weak` modifier wasn't working, so went with this approach instead.
+typedef bool (*custom_unlocker_fn_t) (uint16_t keycode, keyrecord_t *record);
+
+bool defaultUnlocker(uint16_t keycode, keyrecord_t* record) {
   if (record->event.pressed) {
     switch (keycode) {
       case CK_MCR1:
@@ -386,13 +389,25 @@ __attribute__((weak)) bool CustomUnlocker(uint16_t keycode, keyrecord_t* record)
   return false;
 }
 
+extern custom_unlocker_fn_t CustomUnlocker;
+
 // Returns whether or not the key should be processed as normal or if we should just return
 bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
   if (PlayedStartupSong() || keycode == KB_OFF || keycode == CK_LOCK) {
     return true;
   }
 
-  return CustomUnlocker(keycode, record);
+  // Default to startup color mode in case keyboard isn't unlocked.
+  LEEP_STARTUP_COLOR_MODE();
+
+  if (CustomUnlocker) {
+    return CustomUnlocker(keycode, record);
+  }
+
+  if (record->event.pressed) {
+    SEND_STRING("No unlocker set");
+  }
+  return false;
 }
 
 
