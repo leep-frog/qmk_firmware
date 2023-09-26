@@ -1,6 +1,8 @@
 
 #ifdef DYNAMIC_MACRO_ENABLE
 
+#include "./leep_codes_v2.h"
+
 uint16_t blink_timer;
 bool     blink_on = false;
 bool recording    = false;
@@ -27,7 +29,7 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
     uint16_t action  = play_action;
     bool     macro_1 = play_action == QK_DYNAMIC_MACRO_PLAY_1;
 
-    bool valid = false;
+    bool valid = true;
     // Note: we *only* press enter on initial recording save, and NOT on
     // macro playback (to avoid accidentally putting passwords anywhere like
     // in chats).
@@ -36,7 +38,6 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
     switch (cur_dance(state, true)) {
         case SINGLE_TAP:
             if (recording) {
-                valid            = true;
                 action           = QK_DYNAMIC_MACRO_RECORD_STOP;
                 kr.event.pressed = true;
                 recording        = false;
@@ -52,7 +53,6 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
             break;
         case DOUBLE_TAP:
             if (!recording) {
-                valid     = true;
                 action    = start_action;
                 recording = true;
                 SNG_REC_START();
@@ -61,13 +61,22 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
             break;
         case DOUBLE_HOLD:
             if (!recording) {
-                valid = true;
                 if (macro_1) {
                     SNG_REC_1_PLAY();
                 } else {
                     SNG_REC_2_PLAY();
                 }
             }
+        case TRIPLE_HOLD:
+          if (macro_1) {
+            SEND_STRING(LEEP_CODE_1);
+          } else {
+            SEND_STRING(LEEP_CODE_2);
+          }
+          break;
+        default:
+          valid = false;
+          break;
     }
 
     if (!valid) {

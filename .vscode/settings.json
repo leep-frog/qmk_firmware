@@ -40,6 +40,9 @@
       },
       {
         "path": "/home/qmk/qmk_firmware/users/leep-frog/v2/leep_tap_dance_v2.c"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/keyboards/moonlander/keymaps/leep-frog/keymap.c"
       }
     ]
 }

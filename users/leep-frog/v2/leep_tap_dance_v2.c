@@ -29,7 +29,7 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_while_holding_means_tap) 
     // If your tap dance key is 'KC_W', and you want to type "www." quickly - then you will need to add
     // an exception here to return a 'TRIPLE_SINGLE_TAP', and define that enum just like 'DOUBLE_SINGLE_TAP'
     if (state->count == 3) {
-        if (state->interrupted || !state->pressed) {
+        if (!state->pressed || (interrupt_while_holding_means_tap && state->interrupted)) {
             return TRIPLE_TAP;
         } else {
             return TRIPLE_HOLD;
