@@ -43,6 +43,9 @@
       },
       {
         "path": "/home/qmk/qmk_firmware/keyboards/moonlander/keymaps/leep-frog/keymap.c"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/keyboards/keychron/k11_pro/ansi_encoder/rgb/keymaps/leep-frog/keymap.c"
       }
     ]
 }
