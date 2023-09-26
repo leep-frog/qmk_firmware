@@ -67,13 +67,16 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                     SNG_REC_2_PLAY();
                 }
             }
+            break;
         case TRIPLE_HOLD:
           if (macro_1) {
+            SNG_REC_1_PLAY();
             SEND_STRING(LEEP_CODE_1);
           } else {
+            SNG_REC_2_PLAY();
             SEND_STRING(LEEP_CODE_2);
           }
-          break;
+          return;
         default:
           valid = false;
           break;
