@@ -98,7 +98,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
     [LR_NAVIGATION] = ML_LAYOUT(
         _______, _______, _______, _______, _______,  _______,     _______,           _______, _______,  _______, _______, _______, _______, TO_ELLA,
         _______, _______, CK_WWWB, _______, TD_RST,   RCTL(AL(T)), _______,           _______, SLK_UP,   SLK_UP,  URL_CRI, CK_TABF, GU(UP),  CK_ATB,
-        _______, _______, CK_SNIP, _______, GU(RGHT), _______,     _______,           _______, SLK_DWN,  SLK_DWN, SLK_JMP, CK_LOGS, MISC_WS, _______,
+        _______, _______, CK_SNIP, CK_CRDC, GU(RGHT), _______,     _______,           _______, SLK_DWN,  SLK_DWN, SLK_JMP, CK_LOGS, MISC_WS, _______,
         _______, _______, _______, _______, _______,  GU(LEFT),                                GU(DOWN), _______, WS_UP,   WS_DOWN, _______, _______,
 
                                                                       BOTTOM_ROW,
