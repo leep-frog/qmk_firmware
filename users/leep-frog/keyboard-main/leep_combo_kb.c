@@ -1,9 +1,4 @@
 
-// #include "../leep_tap_dance_v2.h"
-// #include "tap_dance.c"
-// TODO: eventually use dictionary stuff
-// #include "g/keymap_combo.h"
-// https://github.com/qmk/qmk_firmware/blob/master/docs/feature_combo.md#dictionary-management
 
 // Combos
 enum combos {
