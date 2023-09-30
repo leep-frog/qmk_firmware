@@ -13,7 +13,7 @@
 //   trying to change to.
 
 // SHIFT TAP DANCE
-int shift_press_count = 0;
+/*int shift_press_count = 0;
 
 void shift_each_press(tap_dance_state_t *state, void *user_data) {
     switch (++shift_press_count) {
@@ -118,7 +118,7 @@ void symb_finished(tap_dance_state_t *state, void *user_data) {
 
 void symb_reset(tap_dance_state_t *state, void *user_data) {
     symb_press_count = 0;
-}
+}*/
 
 // Ctrl-t tap dance
 void td_ctrl_t(tap_dance_state_t *state, void *user_data) {
@@ -448,9 +448,9 @@ tap_dance_action_t tap_dance_actions[] = {
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
     // Symbol layer
-    [TDK_SYMB_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(symb_each_press, symb_each_unpress, symb_finished, symb_reset),
+    [TDK_SYMB_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_SYMB),
     // Shift layer
-    [TDK_SHIFT_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(shift_each_press, shift_each_unpress, shift_finished, shift_reset),
+    [TDK_SHIFT_LAYER] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_ENTER, KC_RSFT),
     // Scroll left layer
     [TDK_SCROLL_LEFT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(scroll_press_left, scroll_unpress, scroll_left_finished, NULL),
     // Scroll right layer

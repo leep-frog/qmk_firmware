@@ -129,6 +129,15 @@ void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t
     }
 }
 
+// Click to hold keycode
+void leep_kc_hold_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
+    if (finished) {
+        register_code16(hv->td_int);
+    } else {
+        unregister_code16(hv->td_int);
+    }
+}
+
 /***************************************
  * Below are common tap dance handlers *
  ***************************************/

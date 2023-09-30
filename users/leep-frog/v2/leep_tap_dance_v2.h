@@ -49,12 +49,17 @@ void leep_td_finished(tap_dance_state_t *state, void *user_data);
 void leep_td_reset(tap_dance_state_t *state, void *user_data);
 void leep_kc_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv);
 void leep_kc_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv);
+void leep_kc_hold_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv);
 void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv);
 
 #define LEEP_TD_CLICK_HOLD(start_fn, press_value, press_fn, hold_value, hold_fn) \
     { .fn = {leep_td_each_press, leep_td_finished, leep_td_reset, leep_td_each_unpress}, .user_data = (void *)&((leep_td_user_data_t){start_fn, press_value, press_fn, hold_value, hold_fn}), }
 
+// Just tap the KC when held
 #define LEEP_TD_CLICK_KC_HOLD_KC(kc, hold_kc) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(hold_kc), leep_kc_hold_fn)
+
+// Hold the KC when held
+#define LEEP_TD_CLICK_KC_HOLD_HOLD_KC(kc, hold_kc) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(hold_kc), leep_kc_hold_hold_fn)
 
 #define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) LEEP_TD_CLICK_HOLD(NULL, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
 
