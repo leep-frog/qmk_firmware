@@ -36,7 +36,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   }
 
   if (change) {
-      LEEP_LAYER_COLOR(get_highest_layer(state), false);
+      LEEP_LAYER_COLOR(LeepHighestLayer, false);
   }
 
   return state;
