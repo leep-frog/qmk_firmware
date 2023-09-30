@@ -49,6 +49,11 @@ combo_t key_combos[COMBO_LENGTH] = {
     [JSPACE_OH_RIGHT] = COMBO_ACTION(jspace_combo),
 };
 
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+  return PlayedStartupSong();
+}
+
+
 static void end_tap_dance(bool pressed) {
     keyevent_t leep_event = (keyevent_t){
         // Pressed is used by preprocess_tap_dance and we need it to be true, otherwise nothing happens.

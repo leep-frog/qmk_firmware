@@ -16,6 +16,7 @@
 // #define FORCE_NKRO
 #define COMBO_TERM 40            // Number of milliseconds for combo keys.
 #define COMBO_ONLY_FROM_LAYER 1  // Define all combos from the safe layer
+#define COMBO_SHOULD_TRIGGER
 
 #define COMBO_VARIABLE_LEN
 
