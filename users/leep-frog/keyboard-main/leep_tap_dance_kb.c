@@ -239,20 +239,28 @@ void un_tdc(tap_dance_state_t *state, void *user_data) {
 }
 
 void tdi(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
-        case SINGLE_HOLD:
-            CR_ID();
-            break;
-        default:
-            for (int i = 0; i < state->count; i++) {
-                register_code16(KC_I);
-            }
-            break;
+  if (!state->pressed || state->interrupted) {
+    // Dance finished as a tap
+    for (int i = 0; i < state->count; i++) {
+        tap_code16(KC_I);
     }
-}
+    return;
+  }
 
-void un_tdi(tap_dance_state_t *state, void *user_data) {
-    unregister_code16(KC_I);
+  if (state->count == 1) {
+    CR_ID();
+    return;
+  }
+
+  // Dance ended with a hold
+  SEND_STRING(FOCUS_TAB_STRING() SS_TAP(X_RIGHT) SS_DOWN(X_RCTL));
+  for (int i = 2; i < state->count; i++) {
+    SEND_STRING(SS_TAP(X_LEFT));
+  }
+  if (state->count != 2) {
+    SEND_STRING(SS_UP(X_RCTL) SS_TAP(X_LEFT) SS_DOWN(X_RCTL));
+  }
+  SEND_STRING(SS_RSFT(SS_TAP(X_LEFT)) "c" SS_UP(X_RCTL));
 }
 
 void tdu(tap_dance_state_t *state, void *user_data) {
@@ -434,7 +442,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // 'C' tap dance
     [TDK_C] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdc, un_tdc),
     // 'I' tap dance
-    [TDK_I] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdi, un_tdi),
+    [TDK_I] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdi, NULL),
     // 'U' tap dance
     [TDK_U] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdu, un_tdu),
     // 'V' tap dance

@@ -22,12 +22,11 @@
     NEW_TAB();      \
     SEND_STRING(SS_PASTE SS_TAP(X_ENTER));
 
-#define NTH_URL_ID(k) SS_TAP(X_LEFT) REPEAT_##k(SS_TAP(X_RIGHT)) SS_RSFT(SS_TAP(X_RIGHT)) SS_UP(X_RCTL) SS_RSFT(SS_TAP(X_LEFT)) SS_DOWN(X_RCTL) "c"
+#define NTH_URL_ID(k) SS_TAP(X_LEFT) SS_RCTL(REPEAT_##k(SS_TAP(X_RIGHT)) SS_RSFT(SS_TAP(X_RIGHT))) SS_RSFT(SS_TAP(X_LEFT)) SS_RCTL("c")
 
+// FOCUS_TAB_STRING();
 // URL_ID gets the k-th word in the URL
 #define URL_ID(k)              \
-    SEND_STRING(SS_RCTL("l")); \
-    URLWait();                 \
-    SEND_STRING(SS_DOWN(X_RCTL) NTH_URL_ID(k) SS_RCTL("c"));
+    SEND_STRING(FOCUS_TAB_STRING() NTH_URL_ID(k));
 
 #define CR_ID() URL_ID(6)

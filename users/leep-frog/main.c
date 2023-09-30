@@ -319,9 +319,6 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 #define CK_UNBS CK(CK_UNBS_HANDLER)
 #define CK_LOGS CK(CK_LOGS_HANDLER)
 
-// TODO: Tap dance for this
-#define URL_CRI _______
-
 uint16_t Alt_keycodes[] = {
   CK_ATB,
   CK_SATB,
