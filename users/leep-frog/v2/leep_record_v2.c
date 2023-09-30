@@ -13,7 +13,6 @@ bool IsRecording(void) {
 
 // Press twice, record
 // Press once, stop if recording, otherwise play
-// TODO: Settings object
 bool processing_macro = false;
 
 void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t start_action) {
