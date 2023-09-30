@@ -11,8 +11,7 @@ void ToggleShift(void) {
     if (shift_toggled) {
         // Turn off shift.
         SEND_STRING(SS_UP(X_RSFT));
-        // TODO: LEEP_LAYER_COLOR(LR_CTRL, true);
-        LEEP_LAYER_COLOR(0, true);
+        LEEP_LAYER_COLOR(LeepHighestLayer, true);
     } else {
         // Turn on shift.
         LEEP_COLOR_MODE(RED, RGB_MATRIX_RAINBOW_PINWHEELS, true);
@@ -21,8 +20,7 @@ void ToggleShift(void) {
     shift_toggled = !shift_toggled;
 }
 
-// TODO: Rename to UnsetShift
-bool UntoggleShift(void) {
+bool UnsetShift(void) {
     if (shift_toggled) {
         ToggleShift();
     }

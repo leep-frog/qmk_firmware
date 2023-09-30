@@ -229,7 +229,7 @@ bool CtrlWHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   if (!IsShiftToggled()) {
     SEND_STRING(SS_RCTL("w"));
   } else {
-    UntoggleShift();
+    UnsetShift();
     // Copy contents
     SEND_STRING(SS_COPY);
     // Delete selected text.
@@ -445,7 +445,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         break;
       default:
         if (!IsToggleShiftTapDance(keycode)) {
-          UntoggleShift();
+          UnsetShift();
         }
     }
 

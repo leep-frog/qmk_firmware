@@ -12,10 +12,12 @@ bool layer_statuses[MAX_NUM_LAYERS] = {
     [1 ... MAX_NUM_LAYERS-1] = false,
 };
 
+uint8_t LeepHighestLayer = 0;
 
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   bool change = false;
+  LeepHighestLayer = get_highest_layer(state);
   for (int i = 0; i < MAX_NUM_LAYERS; i++) {
     // If layer state changed
     bool current_state = layer_state_cmp(state, i);
