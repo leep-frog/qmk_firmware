@@ -33,23 +33,14 @@ layer_overlap_handler_t symbol_handler = {
     .keycode                   = " ",
 };
 
-layer_overlap_handler_t lr_left_handler = {
-    .first_symb_press_key      = {},
-    .first_symb_press          = false,
-    .resolved_first_symb_press = true,
-    .layer                     = LR_ONE_HAND_LEFT,
-    .keycode                   = "\n\n",
-};
-
-layer_overlap_handler_t lr_right_handler = {
-    .first_symb_press_key      = {},
-    .first_symb_press          = false,
-    .resolved_first_symb_press = true,
-    .layer                     = LR_ONE_HAND_RIGHT,
-    .keycode                   = "  ",
-};
+// No longer need handlers for oh left/right layers because we use a combo to
+// activate those layers now
 
 // Logic for stuff
+
+#define SYMBOL_LAYER_OVERLAP_SETUP_FN(handler) void symbol_layer_handler##handler(bool activated) { if (activated) { SymbolLayerOverlap_reset(&handler); } }
+
+#define SYMBOL_LAYER_OVERLAP_SETUP(handler) SET_LAYER_HANDLER(handler.layer, symbol_layer_handler##handler)
 
 void SymbolLayerOverlap_reset(layer_overlap_handler_t *handler) {
     handler->first_symb_press          = false;

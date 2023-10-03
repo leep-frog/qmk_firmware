@@ -46,7 +46,7 @@ void leep_td_each_press(tap_dance_state_t *state, void *user_data) {
 
     if (state->count == 1) {
       if (ud->dance_start_fn) {
-        ud->dance_start_fn(state, &(ud->press_value));
+        ud->dance_start_fn(state, true, &(ud->start_value));
       }
     } else {
         // First click (count == 1) is sent on unpress, so only send subsequent clicks.
@@ -61,9 +61,13 @@ void leep_td_each_unpress(tap_dance_state_t *state, void *user_data) {
     leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
 
     if (state->count == 1) {
+      if (ud->dance_start_fn) {
+        ud->dance_start_fn(state, false, &(ud->start_value));
+      }
         /* If the dance isn't finished then click
-        // (if the dance is finished, then we reached a HOLD or INTERRUPT state,
-        // in which case the key was used as a layer change).*/
+         * (if the dance is finished, then we reached a HOLD or INTERRUPT state,
+         * in which case the key was used as a layer change).
+         */
         if (!state->finished) {
             // ~tap_code16(ud->kc);
             if (ud->press_fn) {
@@ -136,6 +140,14 @@ void leep_kc_hold_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value
     } else {
         unregister_code16(hv->td_int);
     }
+}
+
+void leep_kc_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hv) {
+  if (press) {
+    layer_on(hv->td_int);
+  } else {
+    layer_off(hv->td_int);
+  }
 }
 
 /***************************************

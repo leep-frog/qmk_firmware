@@ -3,6 +3,11 @@
 #include "../../config.h"
 #include "../../../../users/leep-frog/keyboard-main/config.h"
 
+// Keyboard LED behavior was causing weird issues where layer changes would
+// occur multiple times (including callbacks). Turning off system led logic
+// (i.e. adding this define) seemed to resolve the issue.
+#define MOONLANDER_USER_LEDS
+
 // How long it takes for a tap to become a hold. Primarily added because
 // Shift-combinations were too quick and causing a parentheses to be added.
 #ifdef TAPPING_TERM

@@ -401,8 +401,10 @@ void ella_mode(tap_dance_state_t *state, void *user_data) {
 
 bool pinky_shifted = false;
 
-void pinky_start_fn(tap_dance_state_t *state, leep_td_value_t *hold_value) {
-  pinky_shifted = get_mods() & MOD_MASK_SHIFT;
+void pinky_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hold_value) {
+  if (press) {
+    pinky_shifted = get_mods() & MOD_MASK_SHIFT;
+  }
 }
 
 void pinky_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value) {
@@ -465,7 +467,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_SCROLL_RIGHT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(scroll_press_right, scroll_unpress, scroll_right_finished, NULL),
     // Outlook or semi-colon
     // [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SCLN, LR_OUTLOOK),
-    [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_HOLD(pinky_start_fn, LEEP_TD_INT(KC_SCLN), pinky_press_fn, LEEP_TD_INT(LR_OUTLOOK), leep_layer_hold_fn),
+    [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), pinky_start_fn, LEEP_TD_INT(KC_SCLN), pinky_press_fn, LEEP_TD_INT(LR_OUTLOOK), leep_layer_hold_fn),
     // Nav or windows key
     [TDK_TO_NAV] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_LGUI, LR_NAVIGATION),
     // Nav or windows key
