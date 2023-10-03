@@ -43,6 +43,7 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
 
   switch (keycode) {
   case TD_A:
+  case KC_SLSH:
     SEND_STRING("n/a");
     break;
   case KC_N:
@@ -50,6 +51,10 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
     break;
   case TD_Y:
     SEND_STRING("y");
+    break;
+  case KC_S:
+  case KC_K:
+    // Just skip
     break;
   default:
     // End the mode, but don't process the key (like alt-mode breaking)
