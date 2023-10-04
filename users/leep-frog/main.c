@@ -334,6 +334,8 @@ bool layers_status[NUM_LAYERS] = {
 
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
+SYMBOL_LAYER_OVERLAP_SETUP_FN(symbol_handler);
+
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
         LEEP_STARTUP_COLOR_MODE();
@@ -356,6 +358,7 @@ void keyboard_post_init_user(void) {
     SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
     // Deactivate everything when going to safe layer.
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
+    SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
 }
 
 // For some reason the `weak` modifier wasn't working, so went with this approach instead.
@@ -418,7 +421,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     }
 
     Mute_handled(record);
-    if (CrDescProcessHandler(keycode, record) || SymbolLayerOverlap_handled(&symbol_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_left_handler, keycode, record) || SymbolLayerOverlap_handled(&lr_right_handler, keycode, record) || AltBlockProcessing(keycode, record)) {
+    if (CrDescProcessHandler(keycode, record) ||
+            SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
+            AltBlockProcessing(keycode, record)) {
         return false;
     }
     ToAlt_handled(keycode);
