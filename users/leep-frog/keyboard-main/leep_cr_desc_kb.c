@@ -6,6 +6,9 @@ const uint8_t cr_desc_line_moves[] = {
   1, 3, 2, 1, 1, 3,
   // Testing section
   1, 1, 1, 3,
+  // End (move a few lines below the last comment so we see the bottom
+  // of the details input box).
+  3,
 };
 
 uint8_t cr_desc_line_move_idx = 0;
