@@ -15,6 +15,12 @@ uint8_t cr_desc_line_move_idx = 0;
 bool cr_desc_line_moving = false;
 
 void StartCrDesc(void) {
+  SEND_STRING(
+    // Delete 'Revision N'
+    REPEAT_7(SS_TAP(X_DOWN)) SS_TAP(X_HOME) SS_RSFT(SS_TAP(X_END)) SS_TAP(X_BSPC)
+    // Go to first entry
+    REPEAT_11(SS_TAP(X_DOWN)) SS_TAP(X_HOME) SS_TAP(X_RIGHT)
+  );
   cr_desc_line_moving = true;
   cr_desc_line_move_idx = 0;
 }

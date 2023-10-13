@@ -36,6 +36,7 @@
 #define REPEAT_8(X) X REPEAT_7(X)
 #define REPEAT_9(X) X REPEAT_8(X)
 #define REPEAT_10(X) X REPEAT_9(X)
+#define REPEAT_11(X) X REPEAT_10(X)
 
 // Override built-ins:
 // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_audio.md#songs
