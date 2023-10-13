@@ -29,10 +29,11 @@ bool codeUnlocker(uint16_t keycode, keyrecord_t* record) {
     return false;
   }
 
-  // This shouldn't ever be the case, but include as a safeguard just in case.
+  // This occurs if the keyboard was unlocked then relocked. This can be resolved
+  // below, next to the LeepUnlock() call, but it remains here as safeguard for any
+  // other ways (hopefully none) that would make unlock_idx larger than allowed.
   if (unlock_idx >= last_unlock_idx) {
     unlock_idx = 0;
-    return false;
   }
 
   if (keycode != unlock_code[unlock_idx]) {
