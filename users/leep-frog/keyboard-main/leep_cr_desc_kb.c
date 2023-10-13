@@ -47,6 +47,7 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
   switch (keycode) {
   case TD_A:
   case KC_SLSH:
+  case TO_OTLK: // Semi-colon
     SEND_STRING("n/a");
     break;
   case KC_N:
