@@ -523,7 +523,10 @@ bool IsToggleShiftTapDance(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        // Some functions I hold for a bit longer, which causes annoying behavior mid-typing
+        case TD_A:
         case TD_RST:
+            return TAPPING_TERM + 150;
         case CK_MCR1:
         case CK_MCR2:
             // If not recording give extra time to double tap to start recording.
