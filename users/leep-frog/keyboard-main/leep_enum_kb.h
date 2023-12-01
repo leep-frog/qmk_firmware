@@ -44,6 +44,7 @@ enum td_keys { // prefix TDK
     TDK_B,
     TDK_C,
     TDK_I,
+    TDK_S,
     TDK_U,
     TDK_V,
     TDK_Y,

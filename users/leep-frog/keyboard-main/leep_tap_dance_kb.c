@@ -263,6 +263,23 @@ void tdi(tap_dance_state_t *state, void *user_data) {
   SEND_STRING(SS_RSFT(SS_TAP(X_LEFT)) "c" SS_UP(X_RCTL));
 }
 
+void tds(tap_dance_state_t *state, void *user_data) {
+    switch (cur_dance(state, true)) {
+        case SINGLE_HOLD:
+            tap_code16(KC_PRINT_SCREEN);
+            break;
+        default:
+            for (int i = 0; i < state->count; i++) {
+                register_code16(KC_S);
+            }
+            break;
+    }
+}
+
+void un_tds(tap_dance_state_t *state, void *user_data) {
+    unregister_code16(KC_S);
+}
+
 void tdu(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
         case SINGLE_HOLD:
@@ -445,6 +462,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_C] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdc, un_tdc),
     // 'I' tap dance
     [TDK_I] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdi, NULL),
+    // 'S' tap dance
+    [TDK_S] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tds, un_tds),
     // 'U' tap dance
     [TDK_U] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdu, un_tdu),
     // 'V' tap dance
@@ -502,6 +521,7 @@ bool IsToggleShiftTapDance(uint16_t keycode) {
 #define TD_B TD(TDK_B)
 #define TD_C TD(TDK_C)
 #define TD_I TD(TDK_I)
+#define TD_S TD(TDK_S)
 #define TD_U TD(TDK_U)
 #define TD_V TD(TDK_V)
 #define TD_Y TD(TDK_Y)
