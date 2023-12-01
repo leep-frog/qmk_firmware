@@ -21,10 +21,10 @@ bool MuteWithSound(keyrecord_t* record, custom_keycode_value_t *_);
 #    define LEEP_PLAY_SONG(sng, mute_sng) \
         if (!IsMuted()) {    \
             set_tempo(sng##_tempo);    \
-            PLAY_SONG(sng##_song);     \
+            /* Commenting this out since kiddo naps next door */ /* PLAY_SONG(sng##_song); */    \
         } else { \
             set_tempo(mute_sng##_tempo);    \
-            /* Commenting this out since Maeve sleeps next door */ /* PLAY_SONG(mute_sng##_song); */ \
+            /* Commenting this out since kiddo naps next door */ /* PLAY_SONG(mute_sng##_song); */ \
         }
 
 #    define LEEP_PLAY_LOOP(sng)     \
