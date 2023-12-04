@@ -1,5 +1,9 @@
 #pragma once
 
+// Needed for leep_url_v2.h import
+// (which is indirectly imported by leep_tap_dance_v2)
+#define SNG_COPY();
+
 #include "../../../../../users/leep-frog/v2/leep_tap_dance_v2.c"
 
 // TDK_COPY

@@ -94,6 +94,7 @@ __attribute__((weak)) combo_t* combo_get(uint16_t combo_idx) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // leep-frog stuff (just copied from combo section)
+#ifdef LEEP_KEYMAP_INTROSPECTION
 
 // Custom keycodes
 uint16_t custom_keycode_handlers_count(void) {
@@ -110,3 +111,5 @@ uint16_t Alt_keycodes_count(void) {
 uint16_t Alt_keycodes_get(uint16_t idx) {
     return Alt_keycodes[idx];
 }
+
+#endif // LEEP_KEYMAP_INTROSPECTION

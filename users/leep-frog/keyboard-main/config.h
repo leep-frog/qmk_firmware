@@ -1,3 +1,8 @@
+
+// Use these two values to determine whether main logic is used.
+#define LEEP_KEYMAP_INTROSPECTION
+#define LEEP_MAIN
+
 // Allows us to define tapping term per key. See link for more details:
 // https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md#tapping-term
 #define TAPPING_TERM_PER_KEY

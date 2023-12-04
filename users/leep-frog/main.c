@@ -1,5 +1,4 @@
-#ifndef LEEP_MAIN
-#define LEEP_MAIN
+#ifdef LEEP_MAIN
 
 void print_int(int k) {
     char c[10];
@@ -461,4 +460,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     return true;
 }
 
-#endif
+#endif // LEEP_MAIN

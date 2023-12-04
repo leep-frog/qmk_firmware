@@ -1,3 +1,5 @@
+#ifdef LEEP_MAIN
+
 #include QMK_KEYBOARD_H
 
 #include "./leep_music_v2.c"
@@ -10,3 +12,5 @@
 #include "./leep_record_v2.c"
 #include "./leep_color_v2.c"
 #include "./leep_oneshot_v2.c"
+
+#endif // LEEP_MAIN

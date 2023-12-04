@@ -1,4 +1,6 @@
 
+// TODO: Use exclusively left arrows instead of down to be consistent with editor width.
+
 const uint8_t cr_desc_line_moves[] = {
   // Deployability section
   1, 1, 1, 3,

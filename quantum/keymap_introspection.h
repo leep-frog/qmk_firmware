@@ -58,6 +58,7 @@ combo_t* combo_get(uint16_t combo_idx);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // leep-frog stuff (just copied from combo section)
+#ifdef LEEP_KEYMAP_INTROSPECTION
 
 // Custom keycodes
 #include "action.h"
@@ -80,3 +81,5 @@ custom_keycode_handler_t custom_keycode_handlers_get(uint16_t idx);
 uint16_t Alt_keycodes_count(void);
 
 uint16_t Alt_keycodes_get(uint16_t idx);
+
+#endif // LEEP_KEYMAP_INTROSPECTION

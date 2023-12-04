@@ -5,6 +5,9 @@
 
 #define COMBO_ONLY_FROM_LAYER 0
 
+#define LEEP_MAIN
+#define LEEP_KEYMAP_INTROSPECTION
+
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.

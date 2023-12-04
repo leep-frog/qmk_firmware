@@ -1,5 +1,7 @@
 #pragma once
 
+#undef LEEP_MAIN
+
 #include "../../config.h"
 
 // How long it takes for a tap to become a hold. Primarily added because

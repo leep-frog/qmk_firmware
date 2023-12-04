@@ -17,7 +17,6 @@
  */
 #include QMK_KEYBOARD_H
 #include "leep_enum.c"
-#include "leep_url.c"
 #include "leep_outlook.c"
 #include "leep_alt.c"
 #include "leep_layers.c"
