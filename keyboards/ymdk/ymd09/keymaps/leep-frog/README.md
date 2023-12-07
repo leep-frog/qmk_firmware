@@ -59,7 +59,7 @@ folder is a great place to start).
   * Press any other button to end the macro (the macro will automatically end after the last question is completed)
   * Your cursor will automatically move to the next question entry! `[|]`
 * **CR ID:** When on a CR page, this button will highlight and copy the CR ID from the URL bar.
-* **README Link:** Opens a link to the readme page.
+* **README Link:** Types the README link.
 * **Copy:** Ctrl+c
 * **Paste:** Ctrl+v
 * **URL Copy:** Copies the URL of the web page you are currently on.

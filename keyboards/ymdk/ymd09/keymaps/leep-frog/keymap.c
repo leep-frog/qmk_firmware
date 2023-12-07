@@ -226,7 +226,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
     break;
   case CK_README:
-    GOTO_LINK("https://tiny.amazon.com/2ronwlxi/SecretSantaMacropad");
+    SEND_STRING("https://tiny.amazon.com/2ronwlxi/SecretSantaMacropad");
     break;
   case LINK_CRUX:
     GOTO_LINK("https://code.amazon.com");
