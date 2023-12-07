@@ -12,8 +12,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// TODO: Markdown
-
 #define REPEAT_0(X)
 #define REPEAT_1(X) X
 #define REPEAT_2(X) X REPEAT_1(X)
@@ -39,6 +37,7 @@ enum custom_keys {
   CK_URL_PASTE,
   CK_RESET,
   CK_MYSTERY,
+  CK_README,
 
   LINK_CONDUIT,
   LINK_CRUX,
@@ -76,7 +75,7 @@ const uint8_t cr_desc_line_moves[] = {
   // Deployability section
   91, 40, 40, 56,
   // Testing section
-  51, 226, 123, 99, 79, 83,
+  51, 209, 123, 99, 79, 83,
   // Testing section
   69, 81, 97, 78,
   // End (move a one line below the last comment so we see the bottom
@@ -141,7 +140,7 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
   case CK_CR_ID:
     SEND_STRING("n");
     break;
-  case CK_MYSTERY:
+  case CK_README:
     SEND_STRING("n/a");
     break;
   default:
@@ -170,11 +169,11 @@ enum layers {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [LAYER_BASE] = LAYOUT(CK_CR_DESC, CK_CR_ID, CK_MYSTERY,
+  [LAYER_BASE] = LAYOUT(CK_CR_DESC, CK_CR_ID, CK_README,
                CK_COPY, CK_PASTE, RGB_MODE_FORWARD,
                CK_URL_COPY, CK_URL_PASTE, LT(LAYER_ONE, KC_NO)),
 
-  [LAYER_ONE] = LAYOUT(CK_RESET, LINK_CONDUIT, KC_NO,
+  [LAYER_ONE] = LAYOUT(CK_RESET, LINK_CONDUIT, CK_MYSTERY,
                LINK_CRUX, LINK_QUIP, KC_NO,
                LINK_CHIME, LINK_MEETINGS, _______),
 
@@ -225,6 +224,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   case CK_RESET:
     rgb_matrix_sethsv_noeeprom(HSV_RED);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
+    break;
+  case CK_README:
+    GOTO_LINK("https://tiny.amazon.com/2ronwlxi/SecretSantaMacropad");
     break;
   case LINK_CRUX:
     GOTO_LINK("https://code.amazon.com");

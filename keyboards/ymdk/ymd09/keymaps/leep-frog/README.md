@@ -12,8 +12,8 @@ folder is a great place to start).
                   | Input |
 /--------------------------------------------|
 |              |              |              |
-|   CR Desc    |    CR ID     |   Mystery    |
-|    Macro     |              |   Button!    |
+|   CR Desc    |    CR ID     | README Link  |
+|    Macro     |              |              |
 |--------------------------------------------|
 |              |              |              |
 |     Copy     |    Paste     |  Light Mode  |
@@ -33,8 +33,8 @@ folder is a great place to start).
                   | Input |
 /--------------------------------------------|
 |  Bootloader  |              |              |
-|     Mode     |    Conduit   |    KC_NO     |
-|    (Reset)   |              |              |
+|     Mode     |    Conduit   |   Mystery    |
+|    (Reset)   |              |   Button!    |
 |--------------------------------------------|
 |              |              |              |
 |     CRUX     |     Quip     |    KC_NO     |
@@ -59,7 +59,7 @@ folder is a great place to start).
   * Press any other button to end the macro (the macro will automatically end after the last question is completed)
   * Your cursor will automatically move to the next question entry! `[|]`
 * **CR ID:** When on a CR page, this button will highlight and copy the CR ID from the URL bar.
-* **Mystery Button:** Press to find out (this button just writes some text `:)`)
+* **README Link:** Opens a link to the readme page.
 * **Copy:** Ctrl+c
 * **Paste:** Ctrl+v
 * **URL Copy:** Copies the URL of the web page you are currently on.
@@ -67,6 +67,7 @@ folder is a great place to start).
 * **Light Mode:** Press to toggle through different [QMK RGB matrix light modes](https://github.com/qmk/qmk_firmware/blob/master/docs/feature_rgb_matrix.md#rgb-matrix-effects-idrgb-matrix-effects)
 * **Link Layer:** Hold this key to go to the `Link Layer`
 * **Bootloader Mode (Reset):** Puts the macropad into [bootloading mode](https://github.com/qmk/qmk_firmware/blob/master/docs/newbs_flashing.md) (for re-flashing). If unintentionally pressed, just unplug and plug back in.
+* **Mystery Button:** Press to find out (this button just writes some text `:)`)
 * **Conduit:** Opens Conduit in a new browser tab.
 * **CRUX:** Opens CRUX in a new browser tab.
 * **Quip:** Opens Quip in a new browser tab.
