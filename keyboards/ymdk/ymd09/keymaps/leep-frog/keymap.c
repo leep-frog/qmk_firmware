@@ -14,6 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // TODO: For CK_CR_DESC, use exclusively left arrows instead of down to be consistent with editor width.
 // TODO: Verify CR_DESC
+// TODO: CR_DESC starting position (just first [])
 // TODO: Links
 // TODO: Markdown
 
@@ -230,19 +231,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
     break;
   case LINK_CRUX:
-    GOTO_LINK("LINK_CRUX");
+    GOTO_LINK("https://code.amazon.com");
     break;
   case LINK_CHIME:
-    GOTO_LINK("LINK_CHIME");
+    GOTO_LINK("https://app.chime.aws");
     break;
   case LINK_MEETINGS:
-    GOTO_LINK("LINK_MEETINGS");
+    GOTO_LINK("https://meetings.amazon.com");
     break;
   case LINK_CONDUIT:
-    GOTO_LINK("LINK_CONDUIT");
+    GOTO_LINK("https://conduit.security.a2z.com/accounts");
     break;
   case LINK_QUIP:
-    GOTO_LINK("LINK_QUIP");
+    GOTO_LINK("https://quip-amazon.com");
     break;
   default:
     return true;
