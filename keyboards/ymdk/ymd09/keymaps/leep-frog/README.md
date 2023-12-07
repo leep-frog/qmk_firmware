@@ -64,6 +64,7 @@ folder is a great place to start).
 * **Paste:** Ctrl+v
 * **URL Copy:** Copies the URL of the web page you are currently on.
 * **URL Paste:** Opens a new browser tab with whatever data is in your clipboard (i.e. if `www.amazon.com` has been copied, then pressing this button will open a new browser tab to `www.amazon.com`).
+* **Light Mode:** Press to toggle through different [QMK RGB matrix light modes](https://github.com/qmk/qmk_firmware/blob/master/docs/feature_rgb_matrix.md#rgb-matrix-effects-idrgb-matrix-effects)
 * **Link Layer:** Hold this key to go to the `Link Layer`
 * **Bootloader Mode (Reset):** Puts the macropad into [bootloading mode](https://github.com/qmk/qmk_firmware/blob/master/docs/newbs_flashing.md) (for re-flashing). If unintentionally pressed, just unplug and plug back in.
 * **Conduit:** Opens Conduit in a new browser tab.
