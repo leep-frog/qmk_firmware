@@ -12,13 +12,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// TODO: For CK_CR_DESC, use exclusively left arrows instead of down to be consistent with editor width.
-// TODO: Verify CR_DESC
-// TODO: CR_DESC starting position (just first [])
-// TODO: Links
 // TODO: Markdown
 
-// Note: REPEAT_K does not separate with a comma, whereas FE does
 #define REPEAT_0(X)
 #define REPEAT_1(X) X
 #define REPEAT_2(X) X REPEAT_1(X)
@@ -58,7 +53,7 @@ enum custom_keys {
 #define NTH_URL_ID(k) SS_TAP(X_LEFT) SS_RCTL(REPEAT_##k(SS_TAP(X_RIGHT)) SS_RSFT(SS_TAP(X_RIGHT))) SS_RSFT(SS_TAP(X_LEFT)) SS_RCTL("c")
 #define URL_ID(k) SEND_STRING(FOCUS_URL_TAB() NTH_URL_ID(k));
 #define URL_CR_ID() URL_ID(6)
-#define GOTO_LINK(link) SEND_STRING(FOCUS_URL_NEW_TAB() link SS_TAP(X_ENTER))
+#define GOTO_LINK(link) SEND_STRING(FOCUS_URL_NEW_TAB() link /* Delete in case browser auto-fills suggested completion */ SS_TAP(X_DELETE) SS_TAP(X_ENTER))
 
 void URLWait(void) { wait_ms(80); }
 
@@ -77,22 +72,24 @@ void URLWait(void) { wait_ms(80); }
     SEND_STRING(SS_RCTL("v") SS_TAP(X_ENTER));
 
 
-const uint8_t CK_cr_desc_line_moves[] = {
+const uint8_t cr_desc_line_moves[] = {
   // Deployability section
-  1, 1, 1, 3,
+  91, 40, 40, 56,
   // Testing section
-  1, 3, 2, 1, 1, 3,
+  51, 226, 123, 99, 79, 83,
   // Testing section
-  1, 1, 1, 3,
-  // End (move a few lines below the last comment so we see the bottom
+  69, 81, 97, 78,
+  // End (move a one line below the last comment so we see the bottom
   // of the details input box).
-  3,
+  // Note: 53 is number of characters to next line, so (presumably) this number
+  // brings us three lines below the last one
+  53 + 2,
 };
 
-uint8_t CK_cr_desc_line_move_idx = 0;
-bool CK_cr_desc_line_moving = false;
+uint8_t cr_desc_line_move_idx = 0;
+bool cr_desc_line_moving = false;
 
-void defaultColor(void) {
+void setBaseLayerColor(void) {
   rgb_matrix_sethsv_noeeprom(HSV_BLUE);
   rgb_matrix_mode_noeeprom(RGB_MATRIX_BREATHING);
   rgb_matrix_set_speed_noeeprom(25);
@@ -103,20 +100,14 @@ void StartCrDesc(void) {
   rgb_matrix_mode_noeeprom(RGB_MATRIX_CYCLE_PINWHEEL);
   rgb_matrix_set_speed_noeeprom(200);
 
-  SEND_STRING(
-    // Delete 'Revision N'
-    REPEAT_7(SS_TAP(X_DOWN)) SS_TAP(X_HOME) SS_RSFT(SS_TAP(X_END)) SS_TAP(X_BSPC)
-    // Go to first entry
-    REPEAT_11(SS_TAP(X_DOWN)) SS_TAP(X_HOME) SS_TAP(X_RIGHT)
-  );
-  CK_cr_desc_line_moving = true;
-  CK_cr_desc_line_move_idx = 0;
+  cr_desc_line_moving = true;
+  cr_desc_line_move_idx = 0;
 }
 
 void EndCrDesc(void) {
-  defaultColor();
+  setBaseLayerColor();
 
-  CK_cr_desc_line_moving = false;
+  cr_desc_line_moving = false;
 }
 
 bool CrDescHandler(keyrecord_t* record) {
@@ -134,11 +125,12 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
     return false;
   }
 
-  if (!CK_cr_desc_line_moving) {
+  if (!cr_desc_line_moving) {
     return false;
   }
 
-  if (CK_cr_desc_line_move_idx >= (sizeof(CK_cr_desc_line_moves)/sizeof(CK_cr_desc_line_moves[0]))) {
+  if (cr_desc_line_move_idx >= (sizeof(cr_desc_line_moves)/sizeof(cr_desc_line_moves[0]))) {
+    EndCrDesc(); // In case it wasn't ended before
     return false;
   }
 
@@ -149,7 +141,7 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
   case CK_CR_ID:
     SEND_STRING("n");
     break;
-  case KC_A:
+  case CK_MYSTERY:
     SEND_STRING("n/a");
     break;
   default:
@@ -158,13 +150,16 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
     return true;
   }
 
-  for (int i = 0; i < CK_cr_desc_line_moves[CK_cr_desc_line_move_idx]; i++) {
-    tap_code16(KC_DOWN);
+  for (int i = 0; i < cr_desc_line_moves[cr_desc_line_move_idx]; i++) {
+    tap_code16(KC_RIGHT);
   }
-  tap_code16(KC_RIGHT);
-  tap_code16(KC_RIGHT);
 
-  CK_cr_desc_line_move_idx++;
+  cr_desc_line_move_idx++;
+
+  // Check if done
+  if (cr_desc_line_move_idx >= (sizeof(cr_desc_line_moves)/sizeof(cr_desc_line_moves[0]))) {
+    EndCrDesc();
+  }
 
   return true;
 }
@@ -186,8 +181,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void keyboard_post_init_user(void) {
-  SEND_STRING("start");
-  defaultColor();
+  setBaseLayerColor();
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
@@ -197,8 +191,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   }
 
   if (!record->event.pressed) {
-    if (keycode == CK_RESET) {
+    switch (keycode) {
+    case CK_RESET:
       reset_keyboard();
+      break;
     }
     return true;
   }
@@ -249,5 +245,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     return true;
   }
 
-  return false;
+  return true;
+}
+
+
+uint8_t highest_layer = LAYER_BASE;
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  uint8_t new_highest_layer = get_highest_layer(state);
+
+  if (highest_layer != new_highest_layer) {
+    highest_layer = new_highest_layer;
+
+    switch (highest_layer) {
+    case LAYER_BASE:
+      setBaseLayerColor();
+      break;
+    case LAYER_ONE:
+      rgb_matrix_sethsv_noeeprom(HSV_ORANGE);
+      rgb_matrix_mode_noeeprom(RGB_MATRIX_PIXEL_FLOW);
+      rgb_matrix_set_speed_noeeprom(150);
+      break;
+    }
+  }
+
+  return state;
 }

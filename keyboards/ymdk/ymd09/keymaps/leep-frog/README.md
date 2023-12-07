@@ -50,12 +50,14 @@ folder is a great place to start).
 ### Key Descriptions
 
 * **CR Desc Macro:** This key starts a macro that automatically moves the cursor and fills in the CR description template used by our team! Follow the below instructions to use:
-  * Move your cursor to the middle of the first template `[<cursor here>]`
+  * Move your cursor to the middle of the first bracket answer:
+    `[<cursor here>] This change is a single, isolated change`
   * Press the `CR Desc Macro` button
   * Press tbe top-left button for `y`
   * Press tbe top-middle button for `n`
   * Press tbe top-right button for `n/a`
   * Press any other button to end the macro (the macro will automatically end after the last question is completed)
+  * Your cursor will automatically move to the next question entry! `[|]`
 * **CR ID:** When on a CR page, this button will highlight and copy the CR ID from the URL bar.
 * **Mystery Button:** Press to find out (this button just writes some text `:)`)
 * **Copy:** Ctrl+c
