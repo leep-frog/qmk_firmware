@@ -41,6 +41,23 @@ bool _leep_lock(keyrecord_t *record, custom_keycode_value_t *v) {
     return false;
 }
 
+bool _leep_keyboard_reset(keyrecord_t *record, custom_keycode_value_t *v) {
+    if (record->event.pressed) {
+      // Press
+      LEEP_SOLID_COLOR(RED, true);
+      SNG_RESET();
+      #ifdef AUDIO_ENABLE
+      while (is_playing_notes()) {
+          wait_ms(75);
+      }
+      #endif
+    } else {
+      // Unpress (reset here so the color actually changes)
+      reset_keyboard();
+    }
+    return false;
+}
+
 bool _leep_wait(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         wait_ms(100);
@@ -250,6 +267,7 @@ enum custom_keycode_handlers {
   CK_SATB_HANDLER,
   CK_ACL_HANDLER,
   CK_LOCK_HANDLER,
+  CK_RESET_HANDLER,
   KB_OFF_HANDLER,
   CK_EYE_HANDLER,
   MS_CTRL_HANDLER,
@@ -278,6 +296,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_SATB_HANDLER] = CK_HANDLER_FN(AltShiftTabHandler),
   [CK_ACL_HANDLER] = CK_HANDLER_FN(_change_mouse_speed),
   [CK_LOCK_HANDLER] = CK_HANDLER_FN(_leep_lock),
+  [CK_RESET_HANDLER] = CK_HANDLER_FN(_leep_keyboard_reset),
   [KB_OFF_HANDLER] = CK_HANDLER_FN(_leep_keyboard_off),
   [CK_EYE_HANDLER] = CK_HANDLER_FN(_eye_care),
   [MS_CTRL_HANDLER] = CK_HANDLER_FN(_ctrl_click),
@@ -303,6 +322,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 #define CK_SATB CK(CK_SATB_HANDLER)
 #define CK_ACL CK(CK_ACL_HANDLER)
 #define CK_LOCK CK(CK_LOCK_HANDLER)
+#define CK_RST CK(CK_RESET_HANDLER)
 #define KB_OFF CK(KB_OFF_HANDLER)
 #define CK_EYE CK(CK_EYE_HANDLER)
 #define MS_CTRL CK(MS_CTRL_HANDLER)

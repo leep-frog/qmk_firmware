@@ -39,7 +39,6 @@ enum td_keys { // prefix TDK
     TDK_DELETE,
     TDK_MARKDOWN_PASTE,
     TDK_OUTLOOK_RELOAD,
-    TDK_RESET,
     TDK_A,
     TDK_B,
     TDK_C,

@@ -351,25 +351,6 @@ void oh_paste(tap_dance_state_t *state, void *user_data) {
     URL_PASTE();
 }
 
-void TDReset(tap_dance_state_t *state, void *user_data) {
-    LEEP_SOLID_COLOR(RED, true);
-    switch (cur_dance(state, true)) {
-        case SINGLE_TAP:
-            SNG_RESET();
-            #ifdef AUDIO_ENABLE
-            while (is_playing_notes()) {
-                wait_ms(75);
-            }
-            #endif
-            break;
-        case SINGLE_HOLD:
-            SEND_STRING("moonlander_leep-frog.bin" SS_TAP(X_ENTER));
-            break;
-    }
-
-    reset_keyboard();
-}
-
 void scroll_press_left(tap_dance_state_t *state, void *user_data) {
     layer_on(LR_SCROLL);
     if (state->count == 1) {
@@ -452,8 +433,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_MARKDOWN_PASTE] = ACTION_TAP_DANCE_FN(TDMarkdownPaste),
     // Outlook reload
     [TDK_OUTLOOK_RELOAD] = ACTION_TAP_DANCE_FN(TDOutlookReload),
-    // Reset keyboard
-    [TDK_RESET] = ACTION_TAP_DANCE_FN(TDReset),
     // 'A' tap dance
     [TDK_A] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tda, un_tda),
     // 'B' tap dance
@@ -516,7 +495,6 @@ bool IsToggleShiftTapDance(uint16_t keycode) {
 #define OL_LEFT RCTL(SH(TAB))
 // Outlook move right pane
 #define OL_RGHT KC_F6
-#define TD_RST TD(TDK_RESET)
 #define TD_A TD(TDK_A)
 #define TD_B TD(TDK_B)
 #define TD_C TD(TDK_C)
@@ -545,7 +523,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         // Some functions I hold for a bit longer, which causes annoying behavior mid-typing
         case TD_A:
-        case TD_RST:
             return TAPPING_TERM + 50;
         case CK_MCR1:
         case CK_MCR2:
