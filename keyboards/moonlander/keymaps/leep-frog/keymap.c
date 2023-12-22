@@ -12,9 +12,6 @@ custom_unlocker_fn_t CustomUnlocker = &defaultUnlocker;
 // https://stackoverflow.com/questions/35114050/is-there-a-way-to-force-c-preprocessor-to-evaluate-macro-arguments-before-the-ma
 #define ML_LAYOUT(...) LAYOUT_moonlander(__VA_ARGS__)
 #define BOTTOM_ROW CK_MUT, CK_MUTS, _______, KC_LALT, KC_LCTL, CK_MCR1, CK_MCR2, KC_RCTL, KC_RALT, CK_EYE, KB_OFF, CK_LOCK
-// The tap dances defined for TO_SFT and TO_SYMB require that those keys are at the
-// same spot in all layers. See the tap_dance.c file for more info.
-#define THUMB_ROW(SHFT, LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE) SHFT, LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE, TO_SYMB
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -25,18 +22,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
                                                      BOTTOM_ROW,
 
-                              THUMB_ROW(KC_RSFT, TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL)
+                              KC_RSFT, TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL, TO_SYMB
     ),
 
     [LR_ELLA] = ML_LAYOUT(
         KC_NO,  KC_1, KC_2, KC_3, KC_4, KC_5, KC_NO,       KC_NO, KC_6, KC_7, KC_8,    KC_9,   KC_0,    TO_BASE_FROM_ELLA,
         KC_NO,  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_NO,       KC_NO, KC_Y, KC_U, KC_I,    KC_O,   KC_P,    KC_BSLS,
-      KC_CAPS,  KC_A, KC_S, KC_D, KC_F, KC_G, KC_NO,       KC_NO, KC_H, KC_J, KC_K,    KC_L,   KC_NO,   KC_CAPS,
+        KC_NO,  KC_A, KC_S, KC_D, KC_F, KC_G, KC_NO,       KC_NO, KC_H, KC_J, KC_K,    KC_L,   KC_NO,   KC_NO,
         KC_NO,  KC_Z, KC_X, KC_C, KC_V, KC_B,                     KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
 
            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 
-                                KC_RSFT, KC_NO, KC_NO,    KC_NO, KC_NO, KC_SPACE
+                           KC_RSFT, KC_TAB, KC_LGUI,       KC_RGUI, KC_ENTER, KC_SPACE
     ),
 
     [LR_CTRL] = ML_LAYOUT(
@@ -47,7 +44,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                     BOTTOM_ROW,
 
-                                         CL(ENTER), CL(TAB), TO_CTAL,         CL(RGUI), _______, CL(SPACE)
+                                         CL(ENTER), CL(TAB), CL(LGUI),         CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_CTRL_X] = ML_LAYOUT(
@@ -58,7 +55,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                    BOTTOM_ROW,
 
-                                        CL(ENTER), CL(TAB), _______,        CL(RGUI), _______, CL(SPACE)
+                                        CL(ENTER), CL(TAB), CL(RGUI),         CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_ALT] = ML_LAYOUT(
@@ -69,7 +66,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
                                                                             BOTTOM_ROW,
 
-                                                  AL(ENTER), _______, AL(TAB),       AL(RGUI), TO_CTAL, AL(SPACE)
+                                                  AL(TAB), _______, AL(LGUI),       AL(RGUI), AL(ENTER), AL(SPACE)
     ),
 
     // This layer is basically identical to the safe layer aside from the thumb keys.
@@ -81,7 +78,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
                                                       BOTTOM_ROW,
 
-                             KC_ENTER, KC_TAB, _______,        KC_RGUI, _______, KC_SPACE
+                             KC_RSFT, KC_TAB, _______,        KC_RGUI, KC_ENTER, KC_SPACE
     ),
 
    [LR_SHORTCUTS] = ML_LAYOUT(
@@ -112,7 +109,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
         KC_TAB,  KC_AMPR, KC_ASTR, KC_DLR,  KC_SLSH, KC_LBRC, _______,           _______, CK_MDPS, KC_4,    KC_5,    KC_6,    KC_0,    KC_PERC,
         _______, KC_TILD, KC_EXLM, KC_AT,   KC_EQL,  KC_BSLS,                             KC_RCBR, KC_1,    KC_2,    KC_3,    KC_0,    _______,
                                                                       BOTTOM_ROW,
-                                            THUMB_ROW(KC_ENTER, RGB_HUI, TOGGLE_LAYER_COLOR, KC_SPACE)
+                                            _______, _______, RGB_HUI, TOGGLE_LAYER_COLOR, _______, _______
     ),
 
     [LR_OUTLOOK] = ML_LAYOUT(
