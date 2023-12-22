@@ -5,7 +5,7 @@ enum combos {
     JI_ESC,
     JK_HYPHEN,
     JL_EQUALS,
-    KL_ENTER,
+    // KL_ENTER,
     DF_QUOTE,
     SD_TICK,
     FENTER_OH_LEFT,
@@ -19,7 +19,7 @@ uint16_t COMBO_LEN = COMBO_LENGTH;  // remove the COMBO_COUNT define and use thi
 const uint16_t PROGMEM ji_combo[] = {KC_J, KC_I, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM jl_combo[] = {KC_L, KC_J, COMBO_END};
-const uint16_t PROGMEM kl_combo[] = {KC_L, KC_K, COMBO_END};
+// const uint16_t PROGMEM kl_combo[] = {KC_L, KC_K, COMBO_END};
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sd_combo[] = {KC_S, KC_D, COMBO_END};
 const uint16_t PROGMEM fenter_combo[] = {KC_F, KC_ENTER, COMBO_END};
@@ -32,8 +32,8 @@ combo_t key_combos[COMBO_LENGTH] = {
     [JK_HYPHEN] = COMBO(jk_combo, KC_MINUS),
     // J+L = Equals
     [JL_EQUALS] = COMBO(jl_combo, KC_EQUAL),
-    // K+L = Enter
-    [KL_ENTER] = COMBO(kl_combo, KC_ENTER),
+    // K+L = Enter TODO: Change to something else useful?
+    // [KL_ENTER] = COMBO(kl_combo, KC_ENTER),
     // D+F = Quote
     [DF_QUOTE] = COMBO_ACTION(df_combo),
     // S+D = Tick (`)

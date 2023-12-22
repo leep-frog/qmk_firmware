@@ -60,14 +60,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,     KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_DEL,
         KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,           KC_HOME,
         KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,     KC_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT, KC_UP,
-        KC_LCTL, KC_LALT,  KC_LGUI,           KC_ENTER,         _______,     _______,       KC_SPC,            KC_RGUI,            KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LALT,  KC_LGUI,           KC_RSFT,          KC_TAB,      KC_ENTER,      KC_SPC,            KC_RGUI,            KC_LEFT, KC_DOWN, KC_RGHT),
 
     [LR_BASE] = LAYOUT_69_ansi(
         KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,     KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          KC_INS,
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
         SC_LSPO, TD_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
         TO_SHCT,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  TO_NAVB, KC_UP,
-        KC_LCTL, KC_LALT,  TO_SHCT,           TO_SFT,         TO_ALT,      TO_CTRL,       TO_SYMB,           TO_NAV,             KC_LEFT,  KB_OFF,  CK_LOCK),
+        KC_LCTL, KC_LALT,  TO_SHCT,           KC_RSFT,          TO_ALT,      TO_CTRL,       TO_SYMB,           TO_NAV,             KC_LEFT,  KB_OFF,  CK_LOCK),
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         CL(INS),
@@ -88,14 +88,14 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
         AL(TAB), AL(Q),    AL(F4),   AL(E),   AL(R),   CK_ALTT, CK_PSTE,  CK_SATB, AL(I),   CK_ATB,  AL(P),    AL(LBRC), AL(RBRC), AL(BSLS),         _______,
 LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, AL(J),   AL(K),   KC_WH_U,  AL(SCLN), RSFT_T(AL(RPRN)),AL(ENT),   _______,
         AL(LSFT),          AL(Z),    AL(X),   AL(C),   KC_WH_D, CL(LEFT), CL(LEFT),AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
-        AL(LCTL),AL(LALT), AL(LGUI),          AL(ENTER),        _______,         TO_CTAL,            AL(SPACE),          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
+        AL(LCTL),AL(LALT), AL(LGUI),          AL(TAB),        _______,         AL(ENTER),            AL(SPACE),          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
 
     [LR_SYMB] = LAYOUT_69_ansi(
         KC_ESC,  KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   KC_BSPC,          KC_INS,
         KC_TAB,  KC_EXLM,  KC_COLN,  KC_EQL,  KC_CIRC, KC_PIPE, KC_PIPE,  KC_7,    KC_8,    KC_9,    KC_PERC,  KC_LBRC,  KC_RBRC,  KC_BSLS,          _______,
         KC_CAPS, KC_AMPR,  KC_ASTR,  KC_DLR,  KC_SLSH, KC_LBRC,           CK_MDPS, KC_4,    KC_5,    KC_6,     KC_0,     KC_QUOT,  KC_ENT,           _______,
         KC_LSFT,           KC_TILD,  KC_EXLM, KC_AT,   KC_EQL,  KC_BSLS,  KC_LCBR, KC_RCBR, KC_1,    KC_2,     KC_3,     KC_SLSH,  KC_RSFT, KC_UP,
-        KC_LCTL, KC_LALT,  KC_LGUI,           TO_SFT,           TO_ALT,            TO_CTRL,          TO_SYMB,            KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LALT,  KC_LGUI,           KC_RSFT,          TO_ALT,            TO_CTRL,          TO_SYMB,            KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
 
     // This is currently identical to the LR_NAVIGATION layer.
     [LR_SHORTCUTS] = LAYOUT_69_ansi(
@@ -103,7 +103,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
         _______, _______,  _______,  _______, CK_RST,  _______, _______,  _______, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
         _______, _______,  CK_SNIP,  _______, GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
         _______,           _______,  _______, _______, _______, GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
-        _______, _______,  _______,           _______,          _______,           GU(TAB),          _______,            _______,  _______, _______, _______),
+        _______, _______,  _______,           _______,          GU(TAB),           _______,          _______,            _______,  _______, _______, _______),
 
     // This is currently identical to the LR_SHORTCUTS layer.
     [LR_NAVIGATION] = LAYOUT_69_ansi(
@@ -111,7 +111,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
         _______, _______,  _______,  _______, CK_RST,  _______, _______,  _______, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
         _______, _______,  CK_SNIP,  CK_CRDC, GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
         _______,           _______,  _______, _______, _______, GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
-        _______, _______,  _______,           _______,          _______,           GU(TAB),          _______,            _______,  _______, _______, _______),
+        _______, _______,  _______,           _______,          GU(TAB),           _______,          _______,            _______,  _______, _______, _______),
 
     [LR_OUTLOOK] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,

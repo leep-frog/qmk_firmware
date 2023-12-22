@@ -139,4 +139,3 @@ LEEP_ENUM(custom_keycodes, CK, CN_ENUM_END,
 // Layer toggling
 // Defined here because needed by combo.c
 #define TO_ELLA TO(LR_ELLA)
-#define TO_CTAL MO(LR_CTRL_ALT)

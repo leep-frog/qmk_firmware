@@ -16,7 +16,7 @@ bool ToCtrl_run(keyrecord_t *record, custom_keycode_value_t *_) {
     } else {
         layer_off(CtrlLayer);
         if (!ctrl_interrupted && timer_elapsed(ctrl_timer) < TAPPING_TERM) {
-            tap_code16(KC_TAB);
+            tap_code16(KC_ENTER);
         }
     }
     return false;

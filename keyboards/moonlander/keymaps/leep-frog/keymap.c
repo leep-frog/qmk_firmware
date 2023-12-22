@@ -14,7 +14,7 @@ custom_unlocker_fn_t CustomUnlocker = &defaultUnlocker;
 #define BOTTOM_ROW CK_MUT, CK_MUTS, _______, KC_LALT, KC_LCTL, CK_MCR1, CK_MCR2, KC_RCTL, KC_RALT, CK_EYE, KB_OFF, CK_LOCK
 // The tap dances defined for TO_SFT and TO_SYMB require that those keys are at the
 // same spot in all layers. See the tap_dance.c file for more info.
-#define THUMB_ROW(LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE) TO_SFT, LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE, TO_SYMB
+#define THUMB_ROW(SHFT, LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE) SHFT, LEFT_MIDDLE, LEFT_RIGHT, RIGHT_LEFT, RIGHT_MIDDLE, TO_SYMB
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -25,7 +25,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
                                                      BOTTOM_ROW,
 
-                              THUMB_ROW(TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL)
+                              THUMB_ROW(KC_RSFT, TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL)
     ),
 
     [LR_ELLA] = ML_LAYOUT(
@@ -36,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 
-                                KC_ENTER, KC_NO, KC_NO,    KC_NO, KC_NO, KC_SPACE
+                                KC_RSFT, KC_NO, KC_NO,    KC_NO, KC_NO, KC_SPACE
     ),
 
     [LR_CTRL] = ML_LAYOUT(

@@ -25,7 +25,7 @@ bool ToAlt_run(keyrecord_t *record, custom_keycode_value_t *_) {
     } else {
         layer_off(AltLayer);
         if (!alt_interrupted && timer_elapsed(alt_timer) < TAPPING_TERM) {
-            tap_code16(KC_ENTER);
+            tap_code16(KC_TAB);
         }
     }
     return false;
