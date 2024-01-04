@@ -22,7 +22,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
                                                      BOTTOM_ROW,
 
-                              KC_RSFT, TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL, TO_SYMB
+                              TD_TBSF, TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL, TO_SYMB
     ),
 
     [LR_ELLA] = ML_LAYOUT(
@@ -33,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 
-                           KC_RSFT, KC_TAB, KC_LGUI,       KC_RGUI, KC_ENTER, KC_SPACE
+                           TD_TBSF, KC_TAB, KC_LGUI,       KC_RGUI, KC_ENTER, KC_SPACE
     ),
 
     [LR_CTRL] = ML_LAYOUT(
@@ -44,7 +44,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                     BOTTOM_ROW,
 
-                                         CL(ENTER), CL(TAB), CL(LGUI),         CL(RGUI), _______, CL(SPACE)
+                                         CL(RSFT), CL(TAB), CL(LGUI),         CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_CTRL_X] = ML_LAYOUT(
@@ -55,7 +55,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                    BOTTOM_ROW,
 
-                                        CL(ENTER), CL(TAB), CL(RGUI),         CL(RGUI), _______, CL(SPACE)
+                                        _______, CL(TAB), CL(RGUI),         CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_ALT] = ML_LAYOUT(
@@ -78,7 +78,7 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
                                                       BOTTOM_ROW,
 
-                             KC_RSFT, KC_TAB, _______,        KC_RGUI, KC_ENTER, KC_SPACE
+                             TD_TBSF, KC_TAB, _______,        KC_RGUI, KC_ENTER, KC_SPACE
     ),
 
    [LR_SHORTCUTS] = ML_LAYOUT(
