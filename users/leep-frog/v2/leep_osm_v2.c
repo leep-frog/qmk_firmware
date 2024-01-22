@@ -31,10 +31,9 @@ void OSM_handled(uint16_t keycode, bool pressed) {
     // in which case we simply need to release on unpress.
     if (pressed) {
       osm_step = OSM_RELEASE_ON_UNPRESS;
-    }
 
     // If we're unpressing the OSM key first, then we're going to register a key
-    if (!pressed && keycode == OSM_shift_keycode) {
+    } else if /* Don't need this !pressed check since we use else-if against (pressed) (!pressed && */ (keycode == OSM_shift_keycode) {
       osm_step = OSM_REGISTER_KEY;
     }
     break;
@@ -60,12 +59,6 @@ void OSM_handled(uint16_t keycode, bool pressed) {
   case OSM_UNREGISTER_NEXT_ACTION:
     unregister_code16(KC_RSFT);
     osm_step = OSM_NOOP;
-    break;
-  case OSM_HOLD:
-    if (pressed && keycode == OSM_shift_keycode) {
-      unregister_code16(KC_RSFT);
-      osm_step = OSM_NOOP;
-    }
     break;
   }
 }
