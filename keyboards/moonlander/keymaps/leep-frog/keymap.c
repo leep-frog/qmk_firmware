@@ -22,7 +22,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
                                                      BOTTOM_ROW,
 
-                              TD_TBSF, TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL, TO_SYMB
+                        OSM(MOD_RSFT), TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL, TO_SYMB
     ),
 
     [LR_ELLA] = ML_LAYOUT(
@@ -33,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 
-                           TD_TBSF, KC_TAB, KC_LGUI,       KC_RGUI, KC_ENTER, KC_SPACE
+                     OSM(MOD_RSFT), KC_TAB, KC_LGUI,       KC_RGUI, KC_ENTER, KC_SPACE
     ),
 
     [LR_CTRL] = ML_LAYOUT(
@@ -78,14 +78,14 @@ LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
                                                       BOTTOM_ROW,
 
-                             TD_TBSF, KC_TAB, _______,        KC_RGUI, KC_ENTER, KC_SPACE
+                             KC_RSFT, KC_TAB, _______,        KC_RGUI, KC_ENTER, KC_SPACE
     ),
 
    [LR_SHORTCUTS] = ML_LAYOUT(
-        _______,  _______, _______, _______, _______, _______, _______,           _______, _______, _______,  _______, _______, _______, TO_ELLA,
-        _______,  _______, CK_WWWB, MS_MID,  CK_WWWF, _______, _______,           _______, KC_WH_U, URL_CPY, KC_MS_U,  _______, _______, _______,
-        KC_ENTER, _______, CK_LOGS, KC_ACL1, KC_ACL0, _______, _______,           _______, KC_WH_D, KC_MS_L,  KC_MS_D, KC_MS_R, KC_RCTL, _______,
-        _______,  _______, _______, MS_CTRL, _______, GD_BULT,                             CK_NEW,  GD_HD_1,  GD_HD_2, GD_HD_3, _______, _______,
+        _______,  _______, _______, _______, _______, _______, _______,           _______, _______, _______, _______, _______, _______, TO_ELLA,
+        _______,  _______, _______, KC_ENT,  _______, _______, _______,           _______, KC_WH_U, URL_CPY, KC_MS_U, _______, _______, _______,
+        KC_ENTER, _______, KC_BSPC, KC_DEL,  _______, _______, _______,           _______, KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, KC_RCTL, _______,
+        _______,  _______, _______, _______, _______, GD_BULT,                             CK_NEW,  GD_HD_1, GD_HD_2, GD_HD_3, _______, _______,
 
                                                                      BOTTOM_ROW,
 

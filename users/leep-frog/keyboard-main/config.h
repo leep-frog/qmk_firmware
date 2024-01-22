@@ -80,3 +80,11 @@
 #define MK_C_OFFSET_0 2  // Default is 1
 #define MK_C_OFFSET_1 5  // Default is 4
 #define MK_C_OFFSET_2 10
+
+// Oneshot
+// https://github.com/qmk/qmk_firmware/blob/master/docs/one_shot_keys.md
+
+// Tapping a one shot key this number of times holds the key until tapped once again.
+#define ONESHOT_TAP_TOGGLE 2
+// Time (in ms) before the one shot key is released.
+#define ONESHOT_TIMEOUT 500

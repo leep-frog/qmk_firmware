@@ -67,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
         SC_LSPO, TD_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
         TO_SHCT,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  TO_NAVB, KC_UP,
-        KC_LCTL, KC_LALT,  TO_SHCT,           TD_TBSF,          TO_ALT,      TO_CTRL,       TO_SYMB,           TO_NAV,             KC_LEFT,  KB_OFF,  CK_LOCK),
+        KC_LCTL, KC_LALT,  TO_SHCT,     OSM(MOD_RSFT),          TO_ALT,      TO_CTRL,       TO_SYMB,           TO_NAV,             KC_LEFT,  KB_OFF,  CK_LOCK),
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         CL(INS),
@@ -100,8 +100,8 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
     // This is currently identical to the LR_NAVIGATION layer.
     [LR_SHORTCUTS] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, _______,  _______,  _______, CK_RST,  _______, _______,  _______, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
-        _______, _______,  CK_SNIP,  _______, GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
+        _______, _______,  _______,  KC_ENT,  CK_RST,  _______, _______,  _______, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
+        _______, _______,  KC_BSPC,  KC_DEL,  GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
         _______,           _______,  _______, _______, _______, GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
         _______, _______,  _______,           _______,          GU(TAB),           _______,          _______,            _______,  _______, _______, _______),
 
