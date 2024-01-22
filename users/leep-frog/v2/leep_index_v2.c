@@ -12,5 +12,6 @@
 #include "./leep_record_v2.c"
 #include "./leep_color_v2.c"
 #include "./leep_oneshot_v2.c"
+#include "./leep_osm_v2.c"
 
 #endif // LEEP_MAIN

@@ -282,9 +282,13 @@ enum custom_keycode_handlers {
   URL_PST_HANDLER,
   URL_CPY_HANDLER,
   OL_TDAY_HANDLER,
+  CK_OSM_SHIFT,
 };
 
-// bool nooooop(keyrecord_t *record, uint16_t v) { return false; }
+bool ck_noop(keyrecord_t *_k, custom_keycode_value_t *_c) { return false; }
+
+#define CK_NOOP() CK_HANDLER_FN(ck_noop)
+
 custom_keycode_handler_t custom_keycode_handlers[] = {
   // Fn handlers
   [TO_ALT_HANDLER] = CK_HANDLER_FN(ToAlt_run),
@@ -311,6 +315,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [URL_PST_HANDLER] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
   [URL_CPY_HANDLER] = CK_HANDLER_STRING(FOCUS_TAB_STRING() SS_RCTL("c")),
   [OL_TDAY_HANDLER] = CK_HANDLER_STRING(OL_TDAY_STRING()),
+  [CK_OSM_SHIFT] = CK_NOOP(),
 };
 
 #define TO_ALT CK(TO_ALT_HANDLER)
@@ -337,11 +342,14 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 #define OL_TDAY CK(OL_TDAY_HANDLER)
 #define CK_UNBS CK(CK_UNBS_HANDLER)
 #define CK_LOGS CK(CK_LOGS_HANDLER)
+#define CK_SHFT CK(CK_OSM_SHIFT)
 
 uint16_t Alt_keycodes[] = {
   CK_ATB,
   CK_SATB,
 };
+
+uint16_t OSM_shift_keycode = CK_SHFT;
 
 const uint16_t ToAltKeycode = TO_ALT;
 const uint16_t ToCtrlKeycode = TO_CTRL;
@@ -439,6 +447,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         return false;
     }
 
+    OSM_handled(keycode, record->event.pressed);
     Mute_handled(record);
     if (CrDescProcessHandler(keycode, record) ||
             SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||

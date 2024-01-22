@@ -1,5 +1,7 @@
 #pragma once
 
+#define LEEP_OSM_ENABLE
+
 #include "../../config.h"
 #include "../../../../users/leep-frog/keyboard-main/config.h"
 

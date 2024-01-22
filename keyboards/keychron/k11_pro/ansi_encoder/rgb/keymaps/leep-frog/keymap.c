@@ -67,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
         SC_LSPO, TD_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
         TO_SHCT,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  TO_NAVB, KC_UP,
-        KC_LCTL, KC_LALT,  TO_SHCT,     OSM(MOD_RSFT),          TO_ALT,      TO_CTRL,       TO_SYMB,           TO_NAV,             KC_LEFT,  KB_OFF,  CK_LOCK),
+        KC_LCTL, KC_LALT,  TO_SHCT,         CK_SHFT,           TO_ALT,      TO_CTRL,       TO_SYMB,           TO_NAV,             KC_LEFT,  KB_OFF,  CK_LOCK),
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         CL(INS),

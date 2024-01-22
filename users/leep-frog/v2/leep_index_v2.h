@@ -17,3 +17,4 @@
 #include "./leep_record_v2.h"
 #include "./leep_color_v2.h"
 #include "./leep_oneshot_v2.h"
+#include "./leep_osm_v2.h"
