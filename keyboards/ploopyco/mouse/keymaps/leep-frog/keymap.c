@@ -58,6 +58,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Special button
         TD_BOOT),
 
+    // This layer exists only for use with COMBO_ONLY_FROM_LAYER
+    [LR_SAFE] = LEEPOUT(
+        // Top
+        KC_A, KC_B, KC_C, KC_D, KC_E,
+        // Side buttons
+        KC_F, KC_G,
+        // Special button
+        KC_H),
+
     // This layer holds down the ctrl key when activated (mostly so ctrl+click works properly).
     // As pressing ctrl+click in too rapid succession doesn't always work on the work laptop.
     [LR_CTRL] = LEEPOUT(

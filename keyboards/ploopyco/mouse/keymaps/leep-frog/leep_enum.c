@@ -2,6 +2,7 @@
 
 enum layers {
     LR_BASE,
+    LR_SAFE,
     LR_CTRL,
     LR_ALT,
     LR_WS,
