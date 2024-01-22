@@ -189,7 +189,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // Outlook delete (use this so holding doesn't register key down and send multiple delete).
     [TDK_OUTLOOK_DELETE] = LEEP_TD_CLICK_KC_HOLD_KC(KC_DEL, KC_DEL),
     // VSCode definition dance
-    [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
+    // [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
     // Boot dance
     [TDK_BOOT] = ACTION_TAP_DANCE_FN(td_boot),
 };

@@ -17,6 +17,7 @@
  */
 #include QMK_KEYBOARD_H
 #include "leep_enum.c"
+#include "leep_combo.c"
 #include "leep_outlook.c"
 #include "leep_alt.c"
 #include "leep_layers.c"
@@ -101,9 +102,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Special button
         _______),
 
+    // If memory starts to get too full, get rid of the below layers as
+    // they aren't used extensively.
     [LR_POWER_KB] = LEEPOUT(
         // Top
-        _______, TD_VDEF, _______, _______, KC_PRINT_SCREEN,
+        _______, /*TD_VDEF*/ _______, _______, _______, KC_PRINT_SCREEN,
         // Side buttons
         _______, _______,
         // Special button
