@@ -1,13 +1,13 @@
 // Combos
 enum combos {
-    BD_RIGHT_CLICK,
+    DE_RIGHT_CLICK,
     COMBO_LENGTH,
 };
 uint16_t COMBO_LEN = COMBO_LENGTH;  // remove the COMBO_COUNT define and use this instead!
 
-const uint16_t PROGMEM bd_combo[] = {KC_B, KC_D, COMBO_END};
+const uint16_t PROGMEM de_combo[] = {KC_D, KC_E, COMBO_END};
 
 combo_t key_combos[COMBO_LENGTH] = {
-    // B+D = Right-click
-    [BD_RIGHT_CLICK] = COMBO(bd_combo, KC_BTN2),
+    // D+E = Right-click
+    [DE_RIGHT_CLICK] = COMBO(de_combo, KC_BTN2),
 };
