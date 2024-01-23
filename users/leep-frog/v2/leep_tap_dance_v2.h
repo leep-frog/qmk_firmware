@@ -1,5 +1,7 @@
 #pragma once
 
+#include "quantum.h"
+
 // See below link for following functions
 // https://github.com/samhocevar-forks/qmk-firmware/blob/master/docs/feature_tap_dance.md#setup
 enum {

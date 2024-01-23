@@ -1,6 +1,15 @@
 #pragma once
 
+#include "../v2/leep_aliases_v2.h"
+#include "../v2/leep_music_v2.h"
 #include "../v2/leep_tap_dance_v2.h"
+#include "../v2/leep_url_v2.h"
+#include "../v2/leep_shift_v2.h"
+#include "../v2/leep_record_v2.h"
+#include "../v2/leep_color_v2.h"
+#include "./leep_enum_kb.h"
+#include "./leep_symbol_layer_overlap_kb.h"
+#include "./leep_to_ctrl_kb.h"
 // #include "record.c"
 // #include "shift.c"
 

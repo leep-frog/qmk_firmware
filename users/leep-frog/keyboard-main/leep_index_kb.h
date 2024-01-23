@@ -1,7 +1,5 @@
 #pragma once
 
-#define ENABLE_LEEP_COLOR
-
 #include "../v2/leep_index_v2.h"
 
 #include "./leep_interface_kb.h"

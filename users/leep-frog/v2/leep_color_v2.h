@@ -18,6 +18,7 @@ void leep_change_color(uint16_t a, uint8_t b, uint8_t c, uint8_t mode, bool forc
 
 #else // ifdef ENABLE_LEEP_COLOR
 
+#    define LEEP_C(clr) 0
 #    define LEEP_LAYER_COLOR(lyr, force)
 #    define LEEP_SOLID_COLOR(clr, force)
 #    define LEEP_COLOR_MODE(clr, mde, force)

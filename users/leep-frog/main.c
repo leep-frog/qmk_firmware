@@ -1,15 +1,13 @@
 #ifdef LEEP_MAIN
 
-void print_int(int k) {
-    char c[10];
-    itoa(k, c, 10);
-    send_string(c);
+void print_int(uint16_t k) {
+  send_word(k);
 }
 #define PRINT_INT(i) print_int(i);
 
 #include <stdio.h>
 #include "./keyboard-main/leep_index_kb.h"
-#include "../../../../../../../users/leep-frog/keyboard-main/leep_index_kb.c"
+#include "./keyboard-main/leep_index_kb.c"
 #include "./v2/leep_index_v2.h"
 
 // Note: wally sometimes crashes if the keyboard is plugged into the workstation,

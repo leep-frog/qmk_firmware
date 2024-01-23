@@ -1,5 +1,8 @@
 #pragma once
 
+#include "quantum.h"
+#include "keymap_introspection.h"
+
 #include "./leep_codes_v2.h"
 #include "./leep_music_v2.h"
 #include "./leep_custom_keycodes_v2.h"

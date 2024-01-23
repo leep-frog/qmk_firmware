@@ -1,6 +1,11 @@
 #ifdef LEEP_MAIN
 
+#ifdef QMK_KEYBOARD_H
 #include QMK_KEYBOARD_H
+#endif
+
+#include "quantum.h"
+#include "keymap_introspection.h"
 
 #include "./leep_music_v2.c"
 #include "./leep_custom_keycodes_v2.c"
