@@ -7,6 +7,7 @@
 #include "../v2/leep_shift_v2.h"
 #include "../v2/leep_record_v2.h"
 #include "../v2/leep_color_v2.h"
+#include "leep_tap_dance_kb.h"
 #include "./leep_enum_kb.h"
 #include "./leep_symbol_layer_overlap_kb.h"
 #include "./leep_to_ctrl_kb.h"

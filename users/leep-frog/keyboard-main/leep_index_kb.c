@@ -1,4 +1,6 @@
+#ifdef QMK_KEYBOARD_H
 #include QMK_KEYBOARD_H
+#endif
 
 #include "./leep_tap_dance_kb.c"
 #include "./leep_combo_kb.c"

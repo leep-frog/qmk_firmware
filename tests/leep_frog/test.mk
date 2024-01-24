@@ -23,9 +23,11 @@ DYNAMIC_MACRO_ENABLE = yes
 
 # INTROSPECTION_KEYMAP_C = ../../../users/leep-frog/main.c
 INTROSPECTION_KEYMAP_C = leep_keyboard.c
+# INTROSPECTION_KEYMAP_C += .
+ #/keyboard-main/leep_tap_dance_kb.c
 
 # SRC += leep_keyboard.c
-SRC += ../../../users/leep-frog/v2/leep_index_v2.c
+# SRC += ../../../users/leep-frog/v2/leep_tap_dance_v2.c
 # SRC += ../../../users/leep-frog/keyboard-main/leep_index_kb.c
 
 # SRC += ../../../users/leep-frog/main.c

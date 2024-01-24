@@ -3,7 +3,7 @@
 /*#define LEEP_MAIN
 #define LEEP_KEYMAP_INTROSPECTION
 #define LEEP_OSM_ENABLE
-#define LEEP_SAFE_RANGE SAFE_RANGE
+#define LEEP_SAFE_RANGE SAFE_RANGE*/
 
 #define FE_0(M, X)
 #define FE_1(M, X) M(X)
@@ -31,6 +31,6 @@
 #define REPEAT_8(X) X REPEAT_7(X)
 #define REPEAT_9(X) X REPEAT_8(X)
 #define REPEAT_10(X) X REPEAT_9(X)
-#define REPEAT_11(X) X REPEAT_10(X)*/
+#define REPEAT_11(X) X REPEAT_10(X)
 
 #include "test_common.h"

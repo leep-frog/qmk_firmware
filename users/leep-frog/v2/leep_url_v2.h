@@ -1,5 +1,7 @@
 #pragma once
 
+#include "leep_music_v2.h"
+
 // URLWait waits a short amount of time to allow the
 // internet browser to run actions (like opening a new tab).
 #define URLWait() wait_ms(80)
