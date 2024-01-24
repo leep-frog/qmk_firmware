@@ -1,7 +1,8 @@
 #pragma once
 
-/*#define LEEP_MAIN
 #define LEEP_KEYMAP_INTROSPECTION
+
+/*#define LEEP_MAIN
 #define LEEP_OSM_ENABLE
 #define LEEP_SAFE_RANGE SAFE_RANGE*/
 

@@ -16,6 +16,8 @@
 #include "users/leep-frog/keyboard-main/leep_combo_kb.c"
 #include "users/leep-frog/keyboard-main/leep_tap_dance_kb.c"
 
+#include "users/leep-frog/main.c"
+
 custom_keycode_handler_t custom_keycode_handlers[] = {};
 
 uint16_t Alt_keycodes[] = {};

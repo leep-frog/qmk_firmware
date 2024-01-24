@@ -49,6 +49,9 @@
       },
       {
         "path": "/home/qmk/qmk_firmware/users/leep-frog/main.c"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/tests/leep_frog/config.h"
       }
     ]
 }
