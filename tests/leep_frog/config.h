@@ -1,10 +1,9 @@
 #pragma once
 
 #define LEEP_KEYMAP_INTROSPECTION
-
-/*#define LEEP_MAIN
+#define LEEP_MAIN
+#define LEEP_SAFE_RANGE SAFE_RANGE
 #define LEEP_OSM_ENABLE
-#define LEEP_SAFE_RANGE SAFE_RANGE*/
 
 #define FE_0(M, X)
 #define FE_1(M, X) M(X)
@@ -19,6 +18,20 @@
 #define FE_10(M, X, ...) M(X), FE_9(M, __VA_ARGS__)
 #define FE_11(M, X, ...) M(X), FE_10(M, __VA_ARGS__)
 #define FE_12(M, X, ...) M(X), FE_11(M, __VA_ARGS__)
+
+#define REDUCE_0(M, SEP, X)
+#define REDUCE_1(M, SEP, X) M(X)
+#define REDUCE_2(M, SEP, X, ...) M(X) SEP REDUCE_1(M, SEP, __VA_ARGS__)
+#define REDUCE_3(M, SEP, X, ...) M(X) SEP REDUCE_2(M, SEP, __VA_ARGS__)
+#define REDUCE_4(M, SEP, X, ...) M(X) SEP REDUCE_3(M, SEP, __VA_ARGS__)
+#define REDUCE_5(M, SEP, X, ...) M(X) SEP REDUCE_4(M, SEP, __VA_ARGS__)
+#define REDUCE_6(M, SEP, X, ...) M(X) SEP REDUCE_5(M, SEP, __VA_ARGS__)
+#define REDUCE_7(M, SEP, X, ...) M(X) SEP REDUCE_6(M, SEP, __VA_ARGS__)
+#define REDUCE_8(M, SEP, X, ...) M(X) SEP REDUCE_7(M, SEP, __VA_ARGS__)
+#define REDUCE_9(M, SEP, X, ...) M(X) SEP REDUCE_8(M, SEP, __VA_ARGS__)
+#define REDUCE_10(M, SEP, X, ...) M(X) SEP REDUCE_9(M, SEP, __VA_ARGS__)
+#define REDUCE_11(M, SEP, X, ...) M(X) SEP REDUCE_10(M, SEP, __VA_ARGS__)
+#define REDUCE_12(M, SEP, X, ...) M(X) SEP REDUCE_11(M, SEP, __VA_ARGS__)
 
 // Note: REPEAT_K does not separate with a comma, whereas FE does
 #define REPEAT_0(X)

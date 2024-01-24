@@ -38,10 +38,6 @@ layer_overlap_handler_t symbol_handler = {
 
 // Logic for stuff
 
-#define SYMBOL_LAYER_OVERLAP_SETUP_FN(handler) void symbol_layer_handler##handler(bool activated) { if (activated) { SymbolLayerOverlap_reset(&handler); } }
-
-#define SYMBOL_LAYER_OVERLAP_SETUP(handler) SET_LAYER_HANDLER(handler.layer, symbol_layer_handler##handler)
-
 void SymbolLayerOverlap_reset(layer_overlap_handler_t *handler) {
     handler->first_symb_press          = false;
     handler->resolved_first_symb_press = true;

@@ -7,7 +7,6 @@ void print_int(uint16_t k) {
 
 #include <stdio.h>
 #include "./keyboard-main/leep_index_kb.h"
-#include "./keyboard-main/leep_index_kb.c"
 #include "./v2/leep_index_v2.h"
 
 // Note: wally sometimes crashes if the keyboard is plugged into the workstation,

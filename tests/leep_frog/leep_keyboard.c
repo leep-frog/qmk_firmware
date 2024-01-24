@@ -10,19 +10,19 @@
 #include "users/leep-frog/v2/leep_tap_dance_v2.c"
 #include "users/leep-frog/v2/leep_shift_v2.c"
 #include "users/leep-frog/v2/leep_color_v2.c"
+#include "users/leep-frog/v2/leep_oneshot_v2.c"
+#include "users/leep-frog/v2/leep_alt_v2.c"
+#include "users/leep-frog/v2/leep_layers_v2.c"
+#include "users/leep-frog/v2/leep_custom_keycodes_v2.c"
+#include "users/leep-frog/v2/leep_osm_v2.c"
 
 
 // TODO: #include "users/leep-frog/keyboard-main/leep_index_kb.c"
 #include "users/leep-frog/keyboard-main/leep_combo_kb.c"
 #include "users/leep-frog/keyboard-main/leep_tap_dance_kb.c"
-
+#include "users/leep-frog/keyboard-main/leep_symbol_layer_overlap_kb.c"
+#include "users/leep-frog/keyboard-main/leep_cr_desc_kb.c"
+#include "users/leep-frog/keyboard-main/leep_to_ctrl_kb.c"
 #include "users/leep-frog/main.c"
 
-custom_keycode_handler_t custom_keycode_handlers[] = {};
-
-uint16_t Alt_keycodes[] = {};
-
-uint16_t OSM_shift_keycode = KC_1;
-
-const uint16_t ToAltKeycode = KC_2;
-const uint16_t ToCtrlKeycode = KC_3;
+custom_unlocker_fn_t CustomUnlocker = &defaultUnlocker;
