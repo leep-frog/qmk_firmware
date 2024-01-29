@@ -52,6 +52,12 @@
       },
       {
         "path": "/home/qmk/qmk_firmware/tests/leep_frog/config.h"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/lib/googletest/docs/reference/assertions.md"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/users/leep-frog/main.h"
       }
     ]
 }

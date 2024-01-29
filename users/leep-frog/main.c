@@ -5,6 +5,7 @@ void print_int(uint16_t k) {
 }
 #define PRINT_INT(i) print_int(i);
 
+#include "./main.h"
 #include <stdio.h>
 #include "./keyboard-main/leep_index_kb.h"
 #include "./v2/leep_index_v2.h"
@@ -37,6 +38,22 @@ bool _leep_lock(keyrecord_t *record, custom_keycode_value_t *v) {
     }
     return false;
 }
+
+#ifdef LEEP_TEST_MODE
+char test_message[50] = "\0";
+
+bool test_confirm(keyrecord_t *record, custom_keycode_value_t *v) {
+  // ON press, set the message to a non-empty starting value
+  if (record->event.pressed) {
+    strcpy(test_message, "Running tests (waiting for release)...");
+    return false;
+  }
+
+  // On release, run all verifications
+  strcpy(test_message, "Success!");
+  return false;
+}
+#endif
 
 bool _leep_keyboard_reset(keyrecord_t *record, custom_keycode_value_t *v) {
     if (record->event.pressed) {
@@ -251,37 +268,6 @@ bool CtrlWHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   return false;
 }
 
-// Note: we don't need to organize by handler type,
-// but do so for readability.
-enum custom_keycode_handlers {
-  // Fn handlers
-  TO_ALT_HANDLER,
-  TO_CTRL_HANDLER,
-  TO_CTLX_HANDLER,
-  CTRL_W_HANDLER,
-  CK_WAIT_HANDLER,
-  CK_ATB_HANDLER,
-  CK_SATB_HANDLER,
-  CK_ACL_HANDLER,
-  CK_LOCK_HANDLER,
-  CK_RESET_HANDLER,
-  KB_OFF_HANDLER,
-  CK_EYE_HANDLER,
-  MS_CTRL_HANDLER,
-  CK_ALTT_HANDLER,
-  CK_MUTS_HANDLER,
-  CK_MUT_HANDLER,
-  CK_CTLG_HANDLER,
-  CK_CRDC_HANDLER,
-  // String handlers
-  CK_UNBS_HANDLER,
-  CK_LOGS_HANDLER,
-  URL_PST_HANDLER,
-  URL_CPY_HANDLER,
-  OL_TDAY_HANDLER,
-  CK_OSM_SHIFT,
-};
-
 bool ck_noop(keyrecord_t *_k, custom_keycode_value_t *_c) { return false; }
 
 #define CK_NOOP() CK_HANDLER_FN(ck_noop)
@@ -313,33 +299,11 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [URL_CPY_HANDLER] = CK_HANDLER_STRING(FOCUS_TAB_STRING() SS_RCTL("c")),
   [OL_TDAY_HANDLER] = CK_HANDLER_STRING(OL_TDAY_STRING()),
   [CK_OSM_SHIFT] = CK_NOOP(),
+
+#ifdef LEEP_TEST_MODE
+  [CK_TEST_CONFIRM] = CK_HANDLER_FN(test_confirm),
+#endif
 };
-
-#define TO_ALT CK(TO_ALT_HANDLER)
-#define TO_CTRL CK(TO_CTRL_HANDLER)
-#define TO_CTLX CK(TO_CTLX_HANDLER)
-#define CTRL_W CK(CTRL_W_HANDLER)
-#define CK_WAIT CK(CK_WAIT_HANDLER)
-#define CK_ATB CK(CK_ATB_HANDLER)
-#define CK_SATB CK(CK_SATB_HANDLER)
-#define CK_ACL CK(CK_ACL_HANDLER)
-#define CK_LOCK CK(CK_LOCK_HANDLER)
-#define CK_RST CK(CK_RESET_HANDLER)
-#define KB_OFF CK(KB_OFF_HANDLER)
-#define CK_EYE CK(CK_EYE_HANDLER)
-#define MS_CTRL CK(MS_CTRL_HANDLER)
-#define CK_ALTT CK(CK_ALTT_HANDLER)
-#define CK_MUTS CK(CK_MUTS_HANDLER)
-#define CK_MUT CK(CK_MUT_HANDLER)
-#define CK_CTLG CK(CK_CTLG_HANDLER)
-#define CK_CRDC CK(CK_CRDC_HANDLER)
-
-#define URL_PST CK(URL_PST_HANDLER)
-#define URL_CPY CK(URL_CPY_HANDLER)
-#define OL_TDAY CK(OL_TDAY_HANDLER)
-#define CK_UNBS CK(CK_UNBS_HANDLER)
-#define CK_LOGS CK(CK_LOGS_HANDLER)
-#define CK_SHFT CK(CK_OSM_SHIFT)
 
 uint16_t Alt_keycodes[] = {
   CK_ATB,
