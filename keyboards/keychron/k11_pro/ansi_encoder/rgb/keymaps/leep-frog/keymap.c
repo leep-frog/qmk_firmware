@@ -16,9 +16,16 @@
 
 #include QMK_KEYBOARD_H
 
-#define LEEP_SAFE_RANGE NEW_SAFE_RANGE
+#include "version.h"
 
-#include "../../../../../../../users/leep-frog/main.c"
+#include "users/leep-frog/v2/leep_index_v2.h"
+
+#include "users/leep-frog/keyboard-main/leep_index_kb.h"
+#include "users/leep-frog/main.h"
+
+// #define LEEP_SAFE_RANGE NEW_SAFE_RANGE
+
+// #include "../../../../../../../users/leep-frog/main.c"
 
 uint8_t unlock_idx = 0;
 const uint16_t unlock_code[] = { KC_H, KC_O, KC_W, KC_D, TD_Y };

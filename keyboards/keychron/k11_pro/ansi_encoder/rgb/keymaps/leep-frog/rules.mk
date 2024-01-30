@@ -13,3 +13,5 @@ RGB_MATRIX_DRIVER = ckled2001
 
 # This is for the knob
 ENCODER_MAP_ENABLE = yes
+
+INTROSPECTION_KEYMAP_C = users/leep-frog/main.c
