@@ -1,10 +1,10 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 
-// interface.c requirements
-#define LEEP_SAFE_RANGE SAFE_RANGE
+#include "users/leep-frog/v2/leep_index_v2.h"
 
-#include "../../../../users/leep-frog/main.c"
+#include "users/leep-frog/keyboard-main/leep_index_kb.h"
+#include "users/leep-frog/main.h"
 
 custom_unlocker_fn_t CustomUnlocker = &defaultUnlocker;
 

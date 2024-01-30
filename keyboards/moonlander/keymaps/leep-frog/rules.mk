@@ -8,3 +8,5 @@ KEY_LOCK_ENABLE = yes
 AUDIO_ENABLE = yes
 #VPATH += keyboards/gboards/
 #CONSOLE_ENABLE = yes
+
+INTROSPECTION_KEYMAP_C = users/leep-frog/main.c

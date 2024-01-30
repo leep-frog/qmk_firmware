@@ -1,9 +1,11 @@
 #pragma once
 
 #define LEEP_TEST_MODE
+#define LEEP_SAFE_RANGE SAFE_RANGE
+
 #define LEEP_KEYMAP_INTROSPECTION
 #define LEEP_MAIN
-#define LEEP_SAFE_RANGE SAFE_RANGE
+
 #define LEEP_OSM_ENABLE
 
 #define FE_0(M, X)

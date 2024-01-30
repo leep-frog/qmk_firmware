@@ -7,8 +7,10 @@ void print_int(uint16_t k) {
 
 #include "./main.h"
 #include <stdio.h>
-#include "./keyboard-main/leep_index_kb.h"
 #include "./v2/leep_index_v2.h"
+#include "./keyboard-main/leep_index_kb.h"
+#include "./v2/leep_index_v2.c"
+#include "./keyboard-main/leep_index_kb.c"
 
 // Note: wally sometimes crashes if the keyboard is plugged into the workstation,
 // but behaves fine if the keyboard is plugged directly into the laptop.
@@ -325,7 +327,7 @@ bool layers_status[NUM_LAYERS] = {
 
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
-SYMBOL_LAYER_OVERLAP_SETUP_FN(symbol_handler);
+SYMBOL_LAYER_OVERLAP_SETUP_FN_C(symbol_handler);
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
@@ -351,9 +353,6 @@ void keyboard_post_init_user(void) {
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
     SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
 }
-
-// For some reason the `weak` modifier wasn't working, so went with this approach instead.
-typedef bool (*custom_unlocker_fn_t) (uint16_t keycode, keyrecord_t *record);
 
 bool defaultUnlocker(uint16_t keycode, keyrecord_t* record) {
   if (record->event.pressed) {
