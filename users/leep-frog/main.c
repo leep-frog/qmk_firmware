@@ -42,16 +42,23 @@ bool _leep_lock(keyrecord_t *record, custom_keycode_value_t *v) {
 #ifdef LEEP_TEST_MODE
 char test_message[50] = "\0";
 
-bool test_confirm(keyrecord_t *record, custom_keycode_value_t *v) {
+void test_confirm(keyrecord_t *record) {
   // ON press, set the message to a non-empty starting value
   if (record->event.pressed) {
     strcpy(test_message, "Running tests (waiting for release)...");
-    return false;
+    return;
+  }
+
+  // OSM
+  if (
+    !OSM_test_check(test_message)
+  ) {
+    return;
   }
 
   // On release, run all verifications
   strcpy(test_message, "Success!");
-  return false;
+  return;
 }
 #endif
 
@@ -299,10 +306,6 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [URL_CPY_HANDLER] = CK_HANDLER_STRING(FOCUS_TAB_STRING() SS_RCTL("c")),
   [OL_TDAY_HANDLER] = CK_HANDLER_STRING(OL_TDAY_STRING()),
   [CK_OSM_SHIFT] = CK_NOOP(),
-
-#ifdef LEEP_TEST_MODE
-  [CK_TEST_CONFIRM] = CK_HANDLER_FN(test_confirm),
-#endif
 };
 
 uint16_t Alt_keycodes[] = {
@@ -310,7 +313,7 @@ uint16_t Alt_keycodes[] = {
   CK_SATB,
 };
 
-uint16_t OSM_shift_keycode = CK_SHFT;
+const uint16_t OSM_shift_keycode = CK_SHFT;
 
 const uint16_t ToAltKeycode = TO_ALT;
 const uint16_t ToCtrlKeycode = TO_CTRL;
@@ -402,8 +405,20 @@ bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
 }
 
 
+void housekeeping_task_user(void) {
+  OSM_cleanup();
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+#ifdef LEEP_TEST_MODE
+    // Don't do anything else if we press/unpress the CK_TEST key
+    if (keycode == CK_TEST) {
+      test_confirm(record);
+      return false;
+    }
+#endif
+
+    // Unlock keyboard (if relevant)
     if (!leep_startup_mode(keycode, record)) {
         return false;
     }

@@ -58,6 +58,9 @@
       },
       {
         "path": "/home/qmk/qmk_firmware/users/leep-frog/main.h"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/tests/test_common/keyboard_report_util.cpp"
       }
     ]
 }

@@ -13,6 +13,7 @@ using ::testing::IsEmpty;
 
 // We need these go betweens because CK_ABCs are macros and the nested macros pass the initial string values around (not the final macro)
 const uint16_t ck_test = CK_TEST;
+const uint16_t ck_shft = CK_SHFT;
 
 class LeepFrog : public TestFixture {};
 
@@ -41,12 +42,6 @@ TEST_F(LeepFrog, UnlockBehavior) {
       KC_D,
       ck_test
     )
-
-    // EXPECT_EQ(CK_EYE, LEEP_SAFE_RANGE+11);
-
-    /******************
-     * Unlock testing *
-    *******************/
 
     // Ignore key before unlocking
     k_KC_A.press();
@@ -81,6 +76,38 @@ TEST_F(LeepFrog, UnlockBehavior) {
     run_one_scan_loop();
 
     k_KC_D.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, OsmBehavior) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 5,
+      KC_A,
+      KC_D,
+      KC_RSFT,
+      ck_shft,
+      ck_test
+    )
+
+    // Press and unpress the shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+    k_ck_shft.release();
+    run_one_scan_loop();
+
+    // Press the A key, which should be shifted.
+    k_KC_A.press();
+    EXPECT_NO_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT, KC_A));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 

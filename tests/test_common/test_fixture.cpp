@@ -176,6 +176,7 @@ void TestFixture::idle_for(unsigned time) {
     for (unsigned i = 0; i < time; i++) {
         keyboard_task();
         advance_time(1);
+        housekeeping_task();
     }
 }
 

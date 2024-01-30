@@ -3,13 +3,15 @@
 #ifdef LEEP_OSM_ENABLE
 
 #include "leep_osm_v2.h"
+#include <stdio.h>
+
 
 enum osm_enact_steps {
   OSM_NOOP,
   OSM_HOLD_CHECK,
   OSM_REGISTER_KEY,
   OSM_UNREGISTER_KEY,
-  OSM_UNREGISTER_NEXT_ACTION,
+  OSM_CLEANUP,
   OSM_RELEASE_ON_UNPRESS,
   OSM_HOLD,
 };
@@ -53,14 +55,30 @@ void OSM_handled(uint16_t keycode, bool pressed) {
     if (!pressed && keycode == osmed_key) {
       // Unregister on the next action to ensure shift is held for all of this
       // unpress's logic.
-      osm_step = OSM_UNREGISTER_NEXT_ACTION;
+      osm_step = OSM_CLEANUP;
     }
     break;
-  case OSM_UNREGISTER_NEXT_ACTION:
-    unregister_code16(KC_RSFT);
-    osm_step = OSM_NOOP;
+  case OSM_CLEANUP:
+    // Handled by OSM_cleanup (which runs in the same loop, but after the key has been processed)
     break;
   }
 }
+
+void OSM_cleanup(void) {
+  if (osm_step == OSM_CLEANUP) {
+    unregister_code16(KC_RSFT);
+    osm_step = OSM_NOOP;
+  }
+}
+
+#ifdef LEEP_TEST_MODE
+bool OSM_test_check(char test_message[]) {
+  if (osm_step != OSM_NOOP) {
+    sprintf(test_message, "OSM isn't in defaualt state. Got %d; expected %d", osm_step, OSM_NOOP);
+    return false;
+  }
+  return true;
+}
+#endif
 
 #endif

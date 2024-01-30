@@ -71,3 +71,5 @@ enum custom_keycode_handlers {
 extern char test_message[];
 #define CK_TEST CK(CK_TEST_CONFIRM)
 #endif
+
+bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
