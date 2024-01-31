@@ -19,6 +19,12 @@ enum osm_enact_steps {
 static uint8_t osm_step = OSM_NOOP;
 static uint16_t osmed_key = 0;
 
+void OSM_deactivate(void) {
+  layer_off(OSM_LAYER);
+  unregister_code16(KC_RSFT);
+  osm_step = OSM_NOOP;
+}
+
 void OSM_handled(uint16_t keycode, bool pressed) {
   switch (osm_step) {
   case OSM_NOOP:
@@ -42,9 +48,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
     break;
   case OSM_RELEASE_ON_UNPRESS:
     if (!pressed && keycode == OSM_shift_keycode) {
-      layer_off(OSM_LAYER);
-      unregister_code16(KC_RSFT);
-      osm_step = OSM_NOOP;
+      OSM_deactivate();
     }
     break;
   case OSM_REGISTER_KEY:
@@ -56,9 +60,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
   case OSM_UNREGISTER_KEY:
     // If we're pressing another key before we let go of the registered key, then remove shift immediately.
     if (pressed) {
-      layer_off(OSM_LAYER);
-      unregister_code16(KC_RSFT);
-      osm_step = OSM_NOOP;
+      OSM_deactivate();
 
     // If we're unpressing the key that we registered with, then clean up OSM after the current loop is processed.
     } else if (/* !pressed && */ keycode == osmed_key) { // (!pressed not needed due to initial `if` before this `else-if`
@@ -73,18 +75,14 @@ void OSM_handled(uint16_t keycode, bool pressed) {
 
 void OSM_cleanup(void) {
   if (osm_step == OSM_CLEANUP) {
-    layer_off(OSM_LAYER);
-    unregister_code16(KC_RSFT);
-    osm_step = OSM_NOOP;
+    OSM_deactivate();
   }
 }
 
 // Combo runs as single event (not press and unpress), so we need special logic to handle that.
 void OSM_combo_cleanup(void) {
   if (osm_step == OSM_REGISTER_KEY) {
-    layer_off(OSM_LAYER);
-    unregister_code16(KC_RSFT);
-    osm_step = OSM_NOOP;
+    OSM_deactivate();
   } else if (osm_step == OSM_HOLD_CHECK) {
     osm_step = OSM_RELEASE_ON_UNPRESS;
   }
