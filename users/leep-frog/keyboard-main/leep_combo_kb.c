@@ -20,7 +20,13 @@ static void end_tap_dance(bool pressed) {
     preprocess_tap_dance(0, &leep_record);
 }
 
+void internal_process_combo_event(uint16_t combo_index, bool pressed);
 void process_combo_event(uint16_t combo_index, bool pressed) {
+  internal_process_combo_event(combo_index, pressed);
+  OSM_combo_cleanup();
+}
+
+void internal_process_combo_event(uint16_t combo_index, bool pressed) {
     // TODO: Add OSM_handle/cleanup since combos don't reach main function
     if (!pressed) {
       switch (combo_index) {
@@ -67,13 +73,5 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         case JSPACE_OH_RIGHT:
           layer_on(LR_ONE_HAND_RIGHT);
           break;
-    }
-}
-
-void activate_base_layer_combo(bool activated) {
-    if (activated) {
-        combo_enable();
-    } else {
-        combo_disable();
     }
 }

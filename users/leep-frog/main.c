@@ -51,15 +51,15 @@ void test_confirm(keyrecord_t *record) {
     return;
   }
 
-  if (LeepHighestLayer) {
-    sprintf(test_message, "Expected to be in base layer, but was in layer %d", LeepHighestLayer);
-    return;
-  }
-
   // OSM
   if (
     !OSM_test_check(test_message)
   ) {
+    return;
+  }
+
+  if (LeepHighestLayer) {
+    sprintf(test_message, "Expected to be in base layer, but was in layer %d", LeepHighestLayer);
     return;
   }
 
@@ -342,10 +342,6 @@ void keyboard_post_init_user(void) {
     // Add Layer handlers
     // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
     SET_LAYER_HANDLER(LR_ALT, AltLayerDeactivationHandler);
-    // Only want combos to be enabled in the base layer (even though we
-    // define "COMBO_ONLY_FROM_LAYER 1", but we do that only so we can use the
-    // simple keycodes defined in the safe layer).
-    SET_LAYER_HANDLER(LR_BASE, activate_base_layer_combo);
     // Deactivate alt when exiting navigation layer.
     SET_LAYER_HANDLER(LR_NAVIGATION, AltLayerDeactivationHandler);
     // Left one-hand layer changes.

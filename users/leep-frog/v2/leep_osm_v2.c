@@ -74,6 +74,15 @@ void OSM_cleanup(void) {
   }
 }
 
+// Combo runs as single event (not press and unpress), so we need special logic to handle that.
+void OSM_combo_cleanup(void) {
+  if (osm_step == OSM_REGISTER_KEY) {
+    layer_off(OSM_LAYER);
+    unregister_code16(KC_RSFT);
+    osm_step = OSM_NOOP;
+  }
+}
+
 #ifdef LEEP_TEST_MODE
 bool OSM_test_check(char test_message[]) {
   if (osm_step != OSM_NOOP) {

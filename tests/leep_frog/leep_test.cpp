@@ -253,3 +253,104 @@ TEST_F(LeepFrog, ComboBehavior) {
 
     CONFIRM_RESET();
 }
+
+TEST_F(LeepFrog, ComboAndOSMTap) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 6,
+      KC_A,
+      KC_B,
+      KC_D,
+      KC_F,
+      ck_shft,
+      ck_test
+    )
+
+    uint8_t kc_d = KC_D;
+    uint8_t kc_f = KC_F;
+
+    LEEP_KEY_ROW(1, 6,
+      TK_0,
+      KC_C,
+      kc_d,
+      kc_f,
+      TK_1,
+      TK_2
+    )
+
+    // Press and unpress the osm shift key
+    // layer_on(1);
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+    k_ck_shft.release();
+    run_one_scan_loop();
+
+    // Press and release the D and F keys simultaneously
+    k_KC_D.press();
+    k_KC_F.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_D.release();
+    k_KC_F.release();
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_QUOTE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+/*TEST_F(LeepFrog, ComboAndOSMHold) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 6,
+      KC_A,
+      KC_B,
+      KC_D,
+      KC_F,
+      ck_shft,
+      ck_test
+    )
+
+    uint8_t kc_d = KC_D;
+    uint8_t kc_f = KC_F;
+
+    LEEP_KEY_ROW(1, 6,
+      TK_0,
+      KC_C,
+      kc_d,
+      kc_f,
+      TK_1,
+      TK_2
+    )
+
+    // Press and unpress the osm shift key
+    // layer_on(1);
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+    k_ck_shft.release();
+    run_one_scan_loop();
+
+    // Press and release the D and F keys simultaneously
+    k_KC_D.press();
+    k_KC_F.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_D.release();
+    k_KC_F.release();
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_QUOTE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+*/
