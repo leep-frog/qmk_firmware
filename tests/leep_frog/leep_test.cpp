@@ -346,6 +346,7 @@ TEST_F(LeepFrog, ComboAndOSMHold) {
     EXPECT_REPORT(driver, (KC_RSFT));
     run_one_scan_loop();
 
+    // Release the osm shift key
     k_ck_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
