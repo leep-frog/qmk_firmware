@@ -279,7 +279,6 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
     )
 
     // Press and unpress the osm shift key
-    // layer_on(1);
     k_ck_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     run_one_scan_loop();
@@ -304,7 +303,7 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
     CONFIRM_RESET();
 }
 
-/*TEST_F(LeepFrog, ComboAndOSMHold) {
+TEST_F(LeepFrog, ComboAndOSMHold) {
     TestDriver driver;
     InSequence s;
     LEEP_KEY_ROW(0, 6,
@@ -328,12 +327,9 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
       TK_2
     )
 
-    // Press and unpress the osm shift key
-    // layer_on(1);
+    // Press and hold the osm shift key
     k_ck_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
-    run_one_scan_loop();
-    k_ck_shft.release();
     run_one_scan_loop();
 
     // Press and release the D and F keys simultaneously
@@ -348,9 +344,11 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
     EXPECT_REPORT(driver, (KC_QUOTE));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    k_ck_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 
     CONFIRM_RESET();
 }
-*/

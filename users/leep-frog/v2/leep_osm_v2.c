@@ -80,6 +80,8 @@ void OSM_combo_cleanup(void) {
     layer_off(OSM_LAYER);
     unregister_code16(KC_RSFT);
     osm_step = OSM_NOOP;
+  } else if (osm_step == OSM_HOLD_CHECK) {
+    osm_step = OSM_RELEASE_ON_UNPRESS;
   }
 }
 
