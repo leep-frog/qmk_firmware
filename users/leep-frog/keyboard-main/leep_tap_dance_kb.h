@@ -1,5 +1,6 @@
 #pragma once
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record);
 // Can't just extern (https://stackoverflow.com/questions/14069737/switch-case-error-case-label-does-not-reduce-to-an-integer-constant)
 bool IsToggleShiftTapDance(uint16_t keycode);
 
