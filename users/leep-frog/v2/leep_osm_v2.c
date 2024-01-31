@@ -10,7 +10,6 @@ enum osm_enact_steps {
   OSM_NOOP,
   OSM_HOLD_CHECK,
   OSM_REGISTER_KEY,
-  OSM_UNREGISTER_KEY,
   OSM_CLEANUP,
   OSM_RELEASE_ON_UNPRESS,
   OSM_HOLD,
@@ -52,18 +51,14 @@ void OSM_handled(uint16_t keycode, bool pressed) {
     }
     break;
   case OSM_REGISTER_KEY:
+    // Note: we need to clean-up right away, primarily because pressing a key in one layer,
+    // and then unpressing it another, when one of the keys in a layer is a tap dance and the other is not
+    // (e.g. KC_A in LR_ELLA and TD_A in LR_BASE) causes strange behavior (basically, QMK doesn't track
+    // that state properly for tap dance keys).
+    // I looked into the issue for a while, but it's above my open source paygrade, and just releasing
+    // shift right away covers all our use cases as well.
     if (pressed) {
       osmed_key = keycode;
-      osm_step = OSM_UNREGISTER_KEY;
-    }
-    break;
-  case OSM_UNREGISTER_KEY:
-    // If we're pressing another key before we let go of the registered key, then remove shift immediately.
-    if (pressed) {
-      OSM_deactivate();
-
-    // If we're unpressing the key that we registered with, then clean up OSM after the current loop is processed.
-    } else if (/* !pressed && */ keycode == osmed_key) { // (!pressed not needed due to initial `if` before this `else-if`
       osm_step = OSM_CLEANUP;
     }
     break;

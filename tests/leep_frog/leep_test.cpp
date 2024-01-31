@@ -114,16 +114,16 @@ TEST_F(LeepFrog, Osm_TransparentKey) {
     EXPECT_REPORT(driver, (KC_RSFT));
     run_one_scan_loop();
     k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
     // Press the A key, which should be shifted.
     k_KC_A.press();
-    EXPECT_NO_REPORT(driver);
     EXPECT_REPORT(driver, (KC_RSFT, KC_A));
+    EXPECT_REPORT(driver, (KC_A));
     run_one_scan_loop();
 
     k_KC_A.release();
-    EXPECT_REPORT(driver, (KC_RSFT));
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 
@@ -150,16 +150,16 @@ TEST_F(LeepFrog, Osm_DifferentKey) {
     EXPECT_REPORT(driver, (KC_RSFT));
     run_one_scan_loop();
     k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
     // Press the A key, which should be shifted.
     k_KC_A.press();
-    EXPECT_NO_REPORT(driver);
     EXPECT_REPORT(driver, (KC_RSFT, KC_B));
+    EXPECT_REPORT(driver, (KC_B));
     run_one_scan_loop();
 
     k_KC_A.release();
-    EXPECT_REPORT(driver, (KC_RSFT));
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 
@@ -170,7 +170,7 @@ TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
     TestDriver driver;
     InSequence s;
 
-    uint8_t td_a = TD_A;
+    uint16_t td_a = TD_A;
 
     LEEP_KEY_ROW(0, 4,
       KC_H,
@@ -191,12 +191,13 @@ TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
     EXPECT_REPORT(driver, (KC_RSFT));
     run_one_scan_loop();
     k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
     // Press H and then press I before releasing H.
     k_KC_H.press();
-    EXPECT_NO_REPORT(driver);
     EXPECT_REPORT(driver, (KC_RSFT, KC_H));
+    EXPECT_REPORT(driver, (KC_H));
     run_one_scan_loop();
 
     k_KC_I.press();
@@ -204,7 +205,6 @@ TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
     run_one_scan_loop();
 
     k_KC_H.release();
-    EXPECT_REPORT(driver, (KC_H));
     EXPECT_REPORT(driver, (KC_H, KC_I));
     EXPECT_REPORT(driver, (KC_I));
     run_one_scan_loop();
@@ -212,6 +212,60 @@ TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
     k_KC_I.release();
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, Osm_OverlappingTapDanceKeyPresses) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t td_i = TD_I;
+
+    LEEP_KEY_ROW(0, 4,
+      KC_H,
+      td_i, // regular KC_I in the other layer
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 4,
+      TK_0,
+      KC_I,
+      TK_2,
+      TK_3
+    )
+
+    // Press and unpress the osm shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+    k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press H and then press I before releasing H.
+    k_KC_H.press();
+    EXPECT_NO_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H));
+    EXPECT_REPORT(driver, (KC_H));
+    run_one_scan_loop();
+
+    k_td_i.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_H.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    k_td_i.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_REPORT(driver, (KC_I));
+    EXPECT_EMPTY_REPORT(driver);
+    idle_for(10 * TAPPING_TERM);
 
     CONFIRM_RESET();
 }
