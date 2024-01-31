@@ -24,6 +24,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
   case OSM_NOOP:
     // Activate if pressing the relevant key
     if (pressed && keycode == OSM_shift_keycode) {
+      layer_on(OSM_LAYER);
       register_code16(KC_RSFT);
       osm_step = OSM_HOLD_CHECK;
     }
@@ -41,6 +42,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
     break;
   case OSM_RELEASE_ON_UNPRESS:
     if (!pressed && keycode == OSM_shift_keycode) {
+      layer_off(OSM_LAYER);
       unregister_code16(KC_RSFT);
       osm_step = OSM_NOOP;
     }
@@ -66,6 +68,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
 
 void OSM_cleanup(void) {
   if (osm_step == OSM_CLEANUP) {
+    layer_off(OSM_LAYER);
     unregister_code16(KC_RSFT);
     osm_step = OSM_NOOP;
   }

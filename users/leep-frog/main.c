@@ -42,12 +42,17 @@ bool _leep_lock(keyrecord_t *record, custom_keycode_value_t *v) {
 }
 
 #ifdef LEEP_TEST_MODE
-char test_message[50] = "\0";
+char test_message[100] = "\0";
 
 void test_confirm(keyrecord_t *record) {
   // ON press, set the message to a non-empty starting value
   if (record->event.pressed) {
     strcpy(test_message, "Running tests (waiting for release)...");
+    return;
+  }
+
+  if (LeepHighestLayer) {
+    sprintf(test_message, "Expected to be in base layer, but was in layer %d", LeepHighestLayer);
     return;
   }
 

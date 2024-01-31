@@ -28,6 +28,10 @@
   #endif
 #endif
 
+#ifndef OSM_LAYER
+  #error "Must define OSM_LAYER in keyboard's config.h file"
+#endif
+
 /************************
 * Feature configuration *
 ************************/
