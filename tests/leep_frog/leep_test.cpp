@@ -377,6 +377,126 @@ TEST_F(LeepFrog, Osm_Hold) {
     CONFIRM_RESET();
 }
 
+TEST_F(LeepFrog, Osm_StickyHold) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t td_a = TD_A;
+
+    LEEP_KEY_ROW(0, 7,
+      td_a, // Tap dance key
+      KC_H, // Regular key
+      KC_I, // Regular key
+      KC_D, // Combo key
+      KC_F, // Combo key
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 7,
+      TK_0,
+      TK_1,
+      TK_2,
+      TK_3,
+      TK_4,
+      TK_5,
+      TK_6
+    )
+
+    // Press and release the osm shift key twice
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+    k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_ck_shft.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the H key, which should be shifted.
+    k_KC_H.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H));
+    run_one_scan_loop();
+
+    k_KC_H.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press the I key, which should be shifted.
+    k_KC_I.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    run_one_scan_loop();
+
+    k_KC_I.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Overlap the key presses
+    k_KC_H.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H));
+    run_one_scan_loop();
+
+    k_KC_I.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H, KC_I));
+    run_one_scan_loop();
+
+    k_KC_H.release();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    run_one_scan_loop();
+
+    k_KC_I.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press a tap dance key
+    k_td_a.press();
+    run_one_scan_loop();
+
+    k_td_a.release();
+    run_one_scan_loop();
+
+    EXPECT_REPORT(driver, (KC_RSFT, KC_A));
+    EXPECT_REPORT(driver, (KC_RSFT));
+    idle_for(TAPPING_TERM);
+
+    // Press a combo key with no combo
+    k_KC_F.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_F));
+    run_one_scan_loop();
+
+    k_KC_F.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press a combo key with combo
+    k_KC_F.press();
+    k_KC_D.press();
+    run_one_scan_loop();
+
+    k_KC_F.release();
+    k_KC_D.release();
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_QUOTE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press again to deactivate osm mode.
+    k_ck_shft.press();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+    k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
 TEST_F(LeepFrog, ComboBehavior) {
     TestDriver driver;
     InSequence s;
@@ -512,57 +632,6 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
     EXPECT_REPORT(driver, (KC_QUOTE));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_RSFT));
-    EXPECT_EMPTY_REPORT(driver);
-    run_one_scan_loop();
-
-    CONFIRM_RESET();
-}
-
-TEST_F(LeepFrog, ComboAndOSMHold) {
-    TestDriver driver;
-    InSequence s;
-    LEEP_KEY_ROW(0, 6,
-      KC_A,
-      KC_B,
-      KC_D,
-      KC_F,
-      ck_shft,
-      ck_test
-    )
-
-    uint8_t kc_d = KC_D;
-    uint8_t kc_f = KC_F;
-
-    LEEP_KEY_ROW(1, 6,
-      TK_0,
-      KC_C,
-      kc_d,
-      kc_f,
-      TK_1,
-      TK_2
-    )
-
-    // Press and hold the osm shift key
-    k_ck_shft.press();
-    EXPECT_REPORT(driver, (KC_RSFT));
-    run_one_scan_loop();
-
-    // Press and release the D and F keys simultaneously
-    k_KC_D.press();
-    k_KC_F.press();
-    EXPECT_NO_REPORT(driver);
-    run_one_scan_loop();
-
-    k_KC_D.release();
-    k_KC_F.release();
-    EXPECT_EMPTY_REPORT(driver);
-    EXPECT_REPORT(driver, (KC_QUOTE));
-    EXPECT_EMPTY_REPORT(driver);
-    EXPECT_REPORT(driver, (KC_RSFT));
-    run_one_scan_loop();
-
-    // Release the osm shift key
-    k_ck_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 

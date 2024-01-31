@@ -5,10 +5,10 @@
 #include "leep_osm_v2.h"
 #include <stdio.h>
 
-
 enum osm_enact_steps {
   OSM_NOOP,
   OSM_HOLD_CHECK,
+  OSM_STICKY,
   OSM_REGISTER_KEY,
   OSM_CLEANUP,
   OSM_RELEASE_ON_UNPRESS,
@@ -58,13 +58,20 @@ void OSM_handled(uint16_t keycode, bool pressed) {
     // I looked into the issue for a while, but it's above my open source paygrade, and just releasing
     // shift right away covers all our use cases as well.
     if (pressed) {
-      osmed_key = keycode;
-      osm_step = OSM_CLEANUP;
+      if (keycode == OSM_shift_keycode) {
+        osm_step = OSM_STICKY;
+      } else {
+        osmed_key = keycode;
+        osm_step = OSM_CLEANUP;
+      }
     }
     break;
-  case OSM_CLEANUP:
-    // Handled by OSM_cleanup (which runs in the same loop, but after the key has been processed)
+  case OSM_STICKY:
+    if (pressed && keycode == OSM_shift_keycode) {
+      OSM_deactivate();
+    }
     break;
+  // case OSM_CLEANUP: // Handled by OSM_cleanup (which runs in the same loop, but after the key has been processed)
   }
 }
 
