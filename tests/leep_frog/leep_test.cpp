@@ -85,15 +85,14 @@ TEST_F(LeepFrog, UnlockBehavior) {
 TEST_F(LeepFrog, OsmBehavior) {
     TestDriver driver;
     InSequence s;
-    LEEP_KEY_ROW(0, 5,
+    LEEP_KEY_ROW(0, 4,
       KC_A,
       KC_D,
-      KC_RSFT,
       ck_shft,
       ck_test
     )
 
-    // Press and unpress the shift key
+    // Press and unpress the osm shift key
     k_ck_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     run_one_scan_loop();
@@ -108,6 +107,98 @@ TEST_F(LeepFrog, OsmBehavior) {
 
     k_KC_A.release();
     EXPECT_REPORT(driver, (KC_RSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, ComboBehavior) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 5,
+      KC_D,
+      KC_F,
+      KC_LSFT,
+      KC_RSFT,
+      ck_test
+    )
+
+    // Press and release the D and F keys simultaneously
+    k_KC_D.press();
+    k_KC_F.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_D.release();
+    k_KC_F.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_QUOTE));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press and release the D and F keys close together
+    k_KC_D.press();
+    run_one_scan_loop();
+
+    k_KC_F.press();
+    run_one_scan_loop();
+
+    k_KC_D.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_QUOTE));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_F.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // When left shift is held, it should do un-shifted quote
+    k_KC_LSFT.press();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    run_one_scan_loop();
+
+    k_KC_D.press();
+    k_KC_F.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_D.release();
+    k_KC_F.release();
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_QUOTE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_LSFT));
+
+    run_one_scan_loop();
+
+    k_KC_LSFT.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // When right shift is held, it should do un-shifted quote
+    k_KC_RSFT.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    k_KC_D.press();
+    k_KC_F.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_D.release();
+    k_KC_F.release();
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_QUOTE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT));
+
+    run_one_scan_loop();
+
+    k_KC_RSFT.release();
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 

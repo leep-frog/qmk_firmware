@@ -61,6 +61,9 @@
       },
       {
         "path": "/home/qmk/qmk_firmware/tests/test_common/keyboard_report_util.cpp"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/tests/leep_frog/leep_test.cpp"
       }
     ]
 }

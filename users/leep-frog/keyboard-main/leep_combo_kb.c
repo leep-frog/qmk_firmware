@@ -21,6 +21,7 @@ static void end_tap_dance(bool pressed) {
 }
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
+    // TODO: Add OSM_handle/cleanup since combos don't reach main function
     if (!pressed) {
       switch (combo_index) {
         case FENTER_OH_LEFT:
