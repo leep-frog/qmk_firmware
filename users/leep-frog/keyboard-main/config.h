@@ -37,11 +37,9 @@
 #define LEEP_MAIN
 #define LEEP_OSM_ENABLE
 
-#ifndef LEEP_TEST_MODE // TODO: Remove this if (keep its contents though)
-  // Allows us to define tapping term per key. See link for more details:
-  // https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md#tapping-term
-  #define TAPPING_TERM_PER_KEY
-#endif
+// Allows us to define tapping term per key. See link for more details:
+// https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md#tapping-term
+#define TAPPING_TERM_PER_KEY
 
 // Combo setup
 // #define FORCE_NKRO

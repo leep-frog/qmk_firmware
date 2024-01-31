@@ -55,10 +55,13 @@ void TestFixture::SetUpTestCase() {
 
 void TestFixture::TearDownTestCase() {}
 
+// TODO: leep addition to fix error: invalid conversion from ‘const keyrecord_t*’ to ‘keyrecord_t*’ [-fpermissive]
+keyrecord_t empty_keyrecord = {};
+
 TestFixture::TestFixture() {
     m_this = this;
     timer_clear();
-    test_logger.info() << "tapping term is " << +GET_TAPPING_TERM(KC_TRANSPARENT, &(keyrecord_t){}) << "ms" << std::endl;
+    test_logger.info() << "tapping term is " << +GET_TAPPING_TERM(KC_TRANSPARENT, &empty_keyrecord) << "ms" << std::endl;
 }
 
 TestFixture::~TestFixture() {
