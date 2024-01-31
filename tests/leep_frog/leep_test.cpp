@@ -5,6 +5,7 @@
 #include "test_keymap_key.hpp"
 #include "leep_keyboard.h"
 #include "../../../../users/leep-frog/main.h"
+#include "users/leep-frog/keyboard-main/leep_tap_dance_kb.h"
 
 using testing::_;
 using testing::InSequence;
@@ -17,6 +18,9 @@ const uint8_t TK_0 = KC_TRANSPARENT;
 const uint8_t TK_1 = KC_TRANSPARENT;
 const uint8_t TK_2 = KC_TRANSPARENT;
 const uint8_t TK_3 = KC_TRANSPARENT;
+const uint8_t TK_4 = KC_TRANSPARENT;
+const uint8_t TK_5 = KC_TRANSPARENT;
+const uint8_t TK_6 = KC_TRANSPARENT;
 
 // We need these go betweens because CK_ABCs are macros and the nested macros pass the initial string values around (not the final macro)
 const uint16_t ck_test = CK_TEST;
@@ -156,6 +160,163 @@ TEST_F(LeepFrog, Osm_DifferentKey) {
 
     k_KC_A.release();
     EXPECT_REPORT(driver, (KC_RSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
+    TestDriver driver;
+    InSequence s;
+
+    uint8_t td_a = TD_A;
+
+    LEEP_KEY_ROW(0, 4,
+      KC_H,
+      KC_I,
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 4,
+      TK_0,
+      TK_1,
+      TK_2,
+      TK_3
+    )
+
+    // Press and unpress the osm shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+    k_ck_shft.release();
+    run_one_scan_loop();
+
+    // Press H and then press I before releasing H.
+    k_KC_H.press();
+    EXPECT_NO_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H));
+    run_one_scan_loop();
+
+    k_KC_I.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_H.release();
+    EXPECT_REPORT(driver, (KC_H));
+    EXPECT_REPORT(driver, (KC_H, KC_I));
+    EXPECT_REPORT(driver, (KC_I));
+    run_one_scan_loop();
+
+    k_KC_I.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, Osm_Hold) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t td_a = TD_A;
+
+    LEEP_KEY_ROW(0, 7,
+      td_a, // Tap dance key
+      KC_H, // Regular key
+      KC_I, // Regular key
+      KC_D, // Combo key
+      KC_F, // Combo key
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 7,
+      TK_0,
+      TK_1,
+      TK_2,
+      TK_3,
+      TK_4,
+      TK_5,
+      TK_6
+    )
+
+    // Press and hold the osm shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press the H key, which should be shifted.
+    k_KC_H.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H));
+    run_one_scan_loop();
+
+    k_KC_H.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press the I key, which should be shifted.
+    k_KC_I.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    run_one_scan_loop();
+
+    k_KC_I.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Overlap the key presses
+    k_KC_H.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H));
+    run_one_scan_loop();
+
+    k_KC_I.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H, KC_I));
+    run_one_scan_loop();
+
+    k_KC_H.release();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    run_one_scan_loop();
+
+    k_KC_I.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press a tap dance key
+    k_td_a.press();
+    run_one_scan_loop();
+
+    k_td_a.release();
+    run_one_scan_loop();
+
+    EXPECT_REPORT(driver, (KC_RSFT, KC_A));
+    EXPECT_REPORT(driver, (KC_RSFT));
+    idle_for(TAPPING_TERM);
+
+    // Press a combo key with no combo
+    k_KC_F.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_F));
+    run_one_scan_loop();
+
+    k_KC_F.release();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Press a combo key with combo
+    k_KC_F.press();
+    k_KC_D.press();
+    run_one_scan_loop();
+
+    k_KC_F.release();
+    k_KC_D.release();
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_QUOTE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Release the osm shift key
+    k_ck_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 

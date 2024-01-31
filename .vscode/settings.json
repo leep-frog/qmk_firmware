@@ -64,6 +64,15 @@
       },
       {
         "path": "/home/qmk/qmk_firmware/tests/leep_frog/test.mk"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/tests/leep_frog/config.h"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/keyboards/moonlander/keymaps/leep-frog/config.h"
+      },
+      {
+        "path": "/home/qmk/qmk_firmware/keyboards/keychron/k11_pro/ansi_encoder/rgb/keymaps/leep-frog/config.h"
       }
     ]
 }

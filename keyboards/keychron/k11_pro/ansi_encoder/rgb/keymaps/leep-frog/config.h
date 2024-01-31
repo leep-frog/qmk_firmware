@@ -10,6 +10,7 @@
 // How long it takes for a tap to become a hold. Primarily added because
 // Shift-combinations were too quick and causing a parentheses to be added.
 #define TAPPING_TERM 150
+#define OSM_LAYER 1
 
 /***************
 * Main include *

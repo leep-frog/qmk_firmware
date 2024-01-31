@@ -54,9 +54,14 @@ void OSM_handled(uint16_t keycode, bool pressed) {
     }
     break;
   case OSM_UNREGISTER_KEY:
-    if (!pressed && keycode == osmed_key) {
-      // Unregister on the next action to ensure shift is held for all of this
-      // unpress's logic.
+    // If we're pressing another key before we let go of the registered key, then remove shift immediately.
+    if (pressed) {
+      layer_off(OSM_LAYER);
+      unregister_code16(KC_RSFT);
+      osm_step = OSM_NOOP;
+
+    // If we're unpressing the key that we registered with, then clean up OSM after the current loop is processed.
+    } else if (/* !pressed && */ keycode == osmed_key) { // (!pressed not needed due to initial `if` before this `else-if`
       osm_step = OSM_CLEANUP;
     }
     break;
