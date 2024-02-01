@@ -163,27 +163,9 @@ void td_workspace_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *
     // Can't really add additional logic here because the tap code will still be run first.
 }
 
-// TDK_ALT
-
-void td_alt_on_press(tap_dance_state_t *state, void *user_data) {
-    layer_on(LR_ALT);
-}
-
-void td_alt_on_unpress(tap_dance_state_t *state, void *user_data) {
-    layer_off(LR_ALT);
-}
-
-void td_alt_on_finish(tap_dance_state_t *state, void *user_data) {
-  switch (cur_dance(state, false)) {
-  case DOUBLE_SINGLE_TAP:
-  case DOUBLE_TAP:
-    tap_code16(KC_BTN2);
-  }
-}
-
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
-    [TDK_ALT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(td_alt_on_press, td_alt_on_unpress, td_alt_on_finish, NULL),
+    [TDK_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN3, LR_ALT),
     // Ctrl dance
     [TDK_CTRL] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN1, LR_CTRL),
     // Ctrl+tab or next page in browser
