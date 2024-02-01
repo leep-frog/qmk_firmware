@@ -1,4 +1,6 @@
 // Combos
+
+#ifdef COMBO_ENABLE
 enum combos {
     DE_RIGHT_CLICK,
     COMBO_LENGTH,
@@ -11,3 +13,4 @@ combo_t key_combos[COMBO_LENGTH] = {
     // D+E = Right-click
     [DE_RIGHT_CLICK] = COMBO(de_combo, KC_BTN2),
 };
+#endif

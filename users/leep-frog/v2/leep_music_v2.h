@@ -1,6 +1,7 @@
 #pragma once
 
 #include "keymap_introspection.h"
+#include "quantum/leep/custom_keycode_handler.h"
 
 bool IsMuted(void);
 void Mute_handled(keyrecord_t* record);

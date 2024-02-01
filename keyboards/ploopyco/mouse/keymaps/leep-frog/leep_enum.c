@@ -2,7 +2,9 @@
 
 enum layers {
     LR_BASE,
+    #ifdef COMBO_ENABLE
     LR_SAFE,
+    #endif
     LR_CTRL,
     LR_ALT,
     LR_WS,
