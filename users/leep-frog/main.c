@@ -312,7 +312,9 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [URL_PST_HANDLER] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
   [URL_CPY_HANDLER] = CK_HANDLER_STRING(FOCUS_TAB_STRING() SS_RCTL("c")),
   [OL_TDAY_HANDLER] = CK_HANDLER_STRING(OL_TDAY_STRING()),
-  [CK_OSM_SHIFT] = CK_NOOP(),
+  [CK_VERSION_HANDLER] = CK_HANDLER_STRING(LEEP_VERSION),
+  // Noops
+  [CK_OSM_SHIFT_HANDLER] = CK_NOOP(), // Handled by leep_osm*.[ch] files
 };
 
 uint16_t Alt_keycodes[] = {

@@ -37,7 +37,8 @@ enum custom_keycode_handlers {
   URL_PST_HANDLER,
   URL_CPY_HANDLER,
   OL_TDAY_HANDLER,
-  CK_OSM_SHIFT,
+  CK_VERSION_HANDLER,
+  CK_OSM_SHIFT_HANDLER,
 
 #ifdef LEEP_TEST_MODE
   // CK_TEST_CONFIRM is uesd by tests to confirm that the keyboard
@@ -71,7 +72,8 @@ enum custom_keycode_handlers {
 #define OL_TDAY CK(OL_TDAY_HANDLER)
 #define CK_UNBS CK(CK_UNBS_HANDLER)
 #define CK_LOGS CK(CK_LOGS_HANDLER)
-#define CK_SHFT CK(CK_OSM_SHIFT)
+#define CK_VRSN CK(CK_VERSION_HANDLER)
+#define CK_SHFT CK(CK_OSM_SHIFT_HANDLER)
 
 #ifdef LEEP_TEST_MODE
 extern char test_message[];
