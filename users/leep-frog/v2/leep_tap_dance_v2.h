@@ -56,6 +56,19 @@ void leep_kc_hold_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value
 void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv);
 void leep_kc_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hv);
 
+/* The behavior of LEEP_TD_CLICK_HOLD is the following:
+ * start_fn(state, press, start_value) is called on the first press and first unpress
+ * press_fn(state, tap, press_value) is called on the first unpress (not first press) and every subsequent
+ *                                   press and unpress. The `tap` variable is true if running after the first
+ *                                   unpress; otherwise, it is false.
+ * hold_fn(state, finished, hold_value) is called when the tap dance finishes and/or resets. The `finished` variable
+ *                                      indicates whether it is running on finish or reset.
+ *
+ * Note: A tap dance "finishes" when the state is finalized (interrupt or timeout)
+ *       A tap dance "resets" when the last key in the tap dance is unpressed (this can happen
+ *           in the same loop as finishing, or in a subsequent loop if the dance was interrupted or
+ *           the key is still being held after finishing).
+ */
 #define LEEP_TD_CLICK_HOLD(start_value, start_fn, press_value, press_fn, hold_value, hold_fn) \
     { .fn = {leep_td_each_press, leep_td_finished, leep_td_reset, leep_td_each_unpress}, .user_data = (void *)&((leep_td_user_data_t){start_value, start_fn, press_value, press_fn, hold_value, hold_fn}), }
 
