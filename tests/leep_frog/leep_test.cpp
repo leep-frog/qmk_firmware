@@ -46,6 +46,10 @@ EXPECT_NO_REPORT(driver); \
 run_one_scan_loop();      \
 EXPECT_STREQ(test_message, "Success!");
 
+/***************
+* Unlock tests *
+***************/
+
 TEST_F(LeepFrog, UnlockBehavior) {
     TestDriver driver;
     InSequence s;
@@ -93,6 +97,10 @@ TEST_F(LeepFrog, UnlockBehavior) {
 
     CONFIRM_RESET();
 }
+
+/************
+* OSM tests *
+************/
 
 TEST_F(LeepFrog, Osm_TransparentKey) {
     TestDriver driver;
@@ -497,6 +505,10 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     CONFIRM_RESET();
 }
 
+/**************
+* Combo tests *
+**************/
+
 TEST_F(LeepFrog, ComboBehavior) {
     TestDriver driver;
     InSequence s;
@@ -634,6 +646,83 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
     EXPECT_REPORT(driver, (KC_RSFT));
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+/******************
+* Tap dance tests *
+******************/
+
+TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_shct = TO_SHCT;
+    LEEP_KEY_ROW(0, 3,
+      to_shct,
+      KC_A,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SHORTCUTS, 3,
+      TK_0,
+      KC_B,
+      TK_1
+    )
+
+    // Single tap dance just presses the key.
+    k_to_shct.press();
+    run_one_scan_loop();
+    k_to_shct.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_LEFT_BRACKET));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+    idle_for(TAPPING_TERM);
+
+    CONFIRM_RESET();
+
+    // Interrupted tap dance
+    k_to_shct.press();
+    run_one_scan_loop();
+
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    k_to_shct.release();
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+    idle_for(TAPPING_TERM);
+
+    CONFIRM_RESET();
+
+    // Interrupted tap dance with inter-woven release
+    k_to_shct.press();
+    run_one_scan_loop();
+
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    run_one_scan_loop();
+
+    k_to_shct.release();
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+    idle_for(TAPPING_TERM);
 
     CONFIRM_RESET();
 }
