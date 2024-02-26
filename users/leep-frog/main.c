@@ -305,7 +305,6 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_MUTS_HANDLER] = CK_HANDLER_FN(MuteWithSound),
   [CK_MUT_HANDLER] = CK_HANDLER_FN(MuteWithoutSound),
   [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
-  [CK_CRDC_HANDLER] = CK_HANDLER_FN(CrDescHandler),
   // String handlers
   [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC))),
   [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp ascy"),
@@ -427,7 +426,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
     OSM_handled(keycode, record->event.pressed);
     Mute_handled(record);
-    if (CrDescProcessHandler(keycode, record) ||
+    if (CrDescProcessHandler(keycode, record->event.pressed) ||
             SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
             AltBlockProcessing(keycode, record)) {
         return false;

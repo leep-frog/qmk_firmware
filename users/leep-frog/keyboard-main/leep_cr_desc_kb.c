@@ -13,6 +13,17 @@ const uint8_t cr_desc_line_moves[] = {
   53 + 2,
 };
 
+const uint16_t cr_desc_default_answers[] = {
+  // Deployability section
+  TD_Y, TD_Y, TD_Y, TD_Y,
+  // Testing section
+  TD_Y, TD_Y, TD_Y, KC_N, KC_N, KC_N,
+  // Testing section
+  KC_N, KC_N, KC_N, KC_N,
+  // Git commit line
+  TD_Y,
+};
+
 uint8_t cr_desc_line_move_idx = 0;
 bool cr_desc_line_moving = false;
 
@@ -31,15 +42,8 @@ void EndCrDesc(void) {
   cr_desc_line_moving = false;
 }
 
-bool CrDescHandler(keyrecord_t* record, custom_keycode_value_t *_) {
-  if (record->event.pressed) {
-    StartCrDesc();
-  }
-  return false;
-}
-
-bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
-  if (!record->event.pressed) {
+bool CrDescProcessHandler(uint16_t keycode, bool pressed) {
+  if (!pressed) {
     // We want all key unpresses to proceed as normal
     return false;
   }
@@ -79,12 +83,19 @@ bool CrDescProcessHandler(uint16_t keycode, keyrecord_t* record) {
     tap_code16(KC_RIGHT);
   }
 
-  cr_desc_line_move_idx++;
-
   // Check if done
-  if (cr_desc_line_move_idx >= (sizeof(cr_desc_line_moves)/sizeof(cr_desc_line_moves[0]))) {
+  if (++cr_desc_line_move_idx >= (sizeof(cr_desc_line_moves)/sizeof(cr_desc_line_moves[0]))) {
     EndCrDesc();
   }
 
   return true;
+}
+
+bool CrDefaultHandler() {
+  StartCrDesc();
+  for (uint8_t i = 0; i < sizeof(cr_desc_default_answers)/sizeof(cr_desc_default_answers[0]); i++) {
+    CrDescProcessHandler(cr_desc_default_answers[i], true);
+  }
+  EndCrDesc();
+  return false;
 }

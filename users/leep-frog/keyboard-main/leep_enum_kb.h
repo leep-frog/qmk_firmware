@@ -60,6 +60,7 @@ enum td_keys { // prefix TDK
     TDK_TO_NAV_RCBR,
     TDK_TO_SHORTCUT,
     TDK_ELLA_MODE,
+    TDK_CR_DESC,
 };
 
 // Custom keycode enums

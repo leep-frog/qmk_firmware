@@ -30,7 +30,6 @@ enum custom_keycode_handlers {
   CK_MUTS_HANDLER,
   CK_MUT_HANDLER,
   CK_CTLG_HANDLER,
-  CK_CRDC_HANDLER,
   // String handlers
   CK_UNBS_HANDLER,
   CK_LOGS_HANDLER,
@@ -65,7 +64,6 @@ enum custom_keycode_handlers {
 #define CK_MUTS CK(CK_MUTS_HANDLER)
 #define CK_MUT CK(CK_MUT_HANDLER)
 #define CK_CTLG CK(CK_CTLG_HANDLER)
-#define CK_CRDC CK(CK_CRDC_HANDLER)
 
 #define URL_PST CK(URL_PST_HANDLER)
 #define URL_CPY CK(URL_CPY_HANDLER)
