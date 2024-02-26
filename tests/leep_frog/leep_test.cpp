@@ -726,3 +726,88 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
 
     CONFIRM_RESET();
 }
+
+/****************
+* Holding tests *
+*****************/
+
+TEST_F(LeepFrog, Osm_HoldJustShyOfTappingTerm) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 3,
+      KC_A,
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      TK_0,
+      TK_1,
+      TK_2
+    )
+
+    // Press the osm shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Wait to register as hold
+    idle_for(TAPPING_TERM-1);
+
+    // Unpress the osm shift key
+    k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the A key, which should NOT be shifted.
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_A));
+    EXPECT_REPORT(driver, (KC_A));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 3,
+      KC_A,
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      TK_0,
+      TK_1,
+      TK_2
+    )
+
+    // Press the osm shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Wait to register as hold
+    idle_for(TAPPING_TERM);
+
+    // Unpress the osm shift key
+    k_ck_shft.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the A key, which should NOT be shifted.
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_A));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}

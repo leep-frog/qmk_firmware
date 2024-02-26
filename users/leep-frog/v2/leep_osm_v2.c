@@ -48,7 +48,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
       } else if /* Don't need this !pressed check since we use else-if against (pressed) (!pressed && */ (keycode == osm_config->keycode) {
 
         // If held too long, then do nothing
-        if (timer_elapsed(osm_config->osm_press_time) >= OSM_MAX_HOLD_TIME) {
+        if (timer_elapsed(osm_config->osm_press_time) > OSM_MAX_HOLD_TIME) {
           OSM_deactivate(osm_config);
         } else {
           osm_config->osm_step = OSM_REGISTER_KEY;
