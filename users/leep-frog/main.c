@@ -321,8 +321,6 @@ uint16_t Alt_keycodes[] = {
   CK_SATB,
 };
 
-const uint16_t OSM_shift_keycode = CK_SHFT;
-
 const uint16_t ToAltKeycode = TO_ALT;
 const uint16_t ToCtrlKeycode = TO_CTRL;
 

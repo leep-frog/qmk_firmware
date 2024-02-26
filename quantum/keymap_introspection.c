@@ -113,3 +113,15 @@ uint16_t Alt_keycodes_get(uint16_t idx) {
 }
 
 #endif // LEEP_KEYMAP_INTROSPECTION
+
+
+#ifdef LEEP_OSM_ENABLE
+
+uint16_t osm_configs_count(void) {
+    return sizeof(osm_configs) / sizeof(leep_osm_config_t);
+}
+leep_osm_config_t *osm_configs_get(uint16_t idx) {
+    return &osm_configs[idx];
+}
+
+#endif // LEEP_OSM_ENABLE

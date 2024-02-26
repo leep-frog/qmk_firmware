@@ -74,3 +74,14 @@ uint16_t Alt_keycodes_count(void);
 uint16_t Alt_keycodes_get(uint16_t idx);
 
 #endif // LEEP_KEYMAP_INTROSPECTION
+
+
+#ifdef LEEP_OSM_ENABLE
+
+#include "quantum/leep/custom_osm_handlers.h"
+
+uint16_t osm_configs_count(void);
+
+leep_osm_config_t *osm_configs_get(uint16_t idx);
+
+#endif // LEEP_OSM_ENABLE
