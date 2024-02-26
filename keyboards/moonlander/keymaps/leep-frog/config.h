@@ -8,7 +8,6 @@
 #define LEEP_SAFE_RANGE SAFE_RANGE
 #define COMBO_ONLY_FROM_LAYER 1 // Ella layer
 #define TAPPING_TERM 180
-#define OSM_LAYER 1
 
 /***************
 * Main include *

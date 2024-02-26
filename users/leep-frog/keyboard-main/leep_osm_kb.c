@@ -2,10 +2,10 @@
 
 void shift_activation_fn(bool activated) {
   if (activated) {
-    layer_on(OSM_LAYER);
+    layer_on(LR_ELLA);
     register_code16(KC_RSFT);
   } else {
-    layer_off(OSM_LAYER);
+    layer_off(LR_ELLA);
     unregister_code16(KC_RSFT);
   }
 }
