@@ -17,6 +17,8 @@ enum osm_enact_steps {
 
 static uint8_t osm_step = OSM_NOOP;
 static uint16_t osmed_key = 0;
+static uint16_t osm_press_time = 0;
+const static uint16_t OSM_MAX_HOLD_TIME = TAPPING_TERM;
 
 void OSM_deactivate(void) {
   layer_off(OSM_LAYER);
@@ -32,6 +34,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
       layer_on(OSM_LAYER);
       register_code16(KC_RSFT);
       osm_step = OSM_HOLD_CHECK;
+      osm_press_time = timer_read();
     }
     break;
   case OSM_HOLD_CHECK:
@@ -42,7 +45,13 @@ void OSM_handled(uint16_t keycode, bool pressed) {
 
     // If we're unpressing the OSM key first, then we're going to register a key
     } else if /* Don't need this !pressed check since we use else-if against (pressed) (!pressed && */ (keycode == OSM_shift_keycode) {
-      osm_step = OSM_REGISTER_KEY;
+
+      // If held too long, then do nothing
+      if (timer_elapsed(osm_press_time) >= OSM_MAX_HOLD_TIME) {
+        OSM_deactivate();
+      } else {
+        osm_step = OSM_REGISTER_KEY;
+      }
     }
     break;
   case OSM_RELEASE_ON_UNPRESS:
