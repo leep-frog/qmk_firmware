@@ -33,7 +33,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 
-                           CK_SHFT, KC_TAB, KC_LGUI,       KC_RGUI, KC_ENTER, KC_SPACE
+                                                           // These needs to be TO_CTRL/TO_SYMB (instead of enter/space)
+                                                           // so that the OSM key + right thumb doesn't trap us in this layer.
+                           CK_SHFT, KC_TAB, KC_LGUI,       KC_RGUI, TO_CTRL, TO_SYMB
     ),
 
     [LR_CTRL] = ML_LAYOUT(
