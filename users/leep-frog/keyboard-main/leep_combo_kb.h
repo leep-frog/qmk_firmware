@@ -1,5 +1,7 @@
 #pragma once
 
+#include "users/leep-frog/main.h" // Needed for TO_SYMB
+
 // Combos
 enum combos {
     JI_ESC,
@@ -8,7 +10,7 @@ enum combos {
     // KL_ENTER,
     DF_QUOTE,
     SD_TICK,
-    FENTER_OH_LEFT,
+    FSHIFT_OH_LEFT,
     JSPACE_OH_RIGHT,
     // J_SEMICLN is still available,
     // SF is still an available combo slot.
@@ -22,8 +24,8 @@ const uint16_t PROGMEM jl_combo[] = {KC_L, KC_J, COMBO_END};
 // const uint16_t PROGMEM kl_combo[] = {KC_L, KC_K, COMBO_END};
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sd_combo[] = {KC_S, KC_D, COMBO_END};
-const uint16_t PROGMEM fenter_combo[] = {KC_F, KC_ENTER, COMBO_END};
-const uint16_t PROGMEM jspace_combo[] = {KC_J, KC_SPACE, COMBO_END};
+const uint16_t PROGMEM fshift_combo[] = {KC_F, KC_RSFT, COMBO_END};
+const uint16_t PROGMEM jspace_combo[] = {KC_J, TO_SYMB, COMBO_END};
 
 combo_t key_combos[COMBO_LENGTH] = {
     // J+I = Escape
@@ -39,7 +41,7 @@ combo_t key_combos[COMBO_LENGTH] = {
     // S+D = Tick (`)
     [SD_TICK] = COMBO(sd_combo, KC_GRAVE),
     // F+Enter = LH layer
-    [FENTER_OH_LEFT] = COMBO_ACTION(fenter_combo),
+    [FSHIFT_OH_LEFT] = COMBO_ACTION(fshift_combo),
     // J+Space = RH layer
     [JSPACE_OH_RIGHT] = COMBO_ACTION(jspace_combo),
 };

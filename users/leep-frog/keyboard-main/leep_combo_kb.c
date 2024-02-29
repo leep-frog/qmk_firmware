@@ -30,7 +30,7 @@ void internal_process_combo_event(uint16_t combo_index, bool pressed) {
     // TODO: Add OSM_handle/cleanup since combos don't reach main function
     if (!pressed) {
       switch (combo_index) {
-        case FENTER_OH_LEFT:
+        case FSHIFT_OH_LEFT:
           layer_off(LR_ONE_HAND_LEFT);
           break;
         case JSPACE_OH_RIGHT:
@@ -67,7 +67,7 @@ void internal_process_combo_event(uint16_t combo_index, bool pressed) {
                 SEND_STRING("\"");
             }
             break;
-        case FENTER_OH_LEFT:
+        case FSHIFT_OH_LEFT:
           layer_on(LR_ONE_HAND_LEFT);
           break;
         case JSPACE_OH_RIGHT:
