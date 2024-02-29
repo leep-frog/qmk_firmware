@@ -516,8 +516,16 @@ TEST_F(LeepFrog, ComboBehavior) {
       KC_D,
       KC_F,
       KC_LSFT,
-      KC_RSFT,
+      ck_shft,
       ck_test
+    )
+
+    LEEP_KEY_ROW(1, 5,
+      TK_0,
+      TK_1,
+      TK_2,
+      TK_3,
+      TK_4
     )
 
     // Press and release the D and F keys simultaneously
@@ -568,7 +576,6 @@ TEST_F(LeepFrog, ComboBehavior) {
     EXPECT_REPORT(driver, (KC_QUOTE));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_LSFT));
-
     run_one_scan_loop();
 
     k_KC_LSFT.release();
@@ -576,7 +583,7 @@ TEST_F(LeepFrog, ComboBehavior) {
     run_one_scan_loop();
 
     // When right shift is held, it should do un-shifted quote
-    k_KC_RSFT.press();
+    k_ck_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     run_one_scan_loop();
 
@@ -591,10 +598,9 @@ TEST_F(LeepFrog, ComboBehavior) {
     EXPECT_REPORT(driver, (KC_QUOTE));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_RSFT));
-
     run_one_scan_loop();
 
-    k_KC_RSFT.release();
+    k_ck_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 
