@@ -1,16 +1,17 @@
+const uint8_t cr_desc_to_first = 35;
 
 const uint8_t cr_desc_line_moves[] = {
   // Deployability section
-  91, 40, 40, 56,
+  15, 8, 9, 14,
   // Testing section
-  51, 209, 123, 99, 79, 83,
+  10, 19, 26, 15, 12, 16,
   // Testing section
-  69, 81, 97, 78,
+  13, 14, 20, 15,
   // End (move a one line below the last comment so we see the bottom
   // of the details input box).
-  // Note: 53 is number of characters to next line, so (presumably) this number
+  // Note: 10 is number of word-right moves to next line, so (presumably) this number
   // brings us three lines below the last one
-  53 + 2,
+  10 + 2,
 };
 
 const uint16_t cr_desc_default_answers[] = {
@@ -31,9 +32,15 @@ void StartCrDesc(void) {
   SEND_STRING(
     // Delete 'Revision N'
     REPEAT_7(SS_TAP(X_DOWN)) SS_TAP(X_HOME) SS_RSFT(SS_TAP(X_END)) SS_TAP(X_BSPC)
-    // Go to first entry
-    REPEAT_11(SS_TAP(X_DOWN)) SS_TAP(X_HOME) SS_TAP(X_RIGHT)
   );
+
+  // Move to first entry
+  for (uint8_t i = 0; i < cr_desc_to_first; i++) {
+    tap_code16(RCTL(KC_RIGHT));
+  }
+  tap_code16(KC_RIGHT);
+
+  // Variable setup
   cr_desc_line_moving = true;
   cr_desc_line_move_idx = 0;
 }
@@ -79,9 +86,10 @@ bool CrDescProcessHandler(uint16_t keycode, bool pressed) {
     return true;
   }
 
-  for (int i = 0; i < cr_desc_line_moves[cr_desc_line_move_idx]; i++) {
-    tap_code16(KC_RIGHT);
+  for (uint8_t i = 0; i < cr_desc_line_moves[cr_desc_line_move_idx]; i++) {
+    tap_code16(RCTL(KC_RIGHT));
   }
+  tap_code16(KC_RIGHT);
 
   // Check if done
   if (++cr_desc_line_move_idx >= (sizeof(cr_desc_line_moves)/sizeof(cr_desc_line_moves[0]))) {
