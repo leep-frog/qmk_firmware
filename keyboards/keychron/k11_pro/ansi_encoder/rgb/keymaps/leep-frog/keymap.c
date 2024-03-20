@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_ELLA] = LAYOUT_69_ansi(
         KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,     KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          CK_VRSN,
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,     KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_DEL,
-        KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,           KC_HOME,
+        KC_LSFT, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,           KC_HOME,
         KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,     KC_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT, KC_UP,
                                                                              // These needs to be TO_CTRL/TO_SYMB (instead of enter/space)
                                                                              // so that the OSM key + right thumb doesn't trap us in this layer.
@@ -88,7 +88,7 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
     [LR_CTRL_X] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
         CL(TAB), CL(Q),    CL(W),    CL(E),   CL(R),   CL(T),   CL(Y),    CL(U),   CL(I),   CL(O),   CL(P),    CL(LBRC), CL(RBRC), CL(BSLS),         _______,
-        CL(CAPS),CL(A),    CL(S),    CL(D),   CL(F),   CL(G),             CL(H),   CL(J),   CL(K),   CL(L),    CL(SCLN), CL(QUOT), CL(ENT),          _______,
+        CL(LSFT),CL(A),    CL(S),    CL(D),   CL(F),   CL(G),             CL(H),   CL(J),   CL(K),   CL(L),    CL(SCLN), CL(QUOT), CL(ENT),          _______,
         CL(LSFT),          CL(Z),    CL(X),   CL(C),   CL(V),   CL(B),    CL(B),   CL(N),   CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          CL(ENTER),        CL(TAB),          _______,           CL(SPACE),          CL(RGUI), CL(LEFT),CL(DOWN),CL(RGHT)),
 
@@ -102,7 +102,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
     [LR_SYMB] = LAYOUT_69_ansi(
         KC_ESC,  KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   KC_BSPC,          _______,
         KC_TAB,  KC_EXLM,  KC_COLN,  KC_EQL,  KC_CIRC, KC_PIPE, KC_PIPE,  KC_7,    KC_8,    KC_9,    KC_PERC,  KC_LBRC,  KC_RBRC,  KC_BSLS,          _______,
-        KC_CAPS, KC_AMPR,  KC_ASTR,  KC_DLR,  KC_SLSH, KC_LBRC,           CK_MDPS, KC_4,    KC_5,    KC_6,     KC_0,     KC_COMMA,  KC_ENT,           _______,
+        KC_LSFT, KC_AMPR,  KC_ASTR,  KC_DLR,  KC_SLSH, KC_LBRC,           CK_MDPS, KC_4,    KC_5,    KC_6,     KC_0,     KC_COMMA,  KC_ENT,           _______,
         KC_LSFT,           KC_TILD,  KC_EXLM, KC_AT,   KC_EQL,  KC_BSLS,  KC_LCBR, KC_RCBR, KC_1,    KC_2,     KC_3,     KC_DOT,  KC_RSFT, KC_UP,
         KC_LCTL, KC_LALT,  KC_LGUI,           KC_RSFT,          TO_ALT,            TO_CTRL,          TO_SYMB,            KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
 
