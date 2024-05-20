@@ -66,12 +66,19 @@ uint8_t  OptLowPin         = OPT_ENC1;
 bool     debug_encoder     = false;
 bool     is_drag_scroll    = false;
 
+// Added specifically by leep-frog
+__attribute__((weak)) bool transpose_scrolling(void) { return false; }
+
 bool encoder_update_kb(uint8_t index, bool clockwise) {
     if (!encoder_update_user(index, clockwise)) {
         return false;
     }
 #ifdef MOUSEKEY_ENABLE
-    tap_code(clockwise ? KC_WH_U : KC_WH_D);
+    if (transpose_scrolling()) {
+        tap_code(clockwise ? KC_WH_L : KC_WH_R);
+    } else {
+        tap_code(clockwise ? KC_WH_U : KC_WH_D);
+    }
 #else
     report_mouse_t mouse_report = pointing_device_get_report();
     mouse_report.v = clockwise ? 1 : -1;
