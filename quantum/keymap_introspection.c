@@ -109,3 +109,37 @@ __attribute__((weak)) combo_t* combo_get(uint16_t combo_idx) {
 }
 
 #endif // defined(COMBO_ENABLE)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// leep-frog stuff (just copied from combo section)
+#ifdef LEEP_KEYMAP_INTROSPECTION
+
+// Custom keycodes
+uint16_t custom_keycode_handlers_count(void) {
+    return sizeof(custom_keycode_handlers) / sizeof(custom_keycode_handler_t);
+}
+custom_keycode_handler_t custom_keycode_handlers_get(uint16_t idx) {
+    return custom_keycode_handlers[idx];
+}
+
+// ALt mode list
+uint16_t Alt_keycodes_count(void) {
+    return sizeof(Alt_keycodes) / sizeof(uint16_t);
+}
+uint16_t Alt_keycodes_get(uint16_t idx) {
+    return Alt_keycodes[idx];
+}
+
+#endif // LEEP_KEYMAP_INTROSPECTION
+
+
+#ifdef LEEP_OSM_ENABLE
+
+uint16_t osm_configs_count(void) {
+    return sizeof(osm_configs) / sizeof(leep_osm_config_t);
+}
+leep_osm_config_t *osm_configs_get(uint16_t idx) {
+    return &osm_configs[idx];
+}
+
+#endif // LEEP_OSM_ENABLE

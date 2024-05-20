@@ -67,3 +67,33 @@ combo_t* combo_get_raw(uint16_t combo_idx);
 combo_t* combo_get(uint16_t combo_idx);
 
 #endif // defined(COMBO_ENABLE)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// leep-frog stuff (just copied from combo section)
+#ifdef LEEP_KEYMAP_INTROSPECTION
+
+// Custom keycodes
+#include "action.h"
+#include "quantum/leep/custom_keycode_handler.h"
+
+uint16_t custom_keycode_handlers_count(void);
+
+custom_keycode_handler_t custom_keycode_handlers_get(uint16_t idx);
+
+// Alt mode list
+uint16_t Alt_keycodes_count(void);
+
+uint16_t Alt_keycodes_get(uint16_t idx);
+
+#endif // LEEP_KEYMAP_INTROSPECTION
+
+
+#ifdef LEEP_OSM_ENABLE
+
+#include "quantum/leep/custom_osm_handlers.h"
+
+uint16_t osm_configs_count(void);
+
+leep_osm_config_t *osm_configs_get(uint16_t idx);
+
+#endif // LEEP_OSM_ENABLE
