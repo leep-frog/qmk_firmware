@@ -9,40 +9,13 @@
 
 #include QMK_KEYBOARD_H
 
-// #include "keymap_introspection.h"
-
-/*#include "../../../../users/leep-frog/v2/leep_color_v2.h"
-#include "../../../../users/leep-frog/v2/leep_color_v2.c"
-#include "../../../../users/leep-frog/v2/leep_layers_v2.h"
-#include "../../../../users/leep-frog/v2/leep_layers_v2.c"
-#include "../../../../users/leep-frog/v2/leep_custom_keycodes_v2.h"
-#include "../../../../users/leep-frog/v2/leep_custom_keycodes_v2.c"
-#include "../../../../users/leep-frog/v2/leep_alt_v2.h"
-#include "../../../../users/leep-frog/v2/leep_alt_v2.c"
-#include "../../../../users/leep-frog/v2/leep_outlook_v2.h"
-#include "../../../../users/leep-frog/v2/leep_outlook_v2.c"
-#include "../../../../users/leep-frog/v2/leep_tap_dance_v2.h"
-#include "../../../../users/leep-frog/v2/leep_tap_dance_v2.c"
-
-#include "../../../../users/leep-frog/v2/leep_workspace_v2.h"*/
-
-// #include "../../../../users/leep-frog/v2/leep_index_v2.h"
-// #include "users/leep-frog/v2/leep_index_v2.h"
-
 #include "quantum/leep/custom_keycode_handler.h"
 #include "users/leep-frog/v2/leep_outlook_v2.h"
 #include "users/leep-frog/v2/leep_workspace_v2.h"
 
-
-
 #include "groogermouse.h"
 #include "uart.h"
 #include "groogerpad.h"
-
-// combo_t key_combos[] = {};
-// custom_keycode_handler_t custom_keycode_handlers[] = {};
-// uint16_t Alt_keycodes[] = {};
-// tap_dance_action_t tap_dance_actions[] = {};
 
 /**********
  * Layers *
@@ -57,6 +30,9 @@ enum layers {
   LR_SYMB,
 };
 
+// This needs the LR_BASE layer to be defined (TODO: Update files that use this to have an extern for the layer instead)
+
+// If the firmware ever gets too big, consider importing specific features required instead of everything.
 #include "users/leep-frog/v2/leep_index_v2.c"
 
 void TypeLayerHandler(bool activated) {
