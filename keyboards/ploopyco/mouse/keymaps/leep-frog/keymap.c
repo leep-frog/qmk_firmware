@@ -23,6 +23,7 @@
 #include "leep_alt.c"
 #include "leep_layers.c"
 #include "leep_tap_dance.c"
+#include "leep_scroll.c"
 
 // If stuck, you can also put the mouse into boot mode by holding down the back thumb
 // button down while plugging in the mouse.
@@ -125,20 +126,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         case CK_ATAB:
             activate_alt();
             SEND_STRING(SS_TAP(X_TAB));
-            return true;
+            break;
         case CK_SATAB:
             activate_alt();
             SEND_STRING(SS_RSFT(SS_TAP(X_TAB)));
-            return true;
+            break;
     }
 
     return true;
-}
-
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-  if (!IsMoving()) {
-    return mouse_report;
-  }
-
-  return Move(mouse_report);
 }

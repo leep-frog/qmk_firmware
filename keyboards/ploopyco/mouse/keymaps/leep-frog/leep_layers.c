@@ -5,7 +5,10 @@ bool layers_status[NUM_LAYERS] = {
     [1 ... NUM_LAYERS - 1] = false,
 };
 
+extern void activateScrollSpeed(bool);
+
 void layer_change_alt(bool activated) {
+  activateScrollSpeed(activated);
     if (!activated) {
         deactivate_alt();
     }

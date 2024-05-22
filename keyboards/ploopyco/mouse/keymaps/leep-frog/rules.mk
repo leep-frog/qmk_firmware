@@ -1,4 +1,4 @@
-NKRO_ENABLE = yes
+# NKRO_ENABLE = yes
 
 TAP_DANCE_ENABLE = yes
 # This is enabled in the base rules.mk, but doesn't seem required, so we removed it to clear up memory.
