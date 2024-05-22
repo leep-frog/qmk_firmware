@@ -19,7 +19,7 @@ void layer_change_ctrl(bool activated) {
       // Adding this delay fixes the issue (to test open QMK Toolbox and click the "Auto-flash"
       // button (ctrl+click does nothing aka there's an issue, whereas regular click properly toggles).
       // Click a bunch, but not too fast that you enabled the tap dance multi-click (which isn't an accurate way to test).
-      SEND_STRING(SS_UP(X_RCTL) SS_DELAY(1));
+      SEND_STRING(SS_UP(X_RCTL) SS_DELAY(2));
     }
 }
 
