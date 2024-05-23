@@ -54,42 +54,6 @@ void td_ctrl_shift_tab(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) 
   leep_kc_press_fn(state, tap, &v);
 }
 
-// TDK_OUTLOOK_RELOAD
-
-// void td_outlook_reload(tap_dance_state_t *state, void *user_data) {
-//     switch (cur_dance(state, true)) {
-//         case SINGLE_TAP:
-//             // Switch panes
-//             send_string(SS_RCTL(SS_RSFT(SS_TAP(X_TAB))));
-//             // Reload
-//             tap_code16(KC_F5);
-//             // Swtich panes again
-//             send_string(SS_RCTL(SS_TAP(X_TAB)));
-//             break;
-//         case SINGLE_HOLD:
-//             // Today in calendar view.
-//             SEND_STRING(SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D));
-//             break;
-//         default:
-//             tap_code16(KC_F5);
-//     }
-// }
-
-// TDK_VSCODE_DEFINITION
-
-// void td_vscode_definition(tap_dance_state_t *state, void *user_data) {
-//     switch (cur_dance(state, true)) {
-//         case SINGLE_TAP:
-//             // Go to definition (ctrl+x ctrl+d)
-//             SEND_STRING(SS_RCTL("xd"));
-//             break;
-//         case SINGLE_HOLD:
-//             // Go to definition in separate window (ctrl+shift+d)
-//             SEND_STRING(SS_RCTL(SS_RSFT("d")));
-//             break;
-//     }
-// }
-
 // TDK_BOOT
 
 // LEEP_TD_CLICK_TO_HOLD_KC_* doesn't work with custom keycodes (QK_BOOT), hence why
@@ -138,14 +102,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_OPEN_TAB] = LEEP_TD_CLICK_KC_HOLD_KC(C(S(KC_T)), C(KC_R)),
     // Close tab dance
     [TDK_CLOSE_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(C(KC_W), td_hold_close_tab, LEEP_TD_NOVAL()),
-    // Outlook dance
-    // [TDK_OUTLOOK_RELOAD] = ACTION_TAP_DANCE_FN(td_outlook_reload),
-    // Outlook dance
-    // [TDK_OUTLOOK_READ] = LEEP_TD_CLICK_KC_HOLD_KC(OL_MARK_READ, OL_MARK_UNREAD),
-    // Outlook delete (use this so holding doesn't register key down and send multiple delete).
-    // [TDK_OUTLOOK_DELETE] = LEEP_TD_CLICK_KC_HOLD_KC(KC_DEL, KC_DEL),
-    // VSCode definition dance
-    // [TDK_VSCODE_DEFINITION] = ACTION_TAP_DANCE_FN(td_vscode_definition),
     // Reboot
     [TDK_BOOT] = ACTION_TAP_DANCE_FN(td_boot),
 };
