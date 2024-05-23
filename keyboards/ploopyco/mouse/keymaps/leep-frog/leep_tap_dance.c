@@ -34,58 +34,46 @@ void td_paste(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-// TDK_OPEN_TAB
-
-void td_open_tab(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
-        case SINGLE_HOLD:
-            // Re-open closed tab (ctrl is held down by LR_CTRL layer logic)
-            SEND_STRING(SS_RSFT("t"));
-            break;
-        default:
-            for (int i = 0; i < state->count; i++) {
-                SEND_STRING("t");
-            }
-            break;
-    }
-}
-
 // TDK_CLOSE_TAB
 
-void td_close_tab(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
-        case SINGLE_HOLD:
-            // Reload tab (ctrl is held down by LR_CTRL layer logic)
-            SEND_STRING("r");
-            break;
-        default:
-            for (int i = 0; i < state->count; i++) {
-                SEND_STRING("w");
-            }
-            break;
-    }
+bool move_tab = false;
+
+void td_hold_close_tab(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
+  move_tab = state->pressed;
+}
+
+// TDK_CTRL_[S]TAB
+
+void td_ctrl_tab(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
+  leep_td_value_t v = LEEP_TD_INT(move_tab ? C(S(KC_PGDN)) : C(KC_TAB));
+  leep_kc_press_fn(state, tap, &v);
+}
+
+void td_ctrl_shift_tab(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
+  leep_td_value_t v = LEEP_TD_INT(move_tab ? C(S(KC_PGUP)) : C(S(KC_TAB)));
+  leep_kc_press_fn(state, tap, &v);
 }
 
 // TDK_OUTLOOK_RELOAD
 
-void td_outlook_reload(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
-        case SINGLE_TAP:
-            // Switch panes
-            send_string(SS_RCTL(SS_RSFT(SS_TAP(X_TAB))));
-            // Reload
-            tap_code16(KC_F5);
-            // Swtich panes again
-            send_string(SS_RCTL(SS_TAP(X_TAB)));
-            break;
-        case SINGLE_HOLD:
-            // Today in calendar view.
-            SEND_STRING(SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D));
-            break;
-        default:
-            tap_code16(KC_F5);
-    }
-}
+// void td_outlook_reload(tap_dance_state_t *state, void *user_data) {
+//     switch (cur_dance(state, true)) {
+//         case SINGLE_TAP:
+//             // Switch panes
+//             send_string(SS_RCTL(SS_RSFT(SS_TAP(X_TAB))));
+//             // Reload
+//             tap_code16(KC_F5);
+//             // Swtich panes again
+//             send_string(SS_RCTL(SS_TAP(X_TAB)));
+//             break;
+//         case SINGLE_HOLD:
+//             // Today in calendar view.
+//             SEND_STRING(SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D));
+//             break;
+//         default:
+//             tap_code16(KC_F5);
+//     }
+// }
 
 // TDK_VSCODE_DEFINITION
 
@@ -101,20 +89,6 @@ void td_outlook_reload(tap_dance_state_t *state, void *user_data) {
 //             break;
 //     }
 // }
-
-// TDK_CTRL_[SHIFT_]TAB
-
-void tdk_ctrl_tab_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
-    if (finished) {
-        del_weak_mods(state->weak_mods);
-        send_string(hv->td_string);
-    } else {
-      // Only re-add ctrl if we're still in the control layer.
-      if (IS_LAYER_ON(LR_CTRL)) {
-        SEND_STRING(SS_DOWN(X_RCTL));
-      }
-    }
-}
 
 // TDK_BOOT
 
@@ -151,9 +125,9 @@ tap_dance_action_t tap_dance_actions[] = {
     // Ctrl dance
     [TDK_CTRL] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN1, LR_CTRL),
     // Ctrl+tab or next page in browser
-    [TDK_CTRL_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(KC_TAB, tdk_ctrl_tab_fn, LEEP_TD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_RIGHT)))),
+    [TDK_CTRL_TAB] = LEEP_TD_CLICK_FN_HOLD_KC(td_ctrl_tab, LEEP_TD_NOVAL(), A(KC_RIGHT)),
     // Ctrl+shift+tab of previous page in browser
-    [TDK_CTRL_STAB] = LEEP_TD_CLICK_KC_HOLD_FN(S(KC_TAB), tdk_ctrl_tab_fn, LEEP_TD_STRING(SS_UP(X_RCTL) SS_RALT(SS_TAP(X_LEFT)))),
+    [TDK_CTRL_STAB] = LEEP_TD_CLICK_FN_HOLD_KC(td_ctrl_shift_tab, LEEP_TD_NOVAL(), A(KC_LEFT)),
     // WS dance
     [TDK_WORKSPACE] = LEEP_TD_CLICK_FN_HOLD_LAYER(td_workspace_press_fn, LEEP_TD_NOVAL(), LR_WS),
     // Copy dance
@@ -161,9 +135,9 @@ tap_dance_action_t tap_dance_actions[] = {
     // Paste dance
     [TDK_PASTE] = ACTION_TAP_DANCE_FN(td_paste),
     // Open tab dance
-    [TDK_OPEN_TAB] = ACTION_TAP_DANCE_FN(td_open_tab),
+    [TDK_OPEN_TAB] = LEEP_TD_CLICK_KC_HOLD_KC(C(S(KC_T)), C(KC_R)),
     // Close tab dance
-    [TDK_CLOSE_TAB] = ACTION_TAP_DANCE_FN(td_close_tab),
+    [TDK_CLOSE_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(C(KC_W), td_hold_close_tab, LEEP_TD_NOVAL()),
     // Outlook dance
     // [TDK_OUTLOOK_RELOAD] = ACTION_TAP_DANCE_FN(td_outlook_reload),
     // Outlook dance

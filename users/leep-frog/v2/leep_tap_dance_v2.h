@@ -82,6 +82,8 @@ void leep_kc_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_
 
 #define LEEP_TD_CLICK_FN_HOLD_LAYER(press_fn, press_value, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), NULL, press_value, press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
 
+#define LEEP_TD_CLICK_FN_HOLD_KC(press_fn, press_value, hold_kc) LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), NULL, press_value, press_fn, LEEP_TD_INT(hold_kc), leep_kc_hold_fn)
+
 #define LEEP_TD_CLICK_KC_HOLD_FN(kc, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), NULL, LEEP_TD_INT(kc), leep_kc_press_fn, hold_value, hold_fn)
 
 #define LEEP_TD_CLICK_FN_HOLD_FN(press_fn, press_value, hold_fn, hold_value) LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), NULL, press_value, press_fn, hold_value, hold_fn)

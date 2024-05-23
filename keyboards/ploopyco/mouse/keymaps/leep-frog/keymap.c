@@ -79,9 +79,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // As pressing ctrl+click in too rapid succession doesn't always work on the work laptop.
     [LR_CTRL] = LEEPOUT(
         // Top
-        KC_BTN1, _______, KC_BTN1, TD_CFWD, TD_CTAB,
+        KC_BTN1, _______, KC_BTN1, TD_CBCK, TD_CFWD,
         // Side buttons
-        TD_CBCK, TD_OTAB,
+        TD_CTAB, TD_OTAB,
         // Special button
         _______),
 

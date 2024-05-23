@@ -8,22 +8,13 @@ bool layers_status[NUM_LAYERS] = {
 extern void activateScrollSpeed(bool);
 
 void layer_change_alt(bool activated) {
-  activateScrollSpeed(activated);
     if (!activated) {
         deactivate_alt();
     }
 }
 
 void layer_change_ctrl(bool activated) {
-    if (activated) {
-        SEND_STRING(SS_DOWN(X_RCTL));
-    } else {
-      // TO_CTRL sometimes clicks too soon after releasing CTRL (or possible before).
-      // Adding this delay fixes the issue (to test open QMK Toolbox and click the "Auto-flash"
-      // button (ctrl+click does nothing aka there's an issue, whereas regular click properly toggles).
-      // Click a bunch, but not too fast that you enabled the tap dance multi-click (which isn't an accurate way to test).
-      SEND_STRING(SS_UP(X_RCTL) SS_DELAY(2));
-    }
+    activateScrollSpeed(activated);
 }
 
 // Runs whenever there is a layer state change.
