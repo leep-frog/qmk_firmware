@@ -52,6 +52,9 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     bool negative = scroll_speed < 0;
     int16_t pos_scroll_speed = negative ? -scroll_speed : scroll_speed;
 
+    // Couldn't make SCROLL_SLOWDOWN any bigger so do an extra reductin here.
+    pos_scroll_speed /= 2;
+
     // See groogermouse.c for explanation of this logic
     int16_t offset = (pos_scroll_speed / SCROLL_SLOWDOWN) + (scroll_count < (pos_scroll_speed % SCROLL_SLOWDOWN) ? 1 : 0);
     if (negative) {
