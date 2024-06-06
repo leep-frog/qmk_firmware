@@ -20,10 +20,11 @@
 #include "leep_enum.c"
 #include "leep_combo.c"
 #include "leep_outlook.c"
+#include "leep_scroll.c"
 #include "leep_alt.c"
 #include "leep_layers.c"
 #include "leep_tap_dance.c"
-#include "leep_scroll.c"
+
 
 // If stuck, you can also put the mouse into boot mode by holding down the back thumb
 // button down while plugging in the mouse.
@@ -58,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_BASE] = LEEPOUT(
         // Top
-        KC_BTN1, TO_CTRL, KC_BTN2, TO_ALT, TO_WS,
+        KC_BTN1, TO_ALT, KC_BTN2, TO_CTRL, TO_WS,
         // Side buttons
         TD_COPY, TD_PASTE,
         // Special button
@@ -79,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // As pressing ctrl+click in too rapid succession doesn't always work on the work laptop.
     [LR_CTRL] = LEEPOUT(
         // Top
-        KC_BTN1, _______, KC_BTN1, TD_CBCK, TD_CFWD,
+        KC_BTN1, TD_CBCK, KC_BTN1, _______, TD_CFWD,
         // Side buttons
         TD_CTAB, TD_OTAB,
         // Special button
@@ -87,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_ALT] = LEEPOUT(
         // Top
-        _______, CK_ATAB, _______, _______, KC_BTN2,
+        _______, _______, _______, CK_ATAB, KC_BTN1,
         // Side buttons
         CK_SATAB, _______,
         // Special button

@@ -85,9 +85,9 @@ void td_workspace_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *
 
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
-    [TDK_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN3, LR_ALT),
+    [TDK_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN1, LR_ALT),
     // Ctrl dance
-    [TDK_CTRL] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN1, LR_CTRL),
+    [TDK_CTRL] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN3, LR_CTRL),
     // Ctrl+tab or next page in browser
     [TDK_CTRL_TAB] = LEEP_TD_CLICK_FN_HOLD_KC(td_ctrl_tab, LEEP_TD_NOVAL(), A(KC_RIGHT)),
     // Ctrl+shift+tab of previous page in browser

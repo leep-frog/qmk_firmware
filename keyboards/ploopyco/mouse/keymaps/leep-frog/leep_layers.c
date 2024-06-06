@@ -8,13 +8,10 @@ bool layers_status[NUM_LAYERS] = {
 extern void activateScrollSpeed(bool);
 
 void layer_change_alt(bool activated) {
+    activateScrollSpeed(activated);
     if (!activated) {
         deactivate_alt();
     }
-}
-
-void layer_change_ctrl(bool activated) {
-    activateScrollSpeed(activated);
 }
 
 // Runs whenever there is a layer state change.
@@ -27,9 +24,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             switch (i) {
                 case LR_ALT:
                     layer_change_alt(current_state);
-                    break;
-                case LR_CTRL:
-                    layer_change_ctrl(current_state);
                     break;
             }
 

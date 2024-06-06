@@ -7,6 +7,7 @@ bool alt_is_active(void) {
 }
 
 void activate_alt(void) {
+    activateScrollSpeed(false);
     leep_alt_pressed = true;
     register_code16(KC_RALT);
 }
