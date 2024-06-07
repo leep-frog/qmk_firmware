@@ -32,4 +32,5 @@ enum custom_keycodes {
     START = SAFE_RANGE,
     CK_ATAB,
     CK_SATAB,
+    CK_1OR2,
 };

@@ -86,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_ALT] = LEEPOUT(
         // Top
-        _______, _______, _______, CK_ATAB, KC_BTN1,
+        _______, _______, _______, CK_ATAB, CK_1OR2,
         // Side buttons
         CK_SATAB, _______,
         // Special button
@@ -115,7 +115,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     }
 
     // Sometimes, we want to click while in the alt+tab mode, hence why KC_BTN1 was also added here.
-    if (alt_is_active() && keycode != CK_ATAB && keycode != CK_SATAB && keycode != KC_BTN1) {
+    if (alt_is_active() && keycode != CK_ATAB && keycode != CK_SATAB && keycode != CK_1OR2) {
         deactivate_alt();
         return false;
     }
@@ -129,6 +129,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         case CK_SATAB:
             activate_alt();
             SEND_STRING(SS_RSFT(SS_TAP(X_TAB)));
+            break;
+        case CK_1OR2:
+            if (alt_is_active()) {
+              tap_code16(KC_BTN1);
+            } else {
+              tap_code16(KC_BTN2);
+            }
             break;
     }
 
