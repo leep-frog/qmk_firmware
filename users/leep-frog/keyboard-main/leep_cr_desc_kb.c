@@ -5,7 +5,7 @@ const uint8_t cr_desc_line_moves[] = {
   // Deployability section
   30, 8, 9, 13,
   // Testing section
-  12, 51, 28, 17, 15, 18,
+  12, 111, 28, 17, 15, 18,
   // Testing section
   14, 15, 22, 15,
   // End (move a one line below the last comment so we see the bottom
