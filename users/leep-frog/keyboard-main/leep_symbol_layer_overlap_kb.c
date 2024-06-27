@@ -25,7 +25,7 @@ Test cases:
    opposed to unpressing the first_symb_press).
 */
 
-const uint32_t OVERLAP_PRESS_WINDOW_MS = TAPPING_TERM;
+const uint32_t OVERLAP_PRESS_WINDOW_MS = 80;
 
 layer_overlap_handler_t symbol_handler = {
     .first_symb_press_key      = {},
