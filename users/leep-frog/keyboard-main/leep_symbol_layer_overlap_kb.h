@@ -1,13 +1,17 @@
 #pragma once
 
 typedef struct {
-    keypos_t first_symb_press_key;
-    bool     first_symb_press;
-    uint32_t layer_active_at;
-    bool     resolved_first_symb_press;
-    bool     consider_hold;
+    // Constant fields
     uint16_t layer;
     char    *keycode;
+
+    // Changing fields
+    keypos_t first_symb_press_key;
+    bool     first_symb_press;
+    bool     resolved_first_symb_press;
+
+    uint32_t key_press_at;
+    uint32_t key_in_layer_duration;
 } layer_overlap_handler_t;
 
 void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler);

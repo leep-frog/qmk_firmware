@@ -817,3 +817,235 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
 
     CONFIRM_RESET();
 }
+
+/*****************************
+* Symbol Layer Overlap tests *
+******************************/
+
+TEST_F(LeepFrog, SymbolLayerOverlap_ShortOverlapIsConsideredTyping) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_SPACE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_COMMA));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, SymbolLayerOverlap_FullOverlapIsConsideredHold) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_2));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInSymbLonger) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(43);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(42);
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_2));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(43);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(43);
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_SPACE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_COMMA));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(43);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(44);
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_SPACE));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_COMMA));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
