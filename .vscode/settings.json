@@ -37,6 +37,10 @@
       "alias": "gk"
     },
     {
+      "path": "/home/qmk/qmk_firmware/keyboards/keychron/k11_pro/ansi_encoder/rgb/keymaps/leep-frog/keymap.c",
+      "alias": "kk"
+    },
+    {
       "path": "/home/qmk/qmk_firmware/keyboards/ploopyco/mouse/keymaps/leep-frog/keymap.c",
       "alias": "pk"
     },
