@@ -9,7 +9,7 @@
 #define COMBO_ONLY_FROM_LAYER 1 // Ella layer
 // How long it takes for a tap to become a hold. Primarily added because
 // Shift-combinations were too quick and causing a parentheses to be added.
-#define TAPPING_TERM 165
+#define TAPPING_TERM 120
 
 /***************
 * Main include *
