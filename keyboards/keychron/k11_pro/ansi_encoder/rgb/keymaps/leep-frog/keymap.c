@@ -95,8 +95,8 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
     [LR_ALT] = LAYOUT_69_ansi(
         AL(ESC), AL(1),    AL(2),    AL(3),   AL(4),   AL(5),   AL(6),    AL(7),   AL(8),   AL(9),   AL(0),    AL(MINS), AL(EQL),  AL(BSPC),         _______,
         AL(TAB), AL(Q),    AL(F4),   AL(E),   AL(R),   CK_ALTT, CK_PSTE,  CK_SATB, AL(I),   CK_ATB,  AL(P),    AL(LBRC), AL(RBRC), AL(BSLS),         _______,
-LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, AL(J),   AL(K),   KC_WH_U,  AL(SCLN), RSFT_T(AL(RPRN)),AL(ENT),   _______,
-        AL(LSFT),          AL(Z),    AL(X),   AL(C),   KC_WH_D, CL(LEFT), CL(LEFT),AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
+LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, AL(J),   AL(K),   AL(L),    AL(SCLN), RSFT_T(AL(RPRN)),AL(ENT),   _______,
+        AL(LSFT),          AL(Z),    AL(X),   AL(C),   AL(V),   CL(LEFT), CL(LEFT),AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
         AL(LCTL),AL(LALT), AL(LGUI),          AL(TAB),        _______,         AL(ENTER),            AL(SPACE),          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
 
     [LR_SYMB] = LAYOUT_69_ansi(

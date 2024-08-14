@@ -63,8 +63,8 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
     [LR_ALT] = ML_LAYOUT(
         AL(EQL),  AL(1), AL(2),  AL(3),   AL(4),     AL(5),   RALT(WS_LEFT),        RALT(KC_ESC),  AL(6),   AL(7),   AL(8),    AL(9),   AL(0),    _______,
         AL(TAB),  AL(Q), AL(F4), AL(E),   AL(R),     CK_ALTT, KC_LEFT,              KC_RIGHT,      CK_PSTE, CK_SATB, AL(I),    CK_ATB,  AL(P),    AL(BSLS),
-LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),        RALT(WS_RGHT), CK_UNBS, AL(J),   AL(K),    KC_WH_U, AL(SCLN), RSFT_T(AL(RPRN)),
-        AL(LCBR), AL(Z), AL(X),  AL(C),   KC_WH_D,   CL(LEFT),                                     AL(N),   AL(M),   AL(COMM), AL(DOT), AL(SLSH), AL(RCBR),
+LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),        RALT(WS_RGHT), CK_UNBS, AL(J),   AL(K),    AL(L),   AL(SCLN), RSFT_T(AL(RPRN)),
+        AL(LCBR), AL(Z), AL(X),  AL(C),   AL(V),     CL(LEFT),                                     AL(N),   AL(M),   AL(COMM), AL(DOT), AL(SLSH), AL(RCBR),
 
                                                                             BOTTOM_ROW,
 
