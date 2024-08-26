@@ -510,6 +510,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         // Some functions I hold for a bit longer, which causes annoying behavior mid-typing
         case TD_A:
+            return TAPPING_TERM + 30;
+        case TDK_MARKDOWN_PASTE:
             return TAPPING_TERM + 50;
         case CK_MCR1:
         case CK_MCR2:
