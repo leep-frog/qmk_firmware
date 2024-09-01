@@ -3,22 +3,11 @@
 
 #include QMK_KEYBOARD_H
 
-#include "keymap_introspection.h"
-
 const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
 combo_t key_combos[] = {
   COMBO(test_combo1, KC_C),
 };
-enum custom_keycodes {
-  BLOOP,
-};
-bool Bloop(keyrecord_t *record) { return false; }
-custom_keycode_handler_t custom_keycode_handlers[] = {
-  [BLOOP] = NULL,
-};
-uint16_t Alt_keycodes[] = {
-  KC_Z,
-};
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Roughly the shape of an xbox controller

@@ -13,3 +13,8 @@
 //   // Ella layer
 //   #define COMBO_ONLY_FROM_LAYER 1
 // #endif
+
+#define COMBO_ONLY_FROM_LAYER 0
+
+#define LEEP_MAIN
+#define LEEP_KEYMAP_INTROSPECTION
