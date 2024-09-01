@@ -41,3 +41,9 @@ enum leep_tap_dances {
 tap_dance_action_t tap_dance_actions[] = {
   // [TDK_ABC] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_RIGHT, LR_OUTLOOK),
 };
+
+// TODO: Have pedal-holds activate modifiers for use by keyboard (shift, ctrl, etc.)
+// TODO: Shortcuts like print screen?
+// TODO: Scroll layer?
+// TODO: chrome tab close, new re-open, reload, forward, backward
+// TODO: copy and paste
