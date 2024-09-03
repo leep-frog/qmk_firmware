@@ -14,6 +14,7 @@
 enum layers {
   LR_BASE,
   LR_BROWSER,
+  LR_SHIFT,
 };
 
 enum custom_keycode_handlers {
@@ -47,18 +48,22 @@ combo_t key_combos[] = {
 * Tap dances *
 **************/
 enum leep_tap_dances {
-  TDK_TO_BROWSER = 0,
+  TDK_TO_SHIFT = 0,
+  TDK_TO_BROWSER,
   TDK_BROWSER_1,
   TDK_BROWSER_2,
   TDK_BROWSER_3,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
+  [TDK_TO_SHIFT] = LEEP_TD_CLICK_KC_HOLD_LAYER(CK_STAB, LR_SHIFT),
   [TDK_TO_BROWSER] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_LEFT, LR_BROWSER),
   [TDK_BROWSER_1] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_CLOSE, CK_WWWB),
   [TDK_BROWSER_2] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_REOPEN, RCTL(KC_R)),
   [TDK_BROWSER_3] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWWF),
 };
+
+#define CK_SHFT TD(TDK_TO_SHIFT)
 
 #define CK_BRWS TD(TDK_TO_BROWSER)
 #define CK_CLOSE_BACK TD(TDK_BROWSER_1)
@@ -75,16 +80,20 @@ tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_pedals(
-        CK_STAB, CK_BRWS, CK_TABB, CK_ATAB, WS_RGHT, CK_TABF
+        CK_SHFT, CK_BRWS, CK_TABB, CK_TABF, WS_RGHT, KC_ENTER
     ),
 
     [LR_BROWSER] = LAYOUT_pedals(
         _______, _______, _______, CK_CLOSE_BACK, CK_REOPEN_RELOAD, CK_NEW_FORWARD
     ),
+
+    [LR_SHIFT] = LAYOUT_pedals(
+        _______, _______, _______, CK_MTBB, _______, CK_MTBF
+    ),
 };
 
 
-
+// TODO: maybe space and/or tab?
 // TODO: Have pedal-holds activate modifiers for use by keyboard (shift, ctrl, etc.)
 // TODO: Shortcuts like print screen?
 // TODO: Scroll layer?
