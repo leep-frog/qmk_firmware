@@ -13,7 +13,7 @@
 
 enum layers {
   LR_BASE,
-  LR_BROWSER,
+  LR_BROWSER_SHORTCUTS,
   LR_SHIFT,
 };
 
@@ -29,11 +29,6 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 
 #define CK_ATAB CK(ALT_TAB_HANDLER)
 #define CK_STAB CK(SHIFT_ALT_TAB_HANDLER)
-
-uint16_t Alt_keycodes[] = {
-  CK_ATAB,
-  CK_STAB,
-};
 
 /**********
 * Combos *
@@ -53,22 +48,32 @@ enum leep_tap_dances {
   TDK_BROWSER_1,
   TDK_BROWSER_2,
   TDK_BROWSER_3,
+  TDK_TO_SHORTCUTS,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
-  [TDK_TO_SHIFT] = LEEP_TD_CLICK_KC_HOLD_LAYER(CK_STAB, LR_SHIFT),
-  [TDK_TO_BROWSER] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_LEFT, LR_BROWSER),
+  [TDK_TO_SHIFT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_ENTER, LR_SHIFT),
+  [TDK_TO_BROWSER] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_RIGHT, LR_BROWSER_SHORTCUTS),
   [TDK_BROWSER_1] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_CLOSE, CK_WWWB),
-  [TDK_BROWSER_2] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_REOPEN, RCTL(KC_R)),
-  [TDK_BROWSER_3] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWWF),
+  [TDK_BROWSER_2] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, RCTL(KC_R)),
+  [TDK_BROWSER_3] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_REOPEN, CK_WWWF),
+  [TDK_TO_SHORTCUTS] = LEEP_TD_CLICK_KC_HOLD_LAYER(CK_TABF, LR_BROWSER_SHORTCUTS),
 };
 
-#define CK_SHFT TD(TDK_TO_SHIFT)
+#define CK_ENTR_SHFT TD(TDK_TO_SHIFT)
 
-#define CK_BRWS TD(TDK_TO_BROWSER)
-#define CK_CLOSE_BACK TD(TDK_BROWSER_1)
-#define CK_REOPEN_RELOAD TD(TDK_BROWSER_2)
-#define CK_NEW_FORWARD TD(TDK_BROWSER_3)
+#define WS_RGHT_BRWSR TD(TDK_TO_BROWSER)
+#define CK_WWW_CLOSE_BACK TD(TDK_BROWSER_1)
+#define CK_WWW_NEW_RELOAD TD(TDK_BROWSER_2)
+#define CK_WWW_REOPEN_FORWARD TD(TDK_BROWSER_3)
+
+#define CK_TABF_SHORTCUTS TD(TDK_TO_SHORTCUTS)
+
+uint16_t Alt_keycodes[] = {
+  CK_ATAB,
+  CK_STAB,
+  CK_ENTR_SHFT,
+};
 
 /*************
 * Main logic *
@@ -80,22 +85,23 @@ tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_pedals(
-        CK_SHFT, CK_BRWS, CK_TABB, CK_TABF, WS_RGHT, KC_ENTER
+        CK_TABB, CK_TABF_SHORTCUTS, CK_ATAB, /**/ WS_LEFT, WS_RGHT_BRWSR, CK_ENTR_SHFT
     ),
 
-    [LR_BROWSER] = LAYOUT_pedals(
-        _______, _______, _______, CK_CLOSE_BACK, CK_REOPEN_RELOAD, CK_NEW_FORWARD
+    // Left is browser, right is shortcuts
+    [LR_BROWSER_SHORTCUTS] = LAYOUT_pedals(
+        CK_WWW_CLOSE_BACK, CK_WWW_REOPEN_FORWARD, /**/ CK_WWW_NEW_RELOAD, CK_COPY, CK_PASTE, KC_PRINT_SCREEN
     ),
 
     [LR_SHIFT] = LAYOUT_pedals(
-        _______, _______, _______, CK_MTBB, _______, CK_MTBF
+        CK_MTBB, CK_MTBF, CK_STAB, /**/ _______, _______, _______
     ),
 };
 
 
-// TODO: maybe space and/or tab?
 // TODO: Have pedal-holds activate modifiers for use by keyboard (shift, ctrl, etc.)
-// TODO: Shortcuts like print screen?
 // TODO: Scroll layer?
-// TODO: copy and paste
 // TODO: outlook?
+
+// TODO: Should this just complement the mouse? (i.e. have them be disjoint sets of actions?)
+// To find out, see how often we use this while hands are free or at the keyboard
