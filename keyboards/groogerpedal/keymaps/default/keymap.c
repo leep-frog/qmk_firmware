@@ -9,13 +9,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-// uint16_t leep_countt = 0;
-
-// bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-//   // if (leep_countt < 100) {
-//   SEND_STRING("S");
-//   // leep_countt++;
-//   wait_ms(5000);
-//   // }
-//   return true;
-// }
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+  return true;
+}

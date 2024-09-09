@@ -1,63 +1,37 @@
 #include QMK_KEYBOARD_H
 #include "quantum.h"
 #include "matrix.h"
-#include "debug.h"
-#include "timer.h"
-#include "print.h"
 
+uint8_t pedal_pins[] = {
+  D4,
+  D1,
+};
 
-// Max is 1023
-const int blink_time = 125;
-
-// void led_on(void) {
-//   writePinHigh(??);
-// }
-
-// void led_off(void) {
-//   writePinLow(??);
-// }
-
-// void led_blink(int times) {
-//   for (int i = 0; i < times; i++) {
-//     led_on();
-//     wait_ms(blink_time);
-//     led_off();
-//     wait_ms(blink_time);
-//   }
-// }
+uint8_t num_pedals = 0;
 
 void matrix_init_custom(void) {
-  xprintf("Initializing groog controller");
-  xprintf("Initing");
-  setPinInput(D4);
-}
+  num_pedals = sizeof(pedal_pins) / sizeof(uint8_t);
 
-uint8_t lpcount = 0;
+  for (uint8_t i = 0; i < num_pedals; i++) {
+    setPinInput(pedal_pins[i]);
+  }
+}
 
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   bool changed = false;
-  bool pressed = readPin(D4);
-  if ((!!(current_matrix[0] & 1)) != (pressed)) {
-    current_matrix[0] ^= 1;
-    changed = true;
-  }
-  if (lpcount <= 3) {
-    SEND_STRING("A");
-    lpcount++;
-    wait_ms(250);
+
+  // Iterate over all the pedals
+  uint16_t matrix_row_bit = 1;
+  for (uint8_t i = 0; i < num_pedals; i++) {
+
+    bool pressed = readPin(pedal_pins[i]);
+    if ((!!(current_matrix[0] & matrix_row_bit)) != (pressed)) {
+      // Take the XOR of the bit (which always flip that bit)
+      current_matrix[0] ^= matrix_row_bit;
+      changed = true;
+    }
+    matrix_row_bit <<= 1;
   }
 
   return changed;
 }
-
-uint8_t llpcount = 0;
-
-// bool process_record_kb(uint16_t keycode, keyrecord_t* record) {
-//   if (llpcount <= 3) {
-//     SEND_STRING("B");
-//     llpcount++;
-//     wait_ms(250);
-//   }
-
-//   return false;
-// }
