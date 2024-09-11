@@ -183,7 +183,7 @@ tap_dance_action_t tap_dance_actions[] = {
   // Right DPAD dance
   [TDK_RIGHT_DPAD] = LEEP_TD_CLICK_KC_HOLD_KC(CK_TABF, CK_WWWF),
   // Select dance
-  [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_LAYER(CK_WWW_CLOSE, LR_SETTINGS),
+  [TDK_SELECT] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_CLOSE, RCTL(KC_R)),
   // Start dance
   [TDK_START] = LEEP_TD_CLICK_KC_HOLD_KC(CK_WWW_NEW, CK_WWW_REOPEN),
   // LB dance
@@ -334,7 +334,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_xbox(
                 _______,                                              _______,
                 TK_LB,                                                TK_RB,
-                                           _______,                   S(KC_TAB),
+                                           KC_LGUI,                   S(KC_TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
                 CK_STAB,                   KC_PRINT_SCREEN,           KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
