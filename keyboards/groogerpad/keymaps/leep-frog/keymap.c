@@ -170,6 +170,7 @@ enum leep_tap_dances {
   TDK_START,
   TDK_LB,
   TDK_RB,
+  TDK_ESC,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
@@ -190,6 +191,8 @@ tap_dance_action_t tap_dance_actions[] = {
   [TDK_LB] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_LEFT, LR_TYPE),
   // RB dance
   [TDK_RB] = LEEP_TD_CLICK_KC_HOLD_LAYER(WS_RIGHT, LR_OUTLOOK),
+  // ESC dance
+  [TDK_ESC] = LEEP_TD_CLICK_KC_HOLD_KC(KC_ESCAPE, KC_PRINT_SCREEN),
 };
 
 #define TK_COPY TD(TDK_COPY)
@@ -200,6 +203,7 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TK_STRT TD(TDK_START)
 #define TK_LB TD(TDK_LB)
 #define TK_RB TD(TDK_RB)
+#define TK_ESC_PRNT TD(TDK_ESC)
 
 /**********
  * Combos *
@@ -336,7 +340,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 TK_LB,                                                TK_RB,
                                            KC_LGUI,                   S(KC_TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
-                CK_STAB,                   KC_PRINT_SCREEN,           KC_BTN1,
+                CK_STAB,                   TK_ESC_PRNT,               KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
                 CK_ATAB
     ),
