@@ -51,19 +51,22 @@ void print_int(int32_t number) {
 
 Mouse speed per cycle = controller_speed[0] * (max_virtual_speed / max_controller_speed[0]) * (throttle_multiplier_effect[1]) * (virtual_mouse_granularity_effect[2])
                        (^speed per cycle^)
-                       ( ------------- ^virtual mouse speed per cycle^ ------------ )
-                       ( ----------------- ^virtual mouse speed per cycle with throttle multiplier^ ----------------- )
-                       ( -------------------------------------- ^actual mouse speed per cycle with throttle multiplier^ ------------------------------------- )
+                       ( ---------------- ^virtual mouse speed per cycle^ --------------- )
+                       ( -------------------- ^virtual mouse speed per cycle with throttle multiplier^ -------------------- )
+                       ( ----------------------------------------- ^actual mouse speed per cycle with throttle multiplier^ ---------------------------------------- )
 
 [0] We also need to account for drift deadzone. If we just ignore all numbers in the deadzone AND don't change
 the equation, then we can have issues. Namely, if the deadzone is equivalent to 7 virtual speed incrementations, then
 our movement speed STARTS at 8! (not factorial haha, just excalamation point).
 To account for this, we need to normalize the controller_speed relative to the drift by decrementing controller_speed and max_controller_speed accordingly
 
-[1] "throttle_multiplier_effect" is a bit tricky. We want no throttle to result in a 1x multiplier and full throttle
+[1a] "throttle_multiplier_effect" is a bit tricky. We want no throttle to result in a 1x multiplier and full throttle
 to result in a (max_throttle_multiplier) multiplier. The following is the way to achieve that:
 throttle_effect = (actual_throttle * (throttle_multiplier - 1) / max_throttle) + 1
                 = (actual_throttle * (throttle_multiplier - 1) + max_throttle) / max_throttle
+
+[1b] If throttle is negative, then we want to instead divide by something in the range (1, throttle_multiplier).
+In this case, we simply invert [1a].
 
 [2] virtual_mouse_granularity_effect is a way for us to emulate more granular (and slower) speeds than the mouse report allows.
 For example, let's say we want 5x the granularity (so a value of 15 in our virtual speed equals a 3 in actual speed,
@@ -115,7 +118,7 @@ joystick_config_t mouse_config = {
   .drift_deadzone = 64,
   .direction_drift_deadzone = 400,
   .max_virtual_speed = 16,
-  .throttle_multiplier = 8,
+  .throttle_multiplier = 6,
   GRANULARITY_MULTIPLIER(4),
 };
 
@@ -156,8 +159,6 @@ int8_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_con
   // Flip negative if necessary.
   bool negative = signed_controller_speed < 0;
   uint64_t controller_speed = signed_controller_speed;
-  // This isn't expected to ever be negative.
-  uint64_t controller_throttle = signed_controller_throttle;
   if (negative) {
     negative = true;
     controller_speed = -signed_controller_speed;
@@ -168,9 +169,20 @@ int8_t get_joystick_speed(joystick_config_t *joystick_config, int32_t signed_con
     return 0;
   }
 
+  // Calculate the throttle_effect
+  uint64_t controller_throttle = signed_controller_throttle < 0 ? -signed_controller_throttle : signed_controller_throttle;
+  uint64_t throttle_effect_numer = (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle);
+  uint64_t throttle_effect_denom = max_controller_throttle;
+  // If throttle is negative, we simply invert the throttle effect
+  if (signed_controller_throttle < 0) {
+    uint64_t tmp = throttle_effect_numer;
+    throttle_effect_numer = throttle_effect_denom;
+    throttle_effect_denom = tmp;
+  }
+
   // To get the best precision, we calculate the full numerator and denominator separately (since rounding many several smaller operations can cause us to lose many fraction results).
-  uint64_t numer = (controller_speed - joystick_config->drift_deadzone) * joystick_config->max_virtual_speed * (controller_throttle * (joystick_config->throttle_multiplier - 1) + max_controller_throttle);
-  uint64_t denom = (max_controller_speed - joystick_config->drift_deadzone) * max_controller_throttle;
+  uint64_t numer = (controller_speed - joystick_config->drift_deadzone) * joystick_config->max_virtual_speed * throttle_effect_numer;
+  uint64_t denom = (max_controller_speed - joystick_config->drift_deadzone) * throttle_effect_denom;
   uint64_t res = ((numer / denom) + joystick_config->cycle_idx) / joystick_config->granularity_multiplier;
 
   // Revert back to the proper type and make negative if relevant.
@@ -234,14 +246,14 @@ bool pointing_device_task(void) {
 
   update_joystick_config(&mouse_config, &left_joystick_direction, gamepad.axis_x, gamepad.axis_y, left_joystick_handler);
   if (joystick_mouse_enabled()) {
-    report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle);
-    report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle);
+    report.x = get_joystick_speed(&mouse_config, gamepad.axis_x, gamepad.throttle - gamepad.brake);
+    report.y = get_joystick_speed(&mouse_config, gamepad.axis_y, gamepad.throttle - gamepad.brake);
   }
 
   update_joystick_config(&scroll_config, &right_joystick_direction, gamepad.axis_rx, gamepad.axis_ry, right_joystick_handler);
   if (joystick_scroll_enabled()) {
-    report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle);
-    report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle);
+    report.h = get_joystick_speed(&scroll_config, gamepad.axis_rx, gamepad.throttle - gamepad.brake);
+    report.v = -get_joystick_speed(&scroll_config, gamepad.axis_ry, gamepad.throttle - gamepad.brake);
   }
 
   pointing_device_set_report(report);
