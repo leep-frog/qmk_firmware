@@ -348,7 +348,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_OUTLOOK] = LAYOUT_xbox(
                 _______,                                              _______,
                 _______,                                              _______,
-                                           _______,                   OL_PREV,
+                                           QK_BOOT,                   OL_PREV,
                 _______,          _______,          CK_OLRL, OL_DEL,           _______,
                 _______,                   _______,                   OL_NEXT,
        CK_MTBB,          CK_MTBF,                   _______,

@@ -2,7 +2,7 @@
     "manufacturer": "leep-frog",
     "keyboard_name": "groogerpad",
     "maintainer": "leep-frog",
-    "bootloader": "atmel-dfu",
+    "bootloader": "caterina",
     "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,
