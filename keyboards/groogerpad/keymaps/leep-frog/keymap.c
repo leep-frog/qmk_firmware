@@ -319,9 +319,9 @@ bool joystick_mouse_enabled(void) { return get_highest_layer(layer_state) == 0; 
 bool joystick_scroll_enabled(void) { return get_highest_layer(layer_state) == 0; }
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-  // if (AltBlockProcessing(keycode, record)) {
-    // return false;
-  // }
+  if (AltBlockProcessing(keycode, record)) {
+    return false;
+  }
 
   if (!process_custom_keycodes(keycode, record)) {
     return false;
@@ -336,9 +336,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 TK_LB,                                                TK_RB,
                                            _______,                   S(KC_TAB),
                 TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
-                CK_ATAB,                   KC_PRINT_SCREEN,           KC_BTN1,
+                CK_STAB,                   KC_PRINT_SCREEN,           KC_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
-                CK_STAB
+                CK_ATAB
     ),
 
     [LR_OUTLOOK] = LAYOUT_xbox(

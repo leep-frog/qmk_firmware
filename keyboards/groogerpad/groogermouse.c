@@ -114,7 +114,7 @@ typedef struct {
 joystick_config_t mouse_config = {
   .drift_deadzone = 64,
   .direction_drift_deadzone = 400,
-  .max_virtual_speed = 8,
+  .max_virtual_speed = 16,
   .throttle_multiplier = 8,
   GRANULARITY_MULTIPLIER(4),
 };
