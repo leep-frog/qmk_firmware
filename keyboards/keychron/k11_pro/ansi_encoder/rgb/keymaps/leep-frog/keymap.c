@@ -23,42 +23,6 @@
 #include "users/leep-frog/keyboard-main/leep_index_kb.h"
 #include "users/leep-frog/main.h"
 
-// #define LEEP_SAFE_RANGE NEW_SAFE_RANGE
-
-// #include "../../../../../../../users/leep-frog/main.c"
-
-uint8_t unlock_idx = 0;
-const uint16_t unlock_code[] = { KC_H, KC_O, KC_W, KC_D, TD_Y };
-const uint8_t last_unlock_idx = sizeof(unlock_code) / sizeof(unlock_code[0]);
-
-bool codeUnlocker(uint16_t keycode, keyrecord_t* record) {
-  if (!record->event.pressed) {
-    return false;
-  }
-
-  // This occurs if the keyboard was unlocked then relocked. This can be resolved
-  // below, next to the LeepUnlock() call, but it remains here as safeguard for any
-  // other ways (hopefully none) that would make unlock_idx larger than allowed.
-  if (unlock_idx >= last_unlock_idx) {
-    unlock_idx = 0;
-  }
-
-  if (keycode != unlock_code[unlock_idx]) {
-    unlock_idx = 0;
-    // If it's also not the first key, then return; otherwise proceed.
-    if (keycode != unlock_code[unlock_idx]) {
-      return false;
-    }
-  }
-
-  if (++unlock_idx == last_unlock_idx) {
-    LeepUnlock(false);
-  }
-
-  return false;
-}
-custom_unlocker_fn_t CustomUnlocker = &codeUnlocker;
-
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {

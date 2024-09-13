@@ -6,8 +6,6 @@
 #include "users/leep-frog/keyboard-main/leep_index_kb.h"
 #include "users/leep-frog/main.h"
 
-custom_unlocker_fn_t CustomUnlocker = &defaultUnlocker;
-
 // Can't evaluate macro in macro, so use this to ignore bottom row of keyboard
 // https://stackoverflow.com/questions/35114050/is-there-a-way-to-force-c-preprocessor-to-evaluate-macro-arguments-before-the-ma
 #define ML_LAYOUT(...) LAYOUT_moonlander(__VA_ARGS__)
@@ -46,7 +44,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                     BOTTOM_ROW,
 
-                                         CL(RSFT), CL(TAB), CL(LGUI),         CL(RGUI), _______, CL(SPACE)
+                                        CL(ENTER), CL(TAB), CL(LGUI),         CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_CTRL_X] = ML_LAYOUT(
@@ -57,7 +55,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                    BOTTOM_ROW,
 
-                                        _______, CL(TAB), CL(RGUI),         CL(RGUI), _______, CL(SPACE)
+                                       CL(ENTER), CL(TAB), CL(RGUI),         CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_ALT] = ML_LAYOUT(

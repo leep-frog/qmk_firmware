@@ -354,7 +354,44 @@ void keyboard_post_init_user(void) {
     SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
 }
 
-bool defaultUnlocker(uint16_t keycode, keyrecord_t* record) {
+#ifdef LEEP_UNLOCK_CODE
+
+uint8_t unlock_idx = 0;
+const uint16_t unlock_code[] = LEEP_UNLOCK_CODE;
+const uint8_t last_unlock_idx = sizeof(unlock_code) / sizeof(unlock_code[0]);
+
+bool keyboardUnlocker(uint16_t keycode, keyrecord_t* record) {
+  if (!record->event.pressed) {
+    return false;
+  }
+
+  // This occurs if the keyboard was unlocked then relocked. This can be resolved
+  // below, next to the LeepUnlock() call, but it remains here as safeguard for any
+  // other ways (hopefully none) that would make unlock_idx larger than allowed.
+  if (unlock_idx >= last_unlock_idx) {
+    unlock_idx = 0;
+  }
+
+  uint16_t ella_keycode = keymap_key_to_keycode(LR_ELLA, record->event.key);
+
+  if (ella_keycode != unlock_code[unlock_idx]) {
+    unlock_idx = 0;
+    // If it's also not the first key, then return; otherwise proceed.
+    if (ella_keycode != unlock_code[unlock_idx]) {
+      return false;
+    }
+  }
+
+  if (++unlock_idx == last_unlock_idx) {
+    LeepUnlock(false);
+  }
+
+  return false;
+}
+
+#else
+
+bool keyboardUnlocker(uint16_t keycode, keyrecord_t* record) {
   if (record->event.pressed) {
     switch (keycode) {
       case CK_MCR1:
@@ -382,7 +419,9 @@ bool defaultUnlocker(uint16_t keycode, keyrecord_t* record) {
   return false;
 }
 
-extern custom_unlocker_fn_t CustomUnlocker;
+#endif
+
+
 
 // Returns whether or not the key should be processed as normal or if we should just return
 bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
@@ -393,14 +432,7 @@ bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
   // Default to startup color mode in case keyboard isn't unlocked.
   LEEP_STARTUP_COLOR_MODE();
 
-  if (CustomUnlocker) {
-    return CustomUnlocker(keycode, record);
-  }
-
-  if (record->event.pressed) {
-    SEND_STRING("No unlocker set");
-  }
-  return false;
+  return keyboardUnlocker(keycode, record);
 }
 
 

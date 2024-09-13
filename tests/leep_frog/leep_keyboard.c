@@ -4,5 +4,3 @@
 #include "quantum/leep/custom_keycode_handler.h"
 
 #include "users/leep-frog/main.c"
-
-custom_unlocker_fn_t CustomUnlocker = &defaultUnlocker;

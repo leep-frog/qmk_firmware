@@ -3,11 +3,6 @@
 #include "users/leep-frog/v2/leep_custom_keycodes_v2.h"
 #include "users/leep-frog/keyboard-main/leep_symbol_layer_overlap_kb.h"
 
-// For some reason the `weak` modifier wasn't working, so went with this approach instead.
-typedef bool (*custom_unlocker_fn_t) (uint16_t keycode, keyrecord_t *record);
-
-bool defaultUnlocker(uint16_t keycode, keyrecord_t* record);
-
 // Note: we don't need to organize by handler type,
 // but do so for readability.
 // TODO: Change CK prefix to CKE (CK Enum) since these are actually starting at 0 and not SAFE_RANGE (see CK(...)s below for proper values)
