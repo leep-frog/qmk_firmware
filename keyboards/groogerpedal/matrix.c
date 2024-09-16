@@ -101,29 +101,29 @@ typedef struct {
 #define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0] }
 
 // Left
-const uint8_t PROGMEM left_hold_path[] = {DIR_S, DIR_SW, DIR_END};
+static const uint8_t PROGMEM left_hold_path[] = {DIR_S, DIR_SW, DIR_END};
 // Foot tap from opposite side, from middle, and from same side
-const uint8_t PROGMEM left_tap_path_1[] = {DIR_SE, DIR_NE, DIR_N,  DIR_NW, DIR_SW, DIR_END};
-const uint8_t PROGMEM left_tap_path_2[] = {DIR_S,  DIR_N,  DIR_NW, DIR_SW, DIR_END};
-const uint8_t PROGMEM left_tap_path_3[] = {DIR_SW, DIR_NW, DIR_SW, DIR_END};
+static const uint8_t PROGMEM left_tap_path_1[] = {DIR_SE, DIR_NE, DIR_N,  DIR_NW, DIR_SW, DIR_END};
+static const uint8_t PROGMEM left_tap_path_2[] = {DIR_S,  DIR_N,  DIR_NW, DIR_SW, DIR_END};
+static const uint8_t PROGMEM left_tap_path_3[] = {DIR_SW, DIR_NW, DIR_SW, DIR_END};
 
 // Middle
 // Foot tap from left, from middle, and from right
-const uint8_t PROGMEM middle_tap_path_1[] = {DIR_SW, DIR_NW, DIR_N, DIR_S, DIR_END};
-const uint8_t PROGMEM middle_tap_path_2[] = {DIR_S,  DIR_N,  DIR_S, DIR_END};
-const uint8_t PROGMEM middle_tap_path_3[] = {DIR_SE, DIR_NE, DIR_N, DIR_S, DIR_END};
+static const uint8_t PROGMEM middle_tap_path_1[] = {DIR_SW, DIR_NW, DIR_N, DIR_S, DIR_END};
+static const uint8_t PROGMEM middle_tap_path_2[] = {DIR_S,  DIR_N,  DIR_S, DIR_END};
+static const uint8_t PROGMEM middle_tap_path_3[] = {DIR_SE, DIR_NE, DIR_N, DIR_S, DIR_END};
 
 // Right
-const uint8_t PROGMEM right_hold_path[] = {DIR_S, DIR_SE, DIR_END};
+static const uint8_t PROGMEM right_hold_path[] = {DIR_S, DIR_SE, DIR_END};
 // Foot tap from opposite side, from middle, and from same side
-const uint8_t PROGMEM right_tap_path_1[] = {DIR_SW, DIR_NW, DIR_N,  DIR_NE, DIR_SE, DIR_END};
-const uint8_t PROGMEM right_tap_path_2[] = {DIR_S,  DIR_N,  DIR_NE, DIR_SE, DIR_END};
-const uint8_t PROGMEM right_tap_path_3[] = {DIR_SE, DIR_NE, DIR_SE, DIR_END};
+static const uint8_t PROGMEM right_tap_path_1[] = {DIR_SW, DIR_NW, DIR_N,  DIR_NE, DIR_SE, DIR_END};
+static const uint8_t PROGMEM right_tap_path_2[] = {DIR_S,  DIR_N,  DIR_NE, DIR_SE, DIR_END};
+static const uint8_t PROGMEM right_tap_path_3[] = {DIR_SE, DIR_NE, DIR_SE, DIR_END};
 
 // Heel
-const uint8_t PROGMEM heel_tap_path[] = {DIR_S, DIR_HEEL_UP, DIR_S, DIR_END};
+static const uint8_t PROGMEM heel_tap_path[] = {DIR_S, DIR_HEEL_UP, DIR_S, DIR_END};
 
-beam_path_t beam_paths[] = {
+static beam_path_t beam_paths[] = {
   // Left
   HOLD_BEAM_PATH(2, left_hold_path),
   TAP_BEAM_PATH(4, left_tap_path_1),
@@ -146,22 +146,22 @@ beam_path_t beam_paths[] = {
 };
 
 // TODO: static vars
-uint8_t num_beam_paths = 0;
-enum direction_t beam_state = DIR_END;
-enum direction_t possible_next_beam_state = DIR_END;
-uint16_t beam_state_debounce_start = 0;
-bool beam_state_stale = true;
-uint16_t beam_state_changed_time = 0;
+static uint8_t num_beam_paths = 0;
+static enum direction_t beam_state = DIR_END;
+static enum direction_t possible_next_beam_state = DIR_END;
+static uint16_t beam_state_debounce_start = 0;
+static bool beam_state_stale = true;
+static uint16_t beam_state_changed_time = 0;
 
-uint8_t pedal_pins[] = {
+static uint8_t pedal_pins[] = {
   F0, // M (1)
   F1, // L (2)
   F5, // R (4)
   F4, // Heel (8)
 };
 
-uint8_t num_pedals = 0;
-const uint16_t analog_press_threshold = 125;
+static uint8_t num_pedals = 0;
+static const uint16_t analog_press_threshold = 125;
 
 void matrix_init_custom(void) {
   num_beam_paths = sizeof(beam_paths) / sizeof(beam_path_t);
