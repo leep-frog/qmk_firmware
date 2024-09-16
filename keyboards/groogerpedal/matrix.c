@@ -9,6 +9,10 @@
 #    define LEEP_DEBOUNCE 5
 #endif
 
+// Number of milliseconds allowed between each state change before
+// each beam path resets.
+#define BEAM_STATE_TERM 2500
+
 /*
 Imagine the laser beam from an ant's eye view:
 
@@ -64,7 +68,7 @@ Therefore, the following mappings exist:
 */
 
 enum direction_t {
-  // Values when the back pedal is not blocked
+  // Values when the heel pedal is not blocked
   DIR_INVALID_0,
   DIR_HEEL_UP, // Value is 1 since only the middle beam is blocked
   DIR_INVALID_2,
@@ -73,7 +77,7 @@ enum direction_t {
   DIR_INVALID_5,
   DIR_INVALID_6,
   DIR_INVALID_7,
-  // Values when the back pedal is blocked (foot in default position), starts at 8
+  // Values when the heel pedal is blocked (foot in default position), starts at 8
   DIR_N,
   DIR_S,
   DIR_NW,
@@ -87,7 +91,6 @@ typedef struct {
   uint8_t path_idx;
   uint8_t matrix_row_bit;
   bool hold;
-  // TODO: Timeout info
   bool activated;
   uint16_t activated_at;
   const uint8_t *path;
@@ -105,7 +108,10 @@ const uint8_t PROGMEM left_tap_path_2[] = {DIR_S,  DIR_N,  DIR_NW, DIR_SW, DIR_E
 const uint8_t PROGMEM left_tap_path_3[] = {DIR_SW, DIR_NW, DIR_SW, DIR_END};
 
 // Middle
-const uint8_t PROGMEM middle_tap_path[] = {DIR_S, DIR_N, DIR_S, DIR_END};
+// Foot tap from left, from middle, and from right
+const uint8_t PROGMEM middle_tap_path_1[] = {DIR_SW, DIR_NW, DIR_N, DIR_S, DIR_END};
+const uint8_t PROGMEM middle_tap_path_2[] = {DIR_S,  DIR_N,  DIR_S, DIR_END};
+const uint8_t PROGMEM middle_tap_path_3[] = {DIR_SE, DIR_NE, DIR_N, DIR_S, DIR_END};
 
 // Right
 const uint8_t PROGMEM right_hold_path[] = {DIR_S, DIR_SE, DIR_END};
@@ -125,7 +131,9 @@ beam_path_t beam_paths[] = {
   TAP_BEAM_PATH(4, left_tap_path_3),
 
   // Middle
-  TAP_BEAM_PATH(1, middle_tap_path),
+  TAP_BEAM_PATH(1, middle_tap_path_1),
+  TAP_BEAM_PATH(1, middle_tap_path_2),
+  TAP_BEAM_PATH(1, middle_tap_path_3),
 
   // Right
   HOLD_BEAM_PATH(8, right_hold_path),
@@ -137,16 +145,19 @@ beam_path_t beam_paths[] = {
   TAP_BEAM_PATH(32, heel_tap_path),
 };
 
+// TODO: static vars
 uint8_t num_beam_paths = 0;
 enum direction_t beam_state = DIR_END;
 enum direction_t possible_next_beam_state = DIR_END;
-uint16_t beam_state_change_time = 0;
+uint16_t beam_state_debounce_start = 0;
+bool beam_state_stale = true;
+uint16_t beam_state_changed_time = 0;
 
 uint8_t pedal_pins[] = {
   F0, // M (1)
   F1, // L (2)
   F5, // R (4)
-  F4, // Back (8)
+  F4, // Heel (8)
 };
 
 uint8_t num_pedals = 0;
@@ -162,7 +173,8 @@ void matrix_init_custom(void) {
 }
 
 // Update the current beam state while considering DEBOUNCE implications
-void update_beam_state(void) {
+// Returns whether or not the current state has just gone stale.
+bool update_beam_state(void) {
 
   enum direction_t new_beam_state = 0;
   uint8_t coef = 1;
@@ -188,35 +200,48 @@ void update_beam_state(void) {
   They all result in simply updating the next possible beam_state.
   */
 
+  bool turned_stale = false;
+  if (!beam_state_stale) {
+    if (timer_elapsed(beam_state_changed_time) > BEAM_STATE_TERM) {
+      beam_state_stale = true;
+      turned_stale = true;
+    }
+  }
+
   // Cases B, C, and E
   if (possible_next_beam_state != new_beam_state) {
     possible_next_beam_state = new_beam_state;
-    beam_state_change_time = timer_read();
-    return;
+    beam_state_debounce_start = timer_read();
+    return turned_stale;
   }
 
   // If here, then possible_next_beam_state and new_beam_state are equal
 
   // Case D (0, 1, 1)
   if (beam_state != possible_next_beam_state) {
-    if (timer_elapsed(beam_state_change_time) > LEEP_DEBOUNCE) {
+    if (timer_elapsed(beam_state_debounce_start) > LEEP_DEBOUNCE) {
       beam_state = possible_next_beam_state;
+      beam_state_changed_time = timer_read();
+      beam_state_stale = false;
+      turned_stale = false;
     }
   }
 
   // Case A (0, 0, 0): do nothing
+  return turned_stale;
 }
 
 bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   bool changed = false;
 
-  // TODO: Check for activated keys (with timers so hold=false) and clear the bits (use DEBOUNCE+1 for time delay)
+  // Check for activated tap keys and clear them when necessary
   for (uint8_t i = 0; i < num_beam_paths; i++) {
     beam_path_t *beam_path = &beam_paths[i];
 
+    // TODO: unset debounce entirely (from QMK's perspective) since we do debounce handling in update_beam_state
     bool enough_time_elapsed = timer_elapsed(beam_path->activated_at) > LEEP_DEBOUNCE;
     if (!beam_path->hold && beam_path->activated && enough_time_elapsed) {
-      // TODO: macro for [de]activation
+      // TODO: macro for [de]activation?
       changed = true;
       beam_path->activated = false;
       // Clear the bit (take the AND of the negation)
@@ -225,11 +250,17 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   }
 
   enum direction_t old_beam_state = beam_state;
-  update_beam_state();
-
-  // TODO: Check back pedal
+  bool turned_stale = update_beam_state();
 
   if (old_beam_state == beam_state) {
+
+    if (turned_stale) {
+      for (uint8_t i = 0; i < num_beam_paths; i++) {
+        beam_path_t *beam_path = &beam_paths[i];
+        beam_path->path_idx = 0;
+      }
+    }
+
     return changed;
   }
 
@@ -245,10 +276,8 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       current_matrix[0] &= (~(beam_path->matrix_row_bit));
     }
 
-    uint8_t want = pgm_read_byte(&beam_path->path[beam_path->path_idx]);
-
     // Update the beam_path's state
-    if (beam_state == want) {
+    if (beam_state == pgm_read_byte(&beam_path->path[beam_path->path_idx])) {
       beam_path->path_idx++;
     } else {
       beam_path->path_idx = 0;
