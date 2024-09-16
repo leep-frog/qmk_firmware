@@ -139,6 +139,8 @@ beam_path_t beam_paths[] = {
 
 uint8_t num_beam_paths = 0;
 enum direction_t beam_state = DIR_END;
+enum direction_t possible_next_beam_state = DIR_END;
+uint16_t beam_state_change_time = 0;
 
 uint8_t pedal_pins[] = {
   F0, // M (1)
@@ -159,20 +161,50 @@ void matrix_init_custom(void) {
   }
 }
 
+// Update the current beam state while considering DEBOUNCE implications
 void update_beam_state(void) {
 
-  // TODO: Debounce state, using DEBOUNCE variable
-  // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_debounce_type.md
-
-  beam_state = 0;
+  enum direction_t new_beam_state = 0;
   uint8_t coef = 1;
   for (uint8_t i = 0; i < num_pedals; i++) {
     bool pressed = analogReadPin(pedal_pins[i]) < analog_press_threshold;
     if (pressed) {
-      beam_state += coef;
+      new_beam_state += coef;
     }
     coef *= 2;
   }
+
+  /* Consider the following states (where 0, 1, and 2 are generic values for each variable
+
+  | case | beam_state | possible_nbs | new_beam_state | outcome
+  -------+------------+--------------+----------------+--------------------------------
+  |  A   |     0      |      0       |       0        | do nothing
+  |  B   |     0      |      0       |       1        | set possible=new, start timer
+  |  C   |     0      |      1       |       0        | set possible=new, do nothing
+  |  D   |     0      |      1       |       1        | check timer, and update beam if past DEBOUNCE
+  |  E   |     0      |      1       |       2        | set possible=new, start timer
+
+  This, however, can be generalized by considering the cases where possible_nbs != new_beam_state (cases B, C, and E)
+  They all result in simply updating the next possible beam_state.
+  */
+
+  // Cases B, C, and E
+  if (possible_next_beam_state != new_beam_state) {
+    possible_next_beam_state = new_beam_state;
+    beam_state_change_time = timer_read();
+    return;
+  }
+
+  // If here, then possible_next_beam_state and new_beam_state are equal
+
+  // Case D (0, 1, 1)
+  if (beam_state != possible_next_beam_state) {
+    if (timer_elapsed(beam_state_change_time) > LEEP_DEBOUNCE) {
+      beam_state = possible_next_beam_state;
+    }
+  }
+
+  // Case A (0, 0, 0): do nothing
 }
 
 bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
