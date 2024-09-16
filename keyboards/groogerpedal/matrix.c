@@ -64,6 +64,16 @@ Therefore, the following mappings exist:
 */
 
 enum direction_t {
+  // Values when the back pedal is not blocked
+  DIR_INVALID_0,
+  DIR_HEEL_UP, // Value is 1 since only the middle beam is blocked
+  DIR_INVALID_2,
+  DIR_INVALID_3,
+  DIR_INVALID_4,
+  DIR_INVALID_5,
+  DIR_INVALID_6,
+  DIR_INVALID_7,
+  // Values when the back pedal is blocked (foot in default position), starts at 8
   DIR_N,
   DIR_S,
   DIR_NW,
@@ -104,6 +114,9 @@ const uint8_t PROGMEM right_tap_path_1[] = {DIR_SW, DIR_NW, DIR_N,  DIR_NE, DIR_
 const uint8_t PROGMEM right_tap_path_2[] = {DIR_S,  DIR_N,  DIR_NE, DIR_SE, DIR_END};
 const uint8_t PROGMEM right_tap_path_3[] = {DIR_SE, DIR_NE, DIR_SE, DIR_END};
 
+// Heel
+const uint8_t PROGMEM heel_tap_path[] = {DIR_S, DIR_HEEL_UP, DIR_S, DIR_END};
+
 beam_path_t beam_paths[] = {
   // Left
   HOLD_BEAM_PATH(2, left_hold_path),
@@ -119,6 +132,9 @@ beam_path_t beam_paths[] = {
   TAP_BEAM_PATH(16, right_tap_path_1),
   TAP_BEAM_PATH(16, right_tap_path_2),
   TAP_BEAM_PATH(16, right_tap_path_3),
+
+  // Heel
+  TAP_BEAM_PATH(32, heel_tap_path),
 };
 
 uint8_t num_beam_paths = 0;
@@ -127,8 +143,8 @@ enum direction_t beam_state = DIR_END;
 uint8_t pedal_pins[] = {
   F0, // M (1)
   F1, // L (2)
-  F5, // R (3)
-  F4, // Back
+  F5, // R (4)
+  F4, // Back (8)
 };
 
 uint8_t num_pedals = 0;
@@ -150,7 +166,7 @@ void update_beam_state(void) {
 
   beam_state = 0;
   uint8_t coef = 1;
-  for (uint8_t i = 0; i < num_pedals - 1; i++) {
+  for (uint8_t i = 0; i < num_pedals; i++) {
     bool pressed = analogReadPin(pedal_pins[i]) < analog_press_threshold;
     if (pressed) {
       beam_state += coef;
