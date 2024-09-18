@@ -70,13 +70,13 @@ Therefore, the following mappings exist:
 enum direction_t {
   // Values when the heel pedal is not blocked
   DIR_INVALID_0,
-  DIR_HEEL_UP, // Value is 1 since only the middle beam is blocked
+  DIR_HEEL_UP_S,
+  DIR_INVALID_1,
+  DIR_HEEL_UP_SW,
   DIR_INVALID_2,
+  DIR_HEEL_UP_SE,
   DIR_INVALID_3,
   DIR_INVALID_4,
-  DIR_INVALID_5,
-  DIR_INVALID_6,
-  DIR_INVALID_7,
   // Values when the heel pedal is blocked (foot in default position), starts at 8
   DIR_N,
   DIR_S,
@@ -121,7 +121,10 @@ static const uint8_t PROGMEM right_tap_path_2[] = {DIR_S,  DIR_N,  DIR_NE, DIR_S
 static const uint8_t PROGMEM right_tap_path_3[] = {DIR_SE, DIR_NE, DIR_SE, DIR_END};
 
 // Heel
-static const uint8_t PROGMEM heel_tap_path[] = {DIR_S, DIR_HEEL_UP, DIR_S, DIR_END};
+static const uint8_t PROGMEM heel_tap_path[] = {DIR_S, DIR_HEEL_UP_S, DIR_S, DIR_END};
+// Below values are when the front of the foot is left or right and the back heel is tapped
+static const uint8_t PROGMEM heel_tap_left_path[] = {DIR_SW, DIR_HEEL_UP_SW, DIR_SW, DIR_END};
+static const uint8_t PROGMEM heel_tap_right_path[] = {DIR_SE, DIR_HEEL_UP_SE, DIR_SE, DIR_END};
 
 static beam_path_t beam_paths[] = {
   // Left
@@ -143,6 +146,8 @@ static beam_path_t beam_paths[] = {
 
   // Heel
   TAP_BEAM_PATH(32, heel_tap_path),
+  TAP_BEAM_PATH(64, heel_tap_left_path),
+  TAP_BEAM_PATH(128, heel_tap_right_path),
 };
 
 // TODO: static vars
