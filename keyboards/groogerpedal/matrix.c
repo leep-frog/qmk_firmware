@@ -159,10 +159,10 @@ static bool beam_state_stale = true;
 static uint16_t beam_state_changed_time = 0;
 
 static uint8_t pedal_pins[] = {
-  F0, // M (1)
-  F1, // L (2)
+  F1, // M (1)
+  F4, // L (2)
   F5, // R (4)
-  F4, // Heel (8)
+  F0, // Heel (8)
 };
 
 static uint8_t num_pedals = 0;
