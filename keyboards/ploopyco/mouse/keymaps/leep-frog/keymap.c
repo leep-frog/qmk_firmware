@@ -103,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Regular mouse (used basically exclusively for onshape)
     [LR_ONSHAPE] = LEEPOUT(
         // Top
-        _______, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN3,
+        KC_ESC, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN3,
         // Side buttons
         TO(LR_BASE), TO(LR_BASE),
         // Special button
