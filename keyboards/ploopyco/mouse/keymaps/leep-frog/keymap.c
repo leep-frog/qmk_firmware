@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         _______, _______, _______, CK_ATAB, CK_1OR2,
         // Side buttons
-        CK_SATAB, _______,
+        CK_SATAB, TO(LR_ONSHAPE),
         // Special button
         _______),
 
@@ -99,6 +99,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         G(KC_TAB), _______,
         // Special button
         _______),
+
+    // Regular mouse (used basically exclusively for onshape)
+    [LR_ONSHAPE] = LEEPOUT(
+        // Top
+        _______, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN3,
+        // Side buttons
+        TO(LR_BASE), TO(LR_BASE),
+        // Special button
+        TO(LR_BASE)),
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {

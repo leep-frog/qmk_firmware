@@ -8,6 +8,7 @@ enum layers {
     LR_CTRL,
     LR_ALT,
     LR_WS,
+    LR_ONSHAPE,
     NUM_LAYERS,
 };
 
