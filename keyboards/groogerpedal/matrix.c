@@ -3,6 +3,18 @@
 #include "matrix.h"
 #include "analog.h"
 
+// These are defined in the schematic diagram here: https://store-usa.arduino.cc/products/arduino-leonardo-with-headers
+// The value to use in QMK is the relevant PXX value without the 'P'
+#define LEONARDO_A0 F7
+#define LEONARDO_A1 F6
+#define LEONARDO_A2 F5
+#define LEONARDO_A3 F4
+#define LEONARDO_A4 F1
+#define LEONARDO_A5 F0
+
+#define LEONARDO_D2 D1
+#define LEONARDO_D4 D4
+
 #ifdef DEBOUNCE
 #    define LEEP_DEBOUNCE DEBOUNCE
 #else
@@ -150,7 +162,6 @@ static beam_path_t beam_paths[] = {
   TAP_BEAM_PATH(128, heel_tap_right_path),
 };
 
-// TODO: static vars
 static uint8_t num_beam_paths = 0;
 static enum direction_t beam_state = DIR_END;
 static enum direction_t possible_next_beam_state = DIR_END;
@@ -158,22 +169,39 @@ static uint16_t beam_state_debounce_start = 0;
 static bool beam_state_stale = true;
 static uint16_t beam_state_changed_time = 0;
 
-static uint8_t pedal_pins[] = {
-  F1, // M (1)
-  F4, // L (2)
-  F5, // R (4)
-  F0, // Heel (8)
+#define POWER_PIN_COUNT 1
+#define INPUT_PIN_COUNT 4
+
+static uint8_t power_pins[POWER_PIN_COUNT] = {
+  LEONARDO_D2,
+  // LEONARDO_D4,
 };
 
-static uint8_t num_pedals = 0;
-static const uint16_t analog_press_threshold = 125;
+static uint8_t input_pins[INPUT_PIN_COUNT] = {
+  LEONARDO_A2, // M (1)
+  LEONARDO_A3, // L (2)
+  LEONARDO_A4, // R (4)
+  LEONARDO_A5, // Heel (8)
+};
+
+static const uint16_t analog_press_threshold = 100;
+
+#define POWER_PIN_DELAY_MS 2
+static uint8_t current_power_pin = 0;
+static uint16_t power_pin_change_time = 0;
 
 void matrix_init_custom(void) {
   num_beam_paths = sizeof(beam_paths) / sizeof(beam_path_t);
-  num_pedals = sizeof(pedal_pins) / sizeof(uint8_t);
 
-  for (uint8_t i = 0; i < num_pedals; i++) {
-    setPinInput(pedal_pins[i]);
+  for (uint8_t i = 0; i < POWER_PIN_COUNT; i++) {
+    setPinOutput(power_pins[i]);
+    writePinLow(power_pins[i]);
+  }
+  writePinHigh(power_pins[current_power_pin]);
+  power_pin_change_time = timer_read();
+
+  for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
+    setPinInput(input_pins[i]);
   }
 }
 
@@ -181,15 +209,29 @@ void matrix_init_custom(void) {
 // Returns whether or not the current state has just gone stale.
 bool update_beam_state(void) {
 
+  // Check if enough time has elapsed since updating the power pins
+  if (timer_elapsed(power_pin_change_time) <= POWER_PIN_DELAY_MS) {
+    // If not, continue waiting
+    return false;
+  }
+
+  // If enough time has passed, then check the new beam state
+  // TODO: get the proper pedal to update
   enum direction_t new_beam_state = 0;
   uint8_t coef = 1;
-  for (uint8_t i = 0; i < num_pedals; i++) {
-    bool pressed = analogReadPin(pedal_pins[i]) < analog_press_threshold;
+  for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
+    bool pressed = analogReadPin(input_pins[i]) < analog_press_threshold;
     if (pressed) {
       new_beam_state += coef;
     }
     coef *= 2;
   }
+
+  // Now that we read all of the pins, prepare for the next input.
+  writePinLow(power_pins[current_power_pin]);
+  current_power_pin = (current_power_pin + 1) % POWER_PIN_COUNT;
+  writePinHigh(power_pins[current_power_pin]);
+  power_pin_change_time = timer_read();
 
   /* Consider the following states (where 0, 1, and 2 are generic values for each variable
 
@@ -246,7 +288,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     // TODO: unset debounce entirely (from QMK's perspective) since we do debounce handling in update_beam_state
     bool enough_time_elapsed = timer_elapsed(beam_path->activated_at) > LEEP_DEBOUNCE;
     if (!beam_path->hold && beam_path->activated && enough_time_elapsed) {
-      // TODO: macro for [de]activation?
+      // TODO: callback for [de]activation?
       changed = true;
       beam_path->activated = false;
       // Clear the bit (take the AND of the negation)
@@ -268,6 +310,9 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
 
     return changed;
   }
+
+  // send_word(beam_state);
+  // SEND_STRING(" ");
 
   // Iterate over all the beam paths
   for (uint8_t i = 0; i < num_beam_paths; i++) {
@@ -317,9 +362,9 @@ bool matrix_scan_custom_regular(matrix_row_t current_matrix[]) {
 
   // Iterate over all the pedals
   uint16_t matrix_row_bit = 1;
-  for (uint8_t i = 0; i < num_pedals; i++) {
+  for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
 
-    bool pressed = analogReadPin(pedal_pins[i]) < analog_press_threshold;
+    bool pressed = analogReadPin(input_pins[i]) < analog_press_threshold;
     if ((!!(current_matrix[0] & matrix_row_bit)) != (pressed)) {
       // Take the XOR of the bit (which always flip that bit)
       current_matrix[0] ^= matrix_row_bit;
