@@ -355,8 +355,8 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     return changed;
   }
 
-  send_word(pedal_state->beam_state);
-  SEND_STRING(" ");
+  // send_word(pedal_state->beam_state);
+  // SEND_STRING(" ");
 
   // Iterate over all the beam paths
   for (uint8_t i = 0; i < num_beam_paths; i++) {
