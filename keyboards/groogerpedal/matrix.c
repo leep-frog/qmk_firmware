@@ -230,23 +230,7 @@ enum direction_t calculate_pedal_beam_state(void) {
 
 // Update the current beam state while considering DEBOUNCE implications
 // Returns whether or not the current state has just gone stale.
-bool update_beam_state(pedal_state_t *pedal_state) {
-
-  // Check if enough time has elapsed since updating the power pins
-  if (timer_elapsed(power_pin_change_time) <= POWER_PIN_DELAY_MS) {
-    // If not, continue waiting
-    return false;
-  }
-
-  // If enough time has passed, then check the new beam state
-  // TODO: get the proper pedal to update
-  enum direction_t new_beam_state = calculate_pedal_beam_state();
-
-  // Now that we read all of the pins, prepare for the next input.
-  writePinLow(power_pins[current_power_pin]);
-  current_power_pin = (current_power_pin + 1) % POWER_PIN_COUNT;
-  writePinHigh(power_pins[current_power_pin]);
-  power_pin_change_time = timer_read();
+bool update_beam_state(pedal_state_t *pedal_state, enum direction_t new_beam_state) {
 
   /* Consider the following states (where 0, 1, and 2 are generic values for each variable
 
@@ -311,9 +295,25 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     }
   }
 
+  // Check if enough time has elapsed since updating the power pins
+  if (timer_elapsed(power_pin_change_time) <= POWER_PIN_DELAY_MS) {
+    // If not, continue waiting
+    return changed;
+  }
+
+  // If enough time has passed, then check the new beam state
+  // TODO: get the proper pedal to update
+  enum direction_t new_beam_state = calculate_pedal_beam_state();
+
+  // Now that we read all of the pins, prepare for the next input.
+  writePinLow(power_pins[current_power_pin]);
+  current_power_pin = (current_power_pin + 1) % POWER_PIN_COUNT;
+  writePinHigh(power_pins[current_power_pin]);
+  power_pin_change_time = timer_read();
+
   pedal_state_t *pedal_state = &pedal_states[0];
   enum direction_t old_beam_state = pedal_state->beam_state;
-  bool turned_stale = update_beam_state(pedal_states);
+  bool turned_stale = update_beam_state(pedal_state, new_beam_state);
 
   if (old_beam_state == pedal_state->beam_state) {
 
