@@ -117,17 +117,23 @@ enum direction_t {
 };
 
 typedef struct {
-  uint8_t path_idx;
+} pedal_beam_state_t;
+
+typedef struct {
   uint8_t matrix_row_bit;
   bool hold;
+  const uint8_t *path;
+
+  uint8_t path_idx;
   bool activated;
   uint16_t activated_at;
-  const uint8_t *path;
+
+  pedal_beam_state_t pedal_beam_states[1];
 } beam_path_t;
 
-#define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0] }
+#define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}} }
 
-#define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0] }
+#define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}} }
 
 // Left
 static const uint8_t PROGMEM left_hold_path[] = {DIR_S, DIR_SW, DIR_END};
