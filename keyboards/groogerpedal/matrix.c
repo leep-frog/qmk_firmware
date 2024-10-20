@@ -306,13 +306,13 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   enum direction_t new_beam_state = calculate_pedal_beam_state();
 
   // Now that we read all of the pins, prepare for the next input.
-  uint8_t old_current_power_pin = current_power_pin;
+  uint8_t pedal_beam_state_idx = current_power_pin;
   writePinLow(power_pins[current_power_pin]);
   current_power_pin = (current_power_pin + 1) % POWER_PIN_COUNT;
   writePinHigh(power_pins[current_power_pin]);
   power_pin_change_time = timer_read();
 
-  pedal_state_t *pedal_state = &pedal_states[old_current_power_pin];
+  pedal_state_t *pedal_state = &pedal_states[pedal_beam_state_idx];
   enum direction_t old_beam_state = pedal_state->beam_state;
   bool turned_stale = update_beam_state(pedal_state, new_beam_state);
 
