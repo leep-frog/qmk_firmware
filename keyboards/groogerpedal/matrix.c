@@ -129,9 +129,9 @@ typedef struct {
   pedal_beam_state_t pedal_beam_states[POWER_PIN_COUNT];
 } beam_path_t;
 
-#define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}, {}} }
-
-#define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}, {}} }
+// Note: pedal_beam_states is initialized in matrix_init_custom
+#define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0] }
+#define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0] }
 
 // Left
 static const uint8_t PROGMEM left_hold_path[] = {DIR_S, DIR_SW, DIR_END};
@@ -223,6 +223,17 @@ void matrix_init_custom(void) {
 
   for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
     setPinInput(input_pins[i]);
+  }
+
+  // Set the pedal beam states
+  for (uint8_t i = 0; i < num_beam_paths; i++) {
+    beam_path_t *beam_path = &beam_paths[i];
+    for (uint8_t j = 0; j < POWER_PIN_COUNT; j++) {
+      pedal_beam_state_t *pedal_beam_state = &beam_path->pedal_beam_states[j];
+      pedal_beam_state->path_idx = 0;
+      pedal_beam_state->activated = false;
+      pedal_beam_state->activated_at = timer_read();
+    }
   }
 }
 
