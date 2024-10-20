@@ -118,16 +118,14 @@ enum direction_t {
 
 typedef struct {
   uint8_t path_idx;
+  bool activated;
+  uint16_t activated_at;
 } pedal_beam_state_t;
 
 typedef struct {
   uint8_t matrix_row_bit;
   bool hold;
   const uint8_t *path;
-
-  bool activated;
-  uint16_t activated_at;
-
   pedal_beam_state_t pedal_beam_states[1];
 } beam_path_t;
 
@@ -290,14 +288,18 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   for (uint8_t i = 0; i < num_beam_paths; i++) {
     beam_path_t *beam_path = &beam_paths[i];
 
-    // TODO: unset debounce entirely (from QMK's perspective) since we do debounce handling in update_beam_state
-    bool enough_time_elapsed = timer_elapsed(beam_path->activated_at) > LEEP_DEBOUNCE;
-    if (!beam_path->hold && beam_path->activated && enough_time_elapsed) {
-      // TODO: callback for [de]activation?
-      changed = true;
-      beam_path->activated = false;
-      // Clear the bit (take the AND of the negation)
-      current_matrix[0] &= (~(beam_path->matrix_row_bit));
+    for (uint8_t j = 0; j < POWER_PIN_COUNT; j++) {
+      pedal_beam_state_t *pedal_beam_state = &beam_path->pedal_beam_states[j];
+
+      // TODO: unset debounce entirely (from QMK's perspective) since we do debounce handling in update_beam_state
+      bool enough_time_elapsed = timer_elapsed(pedal_beam_state->activated_at) > LEEP_DEBOUNCE;
+      if (!beam_path->hold && pedal_beam_state->activated && enough_time_elapsed) {
+        // TODO: callback for [de]activation?
+        changed = true;
+        pedal_beam_state->activated = false;
+        // Clear the bit (take the AND of the negation)
+        current_matrix[0] &= (~(beam_path->matrix_row_bit));
+      }
     }
   }
 
@@ -344,9 +346,9 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     pedal_beam_state_t *pedal_beam_state = &beam_path->pedal_beam_states[pedal_beam_state_idx];
 
     // Deactivate activated paths for hold beam_paths
-    if (beam_path->hold && beam_path->activated) {
+    if (beam_path->hold && pedal_beam_state->activated) {
       changed = true;
-      beam_path->activated = false;
+      pedal_beam_state->activated = false;
       // Clear the bit (take the AND of the negation)
       current_matrix[0] &= (~(beam_path->matrix_row_bit));
     }
@@ -363,8 +365,8 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     // Activate
     if (pgm_read_byte(&beam_path->path[pedal_beam_state->path_idx]) == DIR_END) {
       changed = true;
-      beam_path->activated = true;
-      beam_path->activated_at = timer_read();
+      pedal_beam_state->activated = true;
+      pedal_beam_state->activated_at = timer_read();
 
       // Activate the key
       current_matrix[0] |= beam_path->matrix_row_bit;
