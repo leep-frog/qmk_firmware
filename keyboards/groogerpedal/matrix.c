@@ -180,11 +180,21 @@ static beam_path_t beam_paths[] = {
 };
 
 static uint8_t num_beam_paths = 0;
-static enum direction_t beam_state = DIR_END;
-static enum direction_t possible_next_beam_state = DIR_END;
-static uint16_t beam_state_debounce_start = 0;
-static bool beam_state_stale = true;
-static uint16_t beam_state_changed_time = 0;
+
+typedef struct {
+  enum direction_t beam_state;
+  enum direction_t possible_next_beam_state;
+  uint16_t beam_state_debounce_start;
+  bool beam_state_stale;
+  uint16_t beam_state_changed_time;
+} pedal_state_t;
+
+#define INIT_PEDAL_STATE() { .beam_state = DIR_END, .possible_next_beam_state = DIR_END, .beam_state_debounce_start = 0, .beam_state_stale = true, .beam_state_changed_time = 0}
+
+static pedal_state_t pedal_states[POWER_PIN_COUNT] = {
+  INIT_PEDAL_STATE(),
+  // INIT_PEDAL_STATE(),
+};
 
 #define POWER_PIN_DELAY_MS 2
 static uint8_t current_power_pin = 0;
@@ -207,7 +217,7 @@ void matrix_init_custom(void) {
 
 // Update the current beam state while considering DEBOUNCE implications
 // Returns whether or not the current state has just gone stale.
-bool update_beam_state(void) {
+bool update_beam_state(pedal_state_t *pedal_state) {
 
   // Check if enough time has elapsed since updating the power pins
   if (timer_elapsed(power_pin_change_time) <= POWER_PIN_DELAY_MS) {
@@ -248,28 +258,28 @@ bool update_beam_state(void) {
   */
 
   bool turned_stale = false;
-  if (!beam_state_stale) {
-    if (timer_elapsed(beam_state_changed_time) > BEAM_STATE_TERM) {
-      beam_state_stale = true;
+  if (!pedal_state->beam_state_stale) {
+    if (timer_elapsed(pedal_state->beam_state_changed_time) > BEAM_STATE_TERM) {
+      pedal_state->beam_state_stale = true;
       turned_stale = true;
     }
   }
 
   // Cases B, C, and E
-  if (possible_next_beam_state != new_beam_state) {
-    possible_next_beam_state = new_beam_state;
-    beam_state_debounce_start = timer_read();
+  if (pedal_state->possible_next_beam_state != new_beam_state) {
+    pedal_state->possible_next_beam_state = new_beam_state;
+    pedal_state->beam_state_debounce_start = timer_read();
     return turned_stale;
   }
 
   // If here, then possible_next_beam_state and new_beam_state are equal
 
   // Case D (0, 1, 1)
-  if (beam_state != possible_next_beam_state) {
-    if (timer_elapsed(beam_state_debounce_start) > LEEP_DEBOUNCE) {
-      beam_state = possible_next_beam_state;
-      beam_state_changed_time = timer_read();
-      beam_state_stale = false;
+  if (pedal_state->beam_state != pedal_state->possible_next_beam_state) {
+    if (timer_elapsed(pedal_state->beam_state_debounce_start) > LEEP_DEBOUNCE) {
+      pedal_state->beam_state = pedal_state->possible_next_beam_state;
+      pedal_state->beam_state_changed_time = timer_read();
+      pedal_state->beam_state_stale = false;
       turned_stale = false;
     }
   }
@@ -296,10 +306,11 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     }
   }
 
-  enum direction_t old_beam_state = beam_state;
-  bool turned_stale = update_beam_state();
+  pedal_state_t *pedal_state = &pedal_states[0];
+  enum direction_t old_beam_state = pedal_state->beam_state;
+  bool turned_stale = update_beam_state(pedal_states);
 
-  if (old_beam_state == beam_state) {
+  if (old_beam_state == pedal_state->beam_state) {
 
     if (turned_stale) {
       for (uint8_t i = 0; i < num_beam_paths; i++) {
@@ -311,8 +322,8 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     return changed;
   }
 
-  // send_word(beam_state);
-  // SEND_STRING(" ");
+  send_word(pedal_state->beam_state);
+  SEND_STRING(" ");
 
   // Iterate over all the beam paths
   for (uint8_t i = 0; i < num_beam_paths; i++) {
@@ -327,7 +338,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     }
 
     // Update the beam_path's state
-    if (beam_state == pgm_read_byte(&beam_path->path[beam_path->path_idx])) {
+    if (pedal_state->beam_state == pgm_read_byte(&beam_path->path[beam_path->path_idx])) {
       beam_path->path_idx++;
     } else {
       beam_path->path_idx = 0;
@@ -346,7 +357,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
 
       // If last state is same as first state, start at next index
       // Note: this implies that a `hold` beam_path can't have the same first and last state
-      if (beam_state == pgm_read_byte(&beam_path->path[0])) {
+      if (pedal_state->beam_state == pgm_read_byte(&beam_path->path[0])) {
         beam_path->path_idx = 1;
       } else {
         beam_path->path_idx = 0;
