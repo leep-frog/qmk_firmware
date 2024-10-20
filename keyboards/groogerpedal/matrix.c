@@ -196,9 +196,8 @@ typedef struct {
 #define INIT_PEDAL_STATE() { .beam_state = DIR_END, .possible_next_beam_state = DIR_END, .beam_state_debounce_start = 0, .beam_state_stale = true, .beam_state_changed_time = 0}
 
 static pedal_state_t pedal_states[POWER_PIN_COUNT] = {
-  // TODO: we can create these in matrix_init
-  INIT_PEDAL_STATE(),
-  // INIT_PEDAL_STATE(),
+  // Note, the initialization values are set in matrix_init_custom
+  // That way, we don't have to add lines here if POWER_PIN_COUNT is changed
 };
 
 #define POWER_PIN_DELAY_MS 2
@@ -211,6 +210,13 @@ void matrix_init_custom(void) {
   for (uint8_t i = 0; i < POWER_PIN_COUNT; i++) {
     setPinOutput(power_pins[i]);
     writePinLow(power_pins[i]);
+
+    pedal_state_t *pedal_state = &pedal_states[i];
+    pedal_state->beam_state = DIR_END;
+    pedal_state->possible_next_beam_state = DIR_END;
+    pedal_state->beam_state_debounce_start = timer_read();
+    pedal_state->beam_state_stale = true;
+    pedal_state->beam_state_changed_time = timer_read();
   }
   writePinHigh(power_pins[current_power_pin]);
   power_pin_change_time = timer_read();
