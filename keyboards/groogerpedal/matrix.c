@@ -21,6 +21,23 @@
 #    define LEEP_DEBOUNCE 5
 #endif
 
+#define POWER_PIN_COUNT 1
+#define INPUT_PIN_COUNT 4
+
+static uint8_t power_pins[POWER_PIN_COUNT] = {
+  LEONARDO_D2,
+  // LEONARDO_D4,
+};
+
+static uint8_t input_pins[INPUT_PIN_COUNT] = {
+  LEONARDO_A2, // M (1)
+  LEONARDO_A3, // L (2)
+  LEONARDO_A4, // R (4)
+  LEONARDO_A5, // Heel (8)
+};
+
+static const uint16_t analog_press_threshold = 100;
+
 // Number of milliseconds allowed between each state change before
 // each beam path resets.
 #define BEAM_STATE_TERM 2500
@@ -168,23 +185,6 @@ static enum direction_t possible_next_beam_state = DIR_END;
 static uint16_t beam_state_debounce_start = 0;
 static bool beam_state_stale = true;
 static uint16_t beam_state_changed_time = 0;
-
-#define POWER_PIN_COUNT 1
-#define INPUT_PIN_COUNT 4
-
-static uint8_t power_pins[POWER_PIN_COUNT] = {
-  LEONARDO_D2,
-  // LEONARDO_D4,
-};
-
-static uint8_t input_pins[INPUT_PIN_COUNT] = {
-  LEONARDO_A2, // M (1)
-  LEONARDO_A3, // L (2)
-  LEONARDO_A4, // R (4)
-  LEONARDO_A5, // Heel (8)
-};
-
-static const uint16_t analog_press_threshold = 100;
 
 #define POWER_PIN_DELAY_MS 2
 static uint8_t current_power_pin = 0;
