@@ -117,6 +117,7 @@ enum direction_t {
 };
 
 typedef struct {
+  uint8_t path_idx;
 } pedal_beam_state_t;
 
 typedef struct {
@@ -124,7 +125,6 @@ typedef struct {
   bool hold;
   const uint8_t *path;
 
-  uint8_t path_idx;
   bool activated;
   uint16_t activated_at;
 
@@ -327,7 +327,8 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     if (turned_stale) {
       for (uint8_t i = 0; i < num_beam_paths; i++) {
         beam_path_t *beam_path = &beam_paths[i];
-        beam_path->path_idx = 0;
+        pedal_beam_state_t *pedal_beam_state = &beam_path->pedal_beam_states[pedal_beam_state_idx];
+        pedal_beam_state->path_idx = 0;
       }
     }
 
@@ -340,6 +341,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   // Iterate over all the beam paths
   for (uint8_t i = 0; i < num_beam_paths; i++) {
     beam_path_t *beam_path = &beam_paths[i];
+    pedal_beam_state_t *pedal_beam_state = &beam_path->pedal_beam_states[pedal_beam_state_idx];
 
     // Deactivate activated paths for hold beam_paths
     if (beam_path->hold && beam_path->activated) {
@@ -350,16 +352,16 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     }
 
     // Update the beam_path's state
-    if (pedal_state->beam_state == pgm_read_byte(&beam_path->path[beam_path->path_idx])) {
-      beam_path->path_idx++;
+    if (pedal_state->beam_state == pgm_read_byte(&beam_path->path[pedal_beam_state->path_idx])) {
+      pedal_beam_state->path_idx++;
     } else {
-      beam_path->path_idx = 0;
+      pedal_beam_state->path_idx = 0;
       continue;
     }
 
 
     // Activate
-    if (pgm_read_byte(&beam_path->path[beam_path->path_idx]) == DIR_END) {
+    if (pgm_read_byte(&beam_path->path[pedal_beam_state->path_idx]) == DIR_END) {
       changed = true;
       beam_path->activated = true;
       beam_path->activated_at = timer_read();
@@ -370,9 +372,9 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       // If last state is same as first state, start at next index
       // Note: this implies that a `hold` beam_path can't have the same first and last state
       if (pedal_state->beam_state == pgm_read_byte(&beam_path->path[0])) {
-        beam_path->path_idx = 1;
+        pedal_beam_state->path_idx = 1;
       } else {
-        beam_path->path_idx = 0;
+        pedal_beam_state->path_idx = 0;
       }
     }
   }
