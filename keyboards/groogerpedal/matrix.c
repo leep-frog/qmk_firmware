@@ -126,7 +126,7 @@ typedef struct {
   uint8_t matrix_row_bit;
   bool hold;
   const uint8_t *path;
-  pedal_beam_state_t pedal_beam_states[1];
+  pedal_beam_state_t pedal_beam_states[POWER_PIN_COUNT];
 } beam_path_t;
 
 #define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}} }
@@ -196,6 +196,7 @@ typedef struct {
 #define INIT_PEDAL_STATE() { .beam_state = DIR_END, .possible_next_beam_state = DIR_END, .beam_state_debounce_start = 0, .beam_state_stale = true, .beam_state_changed_time = 0}
 
 static pedal_state_t pedal_states[POWER_PIN_COUNT] = {
+  // TODO: we can create these in matrix_init
   INIT_PEDAL_STATE(),
   // INIT_PEDAL_STATE(),
 };
@@ -298,7 +299,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
         changed = true;
         pedal_beam_state->activated = false;
         // Clear the bit (take the AND of the negation)
-        current_matrix[0] &= (~(beam_path->matrix_row_bit));
+        current_matrix[j] &= (~(beam_path->matrix_row_bit));
       }
     }
   }
@@ -350,7 +351,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       changed = true;
       pedal_beam_state->activated = false;
       // Clear the bit (take the AND of the negation)
-      current_matrix[0] &= (~(beam_path->matrix_row_bit));
+      current_matrix[pedal_beam_state_idx] &= (~(beam_path->matrix_row_bit));
     }
 
     // Update the beam_path's state
@@ -369,7 +370,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       pedal_beam_state->activated_at = timer_read();
 
       // Activate the key
-      current_matrix[0] |= beam_path->matrix_row_bit;
+      current_matrix[pedal_beam_state_idx] |= beam_path->matrix_row_bit;
 
       // If last state is same as first state, start at next index
       // Note: this implies that a `hold` beam_path can't have the same first and last state
