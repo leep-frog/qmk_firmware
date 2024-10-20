@@ -215,6 +215,19 @@ void matrix_init_custom(void) {
   }
 }
 
+enum direction_t calculate_pedal_beam_state(void) {
+  enum direction_t cur_beam_state = 0;
+  uint8_t coef = 1;
+  for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
+    bool pressed = analogReadPin(input_pins[i]) < analog_press_threshold;
+    if (pressed) {
+      cur_beam_state += coef;
+    }
+    coef *= 2;
+  }
+  return cur_beam_state;
+}
+
 // Update the current beam state while considering DEBOUNCE implications
 // Returns whether or not the current state has just gone stale.
 bool update_beam_state(pedal_state_t *pedal_state) {
@@ -227,15 +240,7 @@ bool update_beam_state(pedal_state_t *pedal_state) {
 
   // If enough time has passed, then check the new beam state
   // TODO: get the proper pedal to update
-  enum direction_t new_beam_state = 0;
-  uint8_t coef = 1;
-  for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
-    bool pressed = analogReadPin(input_pins[i]) < analog_press_threshold;
-    if (pressed) {
-      new_beam_state += coef;
-    }
-    coef *= 2;
-  }
+  enum direction_t new_beam_state = calculate_pedal_beam_state();
 
   // Now that we read all of the pins, prepare for the next input.
   writePinLow(power_pins[current_power_pin]);
