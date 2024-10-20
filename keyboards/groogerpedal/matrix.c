@@ -21,12 +21,12 @@
 #    define LEEP_DEBOUNCE 5
 #endif
 
-#define POWER_PIN_COUNT 1
+#define POWER_PIN_COUNT 2
 #define INPUT_PIN_COUNT 4
 
 static uint8_t power_pins[POWER_PIN_COUNT] = {
   LEONARDO_D2,
-  // LEONARDO_D4,
+  LEONARDO_D4,
 };
 
 static uint8_t input_pins[INPUT_PIN_COUNT] = {
@@ -129,9 +129,9 @@ typedef struct {
   pedal_beam_state_t pedal_beam_states[POWER_PIN_COUNT];
 } beam_path_t;
 
-#define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}} }
+#define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}, {}} }
 
-#define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}} }
+#define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0], .pedal_beam_states = {{}, {}} }
 
 // Left
 static const uint8_t PROGMEM left_hold_path[] = {DIR_S, DIR_SW, DIR_END};
