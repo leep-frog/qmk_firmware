@@ -348,7 +348,11 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       for (uint8_t i = 0; i < num_beam_paths; i++) {
         beam_path_t *beam_path = &beam_paths[i];
         pedal_beam_state_t *pedal_beam_state = &beam_path->pedal_beam_states[pedal_beam_state_idx];
-        pedal_beam_state->path_idx = 0;
+        if (pedal_state->beam_state == pgm_read_byte(&beam_path->path[0])) {
+          pedal_beam_state->path_idx = 1;
+        } else {
+          pedal_beam_state->path_idx = 0;
+        }
       }
     }
 
