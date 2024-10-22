@@ -130,8 +130,8 @@ typedef struct {
 } beam_path_t;
 
 // Note: pedal_beam_states is initialized in matrix_init_custom
-#define HOLD_BEAM_PATH(matrix_bit_idx, path_var) { .hold = true, .matrix_row_bit = 1 << matrix_bit_idx, .path = &(path_var)[0] }
-#define TAP_BEAM_PATH(matrix_bit_idx, path_var) { .hold = false, .matrix_row_bit = 1 << matrix_bit_idx, .path = &(path_var)[0] }
+#define HOLD_BEAM_PATH(matrix_bit_idx, path_var) { .hold = true, .matrix_row_bit = (1 << matrix_bit_idx), .path = &(path_var)[0] }
+#define TAP_BEAM_PATH(matrix_bit_idx, path_var) { .hold = false, .matrix_row_bit = (1 << matrix_bit_idx), .path = &(path_var)[0] }
 
 // Left
 static const uint8_t PROGMEM left_hold_path[] = {DIR_S, DIR_SW, DIR_END};
@@ -179,7 +179,7 @@ static beam_path_t beam_paths[] = {
 
   // Heel
   TAP_BEAM_PATH(5, heel_tap_left_path),
-  TAP_BEAM_PATH(60008 0000 , heel_tap_path),
+  TAP_BEAM_PATH(6, heel_tap_path),
   TAP_BEAM_PATH(7, heel_tap_right_path),
 };
 
