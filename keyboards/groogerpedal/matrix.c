@@ -130,8 +130,8 @@ typedef struct {
 } beam_path_t;
 
 // Note: pedal_beam_states is initialized in matrix_init_custom
-#define HOLD_BEAM_PATH(matrix_bit, path_var) { .hold = true, .matrix_row_bit = matrix_bit, .path = &(path_var)[0] }
-#define TAP_BEAM_PATH(matrix_bit, path_var) { .hold = false, .matrix_row_bit = matrix_bit, .path = &(path_var)[0] }
+#define HOLD_BEAM_PATH(matrix_bit_idx, path_var) { .hold = true, .matrix_row_bit = 1 << matrix_bit_idx, .path = &(path_var)[0] }
+#define TAP_BEAM_PATH(matrix_bit_idx, path_var) { .hold = false, .matrix_row_bit = 1 << matrix_bit_idx, .path = &(path_var)[0] }
 
 // Left
 static const uint8_t PROGMEM left_hold_path[] = {DIR_S, DIR_SW, DIR_END};
@@ -161,10 +161,10 @@ static const uint8_t PROGMEM heel_tap_right_path[] = {DIR_SE, DIR_HEEL_UP_SE, DI
 
 static beam_path_t beam_paths[] = {
   // Left
-  HOLD_BEAM_PATH(2, left_hold_path),
-  TAP_BEAM_PATH(4, left_tap_path_1),
-  TAP_BEAM_PATH(4, left_tap_path_2),
-  TAP_BEAM_PATH(4, left_tap_path_3),
+  HOLD_BEAM_PATH(3, left_hold_path),
+  TAP_BEAM_PATH(0, left_tap_path_1),
+  TAP_BEAM_PATH(0, left_tap_path_2),
+  TAP_BEAM_PATH(0, left_tap_path_3),
 
   // Middle
   TAP_BEAM_PATH(1, middle_tap_path_1),
@@ -172,15 +172,15 @@ static beam_path_t beam_paths[] = {
   TAP_BEAM_PATH(1, middle_tap_path_3),
 
   // Right
-  HOLD_BEAM_PATH(8, right_hold_path),
-  TAP_BEAM_PATH(16, right_tap_path_1),
-  TAP_BEAM_PATH(16, right_tap_path_2),
-  TAP_BEAM_PATH(16, right_tap_path_3),
+  HOLD_BEAM_PATH(4, right_hold_path),
+  TAP_BEAM_PATH(2, right_tap_path_1),
+  TAP_BEAM_PATH(2, right_tap_path_2),
+  TAP_BEAM_PATH(2, right_tap_path_3),
 
   // Heel
-  TAP_BEAM_PATH(32, heel_tap_path),
-  TAP_BEAM_PATH(64, heel_tap_left_path),
-  TAP_BEAM_PATH(128, heel_tap_right_path),
+  TAP_BEAM_PATH(5, heel_tap_left_path),
+  TAP_BEAM_PATH(60008 0000 , heel_tap_path),
+  TAP_BEAM_PATH(7, heel_tap_right_path),
 };
 
 static uint8_t num_beam_paths = 0;
