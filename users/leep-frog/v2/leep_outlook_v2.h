@@ -5,6 +5,7 @@
 #define OL_DEL KC_DEL
 #define OL_PREV C(KC_COMMA)
 #define OL_NEXT C(KC_DOT)
+#define OL_MOVE C(S(KC_5)) // This activates a custom command in classic Outlook. For Citadel, this is assigned to move to 'Read' folder
 // Outlook today is taken care of as custom keycode
 
 #define OL_TDAY_STRING() SS_RALT(SS_TAP(X_H)) SS_TAP(X_O) SS_TAP(X_D)
