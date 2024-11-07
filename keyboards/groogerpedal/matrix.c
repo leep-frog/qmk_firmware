@@ -98,37 +98,33 @@ Therefore, the following mappings exist:
 
 */
 
-// #definne MIDDLE_BEAM 1
-// #define LEFT_BEAM 2
-// #define RIGHT_BEAM 4
-// #define HEEL_BEAM 8
-// #define FRONT_BEAM 16
+typedef uint8_t direction_t;
 
-enum direction_t {
-  // Values when the heel beam is not blocked
-  DIR_INVALID_0,
-  DIR_HEEL_UP_S,
-  DIR_INVALID_1,
-  DIR_HEEL_UP_SW,
-  DIR_INVALID_2,
-  DIR_HEEL_UP_SE,
-  DIR_INVALID_3,
-  DIR_INVALID_4,
-  // Values when the heel beam is blocked (foot in default position), starts at 8
-  DIR_N,
-  DIR_S,
-  DIR_NW,
-  DIR_SW,
-  DIR_NE,
-  DIR_SE,
-  DIR_INVALID_5,
-  DIR_INVALID_6,
-  // Values when the front beam is blocked, but not the heel beam, starts at 16
-  DIR_FORWARD_HEEL_UP,
-  DIR_FORWARD,
-  // All other values aren't relevant
-  DIR_END,
-};
+#define MIDDLE_BEAM 1
+#define LEFT_BEAM 2
+#define RIGHT_BEAM 4
+#define HEEL_BEAM 8
+#define FRONT_BEAM 16
+
+// Heel up directions
+#define DIR_HEEL_UP_S (MIDDLE_BEAM)
+#define DIR_HEEL_UP_SW (MIDDLE_BEAM + LEFT_BEAM)
+#define DIR_HEEL_UP_SE (MIDDLE_BEAM + RIGHT_BEAM)
+
+// Heel beam directions
+#define DIR_N (HEEL_BEAM)
+#define DIR_S (HEEL_BEAM + MIDDLE_BEAM)
+#define DIR_NW (HEEL_BEAM + LEFT_BEAM)
+#define DIR_SW (HEEL_BEAM + MIDDLE_BEAM + LEFT_BEAM)
+#define DIR_NE (HEEL_BEAM + RIGHT_BEAM)
+#define DIR_SE (HEEL_BEAM + MIDDLE_BEAM + RIGHT_BEAM)
+
+// Front beam directions
+#define DIR_FORWARD_HEEL_UP (FRONT_BEAM)
+#define DIR_FORWARD (FRONT_BEAM + MIDDLE_BEAM)
+
+#define DIR_END (1 << INPUT_PIN_COUNT)
+
 
 typedef struct {
   uint8_t path_idx;
@@ -211,8 +207,8 @@ static beam_path_t beam_paths[] = {
 static uint8_t num_beam_paths = 0;
 
 typedef struct {
-  enum direction_t beam_state;
-  enum direction_t possible_next_beam_state;
+  direction_t beam_state;
+  direction_t possible_next_beam_state;
   uint16_t beam_state_debounce_start;
   bool beam_state_stale;
   uint16_t beam_state_changed_time;
@@ -262,8 +258,8 @@ void matrix_init_custom(void) {
   }
 }
 
-enum direction_t calculate_pedal_beam_state(void) {
-  enum direction_t cur_beam_state = 0;
+direction_t calculate_pedal_beam_state(void) {
+  direction_t cur_beam_state = 0;
   uint8_t coef = 1;
   for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
     bool pressed = analogReadPin(input_pins[i]) < analog_press_threshold;
@@ -277,7 +273,7 @@ enum direction_t calculate_pedal_beam_state(void) {
 
 // Update the current beam state while considering DEBOUNCE implications
 // Returns whether or not the current state has just gone stale.
-bool update_beam_state(pedal_state_t *pedal_state, enum direction_t new_beam_state) {
+bool update_beam_state(pedal_state_t *pedal_state, direction_t new_beam_state) {
 
   /* Consider the following states (where 0, 1, and 2 are generic values for each variable
 
@@ -354,7 +350,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
 
   // If enough time has passed, then check the new beam state
   // TODO: get the proper pedal to update
-  enum direction_t new_beam_state = calculate_pedal_beam_state();
+  direction_t new_beam_state = calculate_pedal_beam_state();
 
   // Now that we read all of the pins, prepare for the next input.
   uint8_t pedal_beam_state_idx = current_power_pin;
@@ -364,7 +360,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   power_pin_change_time = timer_read();
 
   pedal_state_t *pedal_state = &pedal_states[pedal_beam_state_idx];
-  enum direction_t old_beam_state = pedal_state->beam_state;
+  direction_t old_beam_state = pedal_state->beam_state;
   bool turned_stale = update_beam_state(pedal_state, new_beam_state);
 
   if (old_beam_state == pedal_state->beam_state) {
