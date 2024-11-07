@@ -22,7 +22,7 @@
 #endif
 
 #define POWER_PIN_COUNT 2
-#define INPUT_PIN_COUNT 4
+#define INPUT_PIN_COUNT 5
 
 static uint8_t power_pins[POWER_PIN_COUNT] = {
   LEONARDO_D2,
@@ -34,7 +34,7 @@ static uint8_t input_pins[INPUT_PIN_COUNT] = {
   LEONARDO_A4, // L (2)
   LEONARDO_A2, // R (4)
   LEONARDO_A3, // Heel (8)
-  // LEONARDO_A1, // Front (16)
+  LEONARDO_A1, // Front (16)
 };
 
 static const uint16_t analog_press_threshold = 100;
@@ -44,7 +44,8 @@ static const uint16_t analog_press_threshold = 100;
 #define BEAM_STATE_TERM 2500
 
 /*
-Imagine the laser beam from an ant's eye view:
+Imagine the cross section for the middle, left, and right beams from an ant's eye view
+if the ant is standing at the heel beam and facing forward:
 
          (L,2)       (R,4)
            |           |
@@ -97,8 +98,14 @@ Therefore, the following mappings exist:
 
 */
 
+// #definne MIDDLE_BEAM 1
+// #define LEFT_BEAM 2
+// #define RIGHT_BEAM 4
+// #define HEEL_BEAM 8
+// #define FRONT_BEAM 16
+
 enum direction_t {
-  // Values when the heel pedal is not blocked
+  // Values when the heel beam is not blocked
   DIR_INVALID_0,
   DIR_HEEL_UP_S,
   DIR_INVALID_1,
@@ -107,13 +114,19 @@ enum direction_t {
   DIR_HEEL_UP_SE,
   DIR_INVALID_3,
   DIR_INVALID_4,
-  // Values when the heel pedal is blocked (foot in default position), starts at 8
+  // Values when the heel beam is blocked (foot in default position), starts at 8
   DIR_N,
   DIR_S,
   DIR_NW,
   DIR_SW,
   DIR_NE,
   DIR_SE,
+  DIR_INVALID_5,
+  DIR_INVALID_6,
+  // Values when the front beam is blocked, but not the heel beam, starts at 16
+  DIR_FORWARD_HEEL_UP,
+  DIR_FORWARD,
+  // All other values aren't relevant
   DIR_END,
 };
 
@@ -124,7 +137,7 @@ typedef struct {
 } pedal_beam_state_t;
 
 typedef struct {
-  uint8_t matrix_row_bit;
+  uint16_t matrix_row_bit;
   bool hold;
   const uint8_t *path;
   pedal_beam_state_t pedal_beam_states[POWER_PIN_COUNT];
@@ -160,6 +173,12 @@ static const uint8_t PROGMEM heel_tap_path[] = {DIR_S, DIR_HEEL_UP_S, DIR_S, DIR
 static const uint8_t PROGMEM heel_tap_left_path[] = {DIR_SW, DIR_HEEL_UP_SW, DIR_SW, DIR_END};
 static const uint8_t PROGMEM heel_tap_right_path[] = {DIR_SE, DIR_HEEL_UP_SE, DIR_SE, DIR_END};
 
+// Forward position
+// Heel beams connects and then front beam breaks
+static const uint8_t PROGMEM forward_path[] = {DIR_S, DIR_HEEL_UP_S, DIR_FORWARD, DIR_END};
+static const uint8_t PROGMEM forward_tap_path[] = {DIR_FORWARD, DIR_HEEL_UP_S, DIR_FORWARD, DIR_END};
+static const uint8_t PROGMEM forward_heel_tap_path[] = {DIR_FORWARD, DIR_FORWARD_HEEL_UP, DIR_FORWARD, DIR_END};
+
 static beam_path_t beam_paths[] = {
   // Left
   HOLD_BEAM_PATH(3, left_hold_path),
@@ -182,6 +201,11 @@ static beam_path_t beam_paths[] = {
   TAP_BEAM_PATH(5, heel_tap_left_path),
   TAP_BEAM_PATH(6, heel_tap_path),
   TAP_BEAM_PATH(7, heel_tap_right_path),
+
+  // Front
+  TAP_BEAM_PATH(8, forward_tap_path),
+  TAP_BEAM_PATH(9, forward_path),
+  TAP_BEAM_PATH(10, forward_heel_tap_path),
 };
 
 static uint8_t num_beam_paths = 0;

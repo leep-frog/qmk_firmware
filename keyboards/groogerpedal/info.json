@@ -13,7 +13,7 @@
         "nkro": true
     },
     "matrix_pins": {
-        "cols": ["C2", "C2", "C2", "C2", "C2", "C2", "C2", "C2"],
+        "cols": ["C2", "C2", "C2", "C2", "C2", "C2", "C2", "C2", "C2", "C2", "C2"],
         "rows": ["D1", "D1"]
     },
     "processor": "atmega32u4",
@@ -26,6 +26,16 @@
     "layouts": {
         "LAYOUT_pedals": {
             "layout": [
+
+                {"matrix": [0, 8], "x": 8, "y": 0},
+                {"matrix": [1, 8], "x": 8, "y": 1},
+
+                {"matrix": [0, 9], "x": 9, "y": 0},
+                {"matrix": [1, 9], "x": 9, "y": 1},
+
+                {"matrix": [0, 10], "x": 10, "y": 0},
+                {"matrix": [1, 10], "x": 10, "y": 1},
+
                 {"matrix": [0, 0], "x": 0, "y": 0},
                 {"matrix": [0, 1], "x": 1, "y": 0},
                 {"matrix": [0, 2], "x": 2, "y": 0},

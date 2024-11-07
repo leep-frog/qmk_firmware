@@ -18,6 +18,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *  |*******************************************************************************|
      */
     [0] = LAYOUT_pedals(
+
+                 KC_8,            /*    Forward front tap  */          KC_I,
+                 KC_9,            /*    Slide to front     */          KC_J,
+                 KC_T,            /*    Forward heel tap   */          KC_K,
+
         KC_0,    KC_1,    KC_2,   /* <--- Left Pedal       */ KC_A,    KC_B,    KC_C,
         KC_3,             KC_4,   /*                       */ KC_D,             KC_E,
                                   /*                       */
