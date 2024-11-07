@@ -30,10 +30,11 @@ static uint8_t power_pins[POWER_PIN_COUNT] = {
 };
 
 static uint8_t input_pins[INPUT_PIN_COUNT] = {
-  LEONARDO_A2, // M (1)
-  LEONARDO_A3, // L (2)
-  LEONARDO_A4, // R (4)
-  LEONARDO_A5, // Heel (8)
+  LEONARDO_A5, // M (1)
+  LEONARDO_A4, // L (2)
+  LEONARDO_A2, // R (4)
+  LEONARDO_A3, // Heel (8)
+  // LEONARDO_A1, // Front (16)
 };
 
 static const uint16_t analog_press_threshold = 100;
