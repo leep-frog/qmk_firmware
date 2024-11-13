@@ -354,7 +354,7 @@ void keyboard_post_init_user(void) {
     SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
 }
 
-#ifdef LEEP_UNLOCK_CODE
+#if defined(LEEP_UNLOCK_CODE)
 
 uint8_t unlock_idx = 0;
 const uint16_t unlock_code[] = LEEP_UNLOCK_CODE;
@@ -387,6 +387,13 @@ bool keyboardUnlocker(uint16_t keycode, keyrecord_t* record) {
   }
 
   return false;
+}
+
+#elif defined(LEEP_NO_UNLOCK)
+
+bool keyboardUnlocker(uint16_t keycode, keyrecord_t* record) {
+  LeepUnlock(false);
+  return true;
 }
 
 #else
