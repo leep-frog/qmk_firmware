@@ -258,19 +258,18 @@ void tdi(tap_dance_state_t *state, void *user_data) {
     return;
   }
 
-  if (state->count == 1) {
-    CR_ID();
-    return;
-  }
-
   // Dance ended with a hold
   SEND_STRING(FOCUS_TAB_STRING() SS_TAP(X_RIGHT) SS_DOWN(X_RCTL));
-  for (int i = 2; i < state->count; i++) {
+  for (int i = 1; i < state->count; i++) {
     SEND_STRING(SS_TAP(X_LEFT));
   }
-  if (state->count != 2) {
+
+  // Go past the break character (e.g. slash or hashtag) when traversed at least once
+  if (state->count != 1) {
     SEND_STRING(SS_UP(X_RCTL) SS_TAP(X_LEFT) SS_DOWN(X_RCTL));
   }
+
+  // Copy the remaining string
   SEND_STRING(SS_RSFT(SS_TAP(X_LEFT)) "c" SS_UP(X_RCTL));
 }
 
