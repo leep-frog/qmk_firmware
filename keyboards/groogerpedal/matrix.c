@@ -37,7 +37,7 @@ static uint8_t input_pins[INPUT_PIN_COUNT] = {
   LEONARDO_A1, // Front (16)
 };
 
-static const uint16_t analog_press_threshold = 100;
+static const uint16_t analog_press_threshold = 500;
 
 // Number of milliseconds allowed between each state change before
 // each beam path resets.
