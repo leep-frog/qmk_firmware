@@ -1,5 +1,7 @@
 
 // Outlook aliases
+#define OL_UP CL(COMMA)
+#define OL_DOWN CL(DOT)
 #define OL_READ C(KC_Q)
 #define OL_UNRD C(KC_U)
 #define OL_DEL KC_DEL
