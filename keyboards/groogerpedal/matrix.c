@@ -16,7 +16,7 @@
 #define LEONARDO_D4 D4
 
 // Custom debounce logic is implemented so we use this custom debounce value
-// (and set DEBOUNC to 0 in config.h)
+// (and set DEBOUNCE to 0 in config.h)
 #define LEEP_DEBOUNCE 20
 
 #define POWER_PIN_COUNT 2
