@@ -14,7 +14,7 @@ bool layer_statuses[MAX_NUM_LAYERS] = {
 
 uint8_t LeepHighestLayer = 0;
 
-
+#ifndef LEEP_CUSTOM_LAYER_FN
 layer_state_t layer_state_set_user(layer_state_t state) {
   bool change = false;
   LeepHighestLayer = get_highest_layer(state);
@@ -50,3 +50,4 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
   return state;
 }
+#endif
