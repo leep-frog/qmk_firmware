@@ -15,11 +15,9 @@
 #define LEONARDO_D2 D1
 #define LEONARDO_D4 D4
 
-#ifdef DEBOUNCE
-#    define LEEP_DEBOUNCE DEBOUNCE
-#else
-#    define LEEP_DEBOUNCE 5
-#endif
+// Custom debounce logic is implemented so we use this custom debounce value
+// (and set DEBOUNC to 0 in config.h)
+#define LEEP_DEBOUNCE 20
 
 #define POWER_PIN_COUNT 2
 #define INPUT_PIN_COUNT 5
@@ -320,6 +318,16 @@ bool update_beam_state(pedal_state_t *pedal_state, direction_t new_beam_state) {
   return turned_stale;
 }
 
+// We previously had to enusre this was greater than DEBOUNCE, but that feature
+// has been disabled by setting DEBOUNCE to 0 in config.h. Now, we only need
+// to ensure a key is activated for at least COMBO_TERM so that combos work
+// across taps. Previously, a tap on the left and right pedals would trigger
+// disjointly (press A, release A, press B, release B) which would prevent
+// the combo from firing. By setting this, we allow for A to be held longer
+// so we get (press A, press B, release A, release B).
+// const uint16_t ACTIVATE_FOR = DEBOUNCE > COMBO_TERM ? DEBOUNCE : COMBO_TERM;
+const uint16_t ACTIVATE_FOR = COMBO_TERM;
+
 bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   bool changed = false;
 
@@ -331,7 +339,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       pedal_beam_state_t *pedal_beam_state = &beam_path->pedal_beam_states[j];
 
       // TODO: unset debounce entirely (from QMK's perspective) since we do debounce handling in update_beam_state
-      bool enough_time_elapsed = timer_elapsed(pedal_beam_state->activated_at) > LEEP_DEBOUNCE;
+      bool enough_time_elapsed = timer_elapsed(pedal_beam_state->activated_at) > ACTIVATE_FOR;
       if (!beam_path->hold && pedal_beam_state->activated && enough_time_elapsed) {
         // TODO: callback for [de]activation?
         changed = true;
@@ -349,7 +357,6 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   }
 
   // If enough time has passed, then check the new beam state
-  // TODO: get the proper pedal to update
   direction_t new_beam_state = calculate_pedal_beam_state();
 
   // Now that we read all of the pins, prepare for the next input.

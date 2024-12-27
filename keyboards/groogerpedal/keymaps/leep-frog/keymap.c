@@ -13,6 +13,7 @@
 
 enum layers {
   LR_BASE,
+  LR_COMBOS,
   LR_BROWSER_SHORTCUTS,
   LR_SHIFT,
 };
@@ -38,9 +39,19 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 * Combos *
 **********/
 
-const uint16_t PROGMEM test_combo1[] = {KC_A, KC_B, COMBO_END};
-combo_t key_combos[] = {
-    COMBO(test_combo1, KC_C),
+enum combos {
+  COMBO_X,
+  COMBO_Z,
+};
+// uint16_t COMBO_LEN = COMBO_LENGTH;  // remove the COMBO_COUNT define and use this instead!
+
+const uint16_t PROGMEM x_combo[] = {KC_1, KC_B, COMBO_END};
+const uint16_t PROGMEM z_combo[] = {KC_6, KC_G, COMBO_END};
+
+combo_t key_combos[2] = {
+  [COMBO_X] = COMBO(x_combo, KC_X),
+  [COMBO_Z] = COMBO(z_combo, KC_Z),
+  // [JSPACE_OH_RIGHT] = COMBO_ACTION(jspace_combo),
 };
 
 /*************
@@ -103,15 +114,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     */
     [LR_BASE] = LAYOUT_pedals(
 
-                KC_8,            /*    Forward front tap  */          KC_I,
-                KC_9,            /*    Slide to front     */          KC_J,
-                KC_T,            /*    Forward heel tap   */          KC_K,
+                KC_8,            /*    Forward front tap  */           KC_I,
+                KC_9,            /*    Slide to front     */           KC_J,
+                KC_T,            /*    Forward heel tap   */           KC_K,
 
-        KC_0,    KC_1,    KC_2,   /* <--- Left Pedal       */ KC_A,    CK(CK_WS_TWO),    KC_C,
+        KC_0,    KC_1,    KC_2,   /* <--- Left Pedal       */ KC_A,    KC_B,    KC_C,
         KC_3,             KC_4,   /*                       */ KC_D,             KC_E,
                                   /*                       */
-        KC_5,    KC_6,    KC_7,   /*      Right Pedal ---> */ KC_F,    CK(CK_WS_THREE),    KC_H
-    )
+        KC_5,    KC_6,    KC_7,   /*      Right Pedal ---> */ KC_F,    KC_Y,    KC_H
+    ),
+
+    // Layer used to define combos
+    [LR_COMBOS] = LAYOUT_pedals(
+
+                KC_8,            /*    Forward front tap  */           KC_I,
+                KC_9,            /*    Slide to front     */           KC_J,
+                KC_T,            /*    Forward heel tap   */           KC_K,
+
+        KC_0,    KC_1,    KC_2,   /* <--- Left Pedal       */ KC_A,    KC_B,    KC_C,
+        KC_3,             KC_4,   /*                       */ KC_D,             KC_E,
+                                  /*                       */
+        KC_5,    KC_6,    KC_7,   /*      Right Pedal ---> */ KC_F,    KC_G,    KC_H
+    ),
 
     // [LR_BASE] = LAYOUT_pedals(
     //     CK_TABB, CK_TABF_SHORTCUTS, CK_ATAB, /**/ WS_LEFT, WS_RGHT_BRWSR, CK_ENTR_SHFT
