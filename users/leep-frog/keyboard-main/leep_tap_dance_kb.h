@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./leep_enum_kb.h"
+#include "../v2/leep_outlook_v2.h"
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record);
 // Can't just extern (https://stackoverflow.com/questions/14069737/switch-case-error-case-label-does-not-reduce-to-an-integer-constant)
@@ -13,13 +14,8 @@ bool IsToggleShiftTapDance(uint16_t keycode);
 #define CK_MCR2 TD(TDK_MACRO_2)
 #define CK_DEL_WORD RCTL(KC_DELETE)
 #define CK_MDPS TD(TDK_MARKDOWN_PASTE)
-// See here for outlook keyboard shortcuts:
-// https://support.microsoft.com/en-us/office/keyboard-shortcuts-for-outlook-3cdeb221-7ae5-4c1d-8c1d-9e63216c1efd#PickTab=Windows
 // Outlook reload
 #define OL_RLD TD(TDK_OUTLOOK_RELOAD)
-// Outlook move left pane
-#define OL_LEFT RCTL(SH(TAB))
-// Outlook move right pane
 #define OL_RGHT KC_F6
 #define TD_A TD(TDK_A)
 #define TD_B TD(TDK_B)
@@ -29,7 +25,6 @@ bool IsToggleShiftTapDance(uint16_t keycode);
 #define TD_U TD(TDK_U)
 #define TD_V TD(TDK_V)
 #define TD_Y TD(TDK_Y)
-#define TD_CTLT TD(TDK_CTL_T)
 #define OH_COPY TD(TDK_OH_COPY)
 #define OH_PSTE TD(TDK_OH_PASTE)
 #define TO_SCRL TD(TDK_SCROLL_LEFT)

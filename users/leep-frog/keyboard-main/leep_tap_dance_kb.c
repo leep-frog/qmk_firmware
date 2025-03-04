@@ -131,23 +131,6 @@ void symb_reset(tap_dance_state_t *state, void *user_data) {
     symb_press_count = 0;
 }*/
 
-// Ctrl-t tap dance
-void td_ctrl_t(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
-        case SINGLE_TAP:
-            SEND_STRING(SS_RCTL("t"));
-            break;
-        case DOUBLE_TAP:
-            SEND_STRING(SS_RCTL(SS_RSFT(SS_TAP(X_T))));
-            break;
-        default:
-            for (int i = 0; i < state->count; i++) {
-                SEND_STRING(SS_RCTL("t"));
-            }
-            break;
-    }
-}
-
 // char *universal_backspace = SS_RCTL(SS_TAP(X_BSPACE) SS_RALT(SS_TAP(X_H)));
 // Removed ctrl+alt+h. That was used for bash backspace, but realized
 // that we can use 'bind' or 'bindkey' in bash environments to bind
@@ -470,8 +453,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_V] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdv, un_tdv),
     // 'Y' tap dance
     [TDK_Y] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, tdy, un_tdy),
-    // Ctrl-t tap dance
-    [TDK_CTL_T] = ACTION_TAP_DANCE_FN(td_ctrl_t),
     // One hand copy
     [TDK_OH_COPY] = ACTION_TAP_DANCE_FN(oh_copy),
     // One hand paste

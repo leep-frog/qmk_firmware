@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
-        CL(TAB), CL(Q),    CTRL_W,   KC_END,  CL(R),   TD_CTLT, CL(Y),    CK_TABB, CL(I),   CK_TABF, KC_UP,    CL(LBRC), CL(RBRC), CL(BSLS),         _______,
+        CL(TAB), CL(Q),    CTRL_W,   KC_END,  CL(R),   CL(T),   CL(Y),    CK_TABB, CL(I),   CK_TABF, KC_UP,    CL(LBRC), CL(RBRC), CL(BSLS),         _______,
 LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), RSFT_T(CL(RPRN)),CL(ENT),   _______,
         CL(LSFT),          CL(Z),    TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,  KC_LEFT, KC_DOWN, CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          CL(ENTER),        CL(TAB),           _______,          CL(SPACE),          CL(RGUI), CL(LEFT),CL(DOWN),CL(RGHT)),
@@ -96,7 +96,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
     // This layer is currently identical to LR_ONE_HAND_RIGHT
     [LR_ONE_HAND_LEFT] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, _______,  CL(W),    CK_SATB, CK_ATB,  TD_CTLT, CL(W),    CK_SATB, CK_ATB,  TD_CTLT, _______,  _______,  _______,  _______,          _______,
+        _______, _______,  CL(W),    CK_SATB, CK_ATB,  CL(T),   CL(W),    CK_SATB, CK_ATB,  CL(T),   _______,  _______,  _______,  _______,          _______,
         KC_LSFT, WS_LEFT,  CL(R),    CK_TABB, CK_TABF, WS_RGHT,           WS_LEFT, CK_TABB, CK_TABF, CL(R),    TO_SCRR,  KC_RSFT,  _______,          _______,
         _______,           CK_WWWB,  CK_WWWF, OH_COPY, OH_PSTE, _______,  _______, OH_COPY, OH_PSTE, CK_WWWB,  CK_WWWF,  _______,  _______, _______,
         _______, _______,  _______,           _______,          _______,           _______,          _______,            _______,  _______, _______, _______),
@@ -104,7 +104,7 @@ LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
     // This layer is currently identical to LR_ONE_HAND_LEFT
     [LR_ONE_HAND_RIGHT] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, _______,  CL(W),    CK_SATB, CK_ATB,  TD_CTLT, CL(W),    CK_SATB, CK_ATB,  TD_CTLT, _______,  _______,  _______,  _______,          _______,
+        _______, _______,  CL(W),    CK_SATB, CK_ATB,  CL(T),   CL(W),    CK_SATB, CK_ATB,  CL(T),   _______,  _______,  _______,  _______,          _______,
         KC_LSFT, WS_LEFT,  CL(R),    CK_TABB, CK_TABF, WS_RGHT,           WS_LEFT, CK_TABB, CK_TABF, CL(R),    TO_SCRR,  KC_RSFT,  _______,          _______,
         _______,           CK_WWWB,  CK_WWWF, OH_COPY, OH_PSTE, _______,  _______, OH_COPY, OH_PSTE, CK_WWWB,  CK_WWWF,  _______,  _______, _______,
         _______, _______,  _______,           _______,          _______,           _______,          _______,            _______,  _______, _______, _______),
