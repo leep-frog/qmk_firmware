@@ -2,6 +2,10 @@
 
 #include "users/leep-frog/main.h" // Needed for TO_SYMB
 
+// IMPORTANT NOTE:
+// In leep_layeres_v2.c we enable/disable combos depending on the layer
+// Be sure to check there if relevant to changes.
+
 // Combos
 enum combos {
     JI_ESC,

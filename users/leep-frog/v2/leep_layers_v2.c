@@ -42,7 +42,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   // Only want combos to be enabled in the base layer (even though we
   // define "COMBO_ONLY_FROM_LAYER 1", but we do that only so we can use the
   // simple keycodes defined in the safe layer).
-  if (LeepHighestLayer == LR_BASE || LeepHighestLayer == LR_ELLA) {
+  if (LeepHighestLayer == LR_BASE || LeepHighestLayer == LR_ELLA || LeepHighestLayer == LR_SYMB) {
     combo_enable();
   } else {
     combo_disable();
