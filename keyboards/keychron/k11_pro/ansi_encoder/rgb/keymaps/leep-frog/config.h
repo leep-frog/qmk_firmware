@@ -12,8 +12,8 @@
 
 // How long it takes for a tap to become a hold. Primarily added because
 // Shift-combinations were too quick and causing a parentheses to be added.
-// 100 < TAPPING_TERM <= 160
-#define TAPPING_TERM 100
+// 100 << TAPPING_TERM <= 160 // Keep narrowing in on best value.
+#define TAPPING_TERM 140
 
 /***************
 * Main include *
