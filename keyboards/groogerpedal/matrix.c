@@ -35,11 +35,15 @@ static uint8_t input_pins[INPUT_PIN_COUNT] = {
   LEONARDO_A1, // Front (16)
 };
 
+// This is the analog read value that needs to be registered in order to count
+// the beam as unbroken (out of 1024).
 static const uint16_t analog_press_threshold = 500;
 
 // Number of milliseconds allowed between each state change before
 // each beam path resets.
-#define BEAM_STATE_TERM 2500
+#ifndef BEAM_STATE_TERM
+#    define BEAM_STATE_TERM 300
+#endif
 
 /*
 Imagine the cross section for the middle, left, and right beams from an ant's eye view

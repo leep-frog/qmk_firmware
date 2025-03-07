@@ -17,8 +17,8 @@
 // Combo setup
 #define COMBO_TERM 100            // Number of milliseconds for combo keys.
 #define COMBO_VARIABLE_LEN
-#define COMBO_ONLY_FROM_LAYER 1 // LR_COMBOS
-
+#define COMBO_ONLY_FROM_LAYER 1 // LR_ELLA
 
 #define LEEP_MAIN
 #define LEEP_KEYMAP_INTROSPECTION
+#define LEEP_CUSTOM_LAYER_FN
