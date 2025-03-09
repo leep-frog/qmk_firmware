@@ -105,8 +105,15 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
                  .col = record->event.key.col,
                  .row = record->event.key.row,
         });
-        handler->resolved_first_symb_press = false;
-        return true;
+
+        // TODO: Add tests for this
+        bool needs_layer_overlap_logic = (record->event.type != COMBO_EVENT);
+
+        // If it needs layer-overlap logic, then it has *not* been resolved
+        handler->resolved_first_symb_press = !needs_layer_overlap_logic;
+
+        // If it doesn't need layer-overlap logic, then we shouldn't mark this as handled
+        return needs_layer_overlap_logic;
     }
     return false;
 }

@@ -27,7 +27,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 }
 
 void internal_process_combo_event(uint16_t combo_index, bool pressed) {
-    // TODO: Add OSM_handle/cleanup since combos don't reach main function
     if (!pressed) {
       switch (combo_index) {
         case FSHIFT_OH_LEFT:
