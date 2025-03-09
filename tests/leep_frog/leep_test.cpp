@@ -822,6 +822,51 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
 * Symbol Layer Overlap tests *
 ******************************/
 
+TEST_F(LeepFrog, SymbolLayerOverlap_KeyPressAndReleaseAllWhileInSymbolLayer) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 4,
+      to_symb,
+      KC_J,
+      KC_K,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 4,
+      TK_0,
+      KC_1,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_2));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+
 TEST_F(LeepFrog, SymbolLayerOverlap_ShortOverlapIsConsideredTyping) {
     TestDriver driver;
     InSequence s;
@@ -1045,6 +1090,52 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_COMMA));
     EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 4,
+      to_symb,
+      KC_J,
+      KC_K,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 4,
+      TK_0,
+      KC_1,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the combo
+    k_KC_1.press();
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the combo
+    k_KC_1.release();
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_MINUS));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
     CONFIRM_RESET();
