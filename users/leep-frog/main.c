@@ -143,6 +143,15 @@ bool _ctrl_click(keyrecord_t *record, custom_keycode_value_t *_) {
     return false;
 }
 
+bool _slack_edit(keyrecord_t *record, custom_keycode_value_t *_) {
+    if (record->event.pressed) {
+      tap_code16(KC_MS_BTN2);
+    } else {
+      tap_code16(KC_E);
+    }
+    return false;
+}
+
 bool _eye_care(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         // The color change takes effect after the keycode is processed, so we can't
@@ -300,6 +309,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_RESET_HANDLER] = CK_HANDLER_FN(_leep_keyboard_reset),
   [KB_OFF_HANDLER] = CK_HANDLER_FN(_leep_keyboard_off),
   [CK_EYE_HANDLER] = CK_HANDLER_FN(_eye_care),
+  [SLACK_EDIT_HANDLER] = CK_HANDLER_FN(_slack_edit),
   [MS_CTRL_HANDLER] = CK_HANDLER_FN(_ctrl_click),
   [CK_ALTT_HANDLER] = CK_HANDLER_FN(_alt_t_new),
   [CK_MUTS_HANDLER] = CK_HANDLER_FN(MuteWithSound),

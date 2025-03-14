@@ -47,6 +47,11 @@
     {
       "path": "/home/qmk/qmk_firmware/keyboards/zsa/moonlander/keymaps/leep-frog/keymap.c",
       "alias": "mk"
+    },
+    {
+      "path": "/home/qmk/qmk_firmware/tests/leep_frog/leep_test.cpp",
+      "scheme": "file",
+      "alias": "t"
     }
   ]
 }

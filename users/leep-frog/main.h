@@ -20,6 +20,7 @@ enum custom_keycode_handlers {
   CK_RESET_HANDLER,
   KB_OFF_HANDLER,
   CK_EYE_HANDLER,
+  SLACK_EDIT_HANDLER,
   MS_CTRL_HANDLER,
   CK_ALTT_HANDLER,
   CK_MUTS_HANDLER,
@@ -35,7 +36,7 @@ enum custom_keycode_handlers {
   CK_OSM_SHIFT_HANDLER,
 
 #ifdef LEEP_TEST_MODE
-  // CK_TEST_CONFIRM is uesd by tests to confirm that the keyboard
+  // CK_TEST_CONFIRM is used by tests to confirm that the keyboard
   // is back in a default state
   CK_TEST_CONFIRM,
 #endif
@@ -54,6 +55,7 @@ enum custom_keycode_handlers {
 #define CK_RST CK(CK_RESET_HANDLER)
 #define KB_OFF CK(KB_OFF_HANDLER)
 #define CK_EYE CK(CK_EYE_HANDLER)
+#define SK_EDIT CK(SLACK_EDIT_HANDLER)
 #define MS_CTRL CK(MS_CTRL_HANDLER)
 #define CK_ALTT CK(CK_ALTT_HANDLER)
 #define CK_MUTS CK(CK_MUTS_HANDLER)
