@@ -38,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LAYOUT_69_ansi(
         KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,     KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          CK_VRSN,
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
-        SC_LSPO, TD_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
+        SC_LSPO, KC_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
         KC_LCBR,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RCBR,  CK_LOCK,
         KC_LCTL, KC_LALT,  TO_SHCT,         CK_SHFT,           TO_ALT,      TO_CTRL,       TO_SYMB,            TO_NAV,             KC_LEFT,  KB_OFF,  KC_RGHT),
 
@@ -59,7 +59,7 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
     [LR_ALT] = LAYOUT_69_ansi(
         AL(ESC), AL(1),    AL(2),    AL(3),   AL(4),   AL(5),   AL(6),    AL(7),   AL(8),   AL(9),   AL(0),    AL(MINS), AL(EQL),  AL(BSPC),         _______,
         AL(TAB), AL(Q),    AL(F4),   AL(E),   AL(R),   CK_ALTT, CK_PSTE,  CK_SATB, AL(I),   CK_ATB,  AL(P),    AL(LBRC), AL(RBRC), AL(BSLS),         _______,
-LSFT_T(AL(LPRN)),AL(A),    AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, AL(J),   AL(K),   AL(L),    AL(SCLN), RSFT_T(AL(RPRN)),AL(ENT),   _______,
+LSFT_T(AL(LPRN)),TD_A,     AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, AL(J),   AL(K),   AL(L),    AL(SCLN), RSFT_T(AL(RPRN)),AL(ENT),   _______,
         AL(LSFT),          AL(Z),    AL(X),   AL(C),   AL(V),   CL(LEFT), CL(LEFT),AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
         AL(LCTL),AL(LALT), AL(LGUI),          AL(TAB),        _______,         AL(ENTER),            AL(SPACE),          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
 

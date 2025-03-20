@@ -168,19 +168,14 @@ void TDOutlookReload(tap_dance_state_t *state, void *user_data) {
 
 void tda(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, true)) {
-        case SINGLE_HOLD:
+        case SINGLE_TAP:
             // Select all
             SEND_STRING(SS_RCTL("a"));
             break;
-        case DOUBLE_HOLD:
+        case DOUBLE_TAP:
             // Select all and copy
             SEND_STRING(SS_RCTL("ac"));
             SNG_COPY();
-            break;
-        default:
-            for (int i = 0; i < state->count; i++) {
-                register_code16(KC_A);
-            }
             break;
     }
 }

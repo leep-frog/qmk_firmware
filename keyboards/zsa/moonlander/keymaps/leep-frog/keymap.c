@@ -16,7 +16,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = ML_LAYOUT(
         CK_LOCK, KC_1, KC_2, KC_3, KC_4, KC_5, WS_LEFT,       KC_ESC,  KC_6, KC_7, KC_8,    KC_9,   KC_0,    KC_VOLU,
         _______, KC_Q, KC_W, KC_E, KC_R, KC_T, LGHT_ON,       LGHT_OF, TD_Y, TD_U, TD_I,    KC_O,   KC_P,    KC_VOLD,
-        SC_LSPO, TD_A, TD_S, KC_D, KC_F, KC_G, WS_LEFT,       CK_MCR1, KC_H, KC_J, KC_K,    KC_L,   TO_OTLK, SC_RSPC,
+        SC_LSPO, KC_A, TD_S, KC_D, KC_F, KC_G, WS_LEFT,       CK_MCR1, KC_H, KC_J, KC_K,    KC_L,   TO_OTLK, SC_RSPC,
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
                                                      BOTTOM_ROW,
 
@@ -61,7 +61,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
     [LR_ALT] = ML_LAYOUT(
         AL(EQL),  AL(1), AL(2),  AL(3),   AL(4),     AL(5),   RALT(WS_LEFT),        RALT(KC_ESC),  AL(6),   AL(7),   AL(8),    AL(9),   AL(0),    _______,
         AL(TAB),  AL(Q), AL(F4), AL(E),   AL(R),     CK_ALTT, KC_LEFT,              KC_RIGHT,      CK_PSTE, CK_SATB, AL(I),    CK_ATB,  AL(P),    AL(BSLS),
-LSFT_T(AL(LPRN)), AL(A), AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),        RALT(WS_RGHT), CK_UNBS, AL(J),   AL(K),    AL(L),   AL(SCLN), RSFT_T(AL(RPRN)),
+LSFT_T(AL(LPRN)), TD_A,  AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),        RALT(WS_RGHT), CK_UNBS, AL(J),   AL(K),    AL(L),   AL(SCLN), RSFT_T(AL(RPRN)),
         AL(LCBR), AL(Z), AL(X),  AL(C),   AL(V),     CL(LEFT),                                     AL(N),   AL(M),   AL(COMM), AL(DOT), AL(SLSH), AL(RCBR),
 
                                                                             BOTTOM_ROW,
