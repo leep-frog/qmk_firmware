@@ -1,5 +1,24 @@
 #pragma once
 
+// These are defined in the schematic diagram here: https://store-usa.arduino.cc/products/arduino-leonardo-with-headers
+// The value to use in QMK is the relevant PXX value without the 'P'
+#define LEONARDO_A0 F7
+#define LEONARDO_A1 F6
+#define LEONARDO_A2 F5
+#define LEONARDO_A3 F4
+#define LEONARDO_A4 F1
+#define LEONARDO_A5 F0
+
+#define LEONARDO_D2 D1
+#define LEONARDO_D4 D4
+
+// Custom debounce logic is implemented so we use this custom debounce value
+// (and set DEBOUNCE to 0 in config.h)
+#define LEEP_DEBOUNCE 20
+
+#define POWER_PIN_COUNT 2
+#define INPUT_PIN_COUNT 5
+
 typedef uint8_t direction_t;
 
 /*

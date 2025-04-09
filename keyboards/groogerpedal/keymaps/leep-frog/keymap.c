@@ -127,14 +127,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Layer used for combo definition
     [LR_ELLA] = LAYOUT_pedals(
 
-                KC_8,            /*    Forward front tap  */           KC_I,
-                KC_9,            /*    Slide to front     */           KC_J,
-                KC_T,            /*    Forward heel tap   */           KC_K,
+                KC_X,            /*    Forward front tap  */           KC_Y,
+                KC_X,            /*    Slide to front     */           KC_Y,
+                KC_X,            /*    Forward heel tap   */           KC_Y,
 
-        KC_0,    KC_1,    KC_2,   /* <--- Left Pedal       */ KC_A,    KC_B,    KC_C,
-        KC_3,             KC_4,   /*                       */ KC_D,             KC_E,
+        KC_X,    KC_X,    KC_X,   /* <--- Left Pedal       */ KC_Y,    KC_Y,    KC_Y,
+        KC_X,             KC_X,   /*                       */ KC_Y,             KC_Y,
                                   /*                       */
-        KC_5,    KC_6,    KC_7,   /*      Right Pedal ---> */ KC_F,    KC_G,    KC_H
+        KC_X,    KC_X,    KC_X,   /*      Right Pedal ---> */ KC_Y,    KC_Y,    KC_Y
     ),
 
     [LR_OUTLOOK] = LAYOUT_pedals(
@@ -143,7 +143,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,         /*    Slide to front     */           _______,
                 _______,         /*    Forward heel tap   */           _______,
 
-        _______, OL_DEL,  _______,/* <--- Left Pedal       */ _______, OL_UP,   _______,
+        // _______, OL_DEL,  _______,/* <--- Left Pedal       */ _______, OL_UP,   _______,
+        _______, KC_Z,    _______,/* <--- Left Pedal       */ _______, KC_Q,    _______,
         OL_UNDO,          KC_RSFT,/*                       */ OL_LEFT,          OL_RGHT,
                                   /*                       */
         _______, OL_MOVE, _______,/*      Right Pedal ---> */ _______, OL_DOWN, _______
@@ -170,18 +171,58 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   return true;
 }
 
-layer_state_t layer_state_set_user(layer_state_t state) {
+// layer_state_t layer_state_set_user(layer_state_t state) {
 
-  switch (get_highest_layer(state)) {
-    case LR_OUTLOOK:
-      // SEND_STRING(SS_RCTL(SS_RGUI(SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT))));
+//   switch (get_highest_layer(state)) {
+//     case LR_OUTLOOK:
+//       // SEND_STRING(SS_RCTL(SS_RGUI(SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT))));
+//       break;
+//   }
+
+//   return state;
+// }
+
+uint8_t direction_layers[DIR_END] = {
+  [DIR_HEEL_UP_S] = LR_ELLA,
+  [DIR_N] = LR_OUTLOOK,
+};
+
+uint8_t current_layer[POWER_PIN_COUNT] = {};
+
+// Activate different layer based on where other foot is!
+void handle_beam_state_change(uint8_t pedal_idx, direction_t from, direction_t to) {
+  // Layer the foot is coming from
+  uint8_t from_layer = direction_layers[from];
+
+  // Turn off if not in the base layer
+  bool should_turn_off = (from_layer != LR_BASE);
+
+  // Also, we don't want to turn off a layer that is being activated by the
+  // other foot!
+  for (uint8_t i = 0; i < POWER_PIN_COUNT; i++) {
+    if (i == pedal_idx) {
+      continue;
+    }
+
+    // If the layer being activated by the other foot is the same as the layer
+    // this foot is leaving, then we should not deactivate.
+    if (current_layer[i] == from_layer) {
+      should_turn_off = false;
       break;
+    }
   }
 
-  return state;
-}
+  // Turn off the old layer if relevant
+  if (should_turn_off) {
+    layer_off(from_layer);
+  }
 
-void handle_beam_state_change (uint8_t pedal_idx, direction_t from, direction_t to) {
-  // TODO: activate different layer based on where other foot is!
-  return;
+  // Turn on the layer
+  uint8_t to_layer = direction_layers[to];
+  if (to_layer != LR_BASE) {
+    layer_on(to_layer);
+  }
+
+  // Keep track of the layer that this pedal is activating
+  current_layer[pedal_idx] = to_layer;
 }

@@ -4,25 +4,6 @@
 #include "analog.h"
 #include "groogerpedal.h"
 
-// These are defined in the schematic diagram here: https://store-usa.arduino.cc/products/arduino-leonardo-with-headers
-// The value to use in QMK is the relevant PXX value without the 'P'
-#define LEONARDO_A0 F7
-#define LEONARDO_A1 F6
-#define LEONARDO_A2 F5
-#define LEONARDO_A3 F4
-#define LEONARDO_A4 F1
-#define LEONARDO_A5 F0
-
-#define LEONARDO_D2 D1
-#define LEONARDO_D4 D4
-
-// Custom debounce logic is implemented so we use this custom debounce value
-// (and set DEBOUNCE to 0 in config.h)
-#define LEEP_DEBOUNCE 20
-
-#define POWER_PIN_COUNT 2
-#define INPUT_PIN_COUNT 5
-
 static uint8_t power_pins[POWER_PIN_COUNT] = {
   LEONARDO_D2,
   LEONARDO_D4,
@@ -271,9 +252,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
         changed = true;
         pedal_beam_state->activated = false;
         // Clear the bit (take the AND of the negation)
-        direction_t from = current_matrix[j];
         current_matrix[j] &= (~(beam_path->matrix_row_bit));
-        handle_beam_state_change(j, from, current_matrix[j]);
       }
     }
   }
@@ -315,8 +294,10 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
     return changed;
   }
 
-  // send_word(pedal_state->beam_state);
+  // If we're here, then the beam state has officially changed
+  // send_word(new_beam_state);
   // SEND_STRING(" ");
+  handle_beam_state_change(pedal_beam_state_idx, old_beam_state, new_beam_state);
 
   // Iterate over all the beam paths
   for (uint8_t i = 0; i < num_beam_paths; i++) {
@@ -328,9 +309,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       changed = true;
       pedal_beam_state->activated = false;
       // Clear the bit (take the AND of the negation)
-      direction_t from = current_matrix[pedal_beam_state_idx];
       current_matrix[pedal_beam_state_idx] &= (~(beam_path->matrix_row_bit));
-      handle_beam_state_change(pedal_beam_state_idx, from, current_matrix[pedal_beam_state_idx]);
     }
 
     // Update the beam_path's state
@@ -349,9 +328,7 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       pedal_beam_state->activated_at = timer_read();
 
       // Activate the key
-      direction_t from = current_matrix[pedal_beam_state_idx];
       current_matrix[pedal_beam_state_idx] |= beam_path->matrix_row_bit;
-      handle_beam_state_change(pedal_beam_state_idx, from, current_matrix[pedal_beam_state_idx]);
 
       // If last state is same as first state, start at next index
       // Note: this implies that a `hold` beam_path can't have the same first and last state
