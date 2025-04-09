@@ -167,6 +167,14 @@ bool _eye_care(keyrecord_t *record, custom_keycode_value_t *_) {
     return false;
 }
 
+bool _toggle_shift(keyrecord_t *record, custom_keycode_value_t *_) {
+  // Toggle on unpress so we don't need to add extra keycode for toggle shift ignore
+  if (!record->event.pressed) {
+    ToggleShift();
+  }
+  return false;
+}
+
 static uint16_t ck_timer;
 
 void _ck_timer(bool pressed) {
@@ -312,6 +320,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [SLACK_EDIT_HANDLER] = CK_HANDLER_FN(_slack_edit),
   [MS_CTRL_HANDLER] = CK_HANDLER_FN(_ctrl_click),
   [CK_ALTT_HANDLER] = CK_HANDLER_FN(_alt_t_new),
+  [CK_TGL_SHIFT_HANDLER] = CK_HANDLER_FN(_toggle_shift),
   [CK_MUTS_HANDLER] = CK_HANDLER_FN(MuteWithSound),
   [CK_MUT_HANDLER] = CK_HANDLER_FN(MuteWithoutSound),
   [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
