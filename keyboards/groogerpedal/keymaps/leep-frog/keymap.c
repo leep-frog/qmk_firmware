@@ -16,7 +16,7 @@
 #include "groogerpedal.h"
 
 enum layers {
-  LR_BASE,
+  LR_CODING,
   LR_ELLA,
   LR_OUTLOOK,
 };
@@ -42,17 +42,17 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
 * Combos *
 **********/
 
-enum combos {
-  COMBO_LR_BASE,
-  COMBO_LR_OUTLOOK,
-};
+// enum combos {
+  // COMBO_LR_BASE,
+  // COMBO_LR_OUTLOOK,
+// };
 
-const uint16_t PROGMEM base_combo[] = {KC_1, KC_B, COMBO_END};
-const uint16_t PROGMEM outlook_combo[] = {KC_1, KC_G, COMBO_END};
+// const uint16_t PROGMEM base_combo[] = {KC_1, KC_B, COMBO_END};
+// const uint16_t PROGMEM outlook_combo[] = {KC_1, KC_G, COMBO_END};
 
 combo_t key_combos[] = {
-  [COMBO_LR_BASE] = COMBO(base_combo, TO(LR_BASE)),
-  [COMBO_LR_OUTLOOK] = COMBO(outlook_combo, TO(LR_OUTLOOK)),
+  // [COMBO_LR_BASE] = COMBO(base_combo, TO(LR_BASE)),
+  // [COMBO_LR_OUTLOOK] = COMBO(outlook_combo, TO(LR_OUTLOOK)),
 };
 
 /*************
@@ -96,6 +96,7 @@ uint16_t Alt_keycodes[] = {
 **************/
 
 // #define LR_ELLA LR_BASE // Needed for below include
+// #define
 #include "users/leep-frog/v2/leep_index_v2.c"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -112,16 +113,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     *  |                                       |                                       |
     *  |*******************************************************************************|
     */
-    [LR_BASE] = LAYOUT_pedals(
+    [LR_CODING] = LAYOUT_pedals(
 
                 KC_8,            /*    Forward front tap  */           KC_I,
                 KC_9,            /*    Slide to front     */           KC_J,
                 KC_T,            /*    Forward heel tap   */           KC_K,
 
-        KC_0,    KC_1,    KC_2,   /* <--- Left Pedal       */ KC_A,    KC_B,    KC_C,
+        KC_0,    KC_1,    KC_2,   /* <--- Left Pedal       */ KC_A,    CK_TABF, KC_C,
         KC_3,             KC_4,   /*                       */ KC_D,             KC_E,
                                   /*                       */
-        KC_5,    KC_6,    KC_7,   /*      Right Pedal ---> */ KC_F,    KC_G,    KC_H
+        KC_5,    KC_6,    KC_7,   /*      Right Pedal ---> */ KC_F,    CL(T),   KC_H
     ),
 
     // Layer used for combo definition
@@ -195,7 +196,7 @@ void handle_beam_state_change(uint8_t pedal_idx, direction_t from, direction_t t
   uint8_t from_layer = direction_layers[from];
 
   // Turn off if not in the base layer
-  bool should_turn_off = (from_layer != LR_BASE);
+  bool should_turn_off = (from_layer != LR_CODING);
 
   // Also, we don't want to turn off a layer that is being activated by the
   // other foot!
@@ -219,7 +220,7 @@ void handle_beam_state_change(uint8_t pedal_idx, direction_t from, direction_t t
 
   // Turn on the layer
   uint8_t to_layer = direction_layers[to];
-  if (to_layer != LR_BASE) {
+  if (to_layer != LR_CODING) {
     layer_on(to_layer);
   }
 
