@@ -24,7 +24,7 @@ static const uint16_t analog_press_threshold = 500;
 // Number of milliseconds allowed between each state change before
 // each beam path resets.
 #ifndef BEAM_STATE_TERM
-#    define BEAM_STATE_TERM 300
+#    define BEAM_STATE_TERM 500
 #endif
 
 
