@@ -13,6 +13,8 @@
 #include "users/leep-frog/v2/leep_workspace_v2.h"
 #include "users/leep-frog/v2/leep_tap_dance_v2.h"
 
+#include "groogerpedal.h"
+
 enum layers {
   LR_BASE,
   LR_ELLA,
@@ -177,4 +179,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   }
 
   return state;
+}
+
+void handle_beam_state_change (uint8_t pedal_idx, direction_t from, direction_t to) {
+  // TODO: activate different layer based on where other foot is!
+  return;
 }

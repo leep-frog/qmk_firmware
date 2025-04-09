@@ -2,6 +2,7 @@
 #include "quantum.h"
 #include "matrix.h"
 #include "analog.h"
+#include "groogerpedal.h"
 
 // These are defined in the schematic diagram here: https://store-usa.arduino.cc/products/arduino-leonardo-with-headers
 // The value to use in QMK is the relevant PXX value without the 'P'
@@ -99,8 +100,6 @@ Therefore, the following mappings exist:
    7   |  Invalid  |  X  |  X  |  X  |
 
 */
-
-typedef uint8_t direction_t;
 
 #define MIDDLE_BEAM 1
 #define LEFT_BEAM 2
@@ -227,6 +226,10 @@ static pedal_state_t pedal_states[POWER_PIN_COUNT] = {
 static uint8_t current_power_pin = 0;
 static uint16_t power_pin_change_time = 0;
 
+__attribute__ ((weak)) void handle_beam_state_change (uint8_t pedal_idx, direction_t from, direction_t to) {
+  return;
+}
+
 void matrix_init_custom(void) {
   num_beam_paths = sizeof(beam_paths) / sizeof(beam_path_t);
 
@@ -345,11 +348,12 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       // TODO: unset debounce entirely (from QMK's perspective) since we do debounce handling in update_beam_state
       bool enough_time_elapsed = timer_elapsed(pedal_beam_state->activated_at) > ACTIVATE_FOR;
       if (!beam_path->hold && pedal_beam_state->activated && enough_time_elapsed) {
-        // TODO: callback for [de]activation?
         changed = true;
         pedal_beam_state->activated = false;
         // Clear the bit (take the AND of the negation)
+        direction_t from = current_matrix[j];
         current_matrix[j] &= (~(beam_path->matrix_row_bit));
+        handle_beam_state_change(j, from, current_matrix[j]);
       }
     }
   }
@@ -404,7 +408,9 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       changed = true;
       pedal_beam_state->activated = false;
       // Clear the bit (take the AND of the negation)
+      direction_t from = current_matrix[pedal_beam_state_idx];
       current_matrix[pedal_beam_state_idx] &= (~(beam_path->matrix_row_bit));
+      handle_beam_state_change(pedal_beam_state_idx, from, current_matrix[pedal_beam_state_idx]);
     }
 
     // Update the beam_path's state
@@ -423,7 +429,9 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
       pedal_beam_state->activated_at = timer_read();
 
       // Activate the key
+      direction_t from = current_matrix[pedal_beam_state_idx];
       current_matrix[pedal_beam_state_idx] |= beam_path->matrix_row_bit;
+      handle_beam_state_change(pedal_beam_state_idx, from, current_matrix[pedal_beam_state_idx]);
 
       // If last state is same as first state, start at next index
       // Note: this implies that a `hold` beam_path can't have the same first and last state
@@ -438,24 +446,24 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
   return changed;
 }
 
-bool matrix_scan_custom_regular(matrix_row_t current_matrix[]) {
-  bool changed = false;
+// bool matrix_scan_custom_regular(matrix_row_t current_matrix[]) {
+//   bool changed = false;
 
-  // Iterate over all the pedals
-  uint16_t matrix_row_bit = 1;
-  for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
+//   // Iterate over all the pedals
+//   uint16_t matrix_row_bit = 1;
+//   for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
 
-    bool pressed = analogReadPin(input_pins[i]) < analog_press_threshold;
-    if ((!!(current_matrix[0] & matrix_row_bit)) != (pressed)) {
-      // Take the XOR of the bit (which always flip that bit)
-      current_matrix[0] ^= matrix_row_bit;
-      changed = true;
-    }
-    matrix_row_bit <<= 1;
-  }
+//     bool pressed = analogReadPin(input_pins[i]) < analog_press_threshold;
+//     if ((!!(current_matrix[0] & matrix_row_bit)) != (pressed)) {
+//       // Take the XOR of the bit (which always flip that bit)
+//       current_matrix[0] ^= matrix_row_bit;
+//       changed = true;
+//     }
+//     matrix_row_bit <<= 1;
+//   }
 
-  return changed;
-}
+//   return changed;
+// }
 
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
   // return matrix_scan_custom_regular(current_matrix);
