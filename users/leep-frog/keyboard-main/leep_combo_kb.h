@@ -14,8 +14,8 @@ enum combos {
     JL_EQUALS, KL_EQUALS,
     DF_QUOTE,
     SD_TICK,
-    FSHIFT_OH_LEFT,
-    JSPACE_OH_RIGHT,
+    FENTER_OH_LEFT,
+    JSHIFT_OH_RIGHT,
     // J_SEMICLN is still available,
     // SF is still an available combo slot.
     COMBO_LENGTH,
@@ -28,8 +28,8 @@ const uint16_t PROGMEM jl_combo[] = {KC_L, KC_J, COMBO_END};
 const uint16_t PROGMEM kl_combo[] = {KC_L, KC_K, COMBO_END};
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sd_combo[] = {KC_S, KC_D, COMBO_END};
-const uint16_t PROGMEM fshift_combo[] = {KC_F, KC_RSFT, COMBO_END};
-const uint16_t PROGMEM jspace_combo[] = {KC_J, TO_SYMB, COMBO_END};
+const uint16_t PROGMEM fenter_combo[] = {KC_F, TO_SYMB, COMBO_END};
+const uint16_t PROGMEM jshift_combo[] = {KC_J, KC_RSFT, COMBO_END};
 
 combo_t key_combos[COMBO_LENGTH] = {
     // J+I = Escape
@@ -45,7 +45,7 @@ combo_t key_combos[COMBO_LENGTH] = {
     // S+D = Tick (`)
     [SD_TICK] = COMBO(sd_combo, KC_GRAVE),
     // F+Enter = LH layer
-    [FSHIFT_OH_LEFT] = COMBO_ACTION(fshift_combo),
+    [FENTER_OH_LEFT] = COMBO_ACTION(fenter_combo),
     // J+Space = RH layer
-    [JSPACE_OH_RIGHT] = COMBO_ACTION(jspace_combo),
+    [JSHIFT_OH_RIGHT] = COMBO_ACTION(jshift_combo),
 };

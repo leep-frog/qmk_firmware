@@ -11,5 +11,5 @@ void shift_activation_fn(bool activated) {
 }
 
 leep_osm_config_t osm_configs[1] = {
-  OSM_CONFIG(CK_SHFT, shift_activation_fn),
+  OSM_CONFIG(CK_SHFT_OLD, shift_activation_fn),
 };

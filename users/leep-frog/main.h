@@ -70,7 +70,7 @@ enum custom_keycode_handlers {
 #define CK_UNBS CK(CK_UNBS_HANDLER)
 #define CK_LOGS CK(CK_LOGS_HANDLER)
 #define CK_VRSN CK(CK_VERSION_HANDLER)
-#define CK_SHFT CK(CK_OSM_SHIFT_HANDLER)
+#define CK_SHFT_OLD CK(CK_OSM_SHIFT_HANDLER)
 
 #ifdef LEEP_TEST_MODE
 extern char test_message[];

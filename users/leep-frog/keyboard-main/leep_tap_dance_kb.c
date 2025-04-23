@@ -453,7 +453,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
     // Symbol layer
-    [TDK_SYMB_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_SYMB),
+    [TDK_SYMB_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_ENTER, LR_SYMB),
     // Tab shift
     [TDK_TAB_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_TAB, KC_RSFT),
     // Scroll left layer
@@ -473,6 +473,10 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_ELLA_MODE] = ACTION_TAP_DANCE_FN(ella_mode),
     // CR Description
     [TDK_CR_DESC] = ACTION_TAP_DANCE_FN(cr_desc_tap_dance),
+    // Symbol layer from right hand only
+    [TDK_OL_RTSY] = LEEP_TD_CLICK_KC_HOLD_LAYER(OL_RGHT, LR_SYMB),
+    // Shift
+    [TDK_SHFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_SPACE, KC_RSFT),
 };
 
 bool IsToggleShiftTapDance(uint16_t keycode) {
