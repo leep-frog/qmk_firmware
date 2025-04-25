@@ -60,8 +60,6 @@ enum td_keys { // prefix TDK
     TDK_TO_SHORTCUT,
     TDK_ELLA_MODE,
     TDK_CR_DESC,
-    TDK_OL_RTSY,
-    TDK_SHFT,
 };
 
 // Custom keycode enums
