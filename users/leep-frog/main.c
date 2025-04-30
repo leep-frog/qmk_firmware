@@ -303,6 +303,11 @@ bool ck_noop(keyrecord_t *_k, custom_keycode_value_t *_c) { return false; }
 
 #define CK_NOOP() CK_HANDLER_FN(ck_noop)
 
+#define GCS_1 "cig"
+#define GCS_2 "-cmwea"
+#define GCS_3 "-prod"
+#define GCS_4 "-1"
+
 custom_keycode_handler_t custom_keycode_handlers[] = {
   // Fn handlers
   [TO_ALT_HANDLER] = CK_HANDLER_FN(ToAlt_run),
@@ -331,6 +336,7 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [URL_CPY_HANDLER] = CK_HANDLER_STRING(FOCUS_TAB_STRING() SS_RCTL("c")),
   [OL_TDAY_HANDLER] = CK_HANDLER_STRING(OL_TDAY_STRING()),
   [CK_VERSION_HANDLER] = CK_HANDLER_STRING(LEEP_VERSION),
+  [CK_DOWNLOAD_GCS] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_END) "?userProject=" GCS_1 GCS_2 GCS_3 GCS_4 SS_TAP(X_ENTER)),
   // Noops
   [CK_OSM_SHIFT_HANDLER] = CK_NOOP(), // Handled by leep_osm*.[ch] files
 };

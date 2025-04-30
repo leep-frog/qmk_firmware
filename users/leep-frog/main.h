@@ -34,6 +34,7 @@ enum custom_keycode_handlers {
   URL_CPY_HANDLER,
   OL_TDAY_HANDLER,
   CK_VERSION_HANDLER,
+  CK_DOWNLOAD_GCS,
   CK_OSM_SHIFT_HANDLER,
 
 #ifdef LEEP_TEST_MODE
@@ -70,6 +71,7 @@ enum custom_keycode_handlers {
 #define CK_UNBS CK(CK_UNBS_HANDLER)
 #define CK_LOGS CK(CK_LOGS_HANDLER)
 #define CK_VRSN CK(CK_VERSION_HANDLER)
+#define CK_GCS CK(CK_DOWNLOAD_GCS)
 #define CK_SHFT CK(CK_OSM_SHIFT_HANDLER)
 
 #ifdef LEEP_TEST_MODE
