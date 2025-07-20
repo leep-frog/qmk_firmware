@@ -178,8 +178,6 @@ TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
     TestDriver driver;
     InSequence s;
 
-    uint16_t td_a = TD_A;
-
     LEEP_KEY_ROW(0, 4,
       KC_H,
       KC_I,
@@ -282,10 +280,10 @@ TEST_F(LeepFrog, Osm_Hold) {
     TestDriver driver;
     InSequence s;
 
-    uint16_t td_a = TD_A;
+    uint16_t td_s = TD_S;
 
     LEEP_KEY_ROW(0, 7,
-      td_a, // Tap dance key
+      td_s, // Tap dance key
       KC_H, // Regular key
       KC_I, // Regular key
       KC_D, // Combo key
@@ -345,13 +343,13 @@ TEST_F(LeepFrog, Osm_Hold) {
     run_one_scan_loop();
 
     // Press a tap dance key
-    k_td_a.press();
+    k_td_s.press();
     run_one_scan_loop();
 
-    k_td_a.release();
+    k_td_s.release();
     run_one_scan_loop();
 
-    EXPECT_REPORT(driver, (KC_RSFT, KC_A));
+    EXPECT_REPORT(driver, (KC_RSFT, KC_S));
     EXPECT_REPORT(driver, (KC_RSFT));
     idle_for(TAPPING_TERM);
 
@@ -389,10 +387,10 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     TestDriver driver;
     InSequence s;
 
-    uint16_t td_a = TD_A;
+    uint16_t td_s = TD_S;
 
     LEEP_KEY_ROW(0, 7,
-      td_a, // Tap dance key
+      td_s, // Tap dance key
       KC_H, // Regular key
       KC_I, // Regular key
       KC_D, // Combo key
@@ -462,13 +460,13 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     run_one_scan_loop();
 
     // Press a tap dance key
-    k_td_a.press();
+    k_td_s.press();
     run_one_scan_loop();
 
-    k_td_a.release();
+    k_td_s.release();
     run_one_scan_loop();
 
-    EXPECT_REPORT(driver, (KC_RSFT, KC_A));
+    EXPECT_REPORT(driver, (KC_RSFT, KC_S));
     EXPECT_REPORT(driver, (KC_RSFT));
     idle_for(TAPPING_TERM);
 
