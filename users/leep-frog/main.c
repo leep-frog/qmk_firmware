@@ -235,12 +235,31 @@ typedef void (*processor_action_t)(bool activated);
 
 #define PROCESSOR_MACRO_STRING(num, e_start, prefix, max_string_size, dflt, ...) PROCESSOR_MACRO(char, num, e_start, prefix, [max_string_size], dflt, __VA_ARGS__)
 
-void one_hand_layer_change(bool activated) {
+static uint32_t oh_timer; // Only have one since left and right one-hand layers can't be active at the same time
+void one_hand_layer_change(bool activated, char *press_key) {
+  // Simple activation logic
   AltLayerDeactivationHandler(activated);
   if (activated) {
     leep_acl = 0;
     tap_code16(KC_ACL2);
   }
+
+  // Logic to determine if simple modifier + key was intended (e.g. shift+F)
+  if (activated) {
+    oh_timer = timer_read();
+  } else if (timer_elapsed32(oh_timer) < TAPPING_TERM) {
+    // If the one-hand layer was activated and then deactivated very quickly
+    // then likely was trying to just press the key with the modifier
+    SEND_STRING(press_key);
+  }
+}
+
+void left_hand_layer_change(bool activated) {
+  one_hand_layer_change(activated, "F");
+}
+
+void right_hand_layer_change(bool activated) {
+  one_hand_layer_change(activated, "4");
 }
 
 void ctrl_alt_layer(bool activated) {
@@ -369,9 +388,9 @@ void keyboard_post_init_user(void) {
     // Deactivate alt when exiting navigation layer.
     SET_LAYER_HANDLER(LR_NAVIGATION, AltLayerDeactivationHandler);
     // Left one-hand layer changes.
-    SET_LAYER_HANDLER(LR_ONE_HAND_LEFT, one_hand_layer_change);
+    SET_LAYER_HANDLER(LR_ONE_HAND_LEFT, left_hand_layer_change);
     // Right one-hand layer changes.
-    SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, one_hand_layer_change);
+    SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, right_hand_layer_change);
     // Start/end ctrl-alt layer on layer on/off.
     SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
     // Deactivate everything when going to safe layer.

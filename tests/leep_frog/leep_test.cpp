@@ -1138,3 +1138,163 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
 
     CONFIRM_RESET();
 }
+
+/***********************
+* One hand layer tests *
+************************/
+
+TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(0, 3,
+      to_symb,
+      KC_J,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      KC_1,
+      KC_2,
+      KC_3
+    )
+
+    // Activate the combo one hand right layer
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_KC_J.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(TAPPING_TERM + COMBO_TERM - 3);
+
+    // Release the combo one hand right layer
+    k_KC_J.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_to_symb.release();
+    EXPECT_REPORT(driver, (KC_4)); // This should be 4 because it was quick
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, OneHandLayer_Right_LongOneHandLayerDoesNotPressKey) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(0, 3,
+      to_symb,
+      KC_J,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      KC_1,
+      KC_2,
+      KC_3
+    )
+
+    // Activate the combo one hand right layer
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_KC_J.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(TAPPING_TERM + COMBO_TERM);
+
+    // Release the combo one hand right layer
+    k_KC_J.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
+    TestDriver driver;
+    InSequence s;
+
+    LEEP_KEY_ROW(0, 3,
+      KC_RSFT,
+      KC_F,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      KC_1,
+      KC_2,
+      KC_3
+    )
+
+    // Activate the combo one hand left layer
+    k_KC_RSFT.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_KC_F.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(TAPPING_TERM + COMBO_TERM - 3);
+
+    // Release the combo one hand left layer
+    k_KC_F.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_KC_RSFT.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_F)); // This is F because it was quick
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
+    TestDriver driver;
+    InSequence s;
+
+    LEEP_KEY_ROW(0, 3,
+      KC_RSFT,
+      KC_F,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      KC_1,
+      KC_2,
+      KC_3
+    )
+
+    // Activate the combo one hand left layer
+    k_KC_RSFT.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_KC_F.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(TAPPING_TERM + COMBO_TERM);
+
+    // Release the combo one hand left layer
+    k_KC_F.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+    k_KC_RSFT.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
