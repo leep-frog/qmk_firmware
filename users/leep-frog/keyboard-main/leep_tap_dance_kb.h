@@ -25,6 +25,9 @@ bool IsToggleShiftTapDance(uint16_t keycode);
 #define TD_U TD(TDK_U)
 #define TD_V TD(TDK_V)
 #define TD_Y TD(TDK_Y)
+#define TD_LCBR TD(TDK_LEFT_BRACKET_SHIFT)
+#define TD_RCBR TD(TDK_RIGHT_BRACKET_SHIFT)
+
 #define OH_COPY TD(TDK_OH_COPY)
 #define OH_PSTE TD(TDK_OH_PASTE)
 #define TO_SCRL TD(TDK_SCROLL_LEFT)

@@ -473,6 +473,10 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_ELLA_MODE] = ACTION_TAP_DANCE_FN(ella_mode),
     // CR Description
     [TDK_CR_DESC] = ACTION_TAP_DANCE_FN(cr_desc_tap_dance),
+    // Left bracket shift
+    [TDK_LEFT_BRACKET_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_LCBR, KC_LSFT),
+    // Right bracket shift
+    [TDK_RIGHT_BRACKET_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_RCBR, KC_RSFT),
 };
 
 bool IsToggleShiftTapDance(uint16_t keycode) {

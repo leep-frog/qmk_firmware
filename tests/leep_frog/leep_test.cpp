@@ -731,6 +731,83 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     CONFIRM_RESET();
 }
 
+TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_KC) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t td_lcbr = TD_LCBR;
+    LEEP_KEY_ROW(0, 3,
+      td_lcbr,
+      KC_A,
+      ck_test
+    )
+
+    // LEEP_KEY_ROW(LR_SHORTCUTS, 3,
+    //   TK_0,
+    //   KC_B,
+    //   TK_1
+    // )
+
+    // Single tap dance just presses the key.
+    k_td_lcbr.press();
+    run_one_scan_loop();
+    k_td_lcbr.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_LEFT_BRACKET));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+    idle_for(TAPPING_TERM);
+
+    CONFIRM_RESET();
+
+    // Interrupted tap dance
+    k_td_lcbr.press();
+    run_one_scan_loop();
+
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_A));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    run_one_scan_loop();
+
+    k_td_lcbr.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+    idle_for(TAPPING_TERM);
+
+    CONFIRM_RESET();
+
+    // Interrupted tap dance with inter-woven release
+    k_td_lcbr.press();
+    run_one_scan_loop();
+
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_A));
+    run_one_scan_loop();
+
+    k_td_lcbr.release();
+    EXPECT_REPORT(driver, (KC_A));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+    idle_for(TAPPING_TERM);
+
+    CONFIRM_RESET();
+}
+
 /****************
 * Holding tests *
 *****************/
