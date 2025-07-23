@@ -453,7 +453,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
     // Symbol layer (separate left and right in case want different key on press)
-    [TDK_SYMB_LAYER_LEFT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_SYMB),
+    [TDK_SYMB_LAYER_LEFT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_ENTER, LR_SYMB),
     [TDK_SYMB_LAYER_RIGHT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_SYMB),
     // Tab shift
     [TDK_TAB_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_TAB, KC_RSFT),
