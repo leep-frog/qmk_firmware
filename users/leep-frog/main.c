@@ -255,7 +255,7 @@ void one_hand_layer_change(bool activated, char *press_key) {
 }
 
 void left_hand_layer_change(bool activated) {
-  one_hand_layer_change(activated, "F");
+  one_hand_layer_change(activated, "/");
 }
 
 void right_hand_layer_change(bool activated) {
