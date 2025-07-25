@@ -52,6 +52,11 @@
       "path": "/home/qmk/qmk_firmware/tests/leep_frog/leep_test.cpp",
       "scheme": "file",
       "alias": "t"
+    },
+    {
+      "path": "/home/qmk/qmk_firmware/users/leep-frog/main.c",
+      "scheme": "file",
+      "alias": "m"
     }
   ]
 }

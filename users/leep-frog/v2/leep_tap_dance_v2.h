@@ -20,9 +20,11 @@ typedef union {
     uint16_t td_int;
     // TODO: Make this a pointer to save space
     char td_string[13];
+    bool td_bool;
 } leep_td_value_t;
 
 #define LEEP_TD_INT(i) { .td_int = i }
+#define LEEP_TD_BOOL(b) { .td_bool = b }
 #define LEEP_TD_STRING(s) { .td_string = s "\0" }
 #define LEEP_TD_NOVAL() LEEP_TD_INT(0)
 
