@@ -11,9 +11,9 @@ static void end_tap_dance(bool pressed) {
         // Pressed is used by preprocess_tap_dance and we need it to be true, otherwise nothing happens.
         // If statement earlier ensures this.
         .pressed = pressed,
-        // Key isn't used by preprocess_tap_dacne, so it can be anything. This value was just copy and pasted from tmk_core/common/keyboard.h
+        // Key isn't used by preprocess_tap_dance, so it can be anything. This value was just copy and pasted from tmk_core/common/keyboard.h
         .key = (keypos_t){.row = 255, .col = 255},
-        // Time isn't used by preprocess_tap_dacne, so it can be anything.
+        // Time isn't used by preprocess_tap_dance, so it can be anything.
         .time = 0,
     };
     keyrecord_t leep_record = {.event = leep_event};
@@ -45,7 +45,7 @@ void internal_process_combo_event(uint16_t combo_index, bool pressed) {
     // ensure any open tap dances are properly terminated, we explicitly end
     // them here.
     // Specific error that this fixes:
-    // - Press tap dance key (e.g. "i")
+    // - Press tap dance key (e.g. KC_I)
     // - Before tap dance termination, activate combo that runs COMBO_ACTION (e.g. "DF_QUOTE")
     //   (note this isn't an issue for other combos that just run COMBO(...))
     // - Combo action will execute before tap dance does resulting in ("i) even
