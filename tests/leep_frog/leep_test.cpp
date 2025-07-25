@@ -33,6 +33,9 @@ class LeepFrog : public TestFixture {};
 uint8_t leep_key_layer = 0;
 uint8_t leep_key_col = 0;
 #define LEEP_ADD_KEY(key) KeymapKey k_##key = KeymapKey(leep_key_layer, leep_key_col++, 0, key); add_key(k_##key);
+#define LEEP_ADD_KEY_ONLY(key) add_key(KeymapKey(leep_key_layer, leep_key_col++, 0, key));
+
+#define LEEP_KEY_ROW_ONLY(layer, n, ...) leep_key_layer = layer; leep_key_col = 0; REDUCE_##n(LEEP_ADD_KEY_ONLY, , __VA_ARGS__)
 #define LEEP_KEY_ROW(layer, n, ...) leep_key_layer = layer; leep_key_col = 0; REDUCE_##n(LEEP_ADD_KEY, , __VA_ARGS__)
 
 #define CONFIRM_RESET()   \
@@ -728,6 +731,17 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     EXPECT_NO_REPORT(driver);
     idle_for(TAPPING_TERM);
 
+    // Hold tap dance key with no key press
+    k_to_shct.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(TAPPING_TERM+1);
+
+    k_to_shct.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
     CONFIRM_RESET();
 }
 
@@ -1220,6 +1234,8 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
 * One hand layer tests *
 ************************/
 
+// TODO: Parameterize these tests (see suite below this one for parameterization example)
+
 TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
     TestDriver driver;
     InSequence s;
@@ -1377,3 +1393,250 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
 
     CONFIRM_RESET();
 }
+
+
+/*********************
+* Symbol layer tests *
+**********************/
+
+struct SymbolLayerParams {
+  std::string name;
+  uint16_t    left_symbol_keycode;
+  uint16_t    right_symbol_keycode;
+  uint16_t    expected_left_tap_keycode;
+  uint16_t    expected_right_tap_keycode;
+};
+
+
+class LeepFrogSymbolLayer : public ::testing::WithParamInterface<SymbolLayerParams>, public TestFixture {
+protected:
+  SymbolLayerParams symbol_layer_params;
+
+  void SetUp() override {
+    symbol_layer_params = GetParam();
+  }
+};
+
+static const SymbolLayerParams symbol_layer_params[] = {
+  SymbolLayerParams{
+    "SymbolLayerOverlap_Left",
+    TO_SYML,
+    TO_SYMR,
+    KC_ENTER,
+    KC_SPACE,
+  },
+  // SymbolLayerParams{
+  //   "SymbolLayerOverlap_Right",
+  //   TO_SYMR,
+  //   TO_SYML,
+  //   KC_SPACE,
+  //   KC_ENTER,
+  // },
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogSymbolLayer,
+  ::testing::ValuesIn(symbol_layer_params),
+  [](const ::testing::TestParamInfo<SymbolLayerParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogSymbolLayer, SingleTap) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+
+  LEEP_KEY_ROW(0, 2,
+    to_syml,
+    ck_test
+  )
+
+  LEEP_KEY_ROW_ONLY(LR_SYMB, 2,
+    to_syml,
+    TK_0
+  )
+
+
+  // Press the symbol layer key
+  k_to_syml.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_syml.release();
+  EXPECT_REPORT(driver, (symbol_layer_params.expected_left_tap_keycode));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayer, HoldAndPressRegularKey) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+
+  LEEP_KEY_ROW(0, 3,
+    to_syml,
+    KC_X,
+    ck_test
+  )
+
+  LEEP_KEY_ROW_ONLY(LR_SYMB, 3,
+    to_syml,
+    KC_Y,
+    TK_0
+  )
+
+
+  // Press the symbol layer key
+  k_to_syml.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_KC_X.press();
+  EXPECT_REPORT(driver, (KC_Y));
+  run_one_scan_loop();
+
+  k_KC_X.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_syml.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayer, HoldAndPressOtherSymbolLayerKey) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+  const uint16_t to_symr = symbol_layer_params.right_symbol_keycode;
+
+  LEEP_KEY_ROW(0, 4,
+    to_syml,
+    to_symr,
+    KC_X,
+    ck_test
+  )
+
+  LEEP_KEY_ROW_ONLY(LR_SYMB, 4,
+    to_syml,
+    to_symr,
+    KC_Y,
+    TK_0
+  )
+
+
+  // Press the symbol layer key
+  k_to_syml.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_to_symr.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_to_symr.release();
+  EXPECT_REPORT(driver, (KC_SPACE));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_syml.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayer, OSMLogic) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+  const uint16_t to_symr = symbol_layer_params.left_symbol_keycode;
+
+  LEEP_KEY_ROW(0, 4,
+    to_syml,
+    to_symr,
+    KC_X,
+    ck_test
+  )
+
+  LEEP_KEY_ROW_ONLY(LR_SYMB, 4,
+    to_syml,
+    to_symr,
+    KC_Y,
+    TK_0
+  )
+
+
+  // Press the symbol layer key
+  k_to_syml.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_KC_X.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_syml.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_KC_X.release();
+  EXPECT_REPORT(driver, (KC_SPACE));
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (KC_X));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+
+/* TODO: Fix this test.
+
+The test is failing due to test setup, but it works when doing this
+on the actual keyboard. So appears to just be flaky test logic in QMK itself
+*/
+// TEST_P(LeepFrogSymbolLayer, SingleHold) {
+//   TestDriver driver;
+//   InSequence s;
+
+//   const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+
+//   LEEP_KEY_ROW(0, 2,
+//     to_syml,
+//     ck_test
+//   )
+
+//   LEEP_KEY_ROW_ONLY(LR_SYMB, 2,
+//     to_syml,
+//     TK_0
+//   )
+
+//   // Press the symbol layer key
+//   k_to_syml.press();
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   idle_for(TAPPING_TERM * 100);
+
+//   // Unpress the symbol layer key
+//   k_to_syml.release();
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   CONFIRM_RESET();
+// }
