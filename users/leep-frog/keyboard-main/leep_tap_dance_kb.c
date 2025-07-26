@@ -418,77 +418,10 @@ void pinky_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_va
   }
 }
 
-/********************************************************************************
-*Code for symbol layer key tap dances (relevant for multiple symbol key logic) *
-*********************************************************************************/
-
-// typedef struct {
-//     bool symb_layer_was_active;
-//     uint16_t press_keycode;
-//     // This is KC_SPACE for both, so don't add extra memory
-//     // uint16_t symb_layer_press_keycode;
-// } symb_layer_info_t;
-
-// // Fine to just share a single variable for both left and right
-// // but if issues arise, then make separate variables for each
-// static symb_layer_info_t symb_layer_info_left = {
-//     .symb_layer_was_active = false,
-//     .press_keycode = KC_TAB,
-// };
-// static symb_layer_info_t symb_layer_info_right = {
-//     .symb_layer_was_active = false,
-//     .press_keycode = KC_SPACE,
-// };
-
-// static const uint16_t symb_layer_press_keycode = KC_SPACE;
-
-// void leep_kc_layer_start_fn_symb(tap_dance_state_t *state, bool press, leep_td_value_t *hv) {
-
-//     symb_layer_info_t *symb_layer_info = hv->td_bool ? &symb_layer_info_left : &symb_layer_info_right;
-
-//     // Set symb_layer_was_active on each initial press
-//     if (press) {
-//         symb_layer_info->symb_layer_was_active = (LeepHighestLayer == LR_SYMB);
-//     }
-
-//     // If symbol layer is not active, then proceed as normal
-//     if (!symb_layer_info->symb_layer_was_active) {
-//         leep_td_value_t symb_layer_value = LEEP_TD_INT(LR_SYMB);
-//         leep_kc_layer_start_fn(state, press, &symb_layer_value);
-//         return;
-//     }
-
-//     // Otherwise, just treat as the space key
-//     if (press) {
-//         register_code16(symb_layer_press_keycode);
-//     } else {
-//         unregister_code16(symb_layer_press_keycode);
-//     }
-// }
-
-// void leep_kc_press_fn_symb(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
-
-//     symb_layer_info_t *symb_layer_info = hv->td_bool ? &symb_layer_info_left : &symb_layer_info_right;
-
-//     // If symbol layer is not active, then proceed as normal
-//     if (!symb_layer_info->symb_layer_was_active) {
-//         leep_td_value_t left_symb_layer = LEEP_TD_INT(symb_layer_info->press_keycode);
-//         leep_kc_press_fn(state, tap, &left_symb_layer);
-//         return;
-//     }
-
-//     if (!tap) {
-//         leep_td_value_t press_keycode = LEEP_TD_INT(symb_layer_press_keycode);
-//         leep_kc_press_fn(state, tap, &press_keycode);
-//     }
-// }
-
-// #define LEEP_TD_SYMBOL_LAYER(left) LEEP_TD_CLICK_HOLD(LEEP_TD_BOOL(left), leep_kc_layer_start_fn_symb, LEEP_TD_BOOL(left), leep_kc_press_fn_symb, LEEP_TD_BOOL(left), NULL)
-
-/***************************************************************************************************************
-* Code for symbol layer key tap dances (does not work for multiple symbol key logic (see code above for that)) *
+/************************************************************************************
+* Code for symbol layer key tap dances (does not work for multiple symbol key logic *
+*************************************************************************************/
 // TODO: Move this logic to leep_tap_dance_v2.[ch] and name it something like PRESS_KC_HOLD_LAYER_WITH_INTERRUPT
-****************************************************************************************************************/
 
 void leep_kc_special_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
     if (tap) {
@@ -560,11 +493,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_OH_COPY] = ACTION_TAP_DANCE_FN(oh_copy),
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
-    // Symbol layer (separate left and right in case want different key on press)
-    // [TDK_SYMB_LAYER_LEFT] = LEEP_TD_SYMBOL_LAYER(true),
-    [TDK_SYMB_LAYER_LEFT] = LEEP_TD_SYMBOL_LAYER(),
-    [TDK_SYMB_LAYER_RIGHT] = LEEP_TD_SYMBOL_LAYER(),
-    // [TDK_SYMB_LAYER_RIGHT] = LEEP_TD_SYMBOL_LAYER(false),
+    // Symbol layer
+    [TDK_SYMB_LAYER] = LEEP_TD_SYMBOL_LAYER(),
     // Tab shift
     [TDK_TAB_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_TAB, KC_RSFT),
     // Scroll left layer

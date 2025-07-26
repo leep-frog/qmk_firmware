@@ -915,10 +915,10 @@ TEST_F(LeepFrog, SymbolLayerOverlap_KeyPressAndReleaseAllWhileInSymbolLayer) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(LR_BASE, 4,
-      to_symr,
+      to_symb,
       KC_J,
       KC_K,
       ck_test
@@ -932,7 +932,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_KeyPressAndReleaseAllWhileInSymbolLayer) {
     )
 
     // Press the symbol layer key
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -948,7 +948,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_KeyPressAndReleaseAllWhileInSymbolLayer) {
     run_one_scan_loop();
 
     // Release the symbol layer key
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -960,10 +960,10 @@ TEST_F(LeepFrog, SymbolLayerOverlap_ShortOverlapIsConsideredTyping) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(LR_BASE, 3,
-      to_symr,
+      to_symb,
       KC_COMMA,
       ck_test
     )
@@ -975,7 +975,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_ShortOverlapIsConsideredTyping) {
     )
 
     // Press the symbol layer key
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -985,7 +985,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_ShortOverlapIsConsideredTyping) {
     run_one_scan_loop();
 
     // Release the symbol layer key
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1004,10 +1004,10 @@ TEST_F(LeepFrog, SymbolLayerOverlap_FullOverlapIsConsideredHold) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(LR_BASE, 3,
-      to_symr,
+      to_symb,
       KC_COMMA,
       ck_test
     )
@@ -1019,7 +1019,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_FullOverlapIsConsideredHold) {
     )
 
     // Press the symbol layer key
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1035,7 +1035,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_FullOverlapIsConsideredHold) {
     run_one_scan_loop();
 
     // Release the symbol layer key
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1046,10 +1046,10 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInSymbLonger) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(LR_BASE, 3,
-      to_symr,
+      to_symb,
       KC_COMMA,
       ck_test
     )
@@ -1061,7 +1061,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInSymbLonger) {
     )
 
     // Press the symbol layer key
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1073,7 +1073,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInSymbLonger) {
     idle_for(43);
 
     // Release the symbol layer key
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1092,10 +1092,10 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(LR_BASE, 3,
-      to_symr,
+      to_symb,
       KC_COMMA,
       ck_test
     )
@@ -1107,7 +1107,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
     )
 
     // Press the symbol layer key
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1119,7 +1119,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
     idle_for(43);
 
     // Release the symbol layer key
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1140,10 +1140,10 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(LR_BASE, 3,
-      to_symr,
+      to_symb,
       KC_COMMA,
       ck_test
     )
@@ -1155,7 +1155,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
     )
 
     // Press the symbol layer key
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1167,7 +1167,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
     idle_for(43);
 
     // Release the symbol layer key
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1188,10 +1188,10 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(LR_BASE, 4,
-      to_symr,
+      to_symb,
       KC_J,
       KC_K,
       ck_test
@@ -1205,7 +1205,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
     )
 
     // Press the symbol layer key
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1223,7 +1223,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
     run_one_scan_loop();
 
     // Release the symbol layer key
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1240,10 +1240,10 @@ TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(0, 3,
-      to_symr,
+      to_symb,
       KC_J,
       ck_test
     )
@@ -1255,7 +1255,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
     )
 
     // Activate the combo one hand right layer
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_J.press();
@@ -1268,7 +1268,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
     k_KC_J.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_REPORT(driver, (KC_4)); // This should be 4 because it was quick
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
@@ -1280,10 +1280,10 @@ TEST_F(LeepFrog, OneHandLayer_Right_LongOneHandLayerDoesNotPressKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symr = TO_SYMR;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(0, 3,
-      to_symr,
+      to_symb,
       KC_J,
       ck_test
     )
@@ -1295,7 +1295,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_LongOneHandLayerDoesNotPressKey) {
     )
 
     // Activate the combo one hand right layer
-    k_to_symr.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_J.press();
@@ -1308,7 +1308,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_LongOneHandLayerDoesNotPressKey) {
     k_KC_J.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_symr.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1319,10 +1319,10 @@ TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_syml = TO_SYML;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(0, 3,
-      to_syml,
+      to_symb,
       KC_F,
       ck_test
     )
@@ -1334,7 +1334,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
     )
 
     // Activate the combo one hand left layer
-    k_to_syml.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_F.press();
@@ -1347,7 +1347,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
     k_KC_F.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_syml.release();
+    k_to_symb.release();
     EXPECT_REPORT(driver, (KC_SLSH)); // This should be '/' because it was quick
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
@@ -1359,10 +1359,10 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_syml = TO_SYML;
+    const uint16_t to_symb = TO_SYMB;
 
     LEEP_KEY_ROW(0, 3,
-      to_syml,
+      to_symb,
       KC_F,
       ck_test
     )
@@ -1374,7 +1374,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
     )
 
     // Activate the combo one hand left layer
-    k_to_syml.press();
+    k_to_symb.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_F.press();
@@ -1387,7 +1387,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
     k_KC_F.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_syml.release();
+    k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1401,10 +1401,8 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
 
 struct SymbolLayerParams {
   std::string name;
-  uint16_t    left_symbol_keycode;
-  uint16_t    right_symbol_keycode;
-  uint16_t    expected_left_tap_keycode;
-  uint16_t    expected_right_tap_keycode;
+  uint16_t    symbol_keycode;
+  uint16_t    expected_tap_keycode;
 };
 
 
@@ -1420,16 +1418,7 @@ protected:
 static const SymbolLayerParams symbol_layer_params[] = {
   SymbolLayerParams{
     "SymbolLayerOverlap_Left",
-    TO_SYML,
-    TO_SYMR,
-    KC_SPACE,
-    KC_SPACE,
-  },
-  SymbolLayerParams{
-    "SymbolLayerOverlap_Right",
-    TO_SYMR,
-    TO_SYML,
-    KC_SPACE,
+    TO_SYMB,
     KC_SPACE,
   },
 };
@@ -1447,27 +1436,27 @@ TEST_P(LeepFrogSymbolLayer, SingleTap) {
   TestDriver driver;
   InSequence s;
 
-  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
 
   LEEP_KEY_ROW(0, 2,
-    to_syml,
+    to_symb,
     ck_test
   )
 
   LEEP_KEY_ROW_ONLY(LR_SYMB, 2,
-    to_syml,
+    to_symb,
     TK_0
   )
 
 
   // Press the symbol layer key
-  k_to_syml.press();
+  k_to_symb.press();
   EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
   // Unpress the symbol layer key
-  k_to_syml.release();
-  EXPECT_REPORT(driver, (symbol_layer_params.expected_left_tap_keycode));
+  k_to_symb.release();
+  EXPECT_REPORT(driver, (symbol_layer_params.expected_tap_keycode));
   EXPECT_EMPTY_REPORT(driver);
   run_one_scan_loop();
 
@@ -1478,23 +1467,23 @@ TEST_P(LeepFrogSymbolLayer, HoldAndPressRegularKey) {
   TestDriver driver;
   InSequence s;
 
-  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
 
   LEEP_KEY_ROW(0, 3,
-    to_syml,
+    to_symb,
     KC_X,
     ck_test
   )
 
   LEEP_KEY_ROW_ONLY(LR_SYMB, 3,
-    to_syml,
+    to_symb,
     KC_Y,
     TK_0
   )
 
 
   // Press the symbol layer key
-  k_to_syml.press();
+  k_to_symb.press();
   EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
@@ -1507,51 +1496,7 @@ TEST_P(LeepFrogSymbolLayer, HoldAndPressRegularKey) {
   run_one_scan_loop();
 
   // Unpress the symbol layer key
-  k_to_syml.release();
-  EXPECT_NO_REPORT(driver);
-  run_one_scan_loop();
-
-  CONFIRM_RESET();
-}
-
-TEST_P(LeepFrogSymbolLayer, HoldAndPressOtherSymbolLayerKey) {
-  TestDriver driver;
-  InSequence s;
-
-  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
-  const uint16_t to_symr = symbol_layer_params.right_symbol_keycode;
-
-  LEEP_KEY_ROW(0, 4,
-    to_syml,
-    to_symr,
-    KC_X,
-    ck_test
-  )
-
-  LEEP_KEY_ROW_ONLY(LR_SYMB, 4,
-    to_syml,
-    to_symr,
-    KC_Y,
-    TK_0
-  )
-
-
-  // Press the symbol layer key
-  k_to_syml.press();
-  EXPECT_NO_REPORT(driver);
-  run_one_scan_loop();
-
-  k_to_symr.press();
-  EXPECT_NO_REPORT(driver);
-  run_one_scan_loop();
-
-  k_to_symr.release();
-  EXPECT_REPORT(driver, (KC_SPACE));
-  EXPECT_EMPTY_REPORT(driver);
-  run_one_scan_loop();
-
-  // Unpress the symbol layer key
-  k_to_syml.release();
+  k_to_symb.release();
   EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
@@ -1562,26 +1507,23 @@ TEST_P(LeepFrogSymbolLayer, OSMLogic) {
   TestDriver driver;
   InSequence s;
 
-  const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
-  const uint16_t to_symr = symbol_layer_params.left_symbol_keycode;
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
 
-  LEEP_KEY_ROW(0, 4,
-    to_syml,
-    to_symr,
+  LEEP_KEY_ROW(0, 3,
+    to_symb,
     KC_X,
     ck_test
   )
 
-  LEEP_KEY_ROW_ONLY(LR_SYMB, 4,
-    to_syml,
-    to_symr,
+  LEEP_KEY_ROW_ONLY(LR_SYMB, 3,
+    to_symb,
     KC_Y,
     TK_0
   )
 
 
   // Press the symbol layer key
-  k_to_syml.press();
+  k_to_symb.press();
   EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
@@ -1590,7 +1532,7 @@ TEST_P(LeepFrogSymbolLayer, OSMLogic) {
   run_one_scan_loop();
 
   // Unpress the symbol layer key
-  k_to_syml.release();
+  k_to_symb.release();
   EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
@@ -1614,27 +1556,27 @@ on the actual keyboard. So appears to just be flaky test logic in QMK itself
 //   TestDriver driver;
 //   InSequence s;
 
-//   const uint16_t to_syml = symbol_layer_params.left_symbol_keycode;
+//   const uint16_t to_symb = symbol_layer_params.symbol_keycode;
 
 //   LEEP_KEY_ROW(0, 2,
-//     to_syml,
+//     to_symb,
 //     ck_test
 //   )
 
 //   LEEP_KEY_ROW_ONLY(LR_SYMB, 2,
-//     to_syml,
+//     to_symb,
 //     TK_0
 //   )
 
 //   // Press the symbol layer key
-//   k_to_syml.press();
+//   k_to_symb.press();
 //   EXPECT_NO_REPORT(driver);
 //   run_one_scan_loop();
 
 //   idle_for(TAPPING_TERM * 100);
 
 //   // Unpress the symbol layer key
-//   k_to_syml.release();
+//   k_to_symb.release();
 //   EXPECT_NO_REPORT(driver);
 //   run_one_scan_loop();
 
