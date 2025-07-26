@@ -44,3 +44,5 @@ bool IsToggleShiftTapDance(uint16_t keycode);
 #define TO_BASE_FROM_ELLA TD(TDK_ELLA_MODE)
 
 #define TD_CRDC TD(TDK_CR_DESC)
+
+#define TD_CTAB_ALT TD(TDK_CTAB_TO_ALT)

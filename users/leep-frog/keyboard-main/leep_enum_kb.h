@@ -62,6 +62,7 @@ enum td_keys { // prefix TDK
     TDK_CR_DESC,
     TDK_LEFT_BRACKET_SHIFT,
     TDK_RIGHT_BRACKET_SHIFT,
+    TDK_CTAB_TO_ALT,
 };
 
 // Custom keycode enums

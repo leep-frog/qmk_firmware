@@ -1240,10 +1240,8 @@ TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symb = TO_SYMB;
-
     LEEP_KEY_ROW(0, 3,
-      to_symb,
+      KC_SPACE,
       KC_J,
       ck_test
     )
@@ -1255,7 +1253,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
     )
 
     // Activate the combo one hand right layer
-    k_to_symb.press();
+    k_KC_SPACE.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_J.press();
@@ -1268,7 +1266,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_QuickOneHandLayerPressesKey) {
     k_KC_J.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_symb.release();
+    k_KC_SPACE.release();
     EXPECT_REPORT(driver, (KC_4)); // This should be 4 because it was quick
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
@@ -1280,10 +1278,8 @@ TEST_F(LeepFrog, OneHandLayer_Right_LongOneHandLayerDoesNotPressKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symb = TO_SYMB;
-
     LEEP_KEY_ROW(0, 3,
-      to_symb,
+      KC_SPACE,
       KC_J,
       ck_test
     )
@@ -1295,7 +1291,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_LongOneHandLayerDoesNotPressKey) {
     )
 
     // Activate the combo one hand right layer
-    k_to_symb.press();
+    k_KC_SPACE.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_J.press();
@@ -1308,7 +1304,7 @@ TEST_F(LeepFrog, OneHandLayer_Right_LongOneHandLayerDoesNotPressKey) {
     k_KC_J.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_symb.release();
+    k_KC_SPACE.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1319,10 +1315,8 @@ TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symb = TO_SYMB;
-
     LEEP_KEY_ROW(0, 3,
-      to_symb,
+      KC_RSFT,
       KC_F,
       ck_test
     )
@@ -1334,7 +1328,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
     )
 
     // Activate the combo one hand left layer
-    k_to_symb.press();
+    k_KC_RSFT.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_F.press();
@@ -1347,7 +1341,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
     k_KC_F.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_symb.release();
+    k_KC_RSFT.release();
     EXPECT_REPORT(driver, (KC_SLSH)); // This should be '/' because it was quick
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
@@ -1359,10 +1353,8 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
     TestDriver driver;
     InSequence s;
 
-    const uint16_t to_symb = TO_SYMB;
-
     LEEP_KEY_ROW(0, 3,
-      to_symb,
+      KC_RSFT,
       KC_F,
       ck_test
     )
@@ -1374,7 +1366,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
     )
 
     // Activate the combo one hand left layer
-    k_to_symb.press();
+    k_KC_RSFT.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
     k_KC_F.press();
@@ -1387,7 +1379,7 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
     k_KC_F.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_to_symb.release();
+    k_KC_RSFT.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1419,7 +1411,7 @@ static const SymbolLayerParams symbol_layer_params[] = {
   SymbolLayerParams{
     "SymbolLayerOverlap_Left",
     TO_SYMB,
-    KC_SPACE,
+    KC_TAB,
   },
 };
 
@@ -1578,6 +1570,81 @@ on the actual keyboard. So appears to just be flaky test logic in QMK itself
 //   // Unpress the symbol layer key
 //   k_to_symb.release();
 //   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   CONFIRM_RESET();
+// }
+
+
+/***************************
+* Specific tap dance tests *
+****************************/
+
+// struct TapDanceParams {
+//   std::string name;
+//   uint16_t    tap_dance_keycode;
+//   uint16_t    expected_key_tap;
+//   uint16_t    expected_key_hold;
+//   uint16_t    expected_layer_hold;
+// };
+
+
+// class LeepFrogTapDances : public ::testing::WithParamInterface<TapDanceParams>, public TestFixture {
+// protected:
+//   TapDanceParams tap_dance_params;
+
+//   void SetUp() override {
+//     tap_dance_params = GetParam();
+//   }
+// };
+
+// static const TapDanceParams tap_dance_params[] = {
+//   TapDanceParams{
+//     "TO_ALT",
+//     TO_ALT,
+//     KC_SPACE,
+//     _______,
+//     LR_ALT,
+//   },
+//   // TapDanceParams{
+//   //   "CK_SHFT",
+//   //   CK_SHFT,
+//   //   KC_ENTER,
+//   //   KC_RSFT,
+//   //   _______,
+//   // },
+// };
+
+// INSTANTIATE_TEST_CASE_P(
+//   Layers,
+//   LeepFrogTapDances,
+//   ::testing::ValuesIn(tap_dance_params),
+//   [](const ::testing::TestParamInfo<TapDanceParams> info) {
+//     return info.param.name;
+//   }
+// );
+
+// TEST_P(LeepFrogTapDances, TapKey) {
+//   TestDriver driver;
+//   InSequence s;
+
+//   const uint16_t tap_dance_keycode = tap_dance_params.tap_dance_keycode;
+
+//   LEEP_KEY_ROW(0, 2,
+//     tap_dance_keycode,
+//     ck_test
+//   )
+
+
+//   // Press the tap dance key
+//   k_tap_dance_keycode.press();
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   // Unpress the tap dance key
+//   k_tap_dance_keycode.release();
+//   EXPECT_REPORT(driver, (tap_dance_params.expected_key_hold));
+//   EXPECT_EMPTY_REPORT(driver);
 //   run_one_scan_loop();
 
 //   CONFIRM_RESET();
