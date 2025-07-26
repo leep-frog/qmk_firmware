@@ -487,6 +487,7 @@ void pinky_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_va
 
 /***************************************************************************************************************
 * Code for symbol layer key tap dances (does not work for multiple symbol key logic (see code above for that)) *
+// TODO: Move this logic to leep_tap_dance_v2.[ch] and name it something like PRESS_KC_HOLD_LAYER_WITH_INTERRUPT
 ****************************************************************************************************************/
 
 void leep_kc_special_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
