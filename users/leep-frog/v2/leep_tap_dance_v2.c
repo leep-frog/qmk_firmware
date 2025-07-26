@@ -87,7 +87,8 @@ void leep_td_finished(tap_dance_state_t *state, void *user_data) {
     leep_td_user_data_t *ud = (leep_td_user_data_t *)user_data;
 
     // This accounts for holds or interrupts (and is run before interrupting key).
-    if ((cur_dance(state, false) == SINGLE_HOLD)) {
+    bool consider_hold = state->pressed; // See contents of cur_dance for why this is the case
+    if (consider_hold) {
         if (ud->hold_fn) {
             ud->hold_fn(state, true, &(ud->hold_value));
         }

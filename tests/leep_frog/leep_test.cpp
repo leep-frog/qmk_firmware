@@ -1422,7 +1422,7 @@ static const SymbolLayerParams symbol_layer_params[] = {
     "SymbolLayerOverlap_Left",
     TO_SYML,
     TO_SYMR,
-    KC_TAB,
+    KC_SPACE,
     KC_SPACE,
   },
   SymbolLayerParams{
@@ -1430,7 +1430,7 @@ static const SymbolLayerParams symbol_layer_params[] = {
     TO_SYMR,
     TO_SYML,
     KC_SPACE,
-    KC_ENTER,
+    KC_SPACE,
   },
 };
 
