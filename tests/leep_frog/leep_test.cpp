@@ -1422,16 +1422,16 @@ static const SymbolLayerParams symbol_layer_params[] = {
     "SymbolLayerOverlap_Left",
     TO_SYML,
     TO_SYMR,
-    KC_ENTER,
+    KC_TAB,
     KC_SPACE,
   },
-  // SymbolLayerParams{
-  //   "SymbolLayerOverlap_Right",
-  //   TO_SYMR,
-  //   TO_SYML,
-  //   KC_SPACE,
-  //   KC_ENTER,
-  // },
+  SymbolLayerParams{
+    "SymbolLayerOverlap_Right",
+    TO_SYMR,
+    TO_SYML,
+    KC_SPACE,
+    KC_ENTER,
+  },
 };
 
 INSTANTIATE_TEST_CASE_P(

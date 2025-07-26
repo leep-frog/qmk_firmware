@@ -433,7 +433,7 @@ typedef struct {
 // but if issues arise, then make separate variables for each
 static symb_layer_info_t symb_layer_info_left = {
     .symb_layer_was_active = false,
-    .press_keycode = KC_ENTER,
+    .press_keycode = KC_TAB,
 };
 static symb_layer_info_t symb_layer_info_right = {
     .symb_layer_was_active = false,
