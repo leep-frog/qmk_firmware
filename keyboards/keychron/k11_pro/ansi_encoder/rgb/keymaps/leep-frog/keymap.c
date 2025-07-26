@@ -33,14 +33,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,     KC_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT, KC_UP,
                                         // These needs to be TO_CTRL/TO_SYMR (instead of enter/space)
                                         // so that the OSM key + right thumb doesn't trap us in this layer.
-        KC_LCTL, KC_LALT,  KC_LGUI,          CK_SHFT,          TO_SYML,      TO_CTRL,       TO_ALT,           KC_RGUI,            KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LALT,  KC_LGUI,          CK_SHFT,          TO_ALT,      TO_CTRL,       TO_SYMR,           KC_RGUI,            KC_LEFT, KC_DOWN, KC_RGHT),
 
     [LR_BASE] = LAYOUT_69_ansi(
         KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,     KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          CK_VRSN,
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
         SC_LSPO, KC_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
         TD_LCBR,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  TD_RCBR,  CK_LOCK,
-        KC_LCTL, KC_LALT,  TO_SHCT,          CK_SHFT,           TO_SYML,      TO_CTRL,       TO_ALT,            TO_NAV,             KC_LEFT,  KB_OFF,  KC_RGHT),
+        KC_LCTL, KC_LALT,  TO_SHCT,          CK_SHFT,           TO_ALT,      TO_CTRL,       TO_SYMR,            TO_NAV,             KC_LEFT,  KB_OFF,  KC_RGHT),
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
@@ -68,7 +68,7 @@ LSFT_T(AL(LPRN)),TD_A,     AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
         KC_TAB,  KC_EXLM,  KC_COLN,  KC_EQL,  KC_CIRC, KC_PIPE, KC_PIPE,  KC_7,    KC_8,    KC_9,    KC_PERC,  KC_LBRC,  KC_RBRC,  KC_BSLS,          _______,
         KC_LSFT, KC_AMPR,  KC_ASTR,  KC_DLR,  KC_SLSH, KC_LBRC,           CK_MDPS, KC_4,    KC_5,    KC_6,     KC_0,     KC_COMMA,  KC_ENT,           _______,
         KC_LSFT,           KC_DOT,   KC_COMM, KC_AT,   KC_EQL,  KC_BSLS,  KC_LCBR, KC_RCBR, KC_1,    KC_2,     KC_3,     KC_SLSH,  KC_RSFT, KC_UP,
-        KC_LCTL, KC_LALT,  KC_LGUI,           CK_SHFT,         TO_SYML,            TO_CTRL,          TO_ALT,            KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LALT,  KC_LGUI,           CK_SHFT,         TO_ALT,            TO_CTRL,          TO_SYMR,            KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
 
     // This is currently identical to the LR_NAVIGATION layer.
     [LR_SHORTCUTS] = LAYOUT_69_ansi(
