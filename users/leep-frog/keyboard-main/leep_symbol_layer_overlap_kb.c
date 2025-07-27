@@ -30,6 +30,17 @@ layer_overlap_handler_t symbol_handler = {
     .first_symb_press          = false,
     .resolved_first_symb_press = true,
     .layer                     = LR_SYMB,
+    .keycode                   = "\t",
+
+    .key_press_at          = 0,
+    .key_in_layer_duration = 0,
+};
+
+layer_overlap_handler_t alt_handler = {
+    .first_symb_press_key      = {},
+    .first_symb_press          = false,
+    .resolved_first_symb_press = true,
+    .layer                     = LR_ALT,
     .keycode                   = " ",
 
     .key_press_at          = 0,
@@ -77,7 +88,7 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
         }
 
         // Send the key we didn't press yet.
-        uint16_t actual_keycode = keymap_key_to_keycode(in_layer_longer ? LR_SYMB : get_highest_layer(layer_state), handler->first_symb_press_key);
+        uint16_t actual_keycode = keymap_key_to_keycode(in_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key);
         if (actual_keycode >= QK_TAP_DANCE && actual_keycode <= QK_TAP_DANCE_MAX) {
             // If key in other layer is a tap dance (but in this layer is just a regular key),
             // then we need to execute the press and unpress logic for it.

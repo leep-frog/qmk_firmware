@@ -329,7 +329,6 @@ bool ck_noop(keyrecord_t *_k, custom_keycode_value_t *_c) { return false; }
 
 custom_keycode_handler_t custom_keycode_handlers[] = {
   // Fn handlers
-  [TO_ALT_HANDLER] = CK_HANDLER_FN(ToAlt_run),
   [TO_CTRL_HANDLER] = CK_HANDLER_FN(ToCtrl_run),
   [TO_CTLX_HANDLER] = CK_HANDLER_FN(to_ctrl_x_layer),
   [CTRL_W_HANDLER] = CK_HANDLER_FN(CtrlWHandler),
@@ -365,7 +364,6 @@ uint16_t Alt_keycodes[] = {
   CK_SATB,
 };
 
-const uint16_t ToAltKeycode = TO_ALT;
 const uint16_t ToCtrlKeycode = TO_CTRL;
 
 bool layers_status[NUM_LAYERS] = {
@@ -376,6 +374,7 @@ bool layers_status[NUM_LAYERS] = {
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
 SYMBOL_LAYER_OVERLAP_SETUP_FN_C(symbol_handler);
+SYMBOL_LAYER_OVERLAP_SETUP_FN_C(alt_handler);
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
@@ -396,6 +395,7 @@ void keyboard_post_init_user(void) {
     // Deactivate everything when going to safe layer.
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
     SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
+    SYMBOL_LAYER_OVERLAP_SETUP(alt_handler);
 }
 
 #if defined(LEEP_UNLOCK_CODE)
@@ -509,10 +509,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     Mute_handled(record);
     if (CrDescProcessHandler(keycode, record->event.pressed) ||
             SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
+            SymbolLayerOverlap_handled(&alt_handler, keycode, record) ||
             AltBlockProcessing(keycode, record)) {
         return false;
     }
-    ToAlt_handled(keycode);
     ToCtrl_handled(keycode);
     Oneshot_handled(record);
 

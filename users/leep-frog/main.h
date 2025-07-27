@@ -8,7 +8,6 @@
 // TODO: Change CK prefix to CKE (CK Enum) since these are actually starting at 0 and not SAFE_RANGE (see CK(...)s below for proper values)
 enum custom_keycode_handlers {
   // Fn handlers
-  TO_ALT_HANDLER,
   TO_CTRL_HANDLER,
   TO_CTLX_HANDLER,
   CTRL_W_HANDLER,
@@ -45,7 +44,6 @@ enum custom_keycode_handlers {
 };
 
 
-#define TO_ALT CK(TO_ALT_HANDLER)
 #define TO_CTRL CK(TO_CTRL_HANDLER)
 #define TO_CTLX CK(TO_CTLX_HANDLER)
 #define CTRL_W CK(CTRL_W_HANDLER)
@@ -82,3 +80,4 @@ extern char test_message[];
 bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 
 SYMBOL_LAYER_OVERLAP_SETUP_FN_H(symbol_handler);
+SYMBOL_LAYER_OVERLAP_SETUP_FN_H(alt_handler);

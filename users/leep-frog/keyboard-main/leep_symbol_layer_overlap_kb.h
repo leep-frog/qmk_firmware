@@ -18,6 +18,7 @@ void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler);
 bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record);
 
 extern layer_overlap_handler_t symbol_handler;
+extern layer_overlap_handler_t alt_handler;
 extern layer_overlap_handler_t lr_left_handler;
 extern layer_overlap_handler_t lr_right_handler;
 

@@ -493,6 +493,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_OH_COPY] = ACTION_TAP_DANCE_FN(oh_copy),
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
+    // Alt layer
+    [TDK_ALT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_ALT),
     // Symbol layer
     [TDK_SYMB_LAYER] = LEEP_TD_SYMBOL_LAYER(),
     // Tab shift

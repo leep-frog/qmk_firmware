@@ -48,6 +48,7 @@ enum td_keys { // prefix TDK
     TDK_V,
     TDK_Y,
     TDK_TAB_SHIFT,
+    TDK_ALT_LAYER,
     TDK_SYMB_LAYER,
     // One hand keys
     TDK_OH_COPY,

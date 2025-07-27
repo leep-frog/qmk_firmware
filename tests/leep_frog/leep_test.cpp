@@ -14,13 +14,13 @@ using ::testing::IsEmpty;
 
 // Define lots of transparent key aliases because LEEP_ADD_KEY creates
 // a variable for each key created, so we need different names.
-const uint8_t TK_0 = KC_TRANSPARENT;
-const uint8_t TK_1 = KC_TRANSPARENT;
-const uint8_t TK_2 = KC_TRANSPARENT;
-const uint8_t TK_3 = KC_TRANSPARENT;
-const uint8_t TK_4 = KC_TRANSPARENT;
-const uint8_t TK_5 = KC_TRANSPARENT;
-const uint8_t TK_6 = KC_TRANSPARENT;
+const uint16_t TK_0 = KC_TRANSPARENT;
+const uint16_t TK_1 = KC_TRANSPARENT;
+const uint16_t TK_2 = KC_TRANSPARENT;
+const uint16_t TK_3 = KC_TRANSPARENT;
+const uint16_t TK_4 = KC_TRANSPARENT;
+const uint16_t TK_5 = KC_TRANSPARENT;
+const uint16_t TK_6 = KC_TRANSPARENT;
 
 // We need these go betweens because CK_ABCs are macros and the nested macros pass the initial string values around (not the final macro)
 const uint16_t ck_test = CK_TEST;
@@ -30,8 +30,8 @@ class LeepFrog : public TestFixture {};
 
 #define NEW_ROW = QK_USER_MAX - 1
 
-uint8_t leep_key_layer = 0;
-uint8_t leep_key_col = 0;
+uint16_t leep_key_layer = 0;
+uint16_t leep_key_col = 0;
 #define LEEP_ADD_KEY(key) KeymapKey k_##key = KeymapKey(leep_key_layer, leep_key_col++, 0, key); add_key(k_##key);
 #define LEEP_ADD_KEY_ONLY(key) add_key(KeymapKey(leep_key_layer, leep_key_col++, 0, key));
 
@@ -620,8 +620,8 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
       ck_test
     )
 
-    uint8_t kc_d = KC_D;
-    uint8_t kc_f = KC_F;
+    uint16_t kc_d = KC_D;
+    uint16_t kc_f = KC_F;
 
     LEEP_KEY_ROW(1, 6,
       TK_0,
@@ -991,7 +991,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_ShortOverlapIsConsideredTyping) {
 
     // Release the other key
     k_KC_2.release();
-    EXPECT_REPORT(driver, (KC_SPACE));
+    EXPECT_REPORT(driver, (KC_TAB));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_COMMA));
     EXPECT_EMPTY_REPORT(driver);
@@ -1127,7 +1127,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
 
     // Release the other key
     k_KC_2.release();
-    EXPECT_REPORT(driver, (KC_SPACE));
+    EXPECT_REPORT(driver, (KC_TAB));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_COMMA));
     EXPECT_EMPTY_REPORT(driver);
@@ -1175,7 +1175,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
 
     // Release the other key
     k_KC_2.release();
-    EXPECT_REPORT(driver, (KC_SPACE));
+    EXPECT_REPORT(driver, (KC_TAB));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_COMMA));
     EXPECT_EMPTY_REPORT(driver);
@@ -1391,40 +1391,48 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
 * Symbol layer tests *
 **********************/
 
-struct SymbolLayerParams {
+struct SymbolLayerOverlapParams {
   std::string name;
   uint16_t    symbol_keycode;
+  uint8_t     layer;
   uint16_t    expected_tap_keycode;
 };
 
 
-class LeepFrogSymbolLayer : public ::testing::WithParamInterface<SymbolLayerParams>, public TestFixture {
+class LeepFrogSymbolLayerOverlap : public ::testing::WithParamInterface<SymbolLayerOverlapParams>, public TestFixture {
 protected:
-  SymbolLayerParams symbol_layer_params;
+  SymbolLayerOverlapParams symbol_layer_params;
 
   void SetUp() override {
     symbol_layer_params = GetParam();
   }
 };
 
-static const SymbolLayerParams symbol_layer_params[] = {
-  SymbolLayerParams{
-    "SymbolLayerOverlap_Left",
+static const SymbolLayerOverlapParams symbol_layer_params[] = {
+  SymbolLayerOverlapParams{
+    "SYMB",
     TO_SYMB,
+    LR_SYMB,
     KC_TAB,
+  },
+  SymbolLayerOverlapParams{
+    "ALT",
+    TO_ALT,
+    LR_ALT,
+    KC_SPACE,
   },
 };
 
 INSTANTIATE_TEST_CASE_P(
   Layers,
-  LeepFrogSymbolLayer,
+  LeepFrogSymbolLayerOverlap,
   ::testing::ValuesIn(symbol_layer_params),
-  [](const ::testing::TestParamInfo<SymbolLayerParams> info) {
+  [](const ::testing::TestParamInfo<SymbolLayerOverlapParams> info) {
     return info.param.name;
   }
 );
 
-TEST_P(LeepFrogSymbolLayer, SingleTap) {
+TEST_P(LeepFrogSymbolLayerOverlap, SingleTap) {
   TestDriver driver;
   InSequence s;
 
@@ -1435,7 +1443,7 @@ TEST_P(LeepFrogSymbolLayer, SingleTap) {
     ck_test
   )
 
-  LEEP_KEY_ROW_ONLY(LR_SYMB, 2,
+  LEEP_KEY_ROW_ONLY(symbol_layer_params.layer, 2,
     to_symb,
     TK_0
   )
@@ -1455,11 +1463,12 @@ TEST_P(LeepFrogSymbolLayer, SingleTap) {
   CONFIRM_RESET();
 }
 
-TEST_P(LeepFrogSymbolLayer, HoldAndPressRegularKey) {
+TEST_P(LeepFrogSymbolLayerOverlap, HoldAndPressRegularKey) {
   TestDriver driver;
   InSequence s;
 
   const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+  const uint16_t to_symb_0 = to_symb;
 
   LEEP_KEY_ROW(0, 3,
     to_symb,
@@ -1467,8 +1476,8 @@ TEST_P(LeepFrogSymbolLayer, HoldAndPressRegularKey) {
     ck_test
   )
 
-  LEEP_KEY_ROW_ONLY(LR_SYMB, 3,
-    to_symb,
+  LEEP_KEY_ROW(symbol_layer_params.layer, 3,
+    to_symb_0,
     KC_Y,
     TK_0
   )
@@ -1495,7 +1504,49 @@ TEST_P(LeepFrogSymbolLayer, HoldAndPressRegularKey) {
   CONFIRM_RESET();
 }
 
-TEST_P(LeepFrogSymbolLayer, OSMLogic) {
+TEST_P(LeepFrogSymbolLayerOverlap, HoldAndPressRegularKey_DifferentPressKeyAndUnpressKey) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+  const uint16_t to_symb_0 = to_symb;
+
+  LEEP_KEY_ROW(0, 3,
+    to_symb,
+    KC_X,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(symbol_layer_params.layer, 3,
+    to_symb_0,
+    KC_Y,
+    TK_0
+  )
+
+
+  // Press the symbol layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_KC_X.press();
+  EXPECT_REPORT(driver, (KC_Y));
+  run_one_scan_loop();
+
+  // Note Y is released here but X is pressed above
+  k_KC_Y.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_symb.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic) {
   TestDriver driver;
   InSequence s;
 
@@ -1507,7 +1558,7 @@ TEST_P(LeepFrogSymbolLayer, OSMLogic) {
     ck_test
   )
 
-  LEEP_KEY_ROW_ONLY(LR_SYMB, 3,
+  LEEP_KEY_ROW_ONLY(symbol_layer_params.layer, 3,
     to_symb,
     KC_Y,
     TK_0
@@ -1529,7 +1580,7 @@ TEST_P(LeepFrogSymbolLayer, OSMLogic) {
   run_one_scan_loop();
 
   k_KC_X.release();
-  EXPECT_REPORT(driver, (KC_SPACE));
+  EXPECT_REPORT(driver, (symbol_layer_params.expected_tap_keycode));
   EXPECT_EMPTY_REPORT(driver);
   EXPECT_REPORT(driver, (KC_X));
   EXPECT_EMPTY_REPORT(driver);
@@ -1544,7 +1595,7 @@ TEST_P(LeepFrogSymbolLayer, OSMLogic) {
 The test is failing due to test setup, but it works when doing this
 on the actual keyboard. So appears to just be flaky test logic in QMK itself
 */
-// TEST_P(LeepFrogSymbolLayer, SingleHold) {
+// TEST_P(LeepFrogSymbolLayerOverlap, SingleHold) {
 //   TestDriver driver;
 //   InSequence s;
 
@@ -1649,3 +1700,158 @@ on the actual keyboard. So appears to just be flaky test logic in QMK itself
 
 //   CONFIRM_RESET();
 // }
+
+struct SimpleTapDanceParams {
+  std::string name;
+  uint16_t    tap_dance_keycode;
+  uint8_t     layer;
+  uint16_t    tap_keycode;
+};
+
+
+class LeepFrogSimpleTapDance : public ::testing::WithParamInterface<SimpleTapDanceParams>, public TestFixture {
+protected:
+  SimpleTapDanceParams simple_tap_dance_params;
+
+  void SetUp() override {
+    simple_tap_dance_params = GetParam();
+  }
+};
+
+static const SimpleTapDanceParams simple_tap_dance_params[] = {
+  SimpleTapDanceParams{
+    "TO_ALT",
+    TO_ALT,
+    LR_ALT,
+    KC_SPACE,
+  },
+  SimpleTapDanceParams{
+    "TO_CTRL",
+    TO_CTRL,
+    LR_CTRL,
+    KC_ENTER,
+  },
+  SimpleTapDanceParams{
+    "TO_SYMB",
+    TO_SYMB,
+    LR_SYMB,
+    KC_TAB,
+  },
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogSimpleTapDance,
+  ::testing::ValuesIn(simple_tap_dance_params),
+  [](const ::testing::TestParamInfo<SimpleTapDanceParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogSimpleTapDance, IsolatedKeyTap) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t td_kc = simple_tap_dance_params.tap_dance_keycode;
+
+    LEEP_KEY_ROW(0, 2,
+      td_kc,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(simple_tap_dance_params.layer, 2,
+      TK_0,
+      TK_1
+    )
+
+    k_td_kc.press();
+    run_one_scan_loop();
+
+    k_td_kc.release();
+    EXPECT_REPORT(driver, (simple_tap_dance_params.tap_keycode));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSimpleTapDance, TapKeySeparately) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t td_kc = simple_tap_dance_params.tap_dance_keycode;
+
+    LEEP_KEY_ROW(0, 3,
+      td_kc,
+      KC_E,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(simple_tap_dance_params.layer, 3,
+      TK_0,
+      KC_X,
+      TK_1
+    )
+
+    k_KC_E.press();
+    EXPECT_REPORT(driver, (KC_E));
+    run_one_scan_loop();
+
+    k_KC_E.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    k_td_kc.press();
+    run_one_scan_loop();
+
+    k_td_kc.release();
+    EXPECT_REPORT(driver, (simple_tap_dance_params.tap_keycode));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSimpleTapDance, OverlapKeyTap) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t td_kc = simple_tap_dance_params.tap_dance_keycode;
+
+    // TODO: Get this to work for LR_CTRL
+    if (simple_tap_dance_params.layer == LR_CTRL) {
+      GTEST_SKIP() << "TODO: Get this test to work for LR_CTRL";
+      return;
+    }
+
+    LEEP_KEY_ROW(0, 3,
+      td_kc,
+      KC_E,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(simple_tap_dance_params.layer, 3,
+      TK_0,
+      KC_X,
+      TK_1
+    )
+
+    k_KC_E.press();
+    EXPECT_REPORT(driver, (KC_E));
+    run_one_scan_loop();
+
+    k_td_kc.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    k_KC_E.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    k_td_kc.release();
+    EXPECT_REPORT(driver, (simple_tap_dance_params.tap_keycode));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}

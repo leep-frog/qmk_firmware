@@ -4,32 +4,6 @@
 #include "leep_layers_v2.h"
 #include "keymap_introspection.h"
 
-// To alt layer functions
-static uint16_t alt_timer;
-static bool     alt_interrupted = false;
-
-/****************
- * TO_ALT logic *
- ****************/
-void ToAlt_handled(uint16_t keycode) {
-    if (keycode != ToAltKeycode) {
-        alt_interrupted = true;
-    }
-}
-
-bool ToAlt_run(keyrecord_t *record, custom_keycode_value_t *_) {
-    if (record->event.pressed) {
-        alt_interrupted = false;
-        alt_timer       = timer_read();
-        layer_on(AltLayer);
-    } else {
-        layer_off(AltLayer);
-        if (!alt_interrupted && timer_elapsed(alt_timer) < TAPPING_TERM) {
-            tap_code16(KC_SPACE);
-        }
-    }
-    return false;
-}
 
 /****************
  * TO_ALT logic *
