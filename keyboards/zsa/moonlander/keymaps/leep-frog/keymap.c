@@ -20,7 +20,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
                                                      BOTTOM_ROW,
 
-                              TO_SYML, TO_ALT, TO_SHCT,       TO_NAV, TO_CTRL, TO_SYMR
+                              CK_SHFT, TO_SYMB, TO_SHCT,      TO_NAV, TO_CTRL, TO_ALT
     ),
 
     [LR_ELLA] = ML_LAYOUT(
@@ -31,9 +31,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 
-                                                           // These needs to be TO_CTRL/TO_SYMR (instead of enter/space)
+                                                           // These needs to be TO_CTRL/TO_ALT/TO_SYMB (instead of enter/space/tab)
                                                            // so that the OSM key + right thumb doesn't trap us in this layer.
-                           TO_SYML, KC_TAB, KC_LGUI,       KC_RGUI, TO_CTRL, TO_SYMR
+                           KC_RSFT, TO_SYMB, KC_LGUI,      KC_RGUI, TO_CTRL, TO_ALT
     ),
 
     [LR_CTRL] = ML_LAYOUT(
@@ -44,7 +44,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                     BOTTOM_ROW,
 
-                                        CL(ENTER), CL(TAB), CL(LGUI),         CL(RGUI), _______, CL(SPACE)
+                                        CL(ENTER), TD_CTAB_ALT, CL(LGUI),      CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_CTRL_X] = ML_LAYOUT(
@@ -66,7 +66,7 @@ LSFT_T(AL(LPRN)), TD_A,  AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
 
                                                                             BOTTOM_ROW,
 
-                                                  AL(TAB), _______, AL(LGUI),       AL(RGUI), AL(ENTER), AL(SPACE)
+                                                  AL(TAB), _______, AL(LGUI),       AL(RGUI), AL(ENTER), _______
     ),
 
     // This layer is basically identical to the safe layer aside from the thumb keys.
