@@ -911,6 +911,8 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
 * Symbol Layer Overlap tests *
 ******************************/
 
+// TODO: move all of these to parameterized symbol layer tests
+
 TEST_F(LeepFrog, SymbolLayerOverlap_KeyPressAndReleaseAllWhileInSymbolLayer) {
     TestDriver driver;
     InSequence s;
