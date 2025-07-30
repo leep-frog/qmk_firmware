@@ -6,7 +6,7 @@
 // https://github.com/qmk/qmk_firmware/commit/5faa23d54ca1e3ab83097f2a07922f48800616e6
 
 bool process_custom_keycodes(uint16_t keycode, keyrecord_t* record) {
-  if (keycode < CUSTOM_KEYCODE_START || keycode >= CUSTOM_KEYCODE_START + custom_keycode_handlers_count()) {
+  if (!IS_CUSTOM_KEYCODE(keycode)) {
     return true;
   }
 

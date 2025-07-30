@@ -1042,52 +1042,6 @@ TEST_F(LeepFrog, SymbolLayerOverlap_FullOverlapIsConsideredHold) {
     CONFIRM_RESET();
 }
 
-TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInSymbLonger) {
-    TestDriver driver;
-    InSequence s;
-
-    const uint16_t to_symb = TO_SYMB;
-
-    LEEP_KEY_ROW(LR_BASE, 3,
-      to_symb,
-      KC_COMMA,
-      ck_test
-    )
-
-    LEEP_KEY_ROW(LR_SYMB, 3,
-      TK_0,
-      KC_2,
-      TK_1
-    )
-
-    // Press the symbol layer key
-    k_to_symb.press();
-    EXPECT_NO_REPORT(driver);
-    run_one_scan_loop();
-
-    // Press the other key
-    k_KC_2.press();
-    EXPECT_NO_REPORT(driver);
-    run_one_scan_loop();
-
-    idle_for(43);
-
-    // Release the symbol layer key
-    k_to_symb.release();
-    EXPECT_NO_REPORT(driver);
-    run_one_scan_loop();
-
-    idle_for(42);
-
-    // Release the other key
-    k_KC_2.release();
-    EXPECT_REPORT(driver, (KC_2));
-    EXPECT_EMPTY_REPORT(driver);
-    run_one_scan_loop();
-
-    CONFIRM_RESET();
-}
-
 TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
     TestDriver driver;
     InSequence s;
@@ -1588,6 +1542,259 @@ TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic) {
 
   CONFIRM_RESET();
 }
+
+TEST_P(LeepFrogSymbolLayerOverlap, AmbiguousOverlapIsHoldIfNotInSymbLonger) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(symbol_layer_params.layer, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(41);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(42);
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (symbol_layer_params.expected_tap_keycode));
+    EXPECT_EMPTY_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_COMMA));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlap, AmbiguousOverlapIsHoldIfInSymbLonger) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(symbol_layer_params.layer, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(43);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(42);
+
+    // Release the other key
+    k_KC_2.release();
+    EXPECT_REPORT(driver, (KC_2));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlap, AmbiguousOverlapIsHoldIfInSymbLonger_CustomKeycode) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+    const uint16_t custom_keycode = CK_ALTT;
+
+    EXPECT_TRUE(custom_keycode > CUSTOM_KEYCODE_START);
+    // TODO: couldn't get includes working to use below line instead of previuos line
+    // EXPECT_TRUE(IS_CUSTOM_KEYCODE(custom_keycode));
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_X,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(symbol_layer_params.layer, 3,
+      TK_0,
+      custom_keycode,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_custom_keycode.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(43);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(42);
+
+    // Release the other key
+    k_custom_keycode.release();
+    EXPECT_REPORT(driver, (KC_RCTL));
+    EXPECT_REPORT(driver, (KC_RCTL, KC_RSFT));
+    EXPECT_REPORT(driver, (KC_RCTL, KC_RSFT, KC_T));
+    EXPECT_REPORT(driver, (KC_RCTL, KC_RSFT));
+    EXPECT_REPORT(driver, (KC_RCTL));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic_CustomKeycode) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+  const uint16_t custom_keycode = CK_ALTT;
+
+  EXPECT_TRUE(custom_keycode > CUSTOM_KEYCODE_START);
+  // TODO: couldn't get includes working to use below line instead of previuos line
+  // EXPECT_TRUE(IS_CUSTOM_KEYCODE(custom_keycode));
+
+  LEEP_KEY_ROW(0, 3,
+    to_symb,
+    KC_X,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(symbol_layer_params.layer, 3,
+    TK_0,
+    custom_keycode,
+    TK_1
+  )
+
+
+  // Press the symbol layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_custom_keycode.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_symb.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_custom_keycode.release();
+  EXPECT_REPORT(driver, (symbol_layer_params.expected_tap_keycode));
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (KC_X));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+
+// TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic_CustomKeycode) {
+//   TestDriver driver;
+//   InSequence s;
+
+//   const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+
+//   LEEP_KEY_ROW(0, 3,
+//     to_symb,
+//     KC_X,
+//     ck_test
+//   )
+
+//   LEEP_KEY_ROW_ONLY(symbol_layer_params.layer, 3,
+//     to_symb,
+//     KC_Y,
+//     TK_0
+//   )
+
+
+//   // Press the symbol layer key
+//   k_to_symb.press();
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   idle_for(20 * TAPPING_TERM);
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   k_KC_X.press();
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   idle_for(20 * TAPPING_TERM);
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   // Unpress the symbol layer key
+//   k_to_symb.release();
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   idle_for(20 * TAPPING_TERM);
+//   EXPECT_NO_REPORT(driver);
+//   run_one_scan_loop();
+
+//   k_KC_X.release();
+//   EXPECT_REPORT(driver, (symbol_layer_params.expected_tap_keycode));
+//   EXPECT_EMPTY_REPORT(driver);
+//   EXPECT_REPORT(driver, (KC_X));
+//   EXPECT_EMPTY_REPORT(driver);
+//   run_one_scan_loop();
+
+//   CONFIRM_RESET();
+// }
 
 
 /* TODO: Fix this test.

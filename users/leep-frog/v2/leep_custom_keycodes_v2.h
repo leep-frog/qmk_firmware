@@ -7,6 +7,8 @@
 #ifndef CUSTOM_KEYCODE_START
 #define CUSTOM_KEYCODE_START SAFE_RANGE
 #endif
+#define CUSTOM_KEYCODE_END CUSTOM_KEYCODE_START + custom_keycode_handlers_count()
+#define IS_CUSTOM_KEYCODE(keycode) (keycode >= CUSTOM_KEYCODE_START && keycode < CUSTOM_KEYCODE_END)
 
 bool process_custom_keycodes(uint16_t keycode, keyrecord_t* record);
 

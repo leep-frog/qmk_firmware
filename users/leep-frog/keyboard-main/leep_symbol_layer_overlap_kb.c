@@ -7,7 +7,7 @@
 /* Issue: when typing fast, would want to type " d". However, the space
 key is also the symbol layer, so the following would happen:
 
-- Press symbol key (for space presumable)
+- Press symbol key (for space presumably)
 - Press another key (e.g. d)
 - Unpress symbol key
 - Unpress another key
@@ -31,6 +31,7 @@ layer_overlap_handler_t symbol_handler = {
     .resolved_first_symb_press = true,
     .layer                     = LR_SYMB,
     .keycode                   = "\t",
+    .osm_keycode               = TO_SYMB,
 
     .key_press_at          = 0,
     .key_in_layer_duration = 0,
@@ -42,6 +43,7 @@ layer_overlap_handler_t alt_handler = {
     .resolved_first_symb_press = true,
     .layer                     = LR_ALT,
     .keycode                   = " ",
+    .osm_keycode               = TO_ALT,
 
     .key_press_at          = 0,
     .key_in_layer_duration = 0,
@@ -62,20 +64,26 @@ void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler) 
 }
 
 bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record) {
-    // Need to ensure we don't check the symbol key itself.
-    // We can do a more accurate check, but the following is simple enough
-    // and works for all keys for which the main issue is occurring.
-    if (keycode > QK_MODS_MAX) {
+    // Need to ensure we don't check the osm key itself.
+    if (keycode == handler->osm_keycode) {
         return false;
     }
 
-    bool symb_layer = IS_LAYER_ON(handler->layer);
+    bool in_symb_layer = IS_LAYER_ON(handler->layer);
 
     if (!handler->resolved_first_symb_press) {
         handler->resolved_first_symb_press = true;
 
+        // key_in_layer_duration: duration of time the key was down while in the symbol layer
+        // key_out_layer_duration: duration of time the key was down while NOT in the symbol layer
+        // Consider the following key events:
+        // (osm key press) ------ (other key press) ------- (osm key release) -------- (other key release)
+        //                                | key_in_layer_duration |
+        //                                                        |   key_out_layer_duration   |
         uint32_t key_out_layer_duration = timer_elapsed32(handler->key_press_at) - handler->key_in_layer_duration;
-        bool in_layer_longer = handler->key_in_layer_duration > key_out_layer_duration;
+
+        // Determine if the key was held down longer in the overlap layer or not
+        bool in_overlap_layer_longer = handler->key_in_layer_duration > key_out_layer_duration;
 
         // If we're not in the symbol layer, then the following happened:
         // - Press symb key
@@ -83,12 +91,12 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
         // - Unpress symb key
         // - Unpress other key
         // and we meant to just "type" the symb key as a space key.
-        if (!symb_layer && !in_layer_longer) {
+        if (!in_symb_layer && !in_overlap_layer_longer) {
             send_string(handler->keycode);
         }
 
         // Send the key we didn't press yet.
-        uint16_t actual_keycode = keymap_key_to_keycode(in_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key);
+        uint16_t actual_keycode = keymap_key_to_keycode(in_overlap_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key);
         if (actual_keycode >= QK_TAP_DANCE && actual_keycode <= QK_TAP_DANCE_MAX) {
             // If key in other layer is a tap dance (but in this layer is just a regular key),
             // then we need to execute the press and unpress logic for it.
@@ -100,6 +108,13 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
             preprocess_tap_dance(actual_keycode, record);
             process_tap_dance(actual_keycode, record);
             record->event.pressed = original_press;
+        } else if (IS_CUSTOM_KEYCODE(actual_keycode)) {
+            bool original_press   = record->event.pressed;
+            record->event.pressed = true;
+            process_custom_keycodes(actual_keycode, record);
+            record->event.pressed = false;
+            process_custom_keycodes(actual_keycode, record);
+            record->event.pressed = original_press;
         } else {
             // Otherwise, just press the regular keycode
             tap_code16(actual_keycode);
@@ -109,7 +124,7 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
     }
 
     // Record the first key press in the symbol layer, but don't actually press it.
-    if (symb_layer && !handler->first_symb_press && record->event.pressed) {
+    if (in_symb_layer && !handler->first_symb_press && record->event.pressed) {
         handler->key_press_at = timer_read32();
         handler->first_symb_press          = true;
         handler->first_symb_press_key      = ((keypos_t){

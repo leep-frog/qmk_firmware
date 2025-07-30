@@ -4,6 +4,7 @@ typedef struct {
     // Constant fields
     uint16_t layer;
     char    *keycode;
+    uint32_t osm_keycode;
 
     // Changing fields
     keypos_t first_symb_press_key;
