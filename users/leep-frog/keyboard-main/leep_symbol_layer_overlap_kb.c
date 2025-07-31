@@ -37,18 +37,6 @@ layer_overlap_handler_t symbol_handler = {
     .key_in_layer_duration = 0,
 };
 
-layer_overlap_handler_t alt_handler = {
-    .first_symb_press_key      = {},
-    .first_symb_press          = false,
-    .resolved_first_symb_press = true,
-    .layer                     = LR_ALT,
-    .keycode                   = " ",
-    .osm_keycode               = TO_ALT,
-
-    .key_press_at          = 0,
-    .key_in_layer_duration = 0,
-};
-
 // No longer need handlers for oh left/right layers because we use a combo to
 // activate those layers now
 

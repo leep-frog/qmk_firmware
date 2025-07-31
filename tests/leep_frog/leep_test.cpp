@@ -1371,12 +1371,12 @@ static const SymbolLayerOverlapParams symbol_layer_params[] = {
     LR_SYMB,
     KC_TAB,
   },
-  SymbolLayerOverlapParams{
-    "ALT",
-    TO_ALT,
-    LR_ALT,
-    KC_SPACE,
-  },
+  // SymbolLayerOverlapParams{
+  //   "ALT",
+  //   TO_ALT,
+  //   LR_ALT,
+  //   KC_SPACE,
+  // },
 };
 
 INSTANTIATE_TEST_CASE_P(

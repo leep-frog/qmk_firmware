@@ -80,4 +80,3 @@ extern char test_message[];
 bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 
 SYMBOL_LAYER_OVERLAP_SETUP_FN_H(symbol_handler);
-SYMBOL_LAYER_OVERLAP_SETUP_FN_H(alt_handler);

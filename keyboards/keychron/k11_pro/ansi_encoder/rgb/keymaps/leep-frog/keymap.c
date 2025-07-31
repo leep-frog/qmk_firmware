@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
         SC_LSPO, KC_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
         TD_LCBR,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  TD_RCBR,  CK_LOCK,
-        KC_LCTL, KC_LALT,  TO_SHCT,          CK_SHFT,           TO_SYMB,      TO_CTRL,       TO_ALT,            TO_NAV,             KC_LEFT,  KB_OFF,  KC_RGHT),
+        KC_LCTL, KC_LALT,  TO_ALT,           CK_SHFT,          TO_SYMB,      TO_CTRL,       KC_SPACE,            TO_NAV,             KC_LEFT,  KB_OFF,  KC_RGHT),
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
@@ -61,7 +61,7 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
         AL(TAB), AL(Q),    AL(F4),   AL(E),   AL(R),   CK_ALTT, CK_PSTE,  CK_SATB, AL(I),   CK_ATB,  AL(P),    AL(LBRC), AL(RBRC), AL(BSLS),         _______,
 LSFT_T(AL(LPRN)),TD_A,     AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, CK_TGSH, AL(K),   AL(L),    AL(SCLN), RSFT_T(AL(RPRN)),AL(ENT),   _______,
         AL(LSFT),          AL(Z),    AL(X),   AL(C),   AL(V),   CL(LEFT), CL(LEFT),AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
-        AL(LCTL),AL(LALT), AL(LGUI),          AL(ENTER),      _______,         AL(ENTER),            _______,            AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
+        AL(LCTL),AL(LALT), _______,           AL(ENTER),      _______,         AL(ENTER),            AL(SPACE),          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
 
     [LR_SYMB] = LAYOUT_69_ansi(
         KC_ESC,  KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   KC_BSPC,          _______,
