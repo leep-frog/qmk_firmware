@@ -30,7 +30,7 @@ layer_overlap_handler_t symbol_handler = {
     .first_symb_press          = false,
     .resolved_first_symb_press = true,
     .layer                     = LR_SYMB,
-    .keycode                   = "\t",
+    .keycode                   = KC_LGUI,
     .osm_keycode               = TO_SYMB,
 
     .key_press_at          = 0,
@@ -80,7 +80,7 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
         // - Unpress other key
         // and we meant to just "type" the symb key as a space key.
         if (!in_symb_layer && !in_overlap_layer_longer) {
-            send_string(handler->keycode);
+            tap_code16(handler->keycode);
         }
 
         // Send the key we didn't press yet.

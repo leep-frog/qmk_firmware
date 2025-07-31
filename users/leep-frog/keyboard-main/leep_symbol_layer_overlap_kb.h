@@ -3,7 +3,7 @@
 typedef struct {
     // Constant fields
     uint16_t layer;
-    char    *keycode;
+    uint32_t keycode;
     uint32_t osm_keycode;
 
     // Changing fields
