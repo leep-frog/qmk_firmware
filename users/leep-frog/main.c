@@ -238,7 +238,6 @@ typedef void (*processor_action_t)(bool activated);
 static uint32_t oh_timer; // Only have one since left and right one-hand layers can't be active at the same time
 void one_hand_layer_change(bool activated, char *press_key) {
   // Simple activation logic
-  AltLayerDeactivationHandler(activated);
   if (activated) {
     leep_acl = 0;
     tap_code16(KC_ACL2);
@@ -382,10 +381,6 @@ void keyboard_post_init_user(void) {
     }
 
     // Add Layer handlers
-    // Needed to undo SS_DOWN from [shift+]alt+tab logic (TD_ATAB/TD_STAB).
-    SET_LAYER_HANDLER(LR_ALT, AltLayerDeactivationHandler);
-    // Deactivate alt when exiting navigation layer.
-    SET_LAYER_HANDLER(LR_NAVIGATION, AltLayerDeactivationHandler);
     // Left one-hand layer changes.
     SET_LAYER_HANDLER(LR_ONE_HAND_LEFT, left_hand_layer_change);
     // Right one-hand layer changes.

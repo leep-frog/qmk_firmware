@@ -11,7 +11,7 @@
 
 bool alt_tab_mode_active = false;
 
-void _end_alt_tab_mode(void) {
+void end_alt_tab_mode(void) {
   if (alt_tab_mode_active) {
     alt_tab_mode_active = false;
     unregister_code16(KC_RALT);
@@ -43,14 +43,8 @@ bool AltBlockProcessing(uint16_t keycode, keyrecord_t* record) {
   }
 
   // Pressing a key to break the alt mode
-  _end_alt_tab_mode();
+  end_alt_tab_mode();
   return true;
-}
-
-void AltLayerDeactivationHandler(bool activated) {
-  if (!activated) {
-    _end_alt_tab_mode();
-  }
 }
 
 // The below functions implement custom keycode handlers

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "leep_layers_v2.h"
+#include "leep_alt_v2.h"
 
 layer_change_fn_t layer_handlers[MAX_NUM_LAYERS] = {
     [0 ... MAX_NUM_LAYERS-1] = NULL,
@@ -31,6 +32,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
       // we have to keep track of our own array sizes (https://stackoverflow.com/questions/9503098/sizeof-a-static-array-in-c)
       if (layer_handlers[i]) {
         layer_handlers[i](current_state);
+      }
+
+      // Always deactivate alt layer on any layer change
+      if (!current_state) {
+        end_alt_tab_mode();
       }
     }
   }
