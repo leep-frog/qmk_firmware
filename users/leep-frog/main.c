@@ -374,6 +374,7 @@ bool layers_status[NUM_LAYERS] = {
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
 SYMBOL_LAYER_OVERLAP_SETUP_FN_C(symbol_handler);
+SYMBOL_LAYER_OVERLAP_SETUP_FN_C(lr_right_handler);
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
@@ -388,12 +389,13 @@ void keyboard_post_init_user(void) {
     // Left one-hand layer changes.
     SET_LAYER_HANDLER(LR_ONE_HAND_LEFT, left_hand_layer_change);
     // Right one-hand layer changes.
-    SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, right_hand_layer_change);
+    // SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, right_hand_layer_change);
     // Start/end ctrl-alt layer on layer on/off.
     SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
     // Deactivate everything when going to safe layer.
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
     SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
+    SYMBOL_LAYER_OVERLAP_SETUP(lr_right_handler);
 }
 
 #if defined(LEEP_UNLOCK_CODE)
@@ -507,6 +509,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     Mute_handled(record);
     if (CrDescProcessHandler(keycode, record->event.pressed) ||
             SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
+            SymbolLayerOverlap_handled(&lr_right_handler, keycode, record) ||
             AltBlockProcessing(keycode, record)) {
         return false;
     }

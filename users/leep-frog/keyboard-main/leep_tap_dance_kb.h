@@ -35,6 +35,7 @@ bool IsToggleShiftTapDance(uint16_t keycode);
 
 #define TO_ALT TD(TDK_ALT_LAYER)
 #define TO_SYMB TD(TDK_SYMB_LAYER)
+#define TO_OH_R TD(TDK_OH_RIGHT_LAYER)
 #define TD_TBSF TD(TDK_TAB_SHIFT)
 
 #define TO_OTLK TD(TDK_TO_OUTLOOK)
