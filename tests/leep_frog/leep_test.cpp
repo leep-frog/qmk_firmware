@@ -1989,3 +1989,99 @@ TEST_P(LeepFrogSimpleTapDance, OverlapKeyTap) {
 
     CONFIRM_RESET();
 }
+
+/********************
+* Alt feature tests *
+*********************/
+
+struct AltFeatureParams {
+  std::string name;
+  uint16_t    layer_keycode;
+  uint8_t     layer;
+};
+
+
+class LeepFrogAltFeature : public ::testing::WithParamInterface<AltFeatureParams>, public TestFixture {
+protected:
+  AltFeatureParams alt_feature_params;
+
+  void SetUp() override {
+    alt_feature_params = GetParam();
+  }
+};
+
+static const AltFeatureParams alt_feature_params[] = {
+  AltFeatureParams{
+    "ALT_LAYER",
+    TO_ALT,
+    LR_ALT,
+  },
+  AltFeatureParams{
+    "SYMB_LAYER",
+    TO_SYMB,
+    LR_SYMB,
+  },
+  AltFeatureParams{
+    "RIGHT_HAND_LAYER",
+    TO_OH_R,
+    LR_ONE_HAND_RIGHT,
+  },
+  AltFeatureParams{
+    "CTRL_LAYER",
+    TO_CTRL,
+    LR_CTRL,
+  },
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogAltFeature,
+  ::testing::ValuesIn(alt_feature_params),
+  [](const ::testing::TestParamInfo<AltFeatureParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_layer = alt_feature_params.layer_keycode;
+  const uint16_t ck_atb = CK_ATB;
+
+  LEEP_KEY_ROW(0, 3,
+    to_layer,
+    TK_0,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(alt_feature_params.layer, 3,
+    TK_1,
+    ck_atb,
+    TK_2
+  )
+
+
+  // Press the layer key
+  k_to_layer.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Tap the alt+tab key
+  k_ck_atb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_ck_atb.release();
+  EXPECT_REPORT(driver, (KC_RALT));
+  EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
+  EXPECT_REPORT(driver, (KC_RALT));
+  run_one_scan_loop();
+
+  // Release the layer key
+  k_to_layer.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
