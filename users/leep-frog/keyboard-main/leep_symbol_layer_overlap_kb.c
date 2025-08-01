@@ -120,6 +120,12 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
             tap_code16(actual_keycode);
         }
 
+        // Deactivate alt mode if we did a quick alt mode key
+        // and are now out of the layer.
+        if (!in_symb_layer) {
+            end_alt_tab_mode();
+        }
+
         return (handler->first_symb_press_key.col == record->event.key.col && handler->first_symb_press_key.row == record->event.key.row);
     }
 

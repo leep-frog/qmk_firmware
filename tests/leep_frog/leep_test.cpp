@@ -2069,6 +2069,58 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
 
   // Tap the alt+tab key
   k_ck_atb.press();
+  EXPECT_REPORT(driver, (KC_RALT));
+  EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
+  run_one_scan_loop();
+
+  k_ck_atb.release();
+  EXPECT_REPORT(driver, (KC_RALT));
+  run_one_scan_loop();
+
+  // Release the layer key
+  k_to_layer.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+// TODO: Change all test names to snake case
+
+TEST_F(LeepFrog, DeactivatesAltOnLayerChangeWhenSymbolLayerOverlap) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_overlap_layer = TO_OH_R;
+  const uint16_t ck_atb = CK_ATB;
+
+  LEEP_KEY_ROW(0, 3,
+    to_overlap_layer,
+    TK_0,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(LR_ONE_HAND_RIGHT, 3,
+    TK_1,
+    ck_atb,
+    TK_2
+  )
+
+
+  // Press the layer key
+  k_to_overlap_layer.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Tap the alt+tab key
+  k_ck_atb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  idle_for(10);
+
+  // Release the layer key
+  k_to_overlap_layer.release();
   EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
@@ -2076,10 +2128,6 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
   EXPECT_REPORT(driver, (KC_RALT));
   EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
   EXPECT_REPORT(driver, (KC_RALT));
-  run_one_scan_loop();
-
-  // Release the layer key
-  k_to_layer.release();
   EXPECT_EMPTY_REPORT(driver);
   run_one_scan_loop();
 
