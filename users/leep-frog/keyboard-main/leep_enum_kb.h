@@ -21,8 +21,8 @@ enum layers { // prefix LR
     NUM_LAYERS,
 };
 
-#define TO_SYMB_KEYCODE KC_TAB
-#define TO_ALT_KEYCODE KC_G
+#define TO_SYMB_KEYCODE KC_LGUI
+#define TO_ALT_KEYCODE KC_TAB
 
 const uint16_t AltLayer = LR_ALT;
 const uint16_t CtrlLayer = LR_CTRL;
