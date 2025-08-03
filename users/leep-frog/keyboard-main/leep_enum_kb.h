@@ -54,7 +54,8 @@ enum td_keys { // prefix TDK
     TDK_TAB_SHIFT,
     TDK_ALT_LAYER,
     TDK_SYMB_LAYER,
-    TDK_OH_RIGHT_LAYER,
+    TDK_OH_RIGHT_LAYER, // TODO: Remove this
+    TDK_CTRL_SHIFT_LAYER,
     // One hand keys
     TDK_OH_COPY,
     TDK_OH_PASTE,
