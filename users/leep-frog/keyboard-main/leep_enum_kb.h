@@ -7,6 +7,7 @@ enum layers { // prefix LR
     // from which we define combos (see 'COMBO_ONLY_FROM_LAYER 1' in config.h).
     LR_ELLA,
     LR_CTRL,
+    LR_CTRL_SHIFT,
     LR_ALT,
     LR_SYMB,       // symbols
     LR_CTRL_X,     // layer activated temporarily after hitting x in the CTRL layer.

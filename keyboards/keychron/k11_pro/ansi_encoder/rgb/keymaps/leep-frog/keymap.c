@@ -45,9 +45,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
         CL(TAB), CL(Q),    CTRL_W,   KC_END,  CL(R),   CL(T),   CL(Y),    CK_TABB, CL(I),   CK_TABF, KC_UP,    CL(LBRC), CL(RBRC), CL(BSLS),         _______,
-LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), RSFT_T(CL(RPRN)),CL(ENT),   _______,
+LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), MO(LR_CTRL_SHIFT),CL(ENT),   _______,
         CL(LSFT),          CL(Z),    TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,  KC_LEFT, KC_DOWN, CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          CL(ENTER),        CL(TAB),        _______,          CL(SPACE),          CL(RGUI), CL(LEFT),CL(DOWN),CL(RGHT)),
+
+    [LR_CTRL_SHIFT] = LAYOUT_69_ansi(
+        _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
+        _______, _______,  AL(F4),   _______, _______, CK_ALTT, CK_PSTE,  CK_SATB, _______, CK_ATB,  KC_PGUP,  _______,  _______,  _______,         _______,
+        _______, _______,  _______,  CL(DEL), CL(RGHT),_______,           CK_UNBS, CK_TGSH, _______, SH(PGUP), _______,  _______,  _______,  _______,
+        _______,           _______,  _______, _______, SH(PGDN),CL(LEFT), CL(LEFT),KC_PGDN, _______, _______,  _______,  _______,  _______,  _______,
+        _______, _______,  _______,           _______,      _______,         _______,            _______,          _______, _______,_______,_______),
 
     [LR_CTRL_X] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
@@ -67,7 +74,7 @@ LSFT_T(AL(LPRN)),TD_A,     AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNB
         KC_ESC,  KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   KC_BSPC,          _______,
         KC_TAB,  KC_EXLM,  KC_COLN,  KC_EQL,  KC_CIRC, KC_PIPE, KC_PIPE,  KC_7,    KC_8,    KC_9,    KC_PERC,  KC_LBRC,  KC_RBRC,  KC_BSLS,          _______,
         KC_LSFT, KC_AMPR,  KC_ASTR,  KC_DLR,  KC_SLSH, KC_LBRC,           CK_MDPS, KC_4,    KC_5,    KC_6,     KC_0,     KC_COMMA,  KC_ENT,           _______,
-        KC_LSFT,           KC_DOT,   KC_COMM, KC_AT,   KC_EQL,  KC_BSLS,  KC_LCBR, KC_RCBR, KC_1,    KC_2,     KC_3,     KC_SLSH,  KC_RSFT, KC_UP,
+        KC_LBRC,           KC_DOT,   KC_COMM, KC_AT,   KC_EQL,  KC_BSLS,  KC_LCBR, KC_RCBR, KC_1,    KC_2,     KC_3,     KC_SLSH,  KC_RBRC, KC_UP,
         KC_LCTL, KC_LALT,  _______,           KC_ENTER,         _______,           KC_ENTER,         KC_SPACE,           KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
 
     // This is currently identical to the LR_NAVIGATION layer.
