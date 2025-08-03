@@ -21,6 +21,9 @@ enum layers { // prefix LR
     NUM_LAYERS,
 };
 
+#define TO_SYMB_KEYCODE KC_TAB
+#define TO_ALT_KEYCODE KC_G
+
 const uint16_t AltLayer = LR_ALT;
 const uint16_t CtrlLayer = LR_CTRL;
 
@@ -64,7 +67,6 @@ enum td_keys { // prefix TDK
     TDK_CR_DESC,
     TDK_LEFT_BRACKET_SHIFT,
     TDK_RIGHT_BRACKET_SHIFT,
-    TDK_CTAB_TO_ALT,
 };
 
 // Custom keycode enums

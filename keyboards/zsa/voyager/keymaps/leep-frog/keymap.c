@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         CL(TAB), CL(Q),   CTRL_W,  KC_END,  CL(R),   CL(T),                        CL(Y),   CK_TABB, CL(I),   CK_TABF, KC_UP,   CL(BSLS),
 LSFT_T(CL(LPRN)),KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG,                      KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP, CL(SCLN),RSFT_T(CL(RPRN)),
         CL(LCBR),CL(Z),   TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,                      KC_DOWN, CL(M),   CL(COMM),CL(DOT), CL(SLSH),CL(RCBR),
-                                            TD_CTAB_ALT, CL(ENTER),                CL(SPACE),  _______
+                                            CL(TAB), CL(ENTER),                CL(SPACE),  _______
     ),
 
     [LR_CTRL_X] = LAYOUT(

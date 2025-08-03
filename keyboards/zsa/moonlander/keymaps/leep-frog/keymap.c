@@ -44,7 +44,7 @@ LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _
 
                                                                     BOTTOM_ROW,
 
-                                        CL(ENTER), TD_CTAB_ALT, CL(LGUI),      CL(RGUI), _______, CL(SPACE)
+                                        CL(ENTER), CL(TAB), CL(LGUI),      CL(RGUI), _______, CL(SPACE)
     ),
 
     [LR_CTRL_X] = ML_LAYOUT(

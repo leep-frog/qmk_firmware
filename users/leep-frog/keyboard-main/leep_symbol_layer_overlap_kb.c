@@ -31,7 +31,7 @@ layer_overlap_handler_t symbol_handler = {
     .first_symb_press          = false,
     .resolved_first_symb_press = true,
     .layer                     = LR_SYMB,
-    .keycode                   = KC_LGUI,
+    .keycode                   = TO_SYMB_KEYCODE,
     .osm_keycode               = TO_SYMB,
 
     .key_press_at          = 0,

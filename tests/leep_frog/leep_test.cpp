@@ -993,7 +993,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_ShortOverlapIsConsideredTyping) {
 
     // Release the other key
     k_KC_2.release();
-    EXPECT_REPORT(driver, (KC_LGUI));
+    EXPECT_REPORT(driver, (TO_SYMB_KEYCODE));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_COMMA));
     EXPECT_EMPTY_REPORT(driver);
@@ -1083,7 +1083,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
 
     // Release the other key
     k_KC_2.release();
-    EXPECT_REPORT(driver, (KC_LGUI));
+    EXPECT_REPORT(driver, (TO_SYMB_KEYCODE));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_COMMA));
     EXPECT_EMPTY_REPORT(driver);
@@ -1131,7 +1131,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
 
     // Release the other key
     k_KC_2.release();
-    EXPECT_REPORT(driver, (KC_LGUI));
+    EXPECT_REPORT(driver, (TO_SYMB_KEYCODE));
     EXPECT_EMPTY_REPORT(driver);
     EXPECT_REPORT(driver, (KC_COMMA));
     EXPECT_EMPTY_REPORT(driver);
@@ -1294,7 +1294,7 @@ static const SymbolLayerOverlapParams symbol_layer_params[] = {
     "SYMB",
     TO_SYMB,
     LR_SYMB,
-    KC_LGUI,
+    TO_SYMB_KEYCODE,
   },
   SymbolLayerOverlapParams{
     "RIGHT_HAND_LAYER",
@@ -1975,7 +1975,7 @@ static const SimpleTapDanceParams simple_tap_dance_params[] = {
     "TO_ALT",
     TO_ALT,
     LR_ALT,
-    KC_TAB,
+    TO_ALT_KEYCODE,
   },
   SimpleTapDanceParams{
     "TO_CTRL",
@@ -1987,7 +1987,7 @@ static const SimpleTapDanceParams simple_tap_dance_params[] = {
     "TO_SYMB",
     TO_SYMB,
     LR_SYMB,
-    KC_LGUI,
+    TO_SYMB_KEYCODE,
   },
 };
 

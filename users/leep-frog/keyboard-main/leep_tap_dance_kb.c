@@ -457,7 +457,7 @@ void leep_special_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value
     }
 }
 
-#define LEEP_TD_SYMBOL_LAYER() LEEP_TD_CLICK_HOLD(LEEP_TD_INT(LR_SYMB), leep_kc_layer_start_fn, LEEP_TD_INT(KC_LGUI), leep_kc_special_press_fn, LEEP_TD_INT(KC_LGUI), leep_special_hold_fn)
+#define LEEP_TD_SYMBOL_LAYER() LEEP_TD_CLICK_HOLD(LEEP_TD_INT(LR_SYMB), leep_kc_layer_start_fn, LEEP_TD_INT(TO_SYMB_KEYCODE), leep_kc_special_press_fn, LEEP_TD_INT(TO_SYMB_KEYCODE), leep_special_hold_fn)
 
 tap_dance_action_t tap_dance_actions[] = {
     // Shift toggle
@@ -494,7 +494,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
     // Alt layer
-    [TDK_ALT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_TAB, LR_ALT),
+    [TDK_ALT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_ALT_KEYCODE, LR_ALT),
     // Symbol layer
     [TDK_SYMB_LAYER] = LEEP_TD_SYMBOL_LAYER(),
     // Right hand layer
@@ -522,8 +522,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_LEFT_BRACKET_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_LCBR, KC_LSFT),
     // Right bracket shift
     [TDK_RIGHT_BRACKET_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_RCBR, KC_RSFT),
-    // Right bracket shift
-    [TDK_CTAB_TO_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER(C(KC_TAB), LR_ALT),
 };
 
 bool IsToggleShiftTapDance(uint16_t keycode) {
