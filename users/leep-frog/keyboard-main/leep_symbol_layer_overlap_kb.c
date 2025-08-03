@@ -88,35 +88,24 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
         if (keycode != handler->first_symb_press_keycode) {
 
             // First press the second key
-            uint16_t second_keycode = handler->first_symb_press_keycode;
+            // uint16_t second_keycode = handler->first_symb_press_keycode;
             keyevent_t second_event = {
                 .key = handler->first_symb_press_key_pos,
                 .type = KEY_EVENT,
                 .pressed = true,
             };
-            tap_t second_tap = {
-                .count = 1,
+            action_exec(second_event);
+
+            // Simulate the press of the third key (but possibly in a different layer)
+            keyevent_t third_event = {
+                .key = record->event.key,
+                .type = KEY_EVENT,
+                .pressed = true,
             };
-            keyrecord_t second_record = {
-                .event = second_event,
-                .tap = second_tap,
-            };
-            if (second_keycode >= QK_TAP_DANCE && second_keycode <= QK_TAP_DANCE_MAX) {
-                // If key in other layer is a tap dance (but in this layer is just a regular key),
-                // then we need to execute the press and unpress logic for it.
-                preprocess_tap_dance(second_keycode, &second_record);
-                process_tap_dance(second_keycode, &second_record);
-                // Need to mark this as interrupted
-                preprocess_tap_dance(KC_NO, record);
-            } else if (IS_CUSTOM_KEYCODE(second_keycode)) {
-                process_custom_keycodes(second_keycode, &second_record);
-            } else {
-                // Otherwise, just press the regular keycode
-                register_code16(second_keycode);
-            }
+            action_exec(third_event);
 
             // Skip handling of third key (since we simulated press above)
-            return false;
+            return true;
         }
 
         // key_in_layer_duration: duration of time the key was down while in the symbol layer
@@ -140,30 +129,63 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
             tap_code16(handler->keycode);
         }
 
-        // Send the key we didn't press yet.
-        uint16_t actual_keycode = keymap_key_to_keycode(in_overlap_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key_pos);
-        if (actual_keycode >= QK_TAP_DANCE && actual_keycode <= QK_TAP_DANCE_MAX) {
-            // If key in other layer is a tap dance (but in this layer is just a regular key),
-            // then we need to execute the press and unpress logic for it.
-            bool original_press   = record->event.pressed;
-            record->event.pressed = true;
-            preprocess_tap_dance(actual_keycode, record);
-            process_tap_dance(actual_keycode, record);
-            record->event.pressed = false;
-            preprocess_tap_dance(actual_keycode, record);
-            process_tap_dance(actual_keycode, record);
-            record->event.pressed = original_press;
-        } else if (IS_CUSTOM_KEYCODE(actual_keycode)) {
-            bool original_press   = record->event.pressed;
-            record->event.pressed = true;
-            process_custom_keycodes(actual_keycode, record);
-            record->event.pressed = false;
-            process_custom_keycodes(actual_keycode, record);
-            record->event.pressed = original_press;
-        } else {
-            // Otherwise, just press the regular keycode
-            tap_code16(actual_keycode);
+        // Tap the key we didn't press yet (don't use tap_code16 because it can
+        // be a tap dance, custom keycode, etc. and we rather just let action_exec
+        // handle it).
+
+        // Temporarily change the layer back if in_overlap_layer_longer
+        if (in_overlap_layer_longer) {
+            layer_on(handler->layer);
         }
+
+        // Simulate the press and release of the key
+        keyevent_t second_event = {
+            .key = handler->first_symb_press_key_pos,
+            .type = KEY_EVENT,
+            .pressed = true,
+        };
+        action_exec(second_event);
+        keyevent_t second_event_release = {
+            .key = handler->first_symb_press_key_pos,
+            .type = KEY_EVENT,
+            .pressed = false,
+        };
+        action_exec(second_event_release);
+
+        if (in_overlap_layer_longer) {
+            layer_off(handler->layer);
+        }
+
+        /***************
+         * Old logic below.
+         * Benefit of old logic: didn't do layer_on/layer_off which can have side effects
+         * Disbenefit of old logic: Had to re-implement relevant action_exec depending on things which wasn't great
+         * Cons definitely outweighs the pros, so we keep the new logic above
+         ***************/
+
+        // uint16_t actual_keycode = keymap_key_to_keycode(in_overlap_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key_pos);
+        // if (actual_keycode >= QK_TAP_DANCE && actual_keycode <= QK_TAP_DANCE_MAX) {
+        //     // If key in other layer is a tap dance (but in this layer is just a regular key),
+        //     // then we need to execute the press and unpress logic for it.
+        //     bool original_press   = record->event.pressed;
+        //     record->event.pressed = true;
+        //     preprocess_tap_dance(actual_keycode, record);
+        //     process_tap_dance(actual_keycode, record);
+        //     record->event.pressed = false;
+        //     preprocess_tap_dance(actual_keycode, record);
+        //     process_tap_dance(actual_keycode, record);
+        //     record->event.pressed = original_press;
+        // } else if (IS_CUSTOM_KEYCODE(actual_keycode)) {
+        //     bool original_press   = record->event.pressed;
+        //     record->event.pressed = true;
+        //     process_custom_keycodes(actual_keycode, record);
+        //     record->event.pressed = false;
+        //     process_custom_keycodes(actual_keycode, record);
+        //     record->event.pressed = original_press;
+        // } else {
+        //     // Otherwise, just press the regular keycode
+        //     tap_code16(actual_keycode);
+        // }
 
         // Deactivate alt mode if we did a quick alt mode key
         // and are now out of the layer.
