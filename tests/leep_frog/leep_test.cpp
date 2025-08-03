@@ -1668,6 +1668,63 @@ TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic_CustomKeycode) {
 }
 
 
+TEST_P(LeepFrogSymbolLayerOverlap, HoldSecondKey) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+  const uint16_t to_scroll = TO_SCRR;
+
+  LEEP_KEY_ROW(0, 4,
+    to_symb,
+    KC_0,
+    KC_1,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(symbol_layer_params.layer, 4,
+    TK_0,
+    to_scroll,
+    KC_2,
+    TK_1
+  )
+
+  LEEP_KEY_ROW(LR_SCROLL, 4,
+    TK_2,
+    TK_3,
+    KC_3,
+    TK_4
+  )
+
+
+  // Press the symbol layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_to_scroll.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_KC_2.press();
+  EXPECT_REPORT(driver, (KC_3));
+  run_one_scan_loop();
+
+  k_KC_3.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  k_to_scroll.release();
+  run_one_scan_loop();
+
+  k_to_symb.release();
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+
 // TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic_CustomKeycode) {
 //   TestDriver driver;
 //   InSequence s;

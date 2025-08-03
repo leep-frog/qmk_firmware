@@ -26,7 +26,8 @@ Test cases:
 */
 
 layer_overlap_handler_t symbol_handler = {
-    .first_symb_press_key      = {},
+    .first_symb_press_key_pos  = {},
+    .first_symb_press_keycode  = KC_NO,
     .first_symb_press          = false,
     .resolved_first_symb_press = true,
     .layer                     = LR_SYMB,
@@ -38,7 +39,8 @@ layer_overlap_handler_t symbol_handler = {
 };
 
 layer_overlap_handler_t lr_right_handler = {
-    .first_symb_press_key      = {},
+    .first_symb_press_key_pos  = {},
+    .first_symb_press_keycode  = KC_NO,
     .first_symb_press          = false,
     .resolved_first_symb_press = true,
     .layer                     = LR_ONE_HAND_RIGHT,
@@ -74,6 +76,49 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
     if (!handler->resolved_first_symb_press) {
         handler->resolved_first_symb_press = true;
 
+        // This block handles the following scenario:
+        // * Press and hold symbol layer key
+        // * Press and hold second key
+        // * Press third key (that is neither symbol layer key nor second key)
+        // In this scenario, we assume that:
+        // 1. The symbol layer key is being pressed and held
+        // 2. The second key is being press and held in the symbol layer
+        // 3. The third key is being processed on top of that
+        // TODO: Can this logic be done in pre_process_record_user?!
+        if (keycode != handler->first_symb_press_keycode) {
+
+            // First press the second key
+            uint16_t second_keycode = handler->first_symb_press_keycode;
+            keyevent_t second_event = {
+                .key = handler->first_symb_press_key_pos,
+                .type = KEY_EVENT,
+                .pressed = true,
+            };
+            tap_t second_tap = {
+                .count = 1,
+            };
+            keyrecord_t second_record = {
+                .event = second_event,
+                .tap = second_tap,
+            };
+            if (second_keycode >= QK_TAP_DANCE && second_keycode <= QK_TAP_DANCE_MAX) {
+                // If key in other layer is a tap dance (but in this layer is just a regular key),
+                // then we need to execute the press and unpress logic for it.
+                preprocess_tap_dance(second_keycode, &second_record);
+                process_tap_dance(second_keycode, &second_record);
+                // Need to mark this as interrupted
+                preprocess_tap_dance(KC_NO, record);
+            } else if (IS_CUSTOM_KEYCODE(second_keycode)) {
+                process_custom_keycodes(second_keycode, &second_record);
+            } else {
+                // Otherwise, just press the regular keycode
+                register_code16(second_keycode);
+            }
+
+            // Skip handling of third key (since we simulated press above)
+            return false;
+        }
+
         // key_in_layer_duration: duration of time the key was down while in the symbol layer
         // key_out_layer_duration: duration of time the key was down while NOT in the symbol layer
         // Consider the following key events:
@@ -96,7 +141,7 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
         }
 
         // Send the key we didn't press yet.
-        uint16_t actual_keycode = keymap_key_to_keycode(in_overlap_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key);
+        uint16_t actual_keycode = keymap_key_to_keycode(in_overlap_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key_pos);
         if (actual_keycode >= QK_TAP_DANCE && actual_keycode <= QK_TAP_DANCE_MAX) {
             // If key in other layer is a tap dance (but in this layer is just a regular key),
             // then we need to execute the press and unpress logic for it.
@@ -126,14 +171,15 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
             end_alt_tab_mode();
         }
 
-        return (handler->first_symb_press_key.col == record->event.key.col && handler->first_symb_press_key.row == record->event.key.row);
+        return (handler->first_symb_press_key_pos.col == record->event.key.col && handler->first_symb_press_key_pos.row == record->event.key.row);
     }
 
     // Record the first key press in the symbol layer, but don't actually press it.
     if (in_symb_layer && !handler->first_symb_press && record->event.pressed) {
         handler->key_press_at = timer_read32();
         handler->first_symb_press          = true;
-        handler->first_symb_press_key      = ((keypos_t){
+        handler->first_symb_press_keycode  = keycode;
+        handler->first_symb_press_key_pos  = ((keypos_t){
                  .col = record->event.key.col,
                  .row = record->event.key.row,
         });
