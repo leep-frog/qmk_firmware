@@ -683,7 +683,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     run_one_scan_loop();
     k_to_shct.release();
     EXPECT_REPORT(driver, (KC_LSFT));
-    EXPECT_REPORT(driver, (KC_LSFT, KC_LEFT_BRACKET));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_9));
     EXPECT_REPORT(driver, (KC_LSFT));
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
