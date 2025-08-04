@@ -258,7 +258,7 @@ void left_hand_layer_change(bool activated) {
 }
 
 void right_hand_layer_change(bool activated) {
-  one_hand_layer_change(activated, "4");
+  one_hand_layer_change(activated, "x");
 }
 
 void ctrl_alt_layer(bool activated) {
@@ -373,7 +373,6 @@ bool layers_status[NUM_LAYERS] = {
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
 SYMBOL_LAYER_OVERLAP_SETUP_FN_C(symbol_handler);
-SYMBOL_LAYER_OVERLAP_SETUP_FN_C(lr_right_handler);
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
@@ -383,6 +382,7 @@ void keyboard_post_init_user(void) {
     // Add Layer handlers
     // Left one-hand layer changes.
     SET_LAYER_HANDLER(LR_ONE_HAND_LEFT, left_hand_layer_change);
+    SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, right_hand_layer_change);
     // Right one-hand layer changes.
     // SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, right_hand_layer_change);
     // Start/end ctrl-alt layer on layer on/off.
@@ -390,7 +390,6 @@ void keyboard_post_init_user(void) {
     // Deactivate everything when going to safe layer.
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
     SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
-    SYMBOL_LAYER_OVERLAP_SETUP(lr_right_handler);
 }
 
 #if defined(LEEP_UNLOCK_CODE)

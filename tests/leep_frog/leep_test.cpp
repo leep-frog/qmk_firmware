@@ -1190,15 +1190,57 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
 * One hand layer tests *
 ************************/
 
-// TODO: Parameterize these tests (see suite below this one for parameterization example)
+struct OneHandLayerParams {
+  std::string name;
+  uint16_t    combo_keycode_1;
+  uint16_t    combo_keycode_2;
+  uint16_t    quick_keycode;
+};
 
-TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
+
+class LeepFrogOneHandLayer : public ::testing::WithParamInterface<OneHandLayerParams>, public TestFixture {
+protected:
+  OneHandLayerParams one_hand_layer_params;
+
+  void SetUp() override {
+    one_hand_layer_params = GetParam();
+  }
+};
+
+static const OneHandLayerParams one_hand_layer_params[] = {
+  OneHandLayerParams{
+    "OH_LEFT",
+    KC_RSFT,
+    KC_F,
+    KC_SLASH,
+  },
+  OneHandLayerParams{
+    "OH_RIGHT",
+    KC_SPACE,
+    KC_J,
+    KC_X,
+  },
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogOneHandLayer,
+  ::testing::ValuesIn(one_hand_layer_params),
+  [](const ::testing::TestParamInfo<OneHandLayerParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogOneHandLayer, QuickOneHandLayerPressesKey) {
     TestDriver driver;
     InSequence s;
 
+    const uint16_t combo_keycode_1 = one_hand_layer_params.combo_keycode_1;
+    const uint16_t combo_keycode_2 = one_hand_layer_params.combo_keycode_2;
+
     LEEP_KEY_ROW(0, 3,
-      KC_RSFT,
-      KC_F,
+      combo_keycode_1,
+      combo_keycode_2,
       ck_test
     )
 
@@ -1209,34 +1251,37 @@ TEST_F(LeepFrog, OneHandLayer_Left_QuickOneHandLayerPressesKey) {
     )
 
     // Activate the combo one hand left layer
-    k_KC_RSFT.press();
+    k_combo_keycode_1.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_KC_F.press();
+    k_combo_keycode_2.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
     idle_for(TAPPING_TERM + COMBO_TERM - 3);
 
     // Release the combo one hand left layer
-    k_KC_F.release();
+    k_combo_keycode_2.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_KC_RSFT.release();
-    EXPECT_REPORT(driver, (KC_SLSH)); // This should be '/' because it was quick
+    k_combo_keycode_1.release();
+    EXPECT_REPORT(driver, (one_hand_layer_params.quick_keycode)); // This should be '/' because it was quick
     EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 
     CONFIRM_RESET();
 }
 
-TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
+TEST_P(LeepFrogOneHandLayer, LongOneHandLayerDoesNotPressKey) {
     TestDriver driver;
     InSequence s;
 
+    const uint16_t combo_keycode_1 = one_hand_layer_params.combo_keycode_1;
+    const uint16_t combo_keycode_2 = one_hand_layer_params.combo_keycode_2;
+
     LEEP_KEY_ROW(0, 3,
-      KC_RSFT,
-      KC_F,
+      combo_keycode_1,
+      combo_keycode_2,
       ck_test
     )
 
@@ -1247,20 +1292,20 @@ TEST_F(LeepFrog, OneHandLayer_Left_LongOneHandLayerDoesNotPressKey) {
     )
 
     // Activate the combo one hand left layer
-    k_KC_RSFT.press();
+    k_combo_keycode_1.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_KC_F.press();
+    k_combo_keycode_2.press();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
     idle_for(TAPPING_TERM + COMBO_TERM);
 
     // Release the combo one hand left layer
-    k_KC_F.release();
+    k_combo_keycode_2.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
-    k_KC_RSFT.release();
+    k_combo_keycode_1.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
@@ -1296,12 +1341,12 @@ static const SymbolLayerOverlapParams symbol_layer_params[] = {
     LR_SYMB,
     TO_SYMB_KEYCODE,
   },
-  SymbolLayerOverlapParams{
-    "RIGHT_HAND_LAYER",
-    TO_OH_R,
-    LR_ONE_HAND_RIGHT,
-    KC_SPACE,
-  },
+  // SymbolLayerOverlapParams{
+  //   "RIGHT_HAND_LAYER",
+  //   TO_OH_R,
+  //   LR_ONE_HAND_RIGHT,
+  //   KC_SPACE,
+  // },
 };
 
 INSTANTIATE_TEST_CASE_P(
@@ -2140,11 +2185,6 @@ static const AltFeatureParams alt_feature_params[] = {
     LR_SYMB,
   },
   AltFeatureParams{
-    "RIGHT_HAND_LAYER",
-    TO_OH_R,
-    LR_ONE_HAND_RIGHT,
-  },
-  AltFeatureParams{
     "CTRL_LAYER",
     TO_CTRL,
     LR_CTRL,
@@ -2209,7 +2249,7 @@ TEST_F(LeepFrog, DeactivatesAltOnLayerChangeWhenSymbolLayerOverlap) {
   TestDriver driver;
   InSequence s;
 
-  const uint16_t to_overlap_layer = TO_OH_R;
+  const uint16_t to_overlap_layer = TO_SYMB;
   const uint16_t ck_atb = CK_ATB;
 
   LEEP_KEY_ROW(0, 3,
@@ -2218,7 +2258,7 @@ TEST_F(LeepFrog, DeactivatesAltOnLayerChangeWhenSymbolLayerOverlap) {
     ck_test
   )
 
-  LEEP_KEY_ROW(LR_ONE_HAND_RIGHT, 3,
+  LEEP_KEY_ROW(LR_SYMB, 3,
     TK_1,
     ck_atb,
     TK_2
