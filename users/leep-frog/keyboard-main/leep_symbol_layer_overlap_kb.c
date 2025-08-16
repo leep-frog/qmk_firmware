@@ -38,14 +38,14 @@ layer_overlap_handler_t symbol_handler = {
     .key_in_layer_duration = 0,
 };
 
-layer_overlap_handler_t lr_right_handler = {
+layer_overlap_handler_t ctrl_overlap_handler = {
     .first_symb_press_key_pos  = {},
     .first_symb_press_keycode  = KC_NO,
     .first_symb_press          = false,
     .resolved_first_symb_press = true,
-    .layer                     = LR_ONE_HAND_RIGHT,
-    .keycode                   = KC_SPACE,
-    .osm_keycode               = TO_OH_R,
+    .layer                     = LR_CTRL,
+    .keycode                   = KC_ENTER,
+    .osm_keycode               = TO_CTRL,
 
     .key_press_at          = 0,
     .key_in_layer_duration = 0,

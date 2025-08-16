@@ -2340,6 +2340,8 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
     TK_2
   )
 
+  bool different = alt_feature_params.layer == LR_SYMB || alt_feature_params.layer == LR_CTRL;
+
 
   // Press the layer key
   k_to_layer.press();
@@ -2348,7 +2350,7 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
 
   // Tap the alt+tab key
   k_ck_atb.press();
-  if (alt_feature_params.layer == LR_SYMB) {
+  if (different) {
     EXPECT_NO_REPORT(driver);
   } else {
     EXPECT_REPORT(driver, (KC_RALT));
@@ -2357,7 +2359,7 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
   run_one_scan_loop();
 
   k_ck_atb.release();
-  if (alt_feature_params.layer == LR_SYMB) {
+  if (different) {
     EXPECT_REPORT(driver, (KC_RALT));
     EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
     EXPECT_REPORT(driver, (KC_RALT));
@@ -2369,7 +2371,7 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
 
   // Release the layer key
   k_to_layer.release();
-  if (alt_feature_params.layer == LR_SYMB) {
+  if (different) {
     EXPECT_NO_REPORT(driver);
   } else {
     EXPECT_EMPTY_REPORT(driver);

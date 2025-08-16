@@ -22,8 +22,7 @@ void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler);
 bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record);
 
 extern layer_overlap_handler_t symbol_handler;
-extern layer_overlap_handler_t lr_left_handler;
-extern layer_overlap_handler_t lr_right_handler;
+extern layer_overlap_handler_t ctrl_overlap_handler;
 
 // Put the following in .h and .c files respectively
 #define SYMBOL_LAYER_OVERLAP_SETUP_FN_H(handler) void symbol_layer_handler##handler(bool activated);

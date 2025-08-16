@@ -378,6 +378,7 @@ bool layers_status[NUM_LAYERS] = {
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
 SYMBOL_LAYER_OVERLAP_SETUP_FN_C(symbol_handler);
+SYMBOL_LAYER_OVERLAP_SETUP_FN_C(ctrl_overlap_handler);
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
@@ -395,6 +396,7 @@ void keyboard_post_init_user(void) {
     // Deactivate everything when going to safe layer.
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
     SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
+    SYMBOL_LAYER_OVERLAP_SETUP(ctrl_overlap_handler);
 }
 
 #if defined(LEEP_UNLOCK_CODE)
@@ -505,7 +507,7 @@ bool pre_process_record_user(uint16_t keycode, keyrecord_t* record) {
   }
 
   if (SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
-          SymbolLayerOverlap_handled(&lr_right_handler, keycode, record)) {
+      SymbolLayerOverlap_handled(&ctrl_overlap_handler, keycode, record)) {
       return false;
   }
 
