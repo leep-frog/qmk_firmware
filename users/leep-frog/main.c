@@ -63,6 +63,11 @@ void test_confirm(keyrecord_t *record) {
     return;
   }
 
+  if (!symbol_handler.resolved_first_symb_press) {
+    sprintf(test_message, "Unresolved first symb press");
+    return;
+  }
+
   // On release, run all verifications
   strcpy(test_message, "Success!");
   return;
@@ -485,25 +490,33 @@ void housekeeping_task_user(void) {
   OSM_cleanup();
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-#ifdef LEEP_TEST_MODE
-    // Don't do anything else if we press/unpress the CK_TEST key
-    if (keycode == CK_TEST) {
-      test_confirm(record);
-      return false;
-    }
-#endif
+bool pre_process_record_user(uint16_t keycode, keyrecord_t* record) {
+  #ifdef LEEP_TEST_MODE
+  // Don't do anything else if we press/unpress the CK_TEST key
+  if (keycode == CK_TEST) {
+    test_confirm(record);
+    return false;
+  }
+  #endif
 
-    // Unlock keyboard (if relevant)
-    if (!leep_startup_mode(keycode, record)) {
-        return false;
-    }
+  // Unlock keyboard (if relevant)
+  if (!leep_startup_mode(keycode, record)) {
+      return false;
+  }
+
+  if (SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
+          SymbolLayerOverlap_handled(&lr_right_handler, keycode, record)) {
+      return false;
+  }
+
+  return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
     OSM_handled(keycode, record->event.pressed);
     Mute_handled(record);
     if (CrDescProcessHandler(keycode, record->event.pressed) ||
-            SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
-            SymbolLayerOverlap_handled(&lr_right_handler, keycode, record) ||
             AltBlockProcessing(keycode, record)) {
         return false;
     }

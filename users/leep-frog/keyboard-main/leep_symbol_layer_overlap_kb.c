@@ -68,7 +68,26 @@ void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler) 
 bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record) {
     // Need to ensure we don't check the osm key itself.
     if (keycode == handler->osm_keycode) {
-        return false;
+
+        // Record the key position of the osm keycode
+        if (record->event.pressed) {
+            handler->osm_keycode_key_pos  = ((keypos_t){
+                    .col = record->event.key.col,
+                    .row = record->event.key.row,
+            });
+            return false;
+        }
+
+        // If we already resolved it then proceed as normal
+        if (!handler->first_symb_press) {
+            return false;
+        }
+        layer_off(handler->layer);
+
+        // It's worth noting that if this returns true, then the tap dance will not have been reset!
+        // We could send a key event to trigger the interrupt and then return false, (TODO: try this instead?: just call process_tap_dance or whatever to fake an interrupt)
+        // but instead we take care of it below.
+        return !handler->resolved_first_symb_press;
     }
 
     bool in_symb_layer = IS_LAYER_ON(handler->layer);
@@ -93,6 +112,7 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
                 .key = handler->first_symb_press_key_pos,
                 .type = KEY_EVENT,
                 .pressed = true,
+                .time = timer_read(),
             };
             action_exec(second_event);
 
@@ -101,6 +121,7 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
                 .key = record->event.key,
                 .type = KEY_EVENT,
                 .pressed = true,
+                .time = timer_read(),
             };
             action_exec(third_event);
 
@@ -143,18 +164,30 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
             .key = handler->first_symb_press_key_pos,
             .type = KEY_EVENT,
             .pressed = true,
+            .time = timer_read(),
         };
         action_exec(second_event);
         keyevent_t second_event_release = {
             .key = handler->first_symb_press_key_pos,
             .type = KEY_EVENT,
             .pressed = false,
+            .time = timer_read(),
         };
         action_exec(second_event_release);
 
         if (in_overlap_layer_longer) {
             layer_off(handler->layer);
         }
+
+        // Simulate the release of the key that got us to the OSM layer
+        // to ensure the tap dance is reset (since it wasn't due to skip in `keycode == handler->osm_keycode` check).
+        keyevent_t regular_key_release = {
+            .key = handler->osm_keycode_key_pos,
+            .type = KEY_EVENT,
+            .pressed = false,
+            .time = timer_read(),
+        };
+        action_exec(regular_key_release);
 
         /***************
          * Old logic below.

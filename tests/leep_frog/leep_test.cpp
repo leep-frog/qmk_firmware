@@ -1364,6 +1364,10 @@ TEST_P(LeepFrogSymbolLayerOverlap, SingleTap) {
 
   const uint16_t to_symb = symbol_layer_params.symbol_keycode;
 
+  // TODO: Confirm these in CK_TEST logic in main.c
+  // EXPECT_TRUE(symbol_handler.resolved_first_symb_press);
+  // EXPECT_FALSE(symbol_handler.first_symb_press);
+
   LEEP_KEY_ROW(0, 2,
     to_symb,
     ck_test
@@ -1374,6 +1378,68 @@ TEST_P(LeepFrogSymbolLayerOverlap, SingleTap) {
     TK_0
   )
 
+
+  // Press the symbol layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_symb.release();
+  EXPECT_REPORT(driver, (symbol_layer_params.expected_tap_keycode));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlap, SingleTapAfterAmbiguousTap) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+
+  // TODO: Confirm these in CK_TEST logic in main.c
+  // EXPECT_TRUE(symbol_handler.resolved_first_symb_press);
+  // EXPECT_FALSE(symbol_handler.first_symb_press);
+
+  LEEP_KEY_ROW(0, 3,
+    to_symb,
+    KC_W,
+    ck_test
+  )
+
+  LEEP_KEY_ROW_ONLY(symbol_layer_params.layer, 3,
+    to_symb,
+    KC_X,
+    TK_0
+  )
+
+  // First do a cross-over
+  // Press the layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Tap other key
+  k_KC_W.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  idle_for(10);
+
+  // Release the layer key
+  k_to_symb.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_KC_W.release();
+  EXPECT_REPORT(driver, (KC_X));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  idle_for(TAPPING_TERM * 10);
+  run_one_scan_loop();
 
   // Press the symbol layer key
   k_to_symb.press();
@@ -1830,6 +1896,61 @@ TEST_P(LeepFrogSymbolLayerOverlap, HoldSecondKey_AltTab) {
   CONFIRM_RESET();
 }
 
+TEST_P(LeepFrogSymbolLayerOverlap, ThirdKeyIsCombo) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+
+  LEEP_KEY_ROW(0, 4,
+    to_symb,
+    KC_X,
+    KC_J,  // Combo layer key
+    ck_test
+  )
+
+  LEEP_KEY_ROW(symbol_layer_params.layer, 4,
+    TK_0,
+    KC_1,
+    KC_5,
+    TK_1
+  )
+
+
+  // Press the symbol layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Press the non-combo key as the second key
+  k_KC_1.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Press the non-combo key as the third key
+  k_KC_5.press();
+  EXPECT_REPORT(driver, (KC_1));
+  run_one_scan_loop();
+
+  // Release the non-combo key as the second key
+  k_KC_1.release();
+  EXPECT_REPORT(driver, (KC_1, KC_5));
+  EXPECT_REPORT(driver, (KC_5));
+  run_one_scan_loop();
+
+  // Release the non-combo key as the third key
+  k_KC_5.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  // Unpress the symbol layer key
+  k_to_symb.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
 
 // TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic_CustomKeycode) {
 //   TestDriver driver;
@@ -2227,17 +2348,33 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
 
   // Tap the alt+tab key
   k_ck_atb.press();
-  EXPECT_REPORT(driver, (KC_RALT));
-  EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
+  if (alt_feature_params.layer == LR_SYMB) {
+    EXPECT_NO_REPORT(driver);
+  } else {
+    EXPECT_REPORT(driver, (KC_RALT));
+    EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
+  }
   run_one_scan_loop();
 
   k_ck_atb.release();
-  EXPECT_REPORT(driver, (KC_RALT));
+  if (alt_feature_params.layer == LR_SYMB) {
+    EXPECT_REPORT(driver, (KC_RALT));
+    EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
+    EXPECT_REPORT(driver, (KC_RALT));
+    EXPECT_EMPTY_REPORT(driver);
+  } else {
+    EXPECT_REPORT(driver, (KC_RALT));
+  }
   run_one_scan_loop();
 
   // Release the layer key
   k_to_layer.release();
-  EXPECT_EMPTY_REPORT(driver);
+  if (alt_feature_params.layer == LR_SYMB) {
+    EXPECT_NO_REPORT(driver);
+  } else {
+    EXPECT_EMPTY_REPORT(driver);
+  }
+
   run_one_scan_loop();
 
   CONFIRM_RESET();

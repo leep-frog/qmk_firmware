@@ -418,47 +418,6 @@ void pinky_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_va
   }
 }
 
-/************************************************************************************
-* Code for symbol layer key tap dances (does not work for multiple symbol key logic *
-*************************************************************************************/
-// TODO: Move this logic to leep_tap_dance_v2.[ch] and name it something like PRESS_KC_HOLD_LAYER_WITH_INTERRUPT
-
-void leep_kc_special_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
-    if (tap) {
-        tap_code16(hv->td_int);
-        return;
-    }
-
-    if (state->pressed) {
-        layer_on(LR_SYMB);
-        return;
-    }
-
-    // turn off the layer if unpressed
-    layer_off(LR_SYMB);
-
-    if (state->interrupted || state->finished) {
-        // Do nothing. Resetting is taken care of in leep_special_hold_fn
-        return;
-    }
-
-    // Unpressed and tap dance is still active
-    tap_code16(hv->td_int);
-}
-
-void leep_special_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
-    if (finished) {
-        if (!state->interrupted && state->count > 1) {
-            register_code16(hv->td_int);
-        }
-    } else {
-        layer_off(LR_SYMB);
-        unregister_code16(hv->td_int);
-    }
-}
-
-#define LEEP_TD_SYMBOL_LAYER() LEEP_TD_CLICK_HOLD(LEEP_TD_INT(LR_SYMB), leep_kc_layer_start_fn, LEEP_TD_INT(TO_SYMB_KEYCODE), leep_kc_special_press_fn, LEEP_TD_INT(TO_SYMB_KEYCODE), leep_special_hold_fn)
-
 tap_dance_action_t tap_dance_actions[] = {
     // Shift toggle
     // [TDK_SHIFT_TOGGLE] = ACTION_TAP_DANCE_FN(TDToggleShift),
@@ -496,7 +455,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // Alt layer
     [TDK_ALT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_ALT_KEYCODE, LR_ALT),
     // Symbol layer
-    [TDK_SYMB_LAYER] = LEEP_TD_SYMBOL_LAYER(),
+    [TDK_SYMB_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_TAB, LR_SYMB),
     // Right hand layer
     [TDK_OH_RIGHT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_ONE_HAND_RIGHT),
     // Ctrl+Shift layer

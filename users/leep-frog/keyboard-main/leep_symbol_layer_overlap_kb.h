@@ -10,6 +10,7 @@ typedef struct {
     // Changing fields
     uint32_t first_symb_press_keycode;
     keypos_t first_symb_press_key_pos;
+    keypos_t osm_keycode_key_pos;
     bool     first_symb_press;
     bool     resolved_first_symb_press;
 
