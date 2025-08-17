@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../v2/leep_layers_v2.h"
+
 // TODO: make some of these things consts
 typedef struct {
     // Constant fields
@@ -25,8 +27,8 @@ extern layer_overlap_handler_t symbol_handler;
 extern layer_overlap_handler_t ctrl_overlap_handler;
 
 // Put the following in .h and .c files respectively
-#define SYMBOL_LAYER_OVERLAP_SETUP_FN_H(handler) void symbol_layer_handler##handler(bool activated);
-#define SYMBOL_LAYER_OVERLAP_SETUP_FN_C(handler) void symbol_layer_handler##handler(bool activated) { SymbolLayerOverlap_reset(activated, &handler); }
+#define SYMBOL_LAYER_OVERLAP_SETUP_FN_H(handler) void symbol_layer_handler##handler(bool activated, layer_data_t *data);
+#define SYMBOL_LAYER_OVERLAP_SETUP_FN_C(handler) void symbol_layer_handler##handler(bool activated, layer_data_t *data) { SymbolLayerOverlap_reset(activated, &handler); }
 
 
 #define SYMBOL_LAYER_OVERLAP_SETUP(handler) SET_LAYER_HANDLER(handler.layer, symbol_layer_handler##handler)

@@ -202,7 +202,7 @@ bool to_ctrl_x_layer(keyrecord_t *record, custom_keycode_value_t *_) {
     return false;
 }
 
-void _ella_layer(bool activated) {
+void _ella_layer(bool activated, layer_data_t *data) {
     if (!activated) {
         return;
     }
@@ -262,15 +262,15 @@ void one_hand_layer_change(bool activated, char *press_key) {
   }
 }
 
-void left_hand_layer_change(bool activated) {
+void left_hand_layer_change(bool activated, layer_data_t *data) {
   one_hand_layer_change(activated, "/");
 }
 
-void right_hand_layer_change(bool activated) {
+void right_hand_layer_change(bool activated, layer_data_t *data) {
   one_hand_layer_change(activated, "x");
 }
 
-void ctrl_alt_layer(bool activated) {
+void ctrl_alt_layer(bool activated, layer_data_t *data) {
     if (activated) {
         SEND_STRING(SS_DOWN(X_RCTL) SS_DOWN(X_RALT));
     } else {
