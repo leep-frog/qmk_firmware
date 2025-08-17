@@ -37,38 +37,38 @@ Test cases:
 #define SYMBOL_LAYER_OVERLAP_LAYER_COEFFICIENT 2
 #define SYMBOL_LAYER_OVERLAP_OTHER_COEFFICIENT 3
 
-layer_overlap_handler_t symbol_handler = {
-    .first_symb_press_key_pos  = {},
-    .first_symb_press_keycode  = KC_NO,
-    .first_symb_press          = false,
-    .resolved_first_symb_press = true,
-    .layer                     = LR_SYMB,
-    .keycode                   = TO_SYMB_KEYCODE,
-    .osm_keycode               = TO_SYMB,
+layer_overlap_handler_t symbol_layer_overlap_handlers[] = {
+    {
+        .first_symb_press_key_pos  = {},
+        .first_symb_press_keycode  = KC_NO,
+        .first_symb_press          = false,
+        .resolved_first_symb_press = true,
+        .layer                     = LR_SYMB,
+        .keycode                   = TO_SYMB_KEYCODE,
+        .osm_keycode               = TO_SYMB,
 
-    .key_press_at          = 0,
-    .key_in_layer_duration = 0,
-};
+        .key_press_at          = 0,
+        .key_in_layer_duration = 0,
+    },
+    {
+        .first_symb_press_key_pos  = {},
+        .first_symb_press_keycode  = KC_NO,
+        .first_symb_press          = false,
+        .resolved_first_symb_press = true,
+        .layer                     = LR_CTRL,
+        .keycode                   = TO_CTRL_KEYCODE,
+        .osm_keycode               = TO_CTRL,
 
-layer_overlap_handler_t ctrl_overlap_handler = {
-    .first_symb_press_key_pos  = {},
-    .first_symb_press_keycode  = KC_NO,
-    .first_symb_press          = false,
-    .resolved_first_symb_press = true,
-    .layer                     = LR_CTRL,
-    .keycode                   = TO_CTRL_KEYCODE,
-    .osm_keycode               = TO_CTRL,
-
-    .key_press_at          = 0,
-    .key_in_layer_duration = 0,
+        .key_press_at          = 0,
+        .key_in_layer_duration = 0,
+    },
 };
 
 // No longer need handlers for oh left/right layers because we use a combo to
 // activate those layers now
 
-// Logic for stuff
-
-void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler) {
+void SymbolLayerOverlap_reset(bool activated, layer_data_t *data) {
+  layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(data->layer_int);
   if (activated) {
     handler->first_symb_press          = false;
     handler->resolved_first_symb_press = true;
@@ -77,7 +77,14 @@ void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler) 
   }
 }
 
-bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record) {
+void SymbolLayerOverlap_set_layer_handlers(void) {
+    for (uint16_t i = 0; i < symbol_layer_overlap_handlers_count(); i++) {
+        layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(i);
+        SET_LAYER_HANDLER_WITH_INT(handler->layer, SymbolLayerOverlap_reset, i);
+    }
+}
+
+bool SymbolLayerOverlap_handled_for(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record) {
     // Need to ensure we don't check the osm key itself.
     if (keycode == handler->osm_keycode) {
 
@@ -258,6 +265,16 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
 
         // If it doesn't need layer-overlap logic, then we shouldn't mark this as handled
         return needs_layer_overlap_logic;
+    }
+    return false;
+}
+
+bool SymbolLayerOverlap_handled(uint16_t keycode, keyrecord_t *record) {
+    for (uint16_t i = 0; i < symbol_layer_overlap_handlers_count(); i++) {
+        layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(i);
+        if (SymbolLayerOverlap_handled_for(handler, keycode, record)) {
+            return true;
+        }
     }
     return false;
 }

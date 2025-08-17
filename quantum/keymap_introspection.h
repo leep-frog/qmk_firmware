@@ -85,6 +85,13 @@ uint16_t Alt_keycodes_count(void);
 
 uint16_t Alt_keycodes_get(uint16_t idx);
 
+// Symbol layer overlap
+#include "quantum/leep/symbol_layer_overlap_handler.h"
+
+uint16_t symbol_layer_overlap_handlers_count(void);
+
+layer_overlap_handler_t *symbol_layer_overlap_handlers_get(uint16_t idx);
+
 #endif // LEEP_KEYMAP_INTROSPECTION
 
 

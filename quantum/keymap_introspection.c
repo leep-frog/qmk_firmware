@@ -130,6 +130,14 @@ uint16_t Alt_keycodes_get(uint16_t idx) {
     return Alt_keycodes[idx];
 }
 
+// Symbol layer overlap
+uint16_t symbol_layer_overlap_handlers_count(void) {
+    return sizeof(symbol_layer_overlap_handlers) / sizeof(layer_overlap_handler_t);
+}
+layer_overlap_handler_t *symbol_layer_overlap_handlers_get(uint16_t idx) {
+    return &symbol_layer_overlap_handlers[idx];
+}
+
 #endif // LEEP_KEYMAP_INTROSPECTION
 
 

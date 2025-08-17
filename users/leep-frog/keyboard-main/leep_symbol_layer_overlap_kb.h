@@ -1,34 +1,8 @@
 #pragma once
 
+#include "quantum/keymap_introspection.h"
+#include "quantum/leep/symbol_layer_overlap_handler.h"
 #include "../v2/leep_layers_v2.h"
 
-// TODO: make some of these things consts
-typedef struct {
-    // Constant fields
-    uint16_t layer;
-    uint32_t keycode;
-    uint32_t osm_keycode;
-
-    // Changing fields
-    uint32_t first_symb_press_keycode;
-    keypos_t first_symb_press_key_pos;
-    keypos_t osm_keycode_key_pos;
-    bool     first_symb_press;
-    bool     resolved_first_symb_press;
-
-    uint32_t key_press_at;
-    uint32_t key_in_layer_duration;
-} layer_overlap_handler_t;
-
-void SymbolLayerOverlap_reset(bool activated, layer_overlap_handler_t *handler);
-bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record);
-
-extern layer_overlap_handler_t symbol_handler;
-extern layer_overlap_handler_t ctrl_overlap_handler;
-
-// Put the following in .h and .c files respectively
-#define SYMBOL_LAYER_OVERLAP_SETUP_FN_H(handler) void symbol_layer_handler##handler(bool activated, layer_data_t *data);
-#define SYMBOL_LAYER_OVERLAP_SETUP_FN_C(handler) void symbol_layer_handler##handler(bool activated, layer_data_t *data) { SymbolLayerOverlap_reset(activated, &handler); }
-
-
-#define SYMBOL_LAYER_OVERLAP_SETUP(handler) SET_LAYER_HANDLER(handler.layer, symbol_layer_handler##handler)
+bool SymbolLayerOverlap_handled(uint16_t keycode, keyrecord_t *record);
+void SymbolLayerOverlap_set_layer_handlers(void);

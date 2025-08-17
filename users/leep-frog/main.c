@@ -63,13 +63,12 @@ void test_confirm(keyrecord_t *record) {
     return;
   }
 
-  if (!symbol_handler.resolved_first_symb_press) {
-    sprintf(test_message, "Unresolved first symb press");
-    return;
-  }
-  if (!ctrl_overlap_handler.resolved_first_symb_press) {
-    sprintf(test_message, "Unresolved first symb press");
-    return;
+  for (uint16_t i = 0; i < symbol_layer_overlap_handlers_count(); i++) {
+    layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(i);
+    if (!handler->resolved_first_symb_press) {
+      sprintf(test_message, "Unresolved first symb press");
+      return;
+    }
   }
 
   // On release, run all verifications
@@ -380,9 +379,6 @@ bool layers_status[NUM_LAYERS] = {
 
 #define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
 
-SYMBOL_LAYER_OVERLAP_SETUP_FN_C(symbol_handler);
-SYMBOL_LAYER_OVERLAP_SETUP_FN_C(ctrl_overlap_handler);
-
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
         LEEP_STARTUP_COLOR_MODE();
@@ -398,8 +394,7 @@ void keyboard_post_init_user(void) {
     SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
     // Deactivate everything when going to safe layer.
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
-    SYMBOL_LAYER_OVERLAP_SETUP(symbol_handler);
-    SYMBOL_LAYER_OVERLAP_SETUP(ctrl_overlap_handler);
+    SymbolLayerOverlap_set_layer_handlers();
 }
 
 #if defined(LEEP_UNLOCK_CODE)
@@ -509,8 +504,7 @@ bool pre_process_record_user(uint16_t keycode, keyrecord_t* record) {
       return false;
   }
 
-  if (SymbolLayerOverlap_handled(&symbol_handler, keycode, record) ||
-      SymbolLayerOverlap_handled(&ctrl_overlap_handler, keycode, record)) {
+  if (SymbolLayerOverlap_handled(keycode, record)) {
       return false;
   }
 
