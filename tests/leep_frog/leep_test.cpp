@@ -1186,6 +1186,167 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
     CONFIRM_RESET();
 }
 
+/************************************
+* Symbol Layer Overlap timing tests *
+*************************************/
+
+struct SymbolLayerOverlapTimingParams {
+  std::string name;
+  uint16_t    in_layer_duration;
+  uint8_t     out_layer_duration;
+  bool        expect_layer_only;
+};
+
+
+class LeepFrogSymbolLayerOverlapTiming : public ::testing::WithParamInterface<SymbolLayerOverlapTimingParams>, public TestFixture {
+protected:
+  SymbolLayerOverlapTimingParams symbol_layer_timing_params;
+
+  void SetUp() override {
+    symbol_layer_timing_params = GetParam();
+  }
+};
+
+static const SymbolLayerOverlapTimingParams symbol_layer_timing_params[] = {
+  SymbolLayerOverlapTimingParams{"1", 44, 29, false},
+  SymbolLayerOverlapTimingParams{"2", 44, 30, false},
+  SymbolLayerOverlapTimingParams{"3", 44, 31, false},
+
+  SymbolLayerOverlapTimingParams{"4", 45, 29, true},
+  SymbolLayerOverlapTimingParams{"5", 45, 30, false},
+  SymbolLayerOverlapTimingParams{"6", 45, 31, false},
+
+  SymbolLayerOverlapTimingParams{"7", 46, 29, true},
+  SymbolLayerOverlapTimingParams{"8", 46, 30, true},
+  SymbolLayerOverlapTimingParams{"9", 46, 31, false},
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogSymbolLayerOverlapTiming,
+  ::testing::ValuesIn(symbol_layer_timing_params),
+  [](const ::testing::TestParamInfo<SymbolLayerOverlapTimingParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogSymbolLayerOverlapTiming, RegularKeycode) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_COMMA,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 3,
+      TK_0,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_KC_2.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(symbol_layer_timing_params.in_layer_duration);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(symbol_layer_timing_params.out_layer_duration);
+
+    // Release the other key
+    k_KC_2.release();
+
+    // Either expect an overlap result or just a symbol layer result
+    if (symbol_layer_timing_params.expect_layer_only) {
+      EXPECT_REPORT(driver, (KC_2));
+      EXPECT_EMPTY_REPORT(driver);
+    } else {
+      EXPECT_REPORT(driver, (TO_SYMB_KEYCODE));
+      EXPECT_EMPTY_REPORT(driver);
+      EXPECT_REPORT(driver, (KC_COMMA));
+      EXPECT_EMPTY_REPORT(driver);
+    }
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlapTiming, CustomKeycode) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_SYMB;
+    const uint16_t custom_keycode = CK_ALTT;
+
+    EXPECT_TRUE(custom_keycode > CUSTOM_KEYCODE_START);
+    // TODO: couldn't get includes working to use below line instead of previuos line
+    // EXPECT_TRUE(IS_CUSTOM_KEYCODE(custom_keycode));
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      KC_X,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SYMB, 3,
+      TK_0,
+      custom_keycode,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the other key
+    k_custom_keycode.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(symbol_layer_timing_params.in_layer_duration);
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    idle_for(symbol_layer_timing_params.out_layer_duration);
+
+    // Release the other key
+    k_custom_keycode.release();
+    if (symbol_layer_timing_params.expect_layer_only) {
+      EXPECT_REPORT(driver, (KC_RCTL));
+      EXPECT_REPORT(driver, (KC_RCTL, KC_RSFT));
+      EXPECT_REPORT(driver, (KC_RCTL, KC_RSFT, KC_T));
+      EXPECT_REPORT(driver, (KC_RCTL, KC_RSFT));
+      EXPECT_REPORT(driver, (KC_RCTL));
+      EXPECT_EMPTY_REPORT(driver);
+    } else {
+      EXPECT_REPORT(driver, (TO_SYMB_KEYCODE));
+      EXPECT_EMPTY_REPORT(driver);
+      EXPECT_REPORT(driver, (KC_X));
+      EXPECT_EMPTY_REPORT(driver);
+    }
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
 /***********************
 * One hand layer tests *
 ************************/
