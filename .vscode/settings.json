@@ -49,6 +49,16 @@
       "alias": "mk"
     },
     {
+      "path": "/home/qmk/qmk_firmware/quantum/keymap_introspection.c",
+      "scheme": "file",
+      "alias": "ki"
+    },
+    {
+      "path": "/home/qmk/qmk_firmware/quantum/keymap_introspection.h",
+      "scheme": "file",
+      "alias": "kih"
+    },
+    {
       "path": "/home/qmk/qmk_firmware/tests/leep_frog/leep_test.cpp",
       "scheme": "file",
       "alias": "t"
@@ -57,6 +67,11 @@
       "path": "/home/qmk/qmk_firmware/users/leep-frog/main.c",
       "scheme": "file",
       "alias": "m"
+    },
+    {
+      "path": "/home/qmk/qmk_firmware/users/leep-frog/main.h",
+      "scheme": "file",
+      "alias": "mh"
     }
   ]
 }
