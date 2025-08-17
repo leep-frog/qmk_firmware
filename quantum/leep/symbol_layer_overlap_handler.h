@@ -1,11 +1,10 @@
 #pragma once
 
-// TODO: make some of these things consts
 typedef struct {
   // Constant fields
-  uint16_t layer;
-  uint32_t keycode;
-  uint32_t osm_keycode;
+  const uint16_t layer;
+  const uint32_t keycode;
+  const uint32_t osm_keycode;
 
   // Changing fields
   uint32_t first_symb_press_keycode;

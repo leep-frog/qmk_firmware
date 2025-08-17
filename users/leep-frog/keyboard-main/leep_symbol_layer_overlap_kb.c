@@ -122,7 +122,6 @@ bool SymbolLayerOverlap_handled_for(layer_overlap_handler_t *handler, uint16_t k
         // 1. The symbol layer key is being pressed and held
         // 2. The second key is being press and held in the symbol layer
         // 3. The third key is being processed on top of that
-        // TODO: Can this logic be done in pre_process_record_user?!
         if (keycode != handler->first_symb_press_keycode) {
 
             // First press the second key
