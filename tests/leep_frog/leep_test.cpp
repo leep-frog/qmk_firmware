@@ -1406,6 +1406,12 @@ static const SymbolLayerOverlapParams symbol_layer_params[] = {
     LR_SYMB,
     TO_SYMB_KEYCODE,
   },
+  SymbolLayerOverlapParams{
+    "CTRL",
+    TO_CTRL,
+    LR_CTRL,
+    TO_CTRL_KEYCODE,
+  },
   // SymbolLayerOverlapParams{
   //   "RIGHT_HAND_LAYER",
   //   TO_OH_R,
@@ -1798,11 +1804,11 @@ TEST_P(LeepFrogSymbolLayerOverlap, ThirdKeyIsCombo) {
   // Press the non-combo key as the third key
   k_KC_5.press();
   EXPECT_REPORT(driver, (KC_1));
+  EXPECT_REPORT(driver, (KC_1, KC_5));
   run_one_scan_loop();
 
   // Release the non-combo key as the second key
   k_KC_1.release();
-  EXPECT_REPORT(driver, (KC_1, KC_5));
   EXPECT_REPORT(driver, (KC_5));
   run_one_scan_loop();
 
