@@ -25,6 +25,18 @@ Test cases:
    opposed to unpressing the first_symb_press).
 */
 
+// These two weights are multiplied by the amount of time spent in the overlap
+// layer vs not while the overlap key is pressed.
+// This gives extra weight to either choice when determining whether we should
+// consider the overlap press as being done in the symbol layer or not,
+//
+// For example, if these weights are 2 (layer) and 3 (not layer) respectively,
+// then the threshold for making the decision is when the key is pressed for
+// 3/5 the time in the symbol layer and 2/5 the time in the not layer
+// > Note that this implies that we are *more* likely to side with the not layer.
+#define SYMBOL_LAYER_OVERLAP_LAYER_COEFFICIENT 2
+#define SYMBOL_LAYER_OVERLAP_OTHER_COEFFICIENT 3
+
 layer_overlap_handler_t symbol_handler = {
     .first_symb_press_key_pos  = {},
     .first_symb_press_keycode  = KC_NO,
@@ -138,7 +150,7 @@ bool SymbolLayerOverlap_handled(layer_overlap_handler_t *handler, uint16_t keyco
         uint32_t key_out_layer_duration = timer_elapsed32(handler->key_press_at) - handler->key_in_layer_duration;
 
         // Determine if the key was held down longer in the overlap layer or not
-        bool in_overlap_layer_longer = handler->key_in_layer_duration > key_out_layer_duration;
+        bool in_overlap_layer_longer = (SYMBOL_LAYER_OVERLAP_LAYER_COEFFICIENT * handler->key_in_layer_duration) > (SYMBOL_LAYER_OVERLAP_OTHER_COEFFICIENT * key_out_layer_duration);
 
         // If we're not in the symbol layer, then the following happened:
         // - Press symb key

@@ -1044,7 +1044,7 @@ TEST_F(LeepFrog, SymbolLayerOverlap_FullOverlapIsConsideredHold) {
     CONFIRM_RESET();
 }
 
-TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
+TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfEqualRatios) {
     TestDriver driver;
     InSequence s;
 
@@ -1072,14 +1072,14 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsHoldIfInBothEquallyLong) {
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(43);
+    idle_for(45);
 
     // Release the symbol layer key
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(43);
+    idle_for(30);
 
     // Release the other key
     k_KC_2.release();
@@ -1120,14 +1120,14 @@ TEST_F(LeepFrog, SymbolLayerOverlap_AmbiguousOverlapIsTypeIfOutSymbLonger) {
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(43);
+    idle_for(45);
 
     // Release the symbol layer key
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(44);
+    idle_for(31);
 
     // Release the other key
     k_KC_2.release();
@@ -1609,14 +1609,14 @@ TEST_P(LeepFrogSymbolLayerOverlap, AmbiguousOverlapIsHoldIfNotInSymbLonger) {
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(41);
+    idle_for(45);
 
     // Release the symbol layer key
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(42);
+    idle_for(31);
 
     // Release the other key
     k_KC_2.release();
@@ -1657,14 +1657,14 @@ TEST_P(LeepFrogSymbolLayerOverlap, AmbiguousOverlapIsHoldIfInSymbLonger) {
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(43);
+    idle_for(46);
 
     // Release the symbol layer key
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(42);
+    idle_for(30);
 
     // Release the other key
     k_KC_2.release();
@@ -1708,14 +1708,14 @@ TEST_P(LeepFrogSymbolLayerOverlap, AmbiguousOverlapIsHoldIfInSymbLonger_CustomKe
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(43);
+    idle_for(46);
 
     // Release the symbol layer key
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
 
-    idle_for(42);
+    idle_for(30);
 
     // Release the other key
     k_custom_keycode.release();
