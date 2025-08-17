@@ -28,6 +28,18 @@
   #endif
 #endif
 
+#ifndef TO_SYMB_KEYCODE
+  #define TO_SYMB_KEYCODE KC_TAB
+#endif
+
+#ifndef TO_ALT_KEYCODE
+  #define TO_ALT_KEYCODE KC_SPACE
+#endif
+
+#ifndef TO_CTRL_KEYCODE
+  #define TO_CTRL_KEYCODE KC_ENTER
+#endif
+
 /************************
 * Feature configuration *
 ************************/

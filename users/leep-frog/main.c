@@ -67,6 +67,10 @@ void test_confirm(keyrecord_t *record) {
     sprintf(test_message, "Unresolved first symb press");
     return;
   }
+  if (!ctrl_overlap_handler.resolved_first_symb_press) {
+    sprintf(test_message, "Unresolved first symb press");
+    return;
+  }
 
   // On release, run all verifications
   strcpy(test_message, "Success!");
@@ -333,7 +337,6 @@ bool ck_noop(keyrecord_t *_k, custom_keycode_value_t *_c) { return false; }
 
 custom_keycode_handler_t custom_keycode_handlers[] = {
   // Fn handlers
-  [TO_CTRL_HANDLER] = CK_HANDLER_FN(ToCtrl_run),
   [TO_CTLX_HANDLER] = CK_HANDLER_FN(to_ctrl_x_layer),
   [CTRL_W_HANDLER] = CK_HANDLER_FN(CtrlWHandler),
   [CK_WAIT_HANDLER] = CK_HANDLER_FN(_leep_wait),
@@ -522,7 +525,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             AltBlockProcessing(keycode, record)) {
         return false;
     }
-    ToCtrl_handled(keycode);
     Oneshot_handled(record);
 
     switch (keycode) {

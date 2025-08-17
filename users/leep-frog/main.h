@@ -8,7 +8,6 @@
 // TODO: Change CK prefix to CKE (CK Enum) since these are actually starting at 0 and not SAFE_RANGE (see CK(...)s below for proper values)
 enum custom_keycode_handlers {
   // Fn handlers
-  TO_CTRL_HANDLER,
   TO_CTLX_HANDLER,
   CTRL_W_HANDLER,
   CK_WAIT_HANDLER,
@@ -44,7 +43,6 @@ enum custom_keycode_handlers {
 };
 
 
-#define TO_CTRL CK(TO_CTRL_HANDLER)
 #define TO_CTLX CK(TO_CTLX_HANDLER)
 #define CTRL_W CK(CTRL_W_HANDLER)
 #define CK_WAIT CK(CK_WAIT_HANDLER)

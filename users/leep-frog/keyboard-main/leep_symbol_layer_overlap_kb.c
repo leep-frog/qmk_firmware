@@ -56,7 +56,7 @@ layer_overlap_handler_t ctrl_overlap_handler = {
     .first_symb_press          = false,
     .resolved_first_symb_press = true,
     .layer                     = LR_CTRL,
-    .keycode                   = KC_ENTER,
+    .keycode                   = TO_CTRL_KEYCODE,
     .osm_keycode               = TO_CTRL,
 
     .key_press_at          = 0,

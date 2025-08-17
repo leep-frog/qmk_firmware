@@ -10,7 +10,6 @@
 #include "leep_tap_dance_kb.h"
 #include "./leep_enum_kb.h"
 #include "./leep_symbol_layer_overlap_kb.h"
-#include "./leep_to_ctrl_kb.h"
 #include "./leep_cr_desc_kb.h"
 // #include "record.c"
 // #include "shift.c"
@@ -452,10 +451,12 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_OH_COPY] = ACTION_TAP_DANCE_FN(oh_copy),
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
+    // Ctrl layer
+    [TDK_CTRL_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_CTRL_KEYCODE, LR_CTRL),
     // Alt layer
     [TDK_ALT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_ALT_KEYCODE, LR_ALT),
     // Symbol layer
-    [TDK_SYMB_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_TAB, LR_SYMB),
+    [TDK_SYMB_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_SYMB_KEYCODE, LR_SYMB),
     // Right hand layer
     [TDK_OH_RIGHT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_ONE_HAND_RIGHT),
     // Ctrl+Shift layer

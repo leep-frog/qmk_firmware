@@ -22,9 +22,6 @@ enum layers { // prefix LR
     NUM_LAYERS,
 };
 
-#define TO_SYMB_KEYCODE KC_TAB
-#define TO_ALT_KEYCODE KC_SPACE
-
 const uint16_t AltLayer = LR_ALT;
 const uint16_t CtrlLayer = LR_CTRL;
 
@@ -52,6 +49,7 @@ enum td_keys { // prefix TDK
     TDK_V,
     TDK_Y,
     TDK_TAB_SHIFT,
+    TDK_CTRL_LAYER,
     TDK_ALT_LAYER,
     TDK_SYMB_LAYER,
     TDK_OH_RIGHT_LAYER, // TODO: Remove this
