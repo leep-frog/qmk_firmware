@@ -6,6 +6,7 @@
 #include "leep_keyboard.h"
 #include "../../../../users/leep-frog/main.h"
 #include "users/leep-frog/keyboard-main/leep_tap_dance_kb.h"
+#include "users/leep-frog/keyboard-main/leep_symbol_layer_overlap_kb.h"
 
 using testing::_;
 using testing::InSequence;
@@ -1449,17 +1450,150 @@ TEST_P(LeepFrogSymbolLayerOverlap, SingleTap) {
     TK_0
   )
 
+  EXPECT_FALSE(IS_LAYER_ON(symbol_layer_params.layer));
 
   // Press the symbol layer key
   k_to_symb.press();
   EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
   // Unpress the symbol layer key
   k_to_symb.release();
   EXPECT_REPORT(driver, (symbol_layer_params.expected_tap_keycode));
   EXPECT_EMPTY_REPORT(driver);
   run_one_scan_loop();
+
+  EXPECT_FALSE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlap, SingleTapInLayer) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+
+  // TODO: Confirm these in CK_TEST logic in main.c
+  // EXPECT_TRUE(symbol_handler.resolved_first_symb_press);
+  // EXPECT_FALSE(symbol_handler.first_symb_press);
+
+  LEEP_KEY_ROW(0, 3,
+    to_symb,
+    KC_A,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(symbol_layer_params.layer, 3,
+    TK_0,
+    KC_1,
+    TK_1
+  )
+
+  EXPECT_FALSE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Press the symbol layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Press a regular key
+  k_KC_1.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Release a regular key
+  k_KC_1.release();
+  EXPECT_REPORT(driver, (KC_1));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Unpress the symbol layer key
+  k_to_symb.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_FALSE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSymbolLayerOverlap, TwoSeparateKeyTapsInLayer) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_symb = symbol_layer_params.symbol_keycode;
+
+  // TODO: Confirm these in CK_TEST logic in main.c
+  // EXPECT_TRUE(symbol_handler.resolved_first_symb_press);
+  // EXPECT_FALSE(symbol_handler.first_symb_press);
+
+  LEEP_KEY_ROW(0, 4,
+    to_symb,
+    KC_A,
+    KC_B,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(symbol_layer_params.layer, 4,
+    TK_0,
+    KC_1,
+    KC_2,
+    TK_1
+  )
+
+  EXPECT_FALSE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Press the symbol layer key
+  k_to_symb.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Press the first key
+  k_KC_1.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Release the first key
+  k_KC_1.release();
+  EXPECT_REPORT(driver, (KC_1));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Press the second key
+  k_KC_2.press();
+  EXPECT_REPORT(driver, (KC_2));
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Release the second key
+  k_KC_2.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_TRUE(IS_LAYER_ON(symbol_layer_params.layer));
+
+  // Unpress the symbol layer key
+  k_to_symb.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  EXPECT_FALSE(IS_LAYER_ON(symbol_layer_params.layer));
 
   CONFIRM_RESET();
 }

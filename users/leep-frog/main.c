@@ -66,7 +66,7 @@ void test_confirm(keyrecord_t *record) {
   for (uint16_t i = 0; i < symbol_layer_overlap_handlers_count(); i++) {
     layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(i);
     if (!handler->resolved_first_symb_press) {
-      sprintf(test_message, "Unresolved first symb press");
+      sprintf(test_message, "First symb press was not resolved for handler at idx=%d", i);
       return;
     }
   }
@@ -394,7 +394,6 @@ void keyboard_post_init_user(void) {
     SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
     // Deactivate everything when going to safe layer.
     SET_LAYER_HANDLER(LR_ELLA, _ella_layer);
-    SymbolLayerOverlap_set_layer_handlers();
 }
 
 #if defined(LEEP_UNLOCK_CODE)

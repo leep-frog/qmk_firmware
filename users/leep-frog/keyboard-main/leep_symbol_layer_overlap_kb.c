@@ -64,49 +64,19 @@ layer_overlap_handler_t symbol_layer_overlap_handlers[] = {
     },
 };
 
-// No longer need handlers for oh left/right layers because we use a combo to
-// activate those layers now
-
-void SymbolLayerOverlap_reset(bool activated, layer_data_t *data) {
-  layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(data->layer_int);
-  if (activated) {
-    handler->first_symb_press          = false;
-    handler->resolved_first_symb_press = true;
-  } else {
-    handler->key_in_layer_duration = timer_elapsed32(handler->key_press_at);
-  }
-}
-
-void SymbolLayerOverlap_set_layer_handlers(void) {
-    for (uint16_t i = 0; i < symbol_layer_overlap_handlers_count(); i++) {
-        layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(i);
-        SET_LAYER_HANDLER_WITH_INT(handler->layer, SymbolLayerOverlap_reset, i);
-    }
-}
-
 bool SymbolLayerOverlap_handled_for(layer_overlap_handler_t *handler, uint16_t keycode, keyrecord_t *record) {
     // Need to ensure we don't check the osm key itself.
     if (keycode == handler->osm_keycode) {
 
         // Record the key position of the osm keycode
         if (record->event.pressed) {
-            handler->osm_keycode_key_pos  = ((keypos_t){
-                    .col = record->event.key.col,
-                    .row = record->event.key.row,
-            });
-            return false;
+            handler->first_symb_press          = false;
+            handler->resolved_first_symb_press = true;
+        } else {
+            handler->key_in_layer_duration = timer_elapsed32(handler->key_press_at);
         }
 
-        // If we already resolved it then proceed as normal
-        if (!handler->first_symb_press) {
-            return false;
-        }
-        layer_off(handler->layer);
-
-        // It's worth noting that if this returns true, then the tap dance will not have been reset!
-        // We could send a key event to trigger the interrupt and then return false, (TODO: try this instead?: just call process_tap_dance or whatever to fake an interrupt)
-        // but instead we take care of it below.
-        return !handler->resolved_first_symb_press;
+        return false;
     }
 
     bool in_symb_layer = IS_LAYER_ON(handler->layer);
@@ -173,7 +143,7 @@ bool SymbolLayerOverlap_handled_for(layer_overlap_handler_t *handler, uint16_t k
         // handle it).
 
         // Temporarily change the layer back if in_overlap_layer_longer
-        if (in_overlap_layer_longer) {
+        if (in_overlap_layer_longer && !in_symb_layer) {
             layer_on(handler->layer);
         }
 
@@ -193,50 +163,9 @@ bool SymbolLayerOverlap_handled_for(layer_overlap_handler_t *handler, uint16_t k
         };
         action_exec(second_event_release);
 
-        if (in_overlap_layer_longer) {
+        if (in_overlap_layer_longer && !in_symb_layer) {
             layer_off(handler->layer);
         }
-
-        // Simulate the release of the key that got us to the OSM layer
-        // to ensure the tap dance is reset (since it wasn't due to skip in `keycode == handler->osm_keycode` check).
-        keyevent_t regular_key_release = {
-            .key = handler->osm_keycode_key_pos,
-            .type = KEY_EVENT,
-            .pressed = false,
-            .time = timer_read(),
-        };
-        action_exec(regular_key_release);
-
-        /***************
-         * Old logic below.
-         * Benefit of old logic: didn't do layer_on/layer_off which can have side effects
-         * Disbenefit of old logic: Had to re-implement relevant action_exec depending on things which wasn't great
-         * Cons definitely outweighs the pros, so we keep the new logic above
-         ***************/
-
-        // uint16_t actual_keycode = keymap_key_to_keycode(in_overlap_layer_longer ? handler->layer : get_highest_layer(layer_state), handler->first_symb_press_key_pos);
-        // if (actual_keycode >= QK_TAP_DANCE && actual_keycode <= QK_TAP_DANCE_MAX) {
-        //     // If key in other layer is a tap dance (but in this layer is just a regular key),
-        //     // then we need to execute the press and unpress logic for it.
-        //     bool original_press   = record->event.pressed;
-        //     record->event.pressed = true;
-        //     preprocess_tap_dance(actual_keycode, record);
-        //     process_tap_dance(actual_keycode, record);
-        //     record->event.pressed = false;
-        //     preprocess_tap_dance(actual_keycode, record);
-        //     process_tap_dance(actual_keycode, record);
-        //     record->event.pressed = original_press;
-        // } else if (IS_CUSTOM_KEYCODE(actual_keycode)) {
-        //     bool original_press   = record->event.pressed;
-        //     record->event.pressed = true;
-        //     process_custom_keycodes(actual_keycode, record);
-        //     record->event.pressed = false;
-        //     process_custom_keycodes(actual_keycode, record);
-        //     record->event.pressed = original_press;
-        // } else {
-        //     // Otherwise, just press the regular keycode
-        //     tap_code16(actual_keycode);
-        // }
 
         // Deactivate alt mode if we did a quick alt mode key
         // and are now out of the layer.
@@ -261,6 +190,21 @@ bool SymbolLayerOverlap_handled_for(layer_overlap_handler_t *handler, uint16_t k
 
         // If it needs layer-overlap logic, then it has *not* been resolved
         handler->resolved_first_symb_press = !needs_layer_overlap_logic;
+
+        if (needs_layer_overlap_logic) {
+            // Send this fake event to mark the tap dance as interrupted (to ensure
+            // that the tap dance does not just consider this to be an uninterrupted tap).
+            keyevent_t fake_event = {
+                .key = handler->first_symb_press_key_pos,
+                .type = KEY_EVENT,
+                .pressed = true,
+                .time = timer_read(),
+            };
+            keyrecord_t fake_record = {
+                .event = fake_event,
+            };
+            preprocess_tap_dance(handler->first_symb_press_keycode, &fake_record);
+        }
 
         // If it doesn't need layer-overlap logic, then we shouldn't mark this as handled
         return needs_layer_overlap_logic;
