@@ -1408,10 +1408,10 @@ static const SymbolLayerOverlapParams symbol_layer_params[] = {
     TO_SYMB_KEYCODE,
   },
   SymbolLayerOverlapParams{
-    "CTRL",
-    TO_CTRL,
-    LR_CTRL,
-    TO_CTRL_KEYCODE,
+    "ALT",
+    TO_ALT,
+    LR_ALT,
+    TO_ALT_KEYCODE,
   },
   // SymbolLayerOverlapParams{
   //   "RIGHT_HAND_LAYER",
@@ -2348,8 +2348,8 @@ TEST_P(LeepFrogAltFeature, DeactivatesAltOnLayerChange) {
     TK_2
   )
 
-  bool different = alt_feature_params.layer == LR_SYMB || alt_feature_params.layer == LR_CTRL;
-
+  // TODO: Remove this and logic for when it's true
+  bool different = false;
 
   // Press the layer key
   k_to_layer.press();

@@ -55,9 +55,9 @@ layer_overlap_handler_t symbol_layer_overlap_handlers[] = {
         .first_symb_press_keycode  = KC_NO,
         .first_symb_press          = false,
         .resolved_first_symb_press = true,
-        .layer                     = LR_CTRL,
-        .keycode                   = TO_CTRL_KEYCODE,
-        .osm_keycode               = TO_CTRL,
+        .layer                     = LR_ALT,
+        .keycode                   = TO_ALT_KEYCODE,
+        .osm_keycode               = TO_ALT,
 
         .key_press_at          = 0,
         .key_in_layer_duration = 0,
