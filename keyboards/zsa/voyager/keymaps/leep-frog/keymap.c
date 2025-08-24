@@ -25,7 +25,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         TD_Y,    TD_U,    TD_I,    KC_O,    KC_P,    KC_VOLD,
         SC_LSPO, KC_A,    TD_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    TO_OTLK, SC_RSPC,
         KC_LCBR, KC_Z,    KC_X,    TD_C,    TD_V,    TD_B,                         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RCBR,
-                                            TO_SYMB, CK_SHFT,                      TO_ALT,  TO_CTRL
+                                            TO_SYMB, CK_SHFT,                      TO_CTRL,  TO_ALT
     ),
 
     [LR_ELLA] = LAYOUT(
@@ -35,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RCBR,
                                             // These needs to be TO_CTRL/TO_ALT/TO_SYMB (instead of enter/space/tab)
                                             // so that the OSM key + right thumb doesn't trap us in this layer.
-                                            TO_SYMB, KC_RSFT,                      TO_ALT,  TO_CTRL
+                                            TO_SYMB, KC_RSFT,                      TO_CTRL,  TO_ALT
     ),
 
 
@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         CL(TAB), CL(Q),   CTRL_W,  KC_END,  CL(R),   CL(T),                        CL(Y),   CK_TABB, CL(I),   CK_TABF, KC_UP,   CL(BSLS),
 LSFT_T(CL(LPRN)),KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG,                      KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP, CL(SCLN),RSFT_T(CL(RPRN)),
         CL(LCBR),CL(Z),   TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,                      KC_DOWN, CL(M),   CL(COMM),CL(DOT), CL(SLSH),CL(RCBR),
-                                            CL(TAB), CL(ENTER),                CL(SPACE),  _______
+                                            CL(TAB), CL(SPACE),                    _______, CL(ENTER)
     ),
 
     [LR_CTRL_X] = LAYOUT(
@@ -52,7 +52,7 @@ LSFT_T(CL(LPRN)),KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG,                   
         CL(TAB), CL(Q),   CL(W),   CL(E),   CL(R),   CL(T),                        CK_PSTE, CL(U),   CL(I),   CL(O),   CL(P),   CL(BSLS),
         CL(LPRN),CL(A),   CL(S),   CL(D),   CL(F),   CL(G),                        CL(H),   CL(J),   CL(K),   CL(L),   CL(SCLN),CL(RPRN),
         CL(LCBR),CL(Z),   CL(X),   CL(C),   CL(V),   CL(B),                        CL(N),   CL(M),   CL(COMMA),CL(DOT),CL(SLSH),CL(RCBR),
-                                            CL(TAB), CL(ENTER),                    CL(SPACE),  _______
+                                            CL(TAB), CL(ENTER),                    _______, CL(ENTER)
     ),
 
     [LR_ALT] = LAYOUT(
@@ -60,7 +60,7 @@ LSFT_T(CL(LPRN)),KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG,                   
         AL(TAB), AL(Q),   AL(F4),  AL(E),   AL(R),   CK_ALTT,                      CK_PSTE, CK_SATB, AL(I),   CK_ATB,  AL(P),   AL(BSLS),
 LSFT_T(AL(LPRN)),TD_A,    AL(S),   CL(DEL), CL(RIGHT),AL(G),                       CK_UNBS, AL(J),   AL(K),   AL(L),   AL(SCLN),RSFT_T(AL(RPRN)),
         AL(LCBR),AL(Z),   AL(X),   AL(C),   AL(V),   CL(LEFT),                     AL(N),   AL(M),   AL(COMM),AL(DOT), AL(SLSH),AL(RCBR),
-                                            AL(TAB), _______,                      AL(SPACE),  _______
+                                            AL(TAB), AL(ENTER),                      AL(SPACE), AL(SPACE)
     ),
 
     // This layer is basically identical to the safe layer aside from the thumb keys.

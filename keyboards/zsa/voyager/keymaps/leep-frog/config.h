@@ -6,9 +6,12 @@
 
 #define ENABLE_LEEP_COLOR
 #define LEEP_SAFE_RANGE SAFE_RANGE
-#define LEEP_UNLOCK_CODE { TO_CTRL, KC_J, KC_I, KC_SCLN }
+// #define LEEP_UNLOCK_CODE { TO_CTRL, KC_J, KC_I, KC_SCLN }
+#define LEEP_NO_UNLOCK
 #define COMBO_ONLY_FROM_LAYER 1 // Ella layer
 #define TAPPING_TERM 180
+#define TO_CTRL_KEYCODE KC_SPACE
+#define TO_ALT_KEYCODE KC_ENTER
 
 /***************
 * Main include *
