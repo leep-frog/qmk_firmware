@@ -7,6 +7,8 @@
 // modified or ignored when passed to processes inside of the terminal.
 #define CK_TABF RCTL(KC_PGDN)       // Next tab in chrome
 #define CK_TABB LCTL(KC_PGUP)       // Previous tab in chrome
+#define CK_STBF RSFT(RCTL(KC_PGDN))       // Next tab in chrome
+#define CK_STBB RSFT(LCTL(KC_PGUP))       // Previous tab in chrome
 #define CK_MTBF RCTL(RSFT(KC_PGDN)) // Move tab right in chrome
 #define CK_MTBB RCTL(RSFT(KC_PGUP)) // Move left right in chrome
 #define CK_WWWF LALT(KC_RIGHT)      // Next page in chrome
