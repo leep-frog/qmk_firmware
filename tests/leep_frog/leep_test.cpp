@@ -1959,6 +1959,60 @@ TEST_P(LeepFrogSymbolLayerOverlap, ThirdKeyIsCombo) {
   CONFIRM_RESET();
 }
 
+TEST_P(LeepFrogSymbolLayerOverlap, ShiftAsSecondKey) {
+  TestDriver driver;
+  InSequence s;
+
+  const uint16_t to_overlap_layer = symbol_layer_params.symbol_keycode;
+  const uint16_t shift = KC_RSFT;
+
+  LEEP_KEY_ROW(0, 4,
+    to_overlap_layer,
+    TK_0,
+    KC_A,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(symbol_layer_params.layer, 4,
+    TK_1,
+    shift,
+    KC_1,
+    TK_2
+  )
+
+
+  // Press the layer key
+  k_to_overlap_layer.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Press the shift key
+  k_shift.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  // Press the other key
+  k_KC_1.press();
+  EXPECT_REPORT(driver, (KC_RSFT));
+  EXPECT_REPORT(driver, (KC_RSFT, KC_1));
+  run_one_scan_loop();
+
+  k_KC_1.release();
+  EXPECT_REPORT(driver, (KC_RSFT));
+  run_one_scan_loop();
+
+  k_shift.release();
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  k_to_overlap_layer.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+
 
 // TEST_P(LeepFrogSymbolLayerOverlap, OSMLogic_CustomKeycode) {
 //   TestDriver driver;
