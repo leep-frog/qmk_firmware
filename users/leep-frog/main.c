@@ -361,6 +361,8 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [OL_TDAY_HANDLER] = CK_HANDLER_STRING(OL_TDAY_STRING()),
   [CK_VERSION_HANDLER] = CK_HANDLER_STRING(LEEP_VERSION),
   [CK_DOWNLOAD_GCS] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_END) "?userProject=" GCS_1 GCS_2 GCS_3 GCS_4 SS_TAP(X_ENTER)),
+  [CK_USER_HANDLER] = CK_HANDLER_STRING("gleeper1"),
+  [CK_EMAIL_HANDLER] = CK_HANDLER_STRING("Greg.Leeper@citadel.com"),
   // Noops
   [CK_OSM_SHIFT_HANDLER] = CK_NOOP(), // Handled by leep_osm*.[ch] files
 };

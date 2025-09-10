@@ -34,6 +34,8 @@ enum custom_keycode_handlers {
   CK_VERSION_HANDLER,
   CK_DOWNLOAD_GCS,
   CK_OSM_SHIFT_HANDLER,
+  CK_USER_HANDLER,
+  CK_EMAIL_HANDLER,
 
 #ifdef LEEP_TEST_MODE
   // CK_TEST_CONFIRM is used by tests to confirm that the keyboard
@@ -69,6 +71,8 @@ enum custom_keycode_handlers {
 #define CK_VRSN CK(CK_VERSION_HANDLER)
 #define CK_GCS CK(CK_DOWNLOAD_GCS)
 #define CK_SHFT CK(CK_OSM_SHIFT_HANDLER)
+#define CK_USER CK(CK_USER_HANDLER)
+#define CK_EMAIL CK(CK_EMAIL_HANDLER)
 
 #ifdef LEEP_TEST_MODE
 extern char test_message[];

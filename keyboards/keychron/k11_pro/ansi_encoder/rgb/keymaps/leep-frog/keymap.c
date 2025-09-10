@@ -80,9 +80,9 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
     // This is currently identical to the LR_NAVIGATION layer.
     [LR_SHORTCUTS] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, _______,  _______,  SK_EDIT, CK_RST,  _______, _______,  _______, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
+        _______, _______,  _______,  SK_EDIT, CK_RST,  _______, _______,  CK_USER, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
         _______, _______,  KC_BSPC,  KC_DEL,  GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
-        _______,           _______,  _______, _______, CK_GCS,  GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
+        _______,           _______,  _______, CK_EMAIL,CK_GCS,  GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
         _______, _______,  _______,           _______,          GU(TAB),           _______,          _______,            _______,  _______, _______, _______),
 
     // This is currently identical to the LR_SHORTCUTS layer.
