@@ -118,6 +118,38 @@ void leep_kc_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
     }
 }
 
+void leep_kclayer_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) {
+    // Key is on first tap.
+    if (tap) {
+        tap_code16(hv->td_pair[0]);
+        return;
+    }
+
+    // On subsequent clicks so either register or unregister accordingly.
+    if (state->pressed) {
+        layer_on(hv->td_pair[0]);
+    } else {
+        layer_off(hv->td_pair[0]);
+
+        // Only tap the code if not interrupted
+        if (!state->interrupted) {
+            tap_code16(hv->td_pair[1]);
+        }
+    }
+}
+
+void leep_kclayer_finish_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
+    if (finished) {
+        // I don't think we need to layer_off td_pair[0] here because it should be handled in leep_kclayer_press_fn
+        // but add some tests to confirm
+        if (!state->interrupted) {
+            register_code16(hv->td_pair[1]);
+        }
+    } else {
+        unregister_code16(hv->td_pair[1]);
+    }
+}
+
 // hold KC fn
 void leep_kc_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
     if (finished) {
@@ -143,7 +175,7 @@ void leep_kc_hold_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value
     }
 }
 
-void leep_kc_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hv) {
+void leep_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hv) {
   if (press) {
     layer_on(hv->td_int);
   } else {

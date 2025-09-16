@@ -452,6 +452,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // One hand paste
     [TDK_OH_PASTE] = ACTION_TAP_DANCE_FN(oh_paste),
     // Ctrl layer
+    // TODO: Make all of these v2 (and change suffix of v2 to something more descriptive or just update basic definition and make old one *_DEPRECATED)
     [TDK_CTRL_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_CTRL_KEYCODE, LR_CTRL),
     // Alt layer
     [TDK_ALT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_ALT_KEYCODE, LR_ALT),

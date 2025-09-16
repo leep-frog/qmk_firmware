@@ -18,12 +18,15 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_matters);
 
 typedef union {
     uint16_t td_int;
-    // TODO: Make this a pointer to save space
+    // TODO: Make these pointers to save space
     char td_string[13];
+    uint16_t td_pair[2];
     bool td_bool;
+
 } leep_td_value_t;
 
 #define LEEP_TD_INT(i) { .td_int = i }
+#define LEEP_TD_PAIR(x, y) { .td_pair = {x, y} }
 #define LEEP_TD_BOOL(b) { .td_bool = b }
 #define LEEP_TD_STRING(s) { .td_string = s "\0" }
 #define LEEP_TD_NOVAL() LEEP_TD_INT(0)
@@ -56,7 +59,9 @@ void leep_kc_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv);
 void leep_kc_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv);
 void leep_kc_hold_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv);
 void leep_layer_hold_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv);
-void leep_kc_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hv);
+void leep_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hv);
+void leep_kclayer_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv);
+void leep_kclayer_finish_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hv);
 
 /* The behavior of LEEP_TD_CLICK_HOLD is the following:
  * start_fn(state, press, start_value) is called on the first press and first unpress
@@ -80,7 +85,9 @@ void leep_kc_layer_start_fn(tap_dance_state_t *state, bool press, leep_td_value_
 // Hold the KC when held
 #define LEEP_TD_CLICK_KC_HOLD_HOLD_KC(kc, hold_kc) LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), NULL, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(hold_kc), leep_kc_hold_hold_fn)
 
-#define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(layer), leep_kc_layer_start_fn, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(layer), NULL)
+#define LEEP_TD_CLICK_KC_HOLD_LAYER(kc, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(layer), leep_layer_start_fn, LEEP_TD_INT(kc), leep_kc_press_fn, LEEP_TD_INT(layer), NULL)
+
+#define LEEP_TD_CLICK_KC_HOLD_LAYER_V2(kc, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_INT(layer), leep_layer_start_fn, LEEP_TD_PAIR(kc, layer), leep_kclayer_press_fn, LEEP_TD_PAIR(kc, layer), leep_kclayer_finish_fn)
 
 #define LEEP_TD_CLICK_FN_HOLD_LAYER(press_fn, press_value, layer) LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), NULL, press_value, press_fn, LEEP_TD_INT(layer), leep_layer_hold_fn)
 
