@@ -127,13 +127,13 @@ void leep_kclayer_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *
 
     // On subsequent clicks so either register or unregister accordingly.
     if (state->pressed) {
-        layer_on(hv->td_pair[0]);
+        layer_on(hv->td_pair[1]);
     } else {
-        layer_off(hv->td_pair[0]);
+        layer_off(hv->td_pair[1]);
 
         // Only tap the code if not interrupted
         if (!state->interrupted) {
-            tap_code16(hv->td_pair[1]);
+            tap_code16(hv->td_pair[0]);
         }
     }
 }
@@ -142,11 +142,14 @@ void leep_kclayer_finish_fn(tap_dance_state_t *state, bool finished, leep_td_val
     if (finished) {
         // I don't think we need to layer_off td_pair[0] here because it should be handled in leep_kclayer_press_fn
         // but add some tests to confirm
-        if (!state->interrupted) {
-            register_code16(hv->td_pair[1]);
+
+        // Don't tap if interrupted (because then treated as hold)
+        // Don't tap if unpressed (implying the key is being held as well)
+        if (!state->interrupted && !state->pressed) {
+            register_code16(hv->td_pair[0]);
         }
     } else {
-        unregister_code16(hv->td_pair[1]);
+        unregister_code16(hv->td_pair[0]);
     }
 }
 

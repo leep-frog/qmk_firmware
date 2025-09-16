@@ -732,6 +732,8 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     EXPECT_NO_REPORT(driver);
     idle_for(TAPPING_TERM);
 
+    CONFIRM_RESET();
+
     // Hold tap dance key with no key press
     k_to_shct.press();
     EXPECT_NO_REPORT(driver);
@@ -741,6 +743,181 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
 
     k_to_shct.release();
     EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER_tap_then_hold) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_shct = TO_SHCT;
+    LEEP_KEY_ROW(0, 3,
+      to_shct,
+      KC_A,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SHORTCUTS, 3,
+      TK_0,
+      KC_B,
+      TK_1
+    )
+
+    // Tap tap dance key
+    k_to_shct.press();
+    run_one_scan_loop();
+    k_to_shct.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_9));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+
+
+    // Then tap again, but hold this time
+    k_to_shct.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_TRUE(IS_LAYER_ON(LR_SHORTCUTS));
+
+    // Now press another key in the tap dance layer
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // Finally release the tap dance key
+    k_to_shct.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER_tap_then_hold_layer_overlap) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_shct = TO_SHCT;
+    LEEP_KEY_ROW(0, 3,
+      to_shct,
+      KC_A,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SHORTCUTS, 3,
+      TK_0,
+      KC_B,
+      TK_1
+    )
+
+    // Tap tap dance key
+    k_to_shct.press();
+    run_one_scan_loop();
+    k_to_shct.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_9));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+
+
+    // Then tap again, but hold this time
+    k_to_shct.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_TRUE(IS_LAYER_ON(LR_SHORTCUTS));
+
+    // Now press another key in the tap dance layer, but release the tap dance key first
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    run_one_scan_loop();
+
+    // Release the tap dance key before releasing the other key
+    k_to_shct.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the other key
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER_tap_twice_multiple_times_and_hold) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_shct = TO_SHCT;
+    LEEP_KEY_ROW(0, 3,
+      to_shct,
+      KC_A,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_SHORTCUTS, 3,
+      TK_0,
+      KC_B,
+      TK_1
+    )
+
+    // Tap tap dance key
+    k_to_shct.press();
+    run_one_scan_loop();
+    k_to_shct.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_9));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+
+    // Tap tap dance key again
+    k_to_shct.press();
+    run_one_scan_loop();
+    k_to_shct.release();
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_REPORT(driver, (KC_LSFT, KC_9));
+    EXPECT_REPORT(driver, (KC_LSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_NO_REPORT(driver);
+
+    // Then tap again, but hold this time
+    k_to_shct.press();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    EXPECT_TRUE(IS_LAYER_ON(LR_SHORTCUTS));
+
+    // Now press another key in the tap dance layer, but release the tap dance key first
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    run_one_scan_loop();
+
+    // Release the tap dance key before releasing the other key
+    k_to_shct.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Release the other key
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
     run_one_scan_loop();
 
     CONFIRM_RESET();
