@@ -61,7 +61,6 @@ enum td_keys { // prefix TDK
     TDK_TO_OUTLOOK,
     TDK_TO_SHORTCUT,
     TDK_ELLA_MODE,
-    TDK_CR_DESC,
     TDK_LEFT_BRACKET_SHIFT,
     TDK_RIGHT_BRACKET_SHIFT,
 };

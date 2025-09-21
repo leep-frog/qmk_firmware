@@ -10,7 +10,6 @@
 #include "leep_tap_dance_kb.h"
 #include "./leep_enum_kb.h"
 #include "./leep_symbol_layer_overlap_kb.h"
-#include "./leep_cr_desc_kb.h"
 // #include "record.c"
 // #include "shift.c"
 
@@ -384,17 +383,6 @@ void ella_mode(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void cr_desc_tap_dance(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
-    case SINGLE_TAP:
-      StartCrDesc();
-      break;
-    case SINGLE_HOLD:
-      CrDefaultHandler();
-      break;
-    }
-}
-
 bool pinky_shifted = false;
 
 void pinky_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hold_value) {
@@ -474,8 +462,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_TO_SHORTCUT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_LGUI, LR_SHORTCUTS),
     // Shortcut or no key (for now)
     [TDK_ELLA_MODE] = ACTION_TAP_DANCE_FN(ella_mode),
-    // CR Description
-    [TDK_CR_DESC] = ACTION_TAP_DANCE_FN(cr_desc_tap_dance),
     // Left bracket shift
     [TDK_LEFT_BRACKET_SHIFT] = LEEP_TD_CLICK_KC_HOLD_HOLD_KC(KC_LCBR, KC_LSFT),
     // Right bracket shift

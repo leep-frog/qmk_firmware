@@ -515,8 +515,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
     OSM_handled(keycode, record->event.pressed);
     Mute_handled(record);
-    if (CrDescProcessHandler(keycode, record->event.pressed) ||
-            AltBlockProcessing(keycode, record)) {
+    if (AltBlockProcessing(keycode, record)) {
         return false;
     }
     Oneshot_handled(record);
