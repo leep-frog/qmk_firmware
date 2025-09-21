@@ -42,8 +42,6 @@ bool IsToggleShiftTapDance(uint16_t keycode);
 
 #define TO_OTLK TD(TDK_TO_OUTLOOK)
 #define TO_SHCT TD(TDK_TO_SHORTCUT)
-#define TO_NAV TD(TDK_TO_NAV)
-#define TO_NAVB TD(TDK_TO_NAV_RCBR)
 
 #define TO_BASE_FROM_ELLA TD(TDK_ELLA_MODE)
 

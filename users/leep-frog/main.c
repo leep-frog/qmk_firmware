@@ -293,16 +293,15 @@ int layer_colors[NUM_LAYERS][3] = {
     [LR_CTRL_X] = {LEEP_C(CHARTREUSE)},
     // Ctrl+Alt layer
     [LR_CTRL_ALT] = {LEEP_C(GOLD)},
-    // Nav layer
-    [LR_NAVIGATION] = {LEEP_C(CORAL)},
     // Shortcut layer
     [LR_SHORTCUTS] = {LEEP_C(TURQUOISE)},
     // Symbol layer
-    [LR_SYMB] = {LEEP_C(ORANGE)},
+    [LR_SYMB] = {LEEP_C(CORAL)},
     // Outlook layer
     [LR_OUTLOOK] = {LEEP_C(BLUE)},
     // Scroll layer
     [LR_SCROLL] = {LEEP_C(RED)},
+    // ORANGE is available color
 };
 
 /*******************

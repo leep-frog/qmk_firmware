@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
         TO_SHCT, KC_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
         TD_LCBR,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  TD_RCBR,  CK_LOCK,
-        KC_LCTL, KC_LALT,  TO_SHCT,           CK_SHFT,          TO_ALT,       TO_CTRL,       TO_SYMB,          TO_NAV,             KC_LEFT,  KB_OFF,  KC_RGHT),
+        KC_LCTL, KC_LALT,  TO_SHCT,           CK_SHFT,          TO_ALT,       TO_CTRL,       TO_SYMB,          TO_SHCT,            KC_LEFT,  KB_OFF,  KC_RGHT),
 
     [LR_CTRL] = LAYOUT_69_ansi(
         CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
@@ -81,16 +81,9 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
     [LR_SHORTCUTS] = LAYOUT_69_ansi(
         _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
         _______, _______,  _______,  SK_EDIT, CK_RST,  _______, _______,  CK_USER, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
+        // TODO: Remove TD_CRDC
         _______, _______,  KC_BSPC,  KC_DEL,  GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
         _______,           _______,  _______, CK_EMAIL,CK_GCS,  GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
-        _______, _______,  _______,           _______,          GU(TAB),           _______,          _______,            _______,  _______, _______, _______),
-
-    // This is currently identical to the LR_SHORTCUTS layer.
-    [LR_NAVIGATION] = LAYOUT_69_ansi(
-        _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, _______,  _______,  _______, CK_RST,  _______, _______,  _______, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
-        _______, _______,  CK_SNIP,  TD_CRDC, GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
-        _______,           _______,  _______, _______, CK_GCS,  GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
         _______, _______,  _______,           _______,          GU(TAB),           _______,          _______,            _______,  _______, _______, _______),
 
     [LR_OUTLOOK] = LAYOUT_69_ansi(

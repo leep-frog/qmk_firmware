@@ -12,7 +12,6 @@ enum layers { // prefix LR
     LR_SYMB,       // symbols
     LR_CTRL_X,     // layer activated temporarily after hitting x in the CTRL layer.
     LR_SHORTCUTS,  // command for combination keystrokes.
-    LR_NAVIGATION, // command for changing workspaces.
     LR_OUTLOOK,
     LR_CTRL_ALT,
     LR_ONE_HAND_LEFT,
@@ -60,8 +59,6 @@ enum td_keys { // prefix TDK
     TDK_SCROLL_LEFT,
     TDK_SCROLL_RIGHT,
     TDK_TO_OUTLOOK,
-    TDK_TO_NAV,
-    TDK_TO_NAV_RCBR,
     TDK_TO_SHORTCUT,
     TDK_ELLA_MODE,
     TDK_CR_DESC,

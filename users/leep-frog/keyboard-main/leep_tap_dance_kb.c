@@ -470,12 +470,8 @@ tap_dance_action_t tap_dance_actions[] = {
     // Outlook or semi-colon
     // [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SCLN, LR_OUTLOOK),
     [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), pinky_start_fn, LEEP_TD_INT(KC_SCLN), pinky_press_fn, LEEP_TD_INT(LR_OUTLOOK), leep_layer_hold_fn),
-    // Nav or windows key
-    [TDK_TO_NAV] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_LGUI, LR_NAVIGATION),
-    // Nav or windows key
-    [TDK_TO_NAV_RCBR] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_RCBR, LR_NAVIGATION),
     // Shortcut or no key (for now)
-    [TDK_TO_SHORTCUT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_LPRN, LR_SHORTCUTS),
+    [TDK_TO_SHORTCUT] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_LGUI, LR_SHORTCUTS),
     // Shortcut or no key (for now)
     [TDK_ELLA_MODE] = ACTION_TAP_DANCE_FN(ella_mode),
     // CR Description

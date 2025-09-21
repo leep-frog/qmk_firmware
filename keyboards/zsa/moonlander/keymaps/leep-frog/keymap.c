@@ -20,7 +20,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
                                                      BOTTOM_ROW,
 
-                              CK_SHFT, TO_SYMB, TO_SHCT,      TO_NAV, TO_CTRL, TO_ALT
+                              CK_SHFT, TO_SYMB, TO_SHCT,      TO_SHCT, TO_CTRL, TO_ALT
     ),
 
     [LR_ELLA] = ML_LAYOUT(
