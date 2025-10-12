@@ -433,7 +433,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_P KC_PLUS
 #define LK_SYMB_LBRC KC_LBRC
 #define LK_SYMB_RBRC KC_RBRC
-#define LK_SYMB_CAPS_LOCK KC_LSFT
+#define LK_SYMB_CAPS_LOCK LSFT_T(KC_LPRN)
 #define LK_SYMB_A KC_1
 #define LK_SYMB_S KC_2
 #define LK_SYMB_D KC_3
@@ -444,9 +444,9 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_K KC_8
 #define LK_SYMB_L KC_9
 #define LK_SYMB_SC KC_0
-#define LK_SYMB_QUOTE KC_COMMA
+#define LK_SYMB_QUOTE RSFT_T(KC_RPRN)
 #define LK_SYMB_ENTER KC_ENTER
-#define LK_SYMB_LSFT KC_LSFT
+#define LK_SYMB_LSFT KC_LCBR
 #define LK_SYMB_Z KC_EQUAL
 #define LK_SYMB_X KC_UNDERSCORE
 #define LK_SYMB_C KC_LBRC
@@ -457,7 +457,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_LT KC_COMM
 #define LK_SYMB_GT KC_DOT
 #define LK_SYMB_SL KC_SLSH
-#define LK_SYMB_RSFT KC_RBRC
+#define LK_SYMB_RSFT KC_RCBR
 
 // LR_SHORTCUTS layer
 // This layer used to have GD_HD_1/2/3/..., but removed after refactor. Re-add in this section if needed
