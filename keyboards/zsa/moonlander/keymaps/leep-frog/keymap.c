@@ -11,62 +11,51 @@
 #define ML_LAYOUT(...) LAYOUT_moonlander(__VA_ARGS__)
 #define BOTTOM_ROW      KC_LCTL, KC_LALT, CK_MUT, CK_MUTS, KC_LCTL, CK_MCR1, CK_MCR2, KC_RCTL, KC_RALT, CK_EYE, KB_OFF, CK_LOCK
 
+#define LEEP_LAYOUT(PFX, top_left, top_right, top_right_right, middle_left, middle_right, middle_right_right, bottom_left, bottom_right, ll_thumb, lm_thumb, lr_thumb, rl_thumb, rm_thumb, rr_thumb) ML_LAYOUT( \
+    PFX##_ESC,   PFX##_1, PFX##_2, PFX##_3, PFX##_4, PFX##_5, top_left,       top_right,  PFX##_6, PFX##_7, PFX##_8,    PFX##_9,   PFX##_0,    top_right_right, \
+    PFX##_TAB,   PFX##_Q, PFX##_W, PFX##_E, PFX##_R, PFX##_T, middle_left,       middle_right, PFX##_Y, PFX##_U, PFX##_I,    PFX##_O,   PFX##_P,    middle_right_right, \
+PFX##_CAPS_LOCK, PFX##_A, PFX##_S, PFX##_D, PFX##_F, PFX##_G, bottom_left,       bottom_right, PFX##_H, PFX##_J, PFX##_K,    PFX##_L,   PFX##_SC, PFX##_QUOTE, \
+    PFX##_LSFT, PFX##_Z, PFX##_X, PFX##_C, PFX##_V, PFX##_B,                         PFX##_N, PFX##_M, PFX##_LT, PFX##_GT, PFX##_SL, PFX##_RSFT, \
+                                                 BOTTOM_ROW, \
+                          ll_thumb, lm_thumb, lr_thumb, rl_thumb, rm_thumb, rr_thumb)
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [LR_BASE] = ML_LAYOUT(
-        CK_LOCK, KC_1, KC_2, KC_3, KC_4, KC_5, WS_LEFT,       KC_ESC,  KC_6, KC_7, KC_8,    KC_9,   KC_0,    KC_VOLU,
-        _______, KC_Q, KC_W, KC_E, KC_R, KC_T, LGHT_ON,       LGHT_OF, TD_Y, TD_U, TD_I,    KC_O,   KC_P,    KC_VOLD,
-        SC_LSPO, KC_A, TD_S, KC_D, KC_F, KC_G, WS_LEFT,       CK_MCR1, KC_H, KC_J, KC_K,    KC_L,   TO_OTLK, SC_RSPC,
-        KC_LCBR, KC_Z, KC_X, TD_C, TD_V, TD_B,                         KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
-                                                     BOTTOM_ROW,
-
-                              CK_SHFT, TO_SYMB, TO_SHCT,      TO_SHCT, TO_CTRL, TO_ALT
+    [LR_BASE] = LEEP_LAYOUT(LK_BASE,
+        WS_LEFT, KC_ESC,  KC_VOLU,
+        LGHT_ON, LGHT_OF, KC_VOLD,
+        WS_LEFT, CK_MCR1,
+        CK_SHFT, TO_SYMB, TO_SHCT,      TO_SHCT, TO_CTRL, TO_ALT
     ),
 
-    [LR_ELLA] = ML_LAYOUT(
-        KC_NO,  KC_1, KC_2, KC_3, KC_4, KC_5, KC_NO,       KC_NO, KC_6, KC_7, KC_8,    KC_9,   KC_0,    _______,
-        KC_NO,  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_NO,       KC_NO, KC_Y, KC_U, KC_I,    KC_O,   KC_P,    KC_BSLS,
-        KC_LSFT,KC_A, KC_S, KC_D, KC_F, KC_G, KC_NO,       KC_NO, KC_H, KC_J, KC_K,    KC_L,   KC_SCLN, KC_NO,
-        KC_NO,  KC_Z, KC_X, KC_C, KC_V, KC_B,                     KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RCBR,
-
-           KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-
-                                                           // These needs to be TO_CTRL/TO_ALT/TO_SYMB (instead of enter/space/tab)
-                                                           // so that the OSM key + right thumb doesn't trap us in this layer.
-                           KC_RSFT, TO_SYMB, KC_LGUI,      KC_RGUI, TO_CTRL, TO_ALT
+    [LR_ELLA] = LEEP_LAYOUT(LK_ELLA,
+        KC_NO, KC_NO, _______,
+        KC_NO, KC_NO, KC_BSLS,
+        KC_NO, KC_NO,
+        // These needs to be TO_CTRL/TO_ALT/TO_SYMB (instead of enter/space/tab)
+        // so that the OSM key + right thumb doesn't trap us in this layer.
+        KC_RSFT, TO_SYMB, KC_LGUI,      KC_RGUI, TO_CTRL, TO_ALT
     ),
 
-    [LR_CTRL] = ML_LAYOUT(
-        CL(EQL),  CL(1),   CL(2),   CL(3),   CL(4),   CL(5),   RCTL(WS_LEFT),  KC_ESC,  CL(6),   CL(7),   CL(8),   CL(9),    CL(0),    _______,
-        CL(TAB),  CL(Q),   CTRL_W,  KC_END,  CL(R),   CL(T),   KC_LEFT,        KC_RGHT, CL(Y),   CK_TABB, CL(I),   CK_TABF,  KC_UP,    CL(BSLS),
-LSFT_T(CL(LPRN)), KC_HOME, CL(F),   KC_DEL,  KC_RGHT, CK_CTLG, _______,        _______, KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  CL(SCLN), RSFT_T(CL(RPRN)),
-        CL(LCBR), CL(Z),   TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,                                   KC_DOWN, CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RCBR),
-
-                                                                    BOTTOM_ROW,
-
-                                        CL(ENTER), CL(TAB), CL(LGUI),      CL(RGUI), _______, CL(SPACE)
+    [LR_CTRL] = LEEP_LAYOUT(LK_CTRL,
+        RCTL(WS_LEFT), KC_ESC, _______,
+        KC_LEFT,       KC_RGHT, CL(BSLS),
+        _______,        _______,
+        CL(ENTER), CL(TAB), CL(LGUI),      CL(RGUI), _______, CL(SPACE)
     ),
 
-    [LR_CTRL_X] = ML_LAYOUT(
-        _______,  CL(1), CL(2), CL(3), CL(4), CL(5), RCTL(WS_LEFT),           RCTL(KC_ESC),      CL(6), CL(7), CL(8),     CL(9),    CL(0),    _______,
-        CL(TAB),  CL(Q), CL(W), CL(E), CL(R), CL(T), KC_LEFT,                 KC_RIGHT, CK_PSTE, CL(U), CL(I), CL(O),     CL(P),    CL(BSLS),
-        CL(LPRN), CL(A), CL(S), CL(D), CL(F), CL(G), RCTL(WS_LEFT),           RCTL(WS_RGHT),     CL(H), CL(J), CL(K),     CL(L),    CL(SCLN), CL(RPRN),
-        CL(LCBR), CL(Z), CL(X), CL(C), CL(V), CL(B),                                             CL(N), CL(M), CL(COMMA), CL(DOT),  CL(SLSH), CL(RCBR),
-
-                                                                   BOTTOM_ROW,
-
-                                       CL(ENTER), CL(TAB), CL(RGUI),         CL(RGUI), _______, CL(SPACE)
+    [LR_CTRL_X] = LEEP_LAYOUT(LK_CTRL_X,
+        RCTL(WS_LEFT), RCTL(KC_ESC),  _______,
+        KC_LEFT,       KC_RIGHT,      CL(BSLS),
+        RCTL(WS_LEFT), RCTL(WS_RGHT),
+        CL(ENTER), CL(TAB), CL(RGUI),         CL(RGUI), _______, CL(SPACE)
     ),
 
-    [LR_ALT] = ML_LAYOUT(
-        AL(EQL),  AL(1), AL(2),  AL(3),   AL(4),     AL(5),   RALT(WS_LEFT),        RALT(KC_ESC),  AL(6),   AL(7),   AL(8),    AL(9),   AL(0),    _______,
-        AL(TAB),  AL(Q), AL(F4), AL(E),   AL(R),     CK_ALTT, KC_LEFT,              KC_RIGHT,      CK_PSTE, CK_SATB, AL(I),    CK_ATB,  AL(P),    AL(BSLS),
-LSFT_T(AL(LPRN)), TD_A,  AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),        RALT(WS_RGHT), CK_UNBS, AL(J),   AL(K),    AL(L),   AL(SCLN), RSFT_T(AL(RPRN)),
-        AL(LCBR), AL(Z), AL(X),  AL(C),   AL(V),     CL(LEFT),                                     AL(N),   AL(M),   AL(COMM), AL(DOT), AL(SLSH), AL(RCBR),
-
-                                                                            BOTTOM_ROW,
-
-                                                  AL(TAB), _______, AL(LGUI),       AL(RGUI), AL(ENTER), _______
+    [LR_ALT] = LEEP_LAYOUT(LK_ALT,
+        RALT(WS_LEFT),  RALT(KC_ESC),  _______,
+        KC_LEFT,        KC_RIGHT,      AL(BSLS),
+        RALT(WS_LEFT),  RALT(WS_RGHT),
+        AL(TAB), _______, AL(LGUI),       AL(RGUI), AL(ENTER), _______
     ),
 
     // This layer is basically identical to the safe layer aside from the thumb keys.
@@ -92,24 +81,11 @@ LSFT_T(AL(LPRN)), TD_A,  AL(S),  CL(DEL), CL(RIGHT), AL(G),   RALT(WS_LEFT),    
                                            KC_ACL1, KC_ACL0, KC_ACL2,           KC_MS_BTN3, KC_MS_BTN1, KC_MS_BTN2
     ),
 
-    [LR_NAVIGATION] = ML_LAYOUT(
-        _______, _______, _______, _______, _______,  _______,     _______,           _______, _______,  _______, _______, _______, _______, _______,
-        _______, _______, CK_WWWB, _______, CK_RST,   RCTL(AL(T)), _______,           _______, SLK_UP,   SLK_UP,  _______, CK_TABF, GU(UP),  CK_ATB,
-        _______, _______, CK_SNIP, TD_CRDC, GU(RGHT), _______,     _______,           _______, SLK_DWN,  SLK_DWN, SLK_JMP, CK_LOGS, MISC_WS, _______,
-        _______, _______, _______, _______, _______,  GU(LEFT),                                GU(DOWN), _______, WS_UP,   WS_DOWN, _______, _______,
-
-                                                                      BOTTOM_ROW,
-
-                                            GU(TAB), GU(TAB), _______,           _______, GU(TAB), _______
-    ),
-
-    [LR_SYMB] = ML_LAYOUT(
-        _______, KC_F1,   KC_F2,   KC_HASH, KC_F4,   KC_F5,   _______,           _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-        _______, KC_EXLM, KC_COLN, KC_EQL,  KC_CIRC, KC_PIPE, _______,           _______, KC_RPRN, KC_7,    KC_8,    KC_9,    KC_PERC, KC_F12,
-        KC_TAB,  KC_AMPR, KC_ASTR, KC_DLR,  KC_SLSH, KC_LBRC, _______,           _______, CK_MDPS, KC_4,    KC_5,    KC_6,    KC_0,    KC_COMMA,
-        _______, KC_DOT,  KC_COMM, KC_AT,   KC_EQL,  KC_BSLS,                             KC_RCBR, KC_1,    KC_2,    KC_3,    KC_SLSH, _______,
-                                                                      BOTTOM_ROW,
-                                           KC_SPACE, _______, RGB_HUI, TOGGLE_LAYER_COLOR, _______, _______
+    [LR_SYMB] = LEEP_LAYOUT(LK_SYMB,
+        _______, _______, _______,
+        _______, _______, KC_F12,
+        _______, _______,
+        KC_SPACE, _______, RGB_HUI, TOGGLE_LAYER_COLOR, _______, _______
     ),
 
     [LR_OUTLOOK] = ML_LAYOUT(
