@@ -44,6 +44,46 @@ enum custom_keycode_handlers {
 #endif
 };
 
+#define TO_CTLX CK(TO_CTLX_HANDLER)
+#define CTRL_W CK(CTRL_W_HANDLER)
+#define CK_WAIT CK(CK_WAIT_HANDLER)
+#define CK_ATB CK(CK_ATB_HANDLER)
+#define CK_SATB CK(CK_SATB_HANDLER)
+#define CK_ACL CK(CK_ACL_HANDLER)
+#define CK_LOCK CK(CK_LOCK_HANDLER)
+#define CK_RST CK(CK_RESET_HANDLER)
+#define KB_OFF CK(KB_OFF_HANDLER)
+#define CK_EYE CK(CK_EYE_HANDLER)
+#define SK_EDIT CK(SLACK_EDIT_HANDLER)
+#define MS_CTRL CK(MS_CTRL_HANDLER)
+#define CK_ALTT CK(CK_ALTT_HANDLER)
+#define CK_MUTS CK(CK_MUTS_HANDLER)
+#define CK_MUT CK(CK_MUT_HANDLER)
+#define CK_CTLG CK(CK_CTLG_HANDLER)
+#define CK_TGSH CK(CK_TGL_SHIFT_HANDLER)
+
+#define URL_PST CK(URL_PST_HANDLER)
+#define URL_CPY CK(URL_CPY_HANDLER)
+#define OL_TDAY CK(OL_TDAY_HANDLER)
+#define CK_UNBS CK(CK_UNBS_HANDLER)
+#define CK_LOGS CK(CK_LOGS_HANDLER)
+#define CK_VRSN CK(CK_VERSION_HANDLER)
+#define CK_GCS CK(CK_DOWNLOAD_GCS)
+#define CK_SHFT CK(CK_OSM_SHIFT_HANDLER)
+#define CK_USER CK(CK_USER_HANDLER)
+#define CK_EMAIL CK(CK_EMAIL_HANDLER)
+
+#ifdef LEEP_TEST_MODE
+extern char test_message[];
+#define CK_TEST CK(CK_TEST_CONFIRM)
+#endif
+
+bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
+
+/*********
+* Layers *
+**********/
+
 // LR_ELLA layer
 #define LK_ELLA_ESC KC_ESC
 #define LK_ELLA_1 KC_1
@@ -313,61 +353,6 @@ enum custom_keycode_handlers {
 #define LK_CTRL_X_RSFT CL(RSFT)
 
 
-// LR_SHORTCUTS layer
-// This layer used to have GD_HD_1/2/3/..., but removed after refactor. Re-add in this section if needed
-#define LK_SHORTCUTS_ESC _______
-#define LK_SHORTCUTS_1 _______
-#define LK_SHORTCUTS_2 _______
-#define LK_SHORTCUTS_3 _______
-#define LK_SHORTCUTS_4 _______
-#define LK_SHORTCUTS_5 _______
-#define LK_SHORTCUTS_6 _______
-#define LK_SHORTCUTS_7 _______
-#define LK_SHORTCUTS_8 _______
-#define LK_SHORTCUTS_9 _______
-#define LK_SHORTCUTS_0 _______
-#define LK_SHORTCUTS_MINUS _______
-#define LK_SHORTCUTS_EQUAL _______
-#define LK_SHORTCUTS_TAB _______
-#define LK_SHORTCUTS_Q AL(Q)
-#define LK_SHORTCUTS_W AL(F4)
-#define LK_SHORTCUTS_E SK_EDIT
-#define LK_SHORTCUTS_R CK_RST
-#define LK_SHORTCUTS_T _______
-#define LK_SHORTCUTS_Y _______
-#define LK_SHORTCUTS_U CK_USER
-#define LK_SHORTCUTS_I _______
-#define LK_SHORTCUTS_O _______
-#define LK_SHORTCUTS_P GU(UP)
-#define LK_SHORTCUTS_LBRC _______
-#define LK_SHORTCUTS_RBRC _______
-#define LK_SHORTCUTS_CAPS_LOCK _______
-#define LK_SHORTCUTS_A _______
-#define LK_SHORTCUTS_S KC_BSPC
-#define LK_SHORTCUTS_D KC_DEL
-#define LK_SHORTCUTS_F GU(RIGHT)
-#define LK_SHORTCUTS_G _______
-#define LK_SHORTCUTS_H _______
-#define LK_SHORTCUTS_J _______
-#define LK_SHORTCUTS_K _______
-#define LK_SHORTCUTS_L _______
-#define LK_SHORTCUTS_SC _______
-#define LK_SHORTCUTS_QUOTE _______
-#define LK_SHORTCUTS_ENTER _______
-#define LK_SHORTCUTS_LSFT _______
-#define LK_SHORTCUTS_Z _______
-#define LK_SHORTCUTS_X _______
-#define LK_SHORTCUTS_C CK_EMAIL
-#define LK_SHORTCUTS_V CK_GCS
-#define LK_SHORTCUTS_B GU(LEFT)
-#define LK_SHORTCUTS_N GU(DOWN)
-#define LK_SHORTCUTS_M _______
-#define LK_SHORTCUTS_LT _______
-#define LK_SHORTCUTS_GT _______
-#define LK_SHORTCUTS_SL _______
-#define LK_SHORTCUTS_RSFT _______
-
-
 // LR_ALT layer
 #define LK_ALT_ESC AL(ESC)
 #define LK_ALT_1 AL(1)
@@ -474,39 +459,109 @@ enum custom_keycode_handlers {
 #define LK_SYMB_SL KC_SLSH
 #define LK_SYMB_RSFT KC_RBRC
 
+// LR_SHORTCUTS layer
+// This layer used to have GD_HD_1/2/3/..., but removed after refactor. Re-add in this section if needed
+#define LK_SHORTCUTS_ESC _______
+#define LK_SHORTCUTS_1 _______
+#define LK_SHORTCUTS_2 _______
+#define LK_SHORTCUTS_3 _______
+#define LK_SHORTCUTS_4 _______
+#define LK_SHORTCUTS_5 _______
+#define LK_SHORTCUTS_6 _______
+#define LK_SHORTCUTS_7 _______
+#define LK_SHORTCUTS_8 _______
+#define LK_SHORTCUTS_9 _______
+#define LK_SHORTCUTS_0 _______
+#define LK_SHORTCUTS_MINUS _______
+#define LK_SHORTCUTS_EQUAL _______
+#define LK_SHORTCUTS_TAB _______
+#define LK_SHORTCUTS_Q AL(Q)
+#define LK_SHORTCUTS_W AL(F4)
+#define LK_SHORTCUTS_E SK_EDIT
+#define LK_SHORTCUTS_R CK_RST
+#define LK_SHORTCUTS_T _______
+#define LK_SHORTCUTS_Y _______
+#define LK_SHORTCUTS_U CK_USER
+#define LK_SHORTCUTS_I _______
+#define LK_SHORTCUTS_O _______
+#define LK_SHORTCUTS_P GU(UP)
+#define LK_SHORTCUTS_LBRC _______
+#define LK_SHORTCUTS_RBRC _______
+#define LK_SHORTCUTS_CAPS_LOCK _______
+#define LK_SHORTCUTS_A _______
+#define LK_SHORTCUTS_S KC_BSPC
+#define LK_SHORTCUTS_D KC_DEL
+#define LK_SHORTCUTS_F GU(RIGHT)
+#define LK_SHORTCUTS_G _______
+#define LK_SHORTCUTS_H _______
+#define LK_SHORTCUTS_J _______
+#define LK_SHORTCUTS_K _______
+#define LK_SHORTCUTS_L _______
+#define LK_SHORTCUTS_SC _______
+#define LK_SHORTCUTS_QUOTE _______
+#define LK_SHORTCUTS_ENTER _______
+#define LK_SHORTCUTS_LSFT _______
+#define LK_SHORTCUTS_Z _______
+#define LK_SHORTCUTS_X _______
+#define LK_SHORTCUTS_C CK_EMAIL
+#define LK_SHORTCUTS_V CK_GCS
+#define LK_SHORTCUTS_B GU(LEFT)
+#define LK_SHORTCUTS_N GU(DOWN)
+#define LK_SHORTCUTS_M _______
+#define LK_SHORTCUTS_LT _______
+#define LK_SHORTCUTS_GT _______
+#define LK_SHORTCUTS_SL _______
+#define LK_SHORTCUTS_RSFT _______
 
-#define TO_CTLX CK(TO_CTLX_HANDLER)
-#define CTRL_W CK(CTRL_W_HANDLER)
-#define CK_WAIT CK(CK_WAIT_HANDLER)
-#define CK_ATB CK(CK_ATB_HANDLER)
-#define CK_SATB CK(CK_SATB_HANDLER)
-#define CK_ACL CK(CK_ACL_HANDLER)
-#define CK_LOCK CK(CK_LOCK_HANDLER)
-#define CK_RST CK(CK_RESET_HANDLER)
-#define KB_OFF CK(KB_OFF_HANDLER)
-#define CK_EYE CK(CK_EYE_HANDLER)
-#define SK_EDIT CK(SLACK_EDIT_HANDLER)
-#define MS_CTRL CK(MS_CTRL_HANDLER)
-#define CK_ALTT CK(CK_ALTT_HANDLER)
-#define CK_MUTS CK(CK_MUTS_HANDLER)
-#define CK_MUT CK(CK_MUT_HANDLER)
-#define CK_CTLG CK(CK_CTLG_HANDLER)
-#define CK_TGSH CK(CK_TGL_SHIFT_HANDLER)
-
-#define URL_PST CK(URL_PST_HANDLER)
-#define URL_CPY CK(URL_CPY_HANDLER)
-#define OL_TDAY CK(OL_TDAY_HANDLER)
-#define CK_UNBS CK(CK_UNBS_HANDLER)
-#define CK_LOGS CK(CK_LOGS_HANDLER)
-#define CK_VRSN CK(CK_VERSION_HANDLER)
-#define CK_GCS CK(CK_DOWNLOAD_GCS)
-#define CK_SHFT CK(CK_OSM_SHIFT_HANDLER)
-#define CK_USER CK(CK_USER_HANDLER)
-#define CK_EMAIL CK(CK_EMAIL_HANDLER)
-
-#ifdef LEEP_TEST_MODE
-extern char test_message[];
-#define CK_TEST CK(CK_TEST_CONFIRM)
-#endif
-
-bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
+// LR_OUTLOOK layer
+#define LK_OUTLOOK_ESC _______
+#define LK_OUTLOOK_1 _______
+#define LK_OUTLOOK_2 _______
+#define LK_OUTLOOK_3 _______
+#define LK_OUTLOOK_4 _______
+#define LK_OUTLOOK_5 _______
+#define LK_OUTLOOK_6 _______
+#define LK_OUTLOOK_7 _______
+#define LK_OUTLOOK_8 _______
+#define LK_OUTLOOK_9 _______
+#define LK_OUTLOOK_0 _______
+#define LK_OUTLOOK_MINUS _______
+#define LK_OUTLOOK_EQUAL _______
+#define LK_OUTLOOK_TAB _______
+#define LK_OUTLOOK_Q _______
+#define LK_OUTLOOK_W _______
+#define LK_OUTLOOK_E _______
+#define LK_OUTLOOK_R _______
+#define LK_OUTLOOK_T _______
+#define LK_OUTLOOK_Y CL(U)
+#define LK_OUTLOOK_U CL(Q)
+#define LK_OUTLOOK_I CL(COMMA)
+#define LK_OUTLOOK_O CL(U)
+#define LK_OUTLOOK_P _______
+#define LK_OUTLOOK_LBRC _______
+#define LK_OUTLOOK_RBRC _______
+#define LK_OUTLOOK_CAPS_LOCK _______
+#define LK_OUTLOOK_A _______
+#define LK_OUTLOOK_S _______
+#define LK_OUTLOOK_D _______
+#define LK_OUTLOOK_F _______
+#define LK_OUTLOOK_G _______
+#define LK_OUTLOOK_H KC_DEL
+#define LK_OUTLOOK_J OL_MOVE
+#define LK_OUTLOOK_K CL(DOT)
+#define LK_OUTLOOK_L OL_RLD
+#define LK_OUTLOOK_SC _______
+#define LK_OUTLOOK_QUOTE _______
+#define LK_OUTLOOK_ENTER _______
+#define LK_OUTLOOK_LSFT _______
+#define LK_OUTLOOK_Z _______
+#define LK_OUTLOOK_X _______
+#define LK_OUTLOOK_C _______
+#define LK_OUTLOOK_V _______
+#define LK_OUTLOOK_B _______
+#define LK_OUTLOOK_N _______
+#define LK_OUTLOOK_M OL_TDAY
+#define LK_OUTLOOK_LT CL(U)
+#define LK_OUTLOOK_GT _______
+#define LK_OUTLOOK_SL CL(M)
+#define LK_OUTLOOK_RSFT _______
