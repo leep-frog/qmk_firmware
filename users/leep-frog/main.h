@@ -97,18 +97,6 @@ enum custom_keycode_handlers {
 #define LK_ELLA_SL KC_SLSH
 #define LK_ELLA_RSFT KC_RSFT
 
-#define YOK(x) x
-#define UGH() KC_1, KC_2
-
-#define LK_ELLA_00 LK_ELLA_1, LK_ELLA_2, LK_ELLA_3, LK_ELLA_4, LK_ELLA_5
-#define LK_ELLA_01 LK_ELLA_6, LK_ELLA_7, LK_ELLA_8, LK_ELLA_9, LK_ELLA_0
-#define LK_ELLA_10 LK_ELLA_Q, LK_ELLA_W, LK_ELLA_E, LK_ELLA_R, LK_ELLA_T
-#define LK_ELLA_11 LK_ELLA_Y, LK_ELLA_U, LK_ELLA_I, LK_ELLA_O, LK_ELLA_P
-#define LK_ELLA_20 LK_ELLA_A, LK_ELLA_S, LK_ELLA_D, LK_ELLA_F, LK_ELLA_G
-#define LK_ELLA_21 LK_ELLA_H, LK_ELLA_J, LK_ELLA_K, LK_ELLA_L, LK_ELLA_SC
-#define LK_ELLA_30 LK_ELLA_Z, LK_ELLA_X, LK_ELLA_C, LK_ELLA_V, LK_ELLA_B
-#define LK_ELLA_31 LK_ELLA_N, LK_ELLA_M, LK_ELLA_LT, LK_ELLA_GT, LK_ELLA_SL
-
 // LR_BASE layer
 #define LK_BASE_ESC KC_ESC
 #define LK_BASE_1 KC_1
@@ -161,15 +149,6 @@ enum custom_keycode_handlers {
 #define LK_BASE_GT KC_DOT
 #define LK_BASE_SL KC_SLSH
 #define LK_BASE_RSFT TD_RCBR
-
-#define LK_BASE_00 LK_BASE_1, LK_BASE_2, LK_BASE_3, LK_BASE_4, LK_BASE_5
-#define LK_BASE_01 LK_BASE_6, LK_BASE_7, LK_BASE_8, LK_BASE_9, LK_BASE_0
-#define LK_BASE_10 LK_BASE_Q, LK_BASE_W, LK_BASE_E, LK_BASE_R, LK_BASE_T
-#define LK_BASE_11 LK_BASE_Y, LK_BASE_U, LK_BASE_I, LK_BASE_O, LK_BASE_P
-#define LK_BASE_20 LK_BASE_A, LK_BASE_S, LK_BASE_D, LK_BASE_F, LK_BASE_G
-#define LK_BASE_21 LK_BASE_H, LK_BASE_J, LK_BASE_K, LK_BASE_L, LK_BASE_SC
-#define LK_BASE_30 LK_BASE_Z, LK_BASE_X, LK_BASE_C, LK_BASE_V, LK_BASE_B
-#define LK_BASE_31 LK_BASE_N, LK_BASE_M, LK_BASE_LT, LK_BASE_GT, LK_BASE_SL
 
 
 // LR_CTRL layer
@@ -226,14 +205,59 @@ enum custom_keycode_handlers {
 #define LK_CTRL_SL CL(SLSH)
 #define LK_CTRL_RSFT CL(RSFT)
 
-#define LK_CTRL_00 LK_CTRL_1, LK_CTRL_2, LK_CTRL_3, LK_CTRL_4, LK_CTRL_5
-#define LK_CTRL_01 LK_CTRL_6, LK_CTRL_7, LK_CTRL_8, LK_CTRL_9, LK_CTRL_0
-#define LK_CTRL_10 LK_CTRL_Q, LK_CTRL_W, LK_CTRL_E, LK_CTRL_R, LK_CTRL_T
-#define LK_CTRL_11 LK_CTRL_Y, LK_CTRL_U, LK_CTRL_I, LK_CTRL_O, LK_CTRL_P
-#define LK_CTRL_20 LK_CTRL_A, LK_CTRL_S, LK_CTRL_D, LK_CTRL_F, LK_CTRL_G
-#define LK_CTRL_21 LK_CTRL_H, LK_CTRL_J, LK_CTRL_K, LK_CTRL_L, LK_CTRL_SC
-#define LK_CTRL_30 LK_CTRL_Z, LK_CTRL_X, LK_CTRL_C, LK_CTRL_V, LK_CTRL_B
-#define LK_CTRL_31 LK_CTRL_N, LK_CTRL_M, LK_CTRL_LT, LK_CTRL_GT, LK_CTRL_SL
+
+// LR_CTRL_SHIFT layer
+#define LK_CTRL_SHIFT_ESC _______
+#define LK_CTRL_SHIFT_1 _______
+#define LK_CTRL_SHIFT_2 _______
+#define LK_CTRL_SHIFT_3 _______
+#define LK_CTRL_SHIFT_4 _______
+#define LK_CTRL_SHIFT_5 _______
+#define LK_CTRL_SHIFT_6 _______
+#define LK_CTRL_SHIFT_7 _______
+#define LK_CTRL_SHIFT_8 _______
+#define LK_CTRL_SHIFT_9 _______
+#define LK_CTRL_SHIFT_0 _______
+#define LK_CTRL_SHIFT_MINUS _______
+#define LK_CTRL_SHIFT_EQUAL _______
+#define LK_CTRL_SHIFT_TAB _______
+#define LK_CTRL_SHIFT_Q AL(Q)
+#define LK_CTRL_SHIFT_W AL(F4)
+#define LK_CTRL_SHIFT_E _______
+#define LK_CTRL_SHIFT_R _______
+#define LK_CTRL_SHIFT_T CK_ALTT
+#define LK_CTRL_SHIFT_Y CK_PSTE
+#define LK_CTRL_SHIFT_U CK_STBB
+#define LK_CTRL_SHIFT_I CL_SH(I)
+#define LK_CTRL_SHIFT_O CK_TABF
+#define LK_CTRL_SHIFT_P KC_PGUP
+#define LK_CTRL_SHIFT_LBRC _______
+#define LK_CTRL_SHIFT_RBRC _______
+#define LK_CTRL_SHIFT_CAPS_LOCK _______
+#define LK_CTRL_SHIFT_A TD_A
+#define LK_CTRL_SHIFT_S CL_SH(F)
+#define LK_CTRL_SHIFT_D CL(DEL)
+#define LK_CTRL_SHIFT_F CL(RGHT)
+#define LK_CTRL_SHIFT_G _______
+#define LK_CTRL_SHIFT_H CK_UNBS
+#define LK_CTRL_SHIFT_J CK_TGSH
+#define LK_CTRL_SHIFT_K _______
+#define LK_CTRL_SHIFT_L SH(PGUP)
+#define LK_CTRL_SHIFT_SC _______
+#define LK_CTRL_SHIFT_QUOTE _______
+#define LK_CTRL_SHIFT_ENTER _______
+#define LK_CTRL_SHIFT_LSFT _______
+#define LK_CTRL_SHIFT_Z AL(Z)
+#define LK_CTRL_SHIFT_X _______
+#define LK_CTRL_SHIFT_C _______
+#define LK_CTRL_SHIFT_V SH(PGDN)
+#define LK_CTRL_SHIFT_B CL(LEFT)
+#define LK_CTRL_SHIFT_N KC_PGDN
+#define LK_CTRL_SHIFT_M _______
+#define LK_CTRL_SHIFT_LT _______
+#define LK_CTRL_SHIFT_GT _______
+#define LK_CTRL_SHIFT_SL _______
+#define LK_CTRL_SHIFT_RSFT _______
 
 // LR_CTRL_X layer
 #define LK_CTRL_X_ESC CL(ESC)
@@ -288,14 +312,60 @@ enum custom_keycode_handlers {
 #define LK_CTRL_X_SL CL(SLSH)
 #define LK_CTRL_X_RSFT CL(RSFT)
 
-#define LK_CTRL_X_00 LK_CTRL_X_1, LK_CTRL_X_2, LK_CTRL_X_3, LK_CTRL_X_4, LK_CTRL_X_5
-#define LK_CTRL_X_01 LK_CTRL_X_6, LK_CTRL_X_7, LK_CTRL_X_8, LK_CTRL_X_9, LK_CTRL_X_0
-#define LK_CTRL_X_10 LK_CTRL_X_Q, LK_CTRL_X_W, LK_CTRL_X_E, LK_CTRL_X_R, LK_CTRL_X_T
-#define LK_CTRL_X_11 LK_CTRL_X_Y, LK_CTRL_X_U, LK_CTRL_X_I, LK_CTRL_X_O, LK_CTRL_X_P
-#define LK_CTRL_X_20 LK_CTRL_X_A, LK_CTRL_X_S, LK_CTRL_X_D, LK_CTRL_X_F, LK_CTRL_X_G
-#define LK_CTRL_X_21 LK_CTRL_X_H, LK_CTRL_X_J, LK_CTRL_X_K, LK_CTRL_X_L, LK_CTRL_X_SC
-#define LK_CTRL_X_30 LK_CTRL_X_Z, LK_CTRL_X_X, LK_CTRL_X_C, LK_CTRL_X_V, LK_CTRL_X_B
-#define LK_CTRL_X_31 LK_CTRL_X_N, LK_CTRL_X_M, LK_CTRL_X_LT, LK_CTRL_X_GT, LK_CTRL_X_SL
+
+// LR_SHORTCUTS layer
+// This layer used to have GD_HD_1/2/3/..., but removed after refactor. Re-add in this section if needed
+#define LK_SHORTCUTS_ESC _______
+#define LK_SHORTCUTS_1 _______
+#define LK_SHORTCUTS_2 _______
+#define LK_SHORTCUTS_3 _______
+#define LK_SHORTCUTS_4 _______
+#define LK_SHORTCUTS_5 _______
+#define LK_SHORTCUTS_6 _______
+#define LK_SHORTCUTS_7 _______
+#define LK_SHORTCUTS_8 _______
+#define LK_SHORTCUTS_9 _______
+#define LK_SHORTCUTS_0 _______
+#define LK_SHORTCUTS_MINUS _______
+#define LK_SHORTCUTS_EQUAL _______
+#define LK_SHORTCUTS_TAB _______
+#define LK_SHORTCUTS_Q AL(Q)
+#define LK_SHORTCUTS_W AL(F4)
+#define LK_SHORTCUTS_E SK_EDIT
+#define LK_SHORTCUTS_R CK_RST
+#define LK_SHORTCUTS_T _______
+#define LK_SHORTCUTS_Y _______
+#define LK_SHORTCUTS_U CK_USER
+#define LK_SHORTCUTS_I _______
+#define LK_SHORTCUTS_O _______
+#define LK_SHORTCUTS_P GU(UP)
+#define LK_SHORTCUTS_LBRC _______
+#define LK_SHORTCUTS_RBRC _______
+#define LK_SHORTCUTS_CAPS_LOCK _______
+#define LK_SHORTCUTS_A _______
+#define LK_SHORTCUTS_S KC_BSPC
+#define LK_SHORTCUTS_D KC_DEL
+#define LK_SHORTCUTS_F GU(RIGHT)
+#define LK_SHORTCUTS_G _______
+#define LK_SHORTCUTS_H _______
+#define LK_SHORTCUTS_J _______
+#define LK_SHORTCUTS_K _______
+#define LK_SHORTCUTS_L _______
+#define LK_SHORTCUTS_SC _______
+#define LK_SHORTCUTS_QUOTE _______
+#define LK_SHORTCUTS_ENTER _______
+#define LK_SHORTCUTS_LSFT _______
+#define LK_SHORTCUTS_Z _______
+#define LK_SHORTCUTS_X _______
+#define LK_SHORTCUTS_C CK_EMAIL
+#define LK_SHORTCUTS_V CK_GCS
+#define LK_SHORTCUTS_B GU(LEFT)
+#define LK_SHORTCUTS_N GU(DOWN)
+#define LK_SHORTCUTS_M _______
+#define LK_SHORTCUTS_LT _______
+#define LK_SHORTCUTS_GT _______
+#define LK_SHORTCUTS_SL _______
+#define LK_SHORTCUTS_RSFT _______
 
 
 // LR_ALT layer
@@ -351,15 +421,6 @@ enum custom_keycode_handlers {
 #define LK_ALT_SL AL(SLSH)
 #define LK_ALT_RSFT AL(RSFT)
 
-#define LK_ALT_00 LK_ALT_1, LK_ALT_2, LK_ALT_3, LK_ALT_4, LK_ALT_5
-#define LK_ALT_01 LK_ALT_6, LK_ALT_7, LK_ALT_8, LK_ALT_9, LK_ALT_0
-#define LK_ALT_10 LK_ALT_Q, LK_ALT_W, LK_ALT_E, LK_ALT_R, LK_ALT_T
-#define LK_ALT_11 LK_ALT_Y, LK_ALT_U, LK_ALT_I, LK_ALT_O, LK_ALT_P
-#define LK_ALT_20 LK_ALT_A, LK_ALT_S, LK_ALT_D, LK_ALT_F, LK_ALT_G
-#define LK_ALT_21 LK_ALT_H, LK_ALT_J, LK_ALT_K, LK_ALT_L, LK_ALT_SC
-#define LK_ALT_30 LK_ALT_Z, LK_ALT_X, LK_ALT_C, LK_ALT_V, LK_ALT_B
-#define LK_ALT_31 LK_ALT_N, LK_ALT_M, LK_ALT_LT, LK_ALT_GT, LK_ALT_SL
-
 // LR_SYMB layer
 #define LK_SYMB_ESC KC_ESC
 #define LK_SYMB_1 KC_F1
@@ -412,15 +473,6 @@ enum custom_keycode_handlers {
 #define LK_SYMB_GT KC_DOT
 #define LK_SYMB_SL KC_SLSH
 #define LK_SYMB_RSFT KC_RBRC
-
-#define LK_SYMB_00 LK_SYMB_1, LK_SYMB_2, LK_SYMB_3, LK_SYMB_4, LK_SYMB_5
-#define LK_SYMB_01 LK_SYMB_6, LK_SYMB_7, LK_SYMB_8, LK_SYMB_9, LK_SYMB_0
-#define LK_SYMB_10 LK_SYMB_Q, LK_SYMB_W, LK_SYMB_E, LK_SYMB_R, LK_SYMB_T
-#define LK_SYMB_11 LK_SYMB_Y, LK_SYMB_U, LK_SYMB_I, LK_SYMB_O, LK_SYMB_P
-#define LK_SYMB_20 LK_SYMB_A, LK_SYMB_S, LK_SYMB_D, LK_SYMB_F, LK_SYMB_G
-#define LK_SYMB_21 LK_SYMB_H, LK_SYMB_J, LK_SYMB_K, LK_SYMB_L, LK_SYMB_SC
-#define LK_SYMB_30 LK_SYMB_Z, LK_SYMB_X, LK_SYMB_C, LK_SYMB_V, LK_SYMB_B
-#define LK_SYMB_31 LK_SYMB_N, LK_SYMB_M, LK_SYMB_LT, LK_SYMB_GT, LK_SYMB_SL
 
 
 #define TO_CTLX CK(TO_CTLX_HANDLER)

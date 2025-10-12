@@ -57,11 +57,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         /* bottom row */ CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          CL(ENTER),        MO(LR_CTRL_SHIFT),    _______,          CL(SPACE),          CL(RGUI), CL(LEFT),CL(DOWN),CL(RGHT)),
 
-    [LR_CTRL_SHIFT] = LAYOUT_69_ansi(
-        _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, AL(Q),    AL(F4),   _______, _______, CK_ALTT, CK_PSTE,  CK_STBB, CL_SH(I),CK_STBF, KC_PGUP,  _______,  _______,  _______,         _______,
-        _______, TD_A,     CL_SH(F), CL(DEL), CL(RGHT),_______,           CK_UNBS, CK_TGSH, _______, SH(PGUP), _______,  _______,  _______,  _______,
-        _______,           AL(Z),    _______, _______, SH(PGDN),CL(LEFT), CL(LEFT),KC_PGDN, _______, _______,  _______,  _______,  _______,  _______,
+    [LR_CTRL_SHIFT] = LEEP_LAYOUT(LK_CTRL_SHIFT,
+        /* number row */ _______, _______,
+        /*  top row   */ _______, _______,
+        /* middle row */ _______,
+        /* bottom row */ _______,
         _______, _______,  _______,           _______,      _______,         _______,            _______,          _______, _______,_______,_______),
 
     [LR_CTRL_X] = LEEP_LAYOUT(LK_CTRL_X,
@@ -86,11 +86,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL, KC_LALT,  _______,           KC_ENTER,         KC_SPACE,          KC_ENTER,         _______,            KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
 
     // This is currently identical to the LR_NAVIGATION layer.
-    [LR_SHORTCUTS] = LAYOUT_69_ansi(
-        _______, _______,  _______,  _______, _______, _______, _______,  _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, _______,  _______,  SK_EDIT, CK_RST,  _______, _______,  CK_USER, _______, _______, GU(UP),   _______,  _______,  _______,          _______,
-        _______, _______,  KC_BSPC,  KC_DEL,  GU(RGHT),_______,           _______, GD_HD_4, GD_HD_5, CK_LOGS,  _______,  _______,  _______,          _______,
-        _______,           _______,  _______, CK_EMAIL,CK_GCS,  GU(LEFT), GU(LEFT),GU(DOWN),GD_HD_1, GD_HD_2,  GD_HD_3,  _______,  _______, _______,
+    [LR_SHORTCUTS] = LEEP_LAYOUT(LK_SHORTCUTS,
+        /* number row */ _______, _______,
+        /*  top row   */ _______, _______,
+        /* middle row */ _______,
+        /* bottom row */ _______,
         _______, _______,  _______,           _______,          GU(TAB),           _______,          _______,            _______,  _______, _______, _______),
 
     [LR_OUTLOOK] = LAYOUT_69_ansi(
