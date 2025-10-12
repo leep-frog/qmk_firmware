@@ -568,54 +568,54 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 
 
 // LR_ONE_HAND layer
-// #define LK_ONE_HAND_ESC _______
-// #define LK_ONE_HAND_1 _______
-// #define LK_ONE_HAND_2 _______
-// #define LK_ONE_HAND_3 _______
-// #define LK_ONE_HAND_4 _______
-// #define LK_ONE_HAND_5 _______
-// #define LK_ONE_HAND_6 _______
-// #define LK_ONE_HAND_7 _______
-// #define LK_ONE_HAND_8 _______
-// #define LK_ONE_HAND_9 _______
-// #define LK_ONE_HAND_0 _______
-// #define LK_ONE_HAND_MINUS _______
-// #define LK_ONE_HAND_EQUAL _______
-// #define LK_ONE_HAND_TAB _______
-// #define LK_ONE_HAND_Q _______
-// #define LK_ONE_HAND_W _______
-// #define LK_ONE_HAND_E _______
-// #define LK_ONE_HAND_R _______
-// #define LK_ONE_HAND_T _______
-// #define LK_ONE_HAND_Y CL(U)
-// #define LK_ONE_HAND_U CL(Q)
-// #define LK_ONE_HAND_I CL(COMMA)
-// #define LK_ONE_HAND_O CL(U)
-// #define LK_ONE_HAND_P _______
-// #define LK_ONE_HAND_LBRC _______
-// #define LK_ONE_HAND_RBRC _______
-// #define LK_ONE_HAND_CAPS_LOCK _______
-// #define LK_ONE_HAND_A _______
-// #define LK_ONE_HAND_S _______
-// #define LK_ONE_HAND_D _______
-// #define LK_ONE_HAND_F _______
-// #define LK_ONE_HAND_G _______
-// #define LK_ONE_HAND_H KC_DEL
-// #define LK_ONE_HAND_J OL_MOVE
-// #define LK_ONE_HAND_K CL(DOT)
-// #define LK_ONE_HAND_L OL_RLD
-// #define LK_ONE_HAND_SC _______
-// #define LK_ONE_HAND_QUOTE _______
-// #define LK_ONE_HAND_ENTER _______
-// #define LK_ONE_HAND_LSFT _______
-// #define LK_ONE_HAND_Z _______
-// #define LK_ONE_HAND_X _______
-// #define LK_ONE_HAND_C _______
-// #define LK_ONE_HAND_V _______
-// #define LK_ONE_HAND_B _______
-// #define LK_ONE_HAND_N _______
-// #define LK_ONE_HAND_M OL_TDAY
-// #define LK_ONE_HAND_LT CL(U)
-// #define LK_ONE_HAND_GT _______
-// #define LK_ONE_HAND_SL CL(M)
-// #define LK_ONE_HAND_RSFT _______
+#define LK_ONE_HAND_ESC _______
+#define LK_ONE_HAND_1 _______
+#define LK_ONE_HAND_2 _______
+#define LK_ONE_HAND_3 _______
+#define LK_ONE_HAND_4 _______
+#define LK_ONE_HAND_5 _______
+#define LK_ONE_HAND_6 _______
+#define LK_ONE_HAND_7 _______
+#define LK_ONE_HAND_8 _______
+#define LK_ONE_HAND_9 _______
+#define LK_ONE_HAND_0 _______
+#define LK_ONE_HAND_MINUS _______
+#define LK_ONE_HAND_EQUAL _______
+#define LK_ONE_HAND_TAB _______
+#define LK_ONE_HAND_Q _______
+#define LK_ONE_HAND_W CL(W)
+#define LK_ONE_HAND_E CK_SATB
+#define LK_ONE_HAND_R CK_ATB
+#define LK_ONE_HAND_T CL(T)
+#define LK_ONE_HAND_Y CL(W)
+#define LK_ONE_HAND_U CK_SATB
+#define LK_ONE_HAND_I CK_ATB
+#define LK_ONE_HAND_O CL(T)
+#define LK_ONE_HAND_P _______
+#define LK_ONE_HAND_LBRC _______
+#define LK_ONE_HAND_RBRC _______
+#define LK_ONE_HAND_CAPS_LOCK KC_LSFT
+#define LK_ONE_HAND_A TO_SCRL
+#define LK_ONE_HAND_S CL(R)
+#define LK_ONE_HAND_D CK_TABB
+#define LK_ONE_HAND_F CK_TABF
+#define LK_ONE_HAND_G WS_RGHT
+#define LK_ONE_HAND_H WS_LEFT
+#define LK_ONE_HAND_J CK_TABB
+#define LK_ONE_HAND_K CK_TABF
+#define LK_ONE_HAND_L CL(R)
+#define LK_ONE_HAND_SC TO_SCRR
+#define LK_ONE_HAND_QUOTE KC_RSFT
+#define LK_ONE_HAND_ENTER _______
+#define LK_ONE_HAND_LSFT _______
+#define LK_ONE_HAND_Z CK_WWWB
+#define LK_ONE_HAND_X CK_WWWF
+#define LK_ONE_HAND_C OH_COPY
+#define LK_ONE_HAND_V OH_PSTE
+#define LK_ONE_HAND_B _______
+#define LK_ONE_HAND_N OH_COPY
+#define LK_ONE_HAND_M OH_PSTE
+#define LK_ONE_HAND_LT CK_WWWB
+#define LK_ONE_HAND_GT CK_WWWF
+#define LK_ONE_HAND_SL _______
+#define LK_ONE_HAND_RSFT _______

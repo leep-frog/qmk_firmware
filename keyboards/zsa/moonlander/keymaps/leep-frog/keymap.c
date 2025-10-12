@@ -95,15 +95,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______,           _______, OL_LEFT, OL_RGHT
     ),
 
-    [LR_ONE_HAND] = ML_LAYOUT(
-        _______, _______, _______, CK_RST,  _______, _______, _______,           _______, _______, _______, CK_RST,  _______, _______, _______,
-       KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  CL(T),   _______,           _______, CL(W),   CK_SATB, CK_ATB,  CL(T),   KC_BSPC, KC_TAB,
-       KC_LSFT,  TO_SCRL, CL(R),   CK_TABB, CK_TABF, WS_RGHT, _______,           _______, WS_LEFT, CK_TABB, CK_TABF, CL(R),   TO_SCRR, KC_RSFT,
-       _______,  CK_WWWB, CK_WWWF, OH_COPY, OH_PSTE, _______,                             _______, _______, CK_WWWB, CK_WWWF, _______, _______,
-
-                                                                      BOTTOM_ROW,
-
-                                            _______, _______, _______,           _______, _______, _______
+    [LR_ONE_HAND] = LEEP_LAYOUT(LK_ONE_HAND,
+        _______, _______, _______,
+        _______, _______, KC_TAB,
+        _______, _______,
+        _______, _______, _______,           _______, _______, _______
     ),
 
     [LR_SCROLL] = ML_LAYOUT(
