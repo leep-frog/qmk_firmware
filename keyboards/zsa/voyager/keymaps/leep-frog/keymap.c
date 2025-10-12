@@ -114,7 +114,7 @@ LSFT_T(AL(LPRN)),TD_A,    AL(S),   CL(DEL), CL(RIGHT),AL(G),                    
 //                                             _______, _______, _______,           _______, OL_LEFT, OL_RGHT
 //     ),
 
-//     [LR_ONE_HAND_LEFT] = LAYOUT(
+//     [LR_ONE_HAND] = LAYOUT(
 //         _______, _______, _______, CK_RST,  _______, _______, _______,           _______, _______, _______,  _______, _______, _______, _______,
 //        KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  CL(T),   _______,           _______, KC_WH_U, URL_CPY,  KC_MS_U, _______, _______, _______,
 //        KC_LSFT,  TO_SCRL, CL(R),   CK_TABB, CK_TABF, WS_RGHT, _______,           _______, KC_WH_D, KC_MS_L,  KC_MS_D, KC_MS_R, KC_RCTL, _______,
@@ -125,7 +125,7 @@ LSFT_T(AL(LPRN)),TD_A,    AL(S),   CL(DEL), CL(RIGHT),AL(G),                    
 //                                             _______, _______, _______,           CK_ACL, CK_ACL, CK_ACL
 //     ),
 
-//     [LR_ONE_HAND_RIGHT] = LAYOUT(
+//     [LR_ONE_HAND] = LAYOUT(
 //         _______, _______, _______, _______, _______,  _______, _______,           _______, _______, _______, CK_RST,  _______, _______, _______,
 //         _______, _______, _______, KC_MS_U, URL_CPY,  KC_WH_U, _______,           _______, CL(W),   CK_SATB, CK_ATB,  CL(T),   KC_BSPC, KC_TAB,
 //         _______, KC_RCTL, KC_MS_L, KC_MS_D, KC_MS_R,  KC_WH_D, _______,           _______, WS_LEFT, CK_TABB, CK_TABF, CL(R),   TO_SCRR, KC_RSFT,

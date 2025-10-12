@@ -2,7 +2,7 @@
 // actual instances individually.
 
 // NOTE: This doesn't work with some keycodes such as tap dance keys that exist in the
-// second layer (e.g. TO_SCRL/SCRR in LR_ONE_HAND_LEFT/RIGHT)
+// second layer (e.g. TO_SCRL/SCRR in LR_ONE_HAND)
 
 /* Issue: when typing fast, would want to type " d". However, the space
 key is also the symbol layer, so the following would happen:

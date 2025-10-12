@@ -30,10 +30,8 @@ void internal_process_combo_event(uint16_t combo_index, bool pressed) {
     if (!pressed) {
       switch (combo_index) {
         case FSHIFT_OH_LEFT:
-          layer_off(LR_ONE_HAND_LEFT);
-          break;
         case JSPACE_OH_RIGHT:
-          layer_off(LR_ONE_HAND_RIGHT);
+          layer_off(LR_ONE_HAND);
           break;
       }
       return;
@@ -67,10 +65,8 @@ void internal_process_combo_event(uint16_t combo_index, bool pressed) {
             }
             break;
         case FSHIFT_OH_LEFT:
-          layer_on(LR_ONE_HAND_LEFT);
-          break;
         case JSPACE_OH_RIGHT:
-          layer_on(LR_ONE_HAND_RIGHT);
+          layer_on(LR_ONE_HAND);
           break;
     }
 }

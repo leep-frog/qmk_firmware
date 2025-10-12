@@ -95,26 +95,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______,           _______, OL_LEFT, OL_RGHT
     ),
 
-    [LR_ONE_HAND_LEFT] = ML_LAYOUT(
-        _______, _______, _______, CK_RST,  _______, _______, _______,           _______, _______, _______,  _______, _______, _______, _______,
-       KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  CL(T),   _______,           _______, KC_WH_U, URL_CPY,  KC_MS_U, _______, _______, _______,
-       KC_LSFT,  TO_SCRL, CL(R),   CK_TABB, CK_TABF, WS_RGHT, _______,           _______, KC_WH_D, KC_MS_L,  KC_MS_D, KC_MS_R, KC_RCTL, _______,
-       _______,  CK_WWWB, CK_WWWF, OH_COPY, OH_PSTE, _______,                             _______, KC_BTN1,  KC_BTN3, KC_BTN2, _______, _______,
+    [LR_ONE_HAND] = ML_LAYOUT(
+        _______, _______, _______, CK_RST,  _______, _______, _______,           _______, _______, _______, CK_RST,  _______, _______, _______,
+       KC_TAB,   KC_BSPC, CL(W),   CK_SATB, CK_ATB,  CL(T),   _______,           _______, CL(W),   CK_SATB, CK_ATB,  CL(T),   KC_BSPC, KC_TAB,
+       KC_LSFT,  TO_SCRL, CL(R),   CK_TABB, CK_TABF, WS_RGHT, _______,           _______, WS_LEFT, CK_TABB, CK_TABF, CL(R),   TO_SCRR, KC_RSFT,
+       _______,  CK_WWWB, CK_WWWF, OH_COPY, OH_PSTE, _______,                             _______, _______, CK_WWWB, CK_WWWF, _______, _______,
 
                                                                       BOTTOM_ROW,
 
-                                            _______, _______, _______,           CK_ACL, CK_ACL, CK_ACL
-    ),
-
-    [LR_ONE_HAND_RIGHT] = ML_LAYOUT(
-        _______, _______, _______, _______, _______,  _______, _______,           _______, _______, _______, CK_RST,  _______, _______, _______,
-        _______, _______, _______, KC_MS_U, URL_CPY,  KC_WH_U, _______,           _______, CL(W),   CK_SATB, CK_ATB,  CL(T),   KC_BSPC, KC_TAB,
-        _______, KC_RCTL, KC_MS_L, KC_MS_D, KC_MS_R,  KC_WH_D, _______,           _______, WS_LEFT, CK_TABB, CK_TABF, CL(R),   TO_SCRR, KC_RSFT,
-        _______, _______, KC_BTN2, KC_BTN3, KC_BTN1,  _______,                             _______, _______, CK_WWWB, CK_WWWF, _______, _______,
-
-                                                                      BOTTOM_ROW,
-
-                                                CK_ACL, CK_ACL, CK_ACL,           _______, _______, _______
+                                            _______, _______, _______,           _______, _______, _______
     ),
 
     [LR_SCROLL] = ML_LAYOUT(

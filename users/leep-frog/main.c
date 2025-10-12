@@ -387,10 +387,10 @@ void keyboard_post_init_user(void) {
 
     // Add Layer handlers
     // Left one-hand layer changes.
-    SET_LAYER_HANDLER(LR_ONE_HAND_LEFT, left_hand_layer_change);
-    SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, right_hand_layer_change);
+    SET_LAYER_HANDLER(LR_ONE_HAND, left_hand_layer_change);
+    SET_LAYER_HANDLER(LR_ONE_HAND, right_hand_layer_change);
     // Right one-hand layer changes.
-    // SET_LAYER_HANDLER(LR_ONE_HAND_RIGHT, right_hand_layer_change);
+    // SET_LAYER_HANDLER(LR_ONE_HAND, right_hand_layer_change);
     // Start/end ctrl-alt layer on layer on/off.
     SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
     // Deactivate everything when going to safe layer.

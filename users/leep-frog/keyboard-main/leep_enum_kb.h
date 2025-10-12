@@ -14,8 +14,7 @@ enum layers { // prefix LR
     LR_SHORTCUTS,  // command for combination keystrokes.
     LR_OUTLOOK,
     LR_CTRL_ALT,
-    LR_ONE_HAND_LEFT,
-    LR_ONE_HAND_RIGHT,
+    LR_ONE_HAND,
     LR_SCROLL,
 
     NUM_LAYERS,
