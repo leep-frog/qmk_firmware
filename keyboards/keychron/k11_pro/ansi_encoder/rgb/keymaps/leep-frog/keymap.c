@@ -24,29 +24,37 @@
 #include "users/leep-frog/main.h"
 
 
+#define LEEP_LAYOUT(PFX, backspace, version, bsls, del, home, up, ctrl, alt, ll_thumb, lm_thumb, lr_thumb, rl_thumb, rm_thumb, rr_thumb, left, down, right) LAYOUT_69_ansi( \
+    PFX##_ESC,       PFX##_1,   PFX##_2,   PFX##_3,  PFX##_4,  PFX##_5,  PFX##_6,   PFX##_7,  PFX##_8,  PFX##_9,  PFX##_0,   PFX##_MINUS, PFX##_EQUAL,    backspace,    version, \
+    PFX##_TAB,       PFX##_Q,   PFX##_W,   PFX##_E,  PFX##_R,  PFX##_T,  PFX##_Y,   PFX##_U,  PFX##_I,  PFX##_O,  PFX##_P,   PFX##_LBRC,  PFX##_RBRC,     bsls,         del,     \
+    PFX##_CAPS_LOCK, PFX##_A,   PFX##_S,   PFX##_D,  PFX##_F,  PFX##_G,             PFX##_H,  PFX##_J,  PFX##_K,  PFX##_L,   PFX##_SC,    PFX##_QUOTE,    PFX##_ENTER,  home,    \
+    PFX##_LSFT,      PFX##_Z,   PFX##_X,   PFX##_C,  PFX##_V,  PFX##_B,  PFX##_B ,  PFX##_N,  PFX##_M,  PFX##_LT, PFX##_GT,  PFX##_SL,    PFX##_RSFT,     up,      \
+    ctrl,    alt,    ll_thumb,         lm_thumb,        lr_thumb, rl_thumb,          rm_thumb,           rr_thumb,            left, down, right)
+
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [LR_ELLA] = LAYOUT_69_ansi(
-        KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,     KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          CK_VRSN,
-        KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,     KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_DEL,
-        KC_LSFT, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     KC_SCLN,  KC_QUOT,  KC_ENT,           KC_HOME,
-        KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,     KC_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT, KC_UP,
-                                        // These needs to be TO_CTRL/TO_ALT/TO_SYMB (instead of enter/space/tab)
-                                        // so that the OSM key + right thumb doesn't trap us in this layer.
+    [LR_ELLA] = LEEP_LAYOUT(LK_ELLA,
+        /* number row */ KC_BSPC, CK_VRSN,
+        /*  top row   */ KC_BSLS, KC_DEL,
+        /* middle row */ KC_HOME,
+        /* bottom row */ KC_UP,
+        // These needs to be TO_CTRL/TO_ALT/TO_SYMB (instead of enter/space/tab)
+        // so that the OSM key + right thumb doesn't trap us in this layer.
         KC_LCTL, KC_LALT,  KC_LGUI,         KC_RSFT,        TO_ALT_KEYCODE, TO_CTRL,          TO_SYMB,           KC_RGUI,            KC_LEFT, KC_DOWN, KC_RGHT),
 
-    [LR_BASE] = LAYOUT_69_ansi(
-        KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,     KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          CK_VRSN,
-        KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    TD_Y,     TD_U,    TD_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          CK_MCR1,
-LSFT_T(KC_LPRN), KC_A,     TD_S,     KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,     TO_OTLK,  SC_RSPC,  KC_ENT,           CK_MCR2,
-        TD_LCBR,           KC_Z,     KC_X,    TD_C,    TD_V,    TD_B,     TD_B,    KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  TD_RCBR,  CK_LOCK,
-        KC_LCTL, KC_LALT,  TO_SHCT,           CK_SHFT,          TO_ALT,       TO_CTRL,       TO_SYMB,          TO_SHCT,            KC_LEFT,  KB_OFF,  KC_RGHT),
+    [LR_BASE] = LEEP_LAYOUT(LK_BASE,
+        /* number row */ KC_BSPC, CK_VRSN,
+        /*  top row   */ KC_BSLS, CK_MCR1,
+        /* middle row */ CK_MCR2,
+        /* bottom row */ CK_LOCK,
+        KC_LCTL, KC_LALT,  TO_SHCT,         CK_SHFT,          TO_ALT,       TO_CTRL,       TO_SYMB,          TO_SHCT,            KC_LEFT,  KB_OFF,  KC_RGHT),
 
-    [LR_CTRL] = LAYOUT_69_ansi(
-        CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
-        CL(TAB), CL(Q),    CTRL_W,   KC_END,  CL(R),   CL(T),   CL(Y),    CK_TABB, CL(I),   CK_TABF, KC_UP,    CL(LBRC), CL(RBRC), CL(BSLS),         _______,
-LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSPC, TGL_SHF, CK_KILL, KC_PGUP,  TO_CTSH, MO(LR_CTRL_SHIFT),CL(ENT),   _______,
-        CL(LSFT),          CL(Z),    TO_CTLX, CK_COPY, KC_PGDN, KC_LEFT,  KC_LEFT, KC_DOWN, CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
+    [LR_CTRL] = LEEP_LAYOUT(LK_CTRL,
+        /* number row */ CL(BSPC),  _______,
+        /*  top row   */ CL(BSLS),   _______,
+        /* middle row */ _______,
+        /* bottom row */ CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          CL(ENTER),        MO(LR_CTRL_SHIFT),    _______,          CL(SPACE),          CL(RGUI), CL(LEFT),CL(DOWN),CL(RGHT)),
 
     [LR_CTRL_SHIFT] = LAYOUT_69_ansi(
@@ -56,25 +64,25 @@ LSFT_T(CL(LPRN)),KC_HOME,  CL(F),    KC_DEL,  KC_RGHT, CK_CTLG,           KC_BSP
         _______,           AL(Z),    _______, _______, SH(PGDN),CL(LEFT), CL(LEFT),KC_PGDN, _______, _______,  _______,  _______,  _______,  _______,
         _______, _______,  _______,           _______,      _______,         _______,            _______,          _______, _______,_______,_______),
 
-    [LR_CTRL_X] = LAYOUT_69_ansi(
-        CL(ESC), CL(1),    CL(2),    CL(3),   CL(4),   CL(5),   CL(6),    CL(7),   CL(8),   CL(9),   CL(0),    CL(MINS), CL(EQL),  CL(BSPC),         _______,
-        CL(TAB), CL(Q),    CL(W),    CL(E),   CL(R),   CL(T),   CL(Y),    CL(U),   CL(I),   CL(O),   CL(P),    CL(LBRC), CL(RBRC), CL(BSLS),         _______,
-        CL(LSFT),CL(A),    CL(S),    CL(D),   CL(F),   CL(G),             CL(H),   CL(J),   CL(K),   CL(L),    CL(SCLN), CL(QUOT), CL(ENT),          _______,
-        CL(LSFT),          CL(Z),    CL(X),   CL(C),   CL(V),   CL(B),    CL(B),   CL(N),   CL(M),   CL(COMM), CL(DOT),  CL(SLSH), CL(RSFT),CL(UP),
+    [LR_CTRL_X] = LEEP_LAYOUT(LK_CTRL_X,
+        /* number row */ CL(BSPC),  _______,
+        /*  top row   */ CL(BSLS),   _______,
+        /* middle row */ _______,
+        /* bottom row */ CL(UP),
         CL(LCTL),CL(LALT), CL(LGUI),          CL(ENTER),        CL(TAB),          _______,           CL(SPACE),          CL(RGUI), CL(LEFT),CL(DOWN),CL(RGHT)),
 
-    [LR_ALT] = LAYOUT_69_ansi(
-        AL(ESC), AL(1),    AL(2),    AL(3),   AL(4),   AL(5),   AL(6),    AL(7),   AL(8),   AL(9),   AL(0),    AL(MINS), AL(EQL),  AL(BSPC),         _______,
-        AL(TAB), AL(Q),    AL(F4),   AL(E),   AL(R),   CK_ALTT, CK_PSTE,  CK_SATB, AL(I),   CK_ATB,  AL(P),    AL(LBRC), AL(RBRC), AL(BSLS),         _______,
-        KC_LSFT, TD_A,     AL(S),    CL(DEL), CL(RGHT),AL(G),             CK_UNBS, CK_TGSH, AL(K),   AL(L),    AL(SCLN), KC_RSFT,  AL(ENT),   _______,
-        AL(LSFT),          AL(Z),    AL(X),   AL(C),   AL(V),   CL(LEFT), CL(LEFT),AL(N),   AL(M),   AL(COMM), AL(DOT),  AL(SLSH), AL(RSFT),AL(UP),
+    [LR_ALT] = LEEP_LAYOUT(LK_ALT,
+        /* number row */ AL(BSPC),  _______,
+        /*  top row   */ AL(BSLS),   _______,
+        /* middle row */ _______,
+        /* bottom row */ AL(UP),
         AL(LCTL),AL(LALT), _______,           AL(ENTER),      _______,         AL(ENTER),            _______,          AL(RGUI), AL(LEFT),AL(DOWN),AL(RGHT)),
 
-    [LR_SYMB] = LAYOUT_69_ansi(
-        KC_ESC,  KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,    KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   KC_BSPC,          _______,
-        KC_TAB,  KC_EXLM,  KC_COLN,  KC_EQL,  KC_CIRC, KC_PIPE, KC_PIPE,  KC_7,    KC_8,    KC_9,    KC_PERC,  KC_LBRC,  KC_RBRC,  KC_BSLS,          _______,
-        KC_LSFT, KC_AMPR,  KC_ASTR,  KC_DLR,  KC_SLSH, KC_LBRC,           CK_MDPS, KC_4,    KC_5,    KC_6,     KC_0,     KC_COMMA,  KC_ENT,           _______,
-        KC_LBRC,           KC_DOT,   KC_COMM, KC_AT,   KC_EQL,  KC_BSLS,  KC_LCBR, KC_RCBR, KC_1,    KC_2,     KC_3,     KC_SLSH,  KC_RBRC, KC_UP,
+    [LR_SYMB] = LEEP_LAYOUT(LK_SYMB,
+        /* number row */ KC_BSPC, _______,
+        /*  top row   */ KC_BSLS, _______,
+        /* middle row */ _______,
+        /* bottom row */ KC_UP,
         KC_LCTL, KC_LALT,  _______,           KC_ENTER,         KC_SPACE,          KC_ENTER,         _______,            KC_RGUI,  KC_LEFT, KC_DOWN, KC_RGHT),
 
     // This is currently identical to the LR_NAVIGATION layer.
