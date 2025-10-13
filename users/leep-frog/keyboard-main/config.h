@@ -40,6 +40,10 @@
   #define TO_CTRL_KEYCODE KC_ENTER
 #endif
 
+#ifndef TO_SHORTCUT_KEYCODE
+  #define TO_SHORTCUT_KEYCODE KC_LGUI
+#endif
+
 /************************
 * Feature configuration *
 ************************/
