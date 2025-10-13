@@ -379,7 +379,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 // Middle row
 #define LK_CTRL_X_CAPS_LOCK CL(LSFT)
 #define LK_CTRL_X_A CL(A)
-#define LK_CTRL_X_S CL(F)
+#define LK_CTRL_X_S CL(S)
 #define LK_CTRL_X_D CL(D)
 #define LK_CTRL_X_F CL(F)
 #define LK_CTRL_X_G CL(G)
