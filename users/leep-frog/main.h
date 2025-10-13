@@ -181,7 +181,9 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_BASE_LBRC KC_LBRC
 #define LK_BASE_RBRC KC_RBRC
 // Middle row
-#define LK_BASE_CAPS_LOCK LSFT_T(KC_LPRN)
+// TODO: change this back to this
+// #define LK_BASE_CAPS_LOCK LSFT_T(KC_LPRN)
+#define LK_BASE_CAPS_LOCK KC_LPRN
 #define LK_BASE_A KC_A
 #define LK_BASE_S TD_S
 #define LK_BASE_D KC_D
@@ -532,8 +534,8 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_SL KC_SLSH
 #define LK_SYMB_RSFT KC_RCBR
 // Thumbs
-#define LK_SYMB_LEFT_THUMB_PRIMARY KC_ENTER
-#define LK_SYMB_LEFT_THUMB_SECONDARY KC_SPACE
+#define LK_SYMB_LEFT_THUMB_PRIMARY KC_SPACE
+#define LK_SYMB_LEFT_THUMB_SECONDARY KC_ENTER
 #define LK_SYMB_LEFT_THUMB_TERTIARY _______
 #define LK_SYMB_RIGHT_THUMB_PRIMARY _______
 #define LK_SYMB_RIGHT_THUMB_SECONDARY KC_ENTER
