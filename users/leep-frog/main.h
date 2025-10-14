@@ -788,6 +788,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SCROLL_GT _______
 #define LK_SCROLL_SL _______
 #define LK_SCROLL_RSFT _______
+
 // Thumbs
 #define LK_SCROLL_LEFT_THUMB_PRIMARY _______
 #define LK_SCROLL_LEFT_THUMB_SECONDARY _______
