@@ -181,9 +181,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_BASE_LBRC KC_LBRC
 #define LK_BASE_RBRC KC_RBRC
 // Middle row
-// TODO: change this back to this
-// #define LK_BASE_CAPS_LOCK LSFT_T(KC_LPRN)
-#define LK_BASE_CAPS_LOCK KC_LPRN
+#define LK_BASE_CAPS_LOCK SC_LSPO
 #define LK_BASE_A KC_A
 #define LK_BASE_S TD_S
 #define LK_BASE_D KC_D
