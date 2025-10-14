@@ -141,13 +141,13 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_ELLA_SL KC_SLSH
 #define LK_ELLA_RSFT KC_RSFT
 // Thumbs
-// These needs to be TO_CTRL/TO_ALT/TO_SYMB (instead of enter/space/tab)
-// so that the OSM key + right thumb doesn't trap us in this layer.
+// Recently switched these to TO_XYZ_KEYCODE. If noticing any
+// issues with OSM (being stuck in LR_ELLA), it may be due to these changes.
 #define LK_ELLA_LEFT_THUMB_PRIMARY KC_RSFT
 #define LK_ELLA_LEFT_THUMB_SECONDARY TO_ALT_KEYCODE
 #define LK_ELLA_LEFT_THUMB_TERTIARY KC_LGUI
-#define LK_ELLA_RIGHT_THUMB_PRIMARY TO_SYMB
-#define LK_ELLA_RIGHT_THUMB_SECONDARY TO_CTRL
+#define LK_ELLA_RIGHT_THUMB_PRIMARY TO_SYMB_KEYCODE
+#define LK_ELLA_RIGHT_THUMB_SECONDARY TO_CTRL_KEYCODE
 #define LK_ELLA_RIGHT_THUMB_TERTIARY KC_RGUI
 
 
