@@ -2,6 +2,8 @@
 
 #include "users/leep-frog/main.h" // Needed for TO_SYML/TO_SYMR
 
+extern bool leep_combo_one_hand_layer_left;
+
 // IMPORTANT NOTE:
 // In leep_layeres_v2.c we enable/disable combos depending on the layer
 // Be sure to check there if relevant to changes.
@@ -29,7 +31,7 @@ const uint16_t PROGMEM kl_combo[] = {KC_L, KC_K, COMBO_END};
 const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sd_combo[] = {KC_S, KC_D, COMBO_END};
 const uint16_t PROGMEM fshift_combo[] = {KC_F, KC_RSFT, COMBO_END};
-const uint16_t PROGMEM jspace_combo[] = {KC_J, TO_SYMB, COMBO_END};
+const uint16_t PROGMEM jspace_combo[] = {KC_J, KC_SPACE, COMBO_END};
 
 combo_t key_combos[COMBO_LENGTH] = {
     // J+I = Escape

@@ -244,7 +244,7 @@ typedef void (*processor_action_t)(bool activated);
 #define PROCESSOR_MACRO_STRING(num, e_start, prefix, max_string_size, dflt, ...) PROCESSOR_MACRO(char, num, e_start, prefix, [max_string_size], dflt, __VA_ARGS__)
 
 static uint32_t oh_timer; // Only have one since left and right one-hand layers can't be active at the same time
-void one_hand_layer_change(bool activated, char *press_key) {
+void one_hand_layer_change(bool activated, layer_data_t *data) {
   // Simple activation logic
   if (activated) {
     leep_acl = 0;
@@ -257,16 +257,13 @@ void one_hand_layer_change(bool activated, char *press_key) {
   } else if (timer_elapsed32(oh_timer) < TAPPING_TERM) {
     // If the one-hand layer was activated and then deactivated very quickly
     // then likely was trying to just press the key with the modifier
-    SEND_STRING(press_key);
+    if (leep_combo_one_hand_layer_left) {
+      SEND_STRING("/");
+    } else {
+      SEND_STRING("x");
+    }
+
   }
-}
-
-void left_hand_layer_change(bool activated, layer_data_t *data) {
-  one_hand_layer_change(activated, "/");
-}
-
-void right_hand_layer_change(bool activated, layer_data_t *data) {
-  one_hand_layer_change(activated, "x");
 }
 
 void ctrl_alt_layer(bool activated, layer_data_t *data) {
@@ -386,11 +383,8 @@ void keyboard_post_init_user(void) {
     }
 
     // Add Layer handlers
-    // Left one-hand layer changes.
-    SET_LAYER_HANDLER(LR_ONE_HAND, left_hand_layer_change);
-    SET_LAYER_HANDLER(LR_ONE_HAND, right_hand_layer_change);
-    // Right one-hand layer changes.
-    // SET_LAYER_HANDLER(LR_ONE_HAND, right_hand_layer_change);
+    // One-hand layer changes.
+    SET_LAYER_HANDLER(LR_ONE_HAND, one_hand_layer_change);
     // Start/end ctrl-alt layer on layer on/off.
     SET_LAYER_HANDLER(LR_CTRL_ALT, ctrl_alt_layer);
     // Deactivate everything when going to safe layer.

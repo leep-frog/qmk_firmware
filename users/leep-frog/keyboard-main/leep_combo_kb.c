@@ -1,5 +1,8 @@
-
 #include "leep_enum_kb.h"
+
+// This is an indicator as to whether the one-hand layer was activated
+// using the left or right combo.
+bool leep_combo_one_hand_layer_left = false;
 
 bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
   return PlayedStartupSong();
@@ -66,6 +69,7 @@ void internal_process_combo_event(uint16_t combo_index, bool pressed) {
             break;
         case FSHIFT_OH_LEFT:
         case JSPACE_OH_RIGHT:
+          leep_combo_one_hand_layer_left = (combo_index == FSHIFT_OH_LEFT);
           layer_on(LR_ONE_HAND);
           break;
     }
