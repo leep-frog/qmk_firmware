@@ -17,7 +17,7 @@
 PFX##_CAPS_LOCK, PFX##_A, PFX##_S, PFX##_D, PFX##_F, PFX##_G, bottom_left,       bottom_right, PFX##_H, PFX##_J, PFX##_K,    PFX##_L,   PFX##_SC, PFX##_QUOTE, \
     PFX##_LSFT, PFX##_Z, PFX##_X, PFX##_C, PFX##_V, PFX##_B,                         PFX##_N, PFX##_M, PFX##_LT, PFX##_GT, PFX##_SL, PFX##_RSFT, \
                                                  BOTTOM_ROW, \
-                          PFX##_LEFT_THUMB_SECONDARY, PFX##_LEFT_THUMB_PRIMARY, PFX##_LEFT_THUMB_TERTIARY, PFX##_RIGHT_THUMB_TERTIARY, PFX##_RIGHT_THUMB_PRIMARY, PFX##_RIGHT_THUMB_SECONDARY)
+                          PFX##_LEFT_THUMB_PRIMARY, PFX##_LEFT_THUMB_SECONDARY, PFX##_LEFT_THUMB_TERTIARY, PFX##_RIGHT_THUMB_TERTIARY, PFX##_RIGHT_THUMB_SECONDARY, PFX##_RIGHT_THUMB_PRIMARY)
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                      BOTTOM_ROW,
 
-                                           KC_ACL1, KC_ACL0, KC_ACL2,           KC_MS_BTN3, KC_MS_BTN1, KC_MS_BTN2
+                                           _______, _______, _______,             _______, _______, _______
     ),
 
     [LR_SYMB] = LEEP_LAYOUT(LK_SYMB,
