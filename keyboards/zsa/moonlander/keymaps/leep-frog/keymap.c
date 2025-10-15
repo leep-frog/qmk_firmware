@@ -69,16 +69,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              KC_RSFT, KC_TAB, _______,        KC_RGUI, KC_ENTER, KC_SPACE
     ),
 
-   [LR_SHORTCUTS] = ML_LAYOUT(
-        _______,  _______, _______, _______, _______, _______, _______,           _______, _______, _______, _______, _______, _______, _______,
-        _______,  _______, _______, KC_ENT,  _______, _______, _______,           _______, KC_WH_U, URL_CPY, KC_MS_U, _______, _______, _______,
-        KC_ENTER, _______, KC_BSPC, KC_DEL,  _______, _______, _______,           _______, KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, KC_RCTL, _______,
-        _______,  _______, _______, _______, _______, GD_BULT,                             CK_NEW,  GD_HD_1, GD_HD_2, GD_HD_3, _______, _______,
-
-                                                                     BOTTOM_ROW,
-
-                                           _______, _______, _______,             _______, _______, _______
-    ),
+   [LR_SHORTCUTS] = LEEP_LAYOUT(LK_SHORTCUTS,
+       _______, _______, _______,
+       _______, _______, _______,
+       _______, _______
+   ),
 
     [LR_SYMB] = LEEP_LAYOUT(LK_SYMB,
         _______, _______, _______,
