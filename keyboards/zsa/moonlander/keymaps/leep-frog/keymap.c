@@ -51,6 +51,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RALT(WS_LEFT),  RALT(WS_RGHT)
     ),
 
+    [LR_CTRL_SHIFT] = LEEP_LAYOUT(LK_CTRL_SHIFT,
+        _______, _______, _______,
+        _______, _______, _______,
+        _______, _______
+    ),
+
     // This layer is basically identical to the safe layer aside from the thumb keys.
     [LR_CTRL_ALT] = ML_LAYOUT(
         CK_LOCK, KC_1, KC_2, KC_3, KC_4, KC_5, _______,       KC_ESC,  KC_6, KC_7, KC_8,    KC_9,   KC_0,    _______,
