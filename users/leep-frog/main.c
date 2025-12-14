@@ -321,6 +321,15 @@ bool CtrlWHandler(keyrecord_t* record, custom_keycode_value_t *_) {
   return false;
 }
 
+bool _universal_backspace(keyrecord_t *record, custom_keycode_value_t *_) {
+    if (record->event.pressed) {
+      register_code16(C(KC_BSPC));
+    } else {
+      unregister_code16(C(KC_BSPC));
+    }
+    return false;
+}
+
 bool ck_noop(keyrecord_t *_k, custom_keycode_value_t *_c) { return false; }
 
 #define CK_NOOP() CK_HANDLER_FN(ck_noop)
@@ -349,8 +358,8 @@ custom_keycode_handler_t custom_keycode_handlers[] = {
   [CK_MUTS_HANDLER] = CK_HANDLER_FN(MuteWithSound),
   [CK_MUT_HANDLER] = CK_HANDLER_FN(MuteWithoutSound),
   [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
+  [CK_UNBS_HANDLER] = CK_HANDLER_FN(_universal_backspace),
   // String handlers
-  [CK_UNBS_HANDLER] = CK_HANDLER_STRING(SS_RCTL(SS_TAP(X_BSPC))),
   [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp ascy"),
   [URL_PST_HANDLER] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
   [URL_CPY_HANDLER] = CK_HANDLER_STRING(FOCUS_TAB_STRING() SS_RCTL("c")),
