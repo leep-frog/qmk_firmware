@@ -26,6 +26,7 @@ const uint16_t TK_6 = KC_TRANSPARENT;
 // We need these go betweens because CK_ABCs are macros and the nested macros pass the initial string values around (not the final macro)
 const uint16_t ck_test = CK_TEST;
 const uint16_t ck_shft = CK_SHFT;
+const uint16_t ck_unbs = CK_UNBS;
 
 class LeepFrog : public TestFixture {};
 
@@ -101,10 +102,6 @@ TEST_F(LeepFrog, UnlockBehavior) {
 
     CONFIRM_RESET();
 }
-
-/************
-* OSM tests *
-************/
 
 TEST_F(LeepFrog, Osm_TransparentKey) {
     TestDriver driver;
@@ -2665,6 +2662,132 @@ TEST_F(LeepFrog, DeactivatesAltOnLayerChangeWhenSymbolLayerOverlap) {
   EXPECT_REPORT(driver, (KC_RALT, KC_TAB));
   EXPECT_REPORT(driver, (KC_RALT));
   EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+/******************************
+* Simple custom keycode tests *
+*******************************/
+
+TEST_F(LeepFrog, CustomKeycode) {
+  TestDriver driver;
+  InSequence s;
+  LEEP_KEY_ROW(0, 3,
+    KC_A,
+    ck_unbs,
+    ck_test
+  )
+
+  k_ck_unbs.press();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_REPORT(driver, (KC_LCTL, KC_BACKSPACE));
+  run_one_scan_loop();
+
+  k_ck_unbs.release();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, CustomKeycodeHold) {
+  TestDriver driver;
+  InSequence s;
+  LEEP_KEY_ROW(0, 3,
+    KC_A,
+    ck_unbs,
+    ck_test
+  )
+
+  k_ck_unbs.press();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_REPORT(driver, (KC_LCTL, KC_BACKSPACE));
+  run_one_scan_loop();
+
+  idle_for(10 * TAPPING_TERM);
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_ck_unbs.release();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, CustomKeycodeFromCtrl) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t to_ctrl = TO_CTRL;
+  LEEP_KEY_ROW(0, 3,
+    to_ctrl,
+    KC_B,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(LR_CTRL, 3,
+    TK_0,
+    ck_unbs,
+    TK_1
+  )
+
+  k_to_ctrl.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_ck_unbs.press();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_REPORT(driver, (KC_LCTL, KC_BACKSPACE));
+  run_one_scan_loop();
+
+  k_ck_unbs.release();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  k_to_ctrl.release();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, CustomKeycodeFromAlt) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t to_ctrl = TO_ALT;
+  LEEP_KEY_ROW(0, 3,
+    to_ctrl,
+    KC_B,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(LR_ALT, 3,
+    TK_0,
+    ck_unbs,
+    TK_1
+  )
+
+  k_to_ctrl.press();
+  EXPECT_NO_REPORT(driver);
+  run_one_scan_loop();
+
+  k_ck_unbs.press();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_REPORT(driver, (KC_LCTL, KC_BACKSPACE));
+  run_one_scan_loop();
+
+  k_ck_unbs.release();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_EMPTY_REPORT(driver);
+  run_one_scan_loop();
+
+  k_to_ctrl.release();
+  EXPECT_NO_REPORT(driver);
   run_one_scan_loop();
 
   CONFIRM_RESET();
