@@ -931,12 +931,6 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_KC) {
       ck_test
     )
 
-    // LEEP_KEY_ROW(LR_SHORTCUTS, 3,
-    //   TK_0,
-    //   KC_B,
-    //   TK_1
-    // )
-
     // Single tap dance just presses the key.
     k_td_lcbr.press();
     run_one_scan_loop();
@@ -1072,6 +1066,96 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
 
     // Press the A key, which should NOT be shifted.
     k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_A));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+/*****************************
+*   OSM too long after tap   *
+******************************/
+
+const uint16_t osm_too_long = 5 * TAPPING_TERM;
+
+TEST_F(LeepFrog, Osm_TooLongDelayCancelsOsm) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 3,
+      KC_A,
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      TK_0,
+      TK_1,
+      TK_2
+    )
+
+    // Press the osm shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Unpress the osm shift key
+    k_ck_shft.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    // Wait a long time
+    idle_for(osm_too_long - 1); // Need minus one because above loop adds one scan loop time
+    run_one_scan_loop();
+
+    // Press the A key, which should NOT be shifted.
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_A));
+    run_one_scan_loop();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, Osm_ModeratelyLongDelayStillUsesOsm) {
+    TestDriver driver;
+    InSequence s;
+    LEEP_KEY_ROW(0, 3,
+      KC_A,
+      ck_shft,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(1, 3,
+      TK_0,
+      TK_1,
+      TK_2
+    )
+
+    // Press the osm shift key
+    k_ck_shft.press();
+    EXPECT_REPORT(driver, (KC_RSFT));
+    run_one_scan_loop();
+
+    // Unpress the osm shift key
+    k_ck_shft.release();
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Wait a long time
+    idle_for(osm_too_long - 2); // Need extra minus one because above loop adds one scan loop time
+    EXPECT_NO_REPORT(driver);
+    run_one_scan_loop();
+
+    // Press the A key, which SHOULD be shifted.
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_A));
     EXPECT_REPORT(driver, (KC_A));
     run_one_scan_loop();
 

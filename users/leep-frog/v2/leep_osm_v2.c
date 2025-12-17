@@ -6,16 +6,22 @@
 #include <stdio.h>
 
 enum osm_enact_steps {
+  // Not in OSM mode at all
   OSM_NOOP,
+  // The layer key has been pressed, waiting to see if we hold or release first
   OSM_HOLD_CHECK,
+  // The layer key was pressed twice, which means we are in sticky mode (mod/layer is held down until pressed again)
   OSM_STICKY,
+  // The osm key has been pressed once meaning the next key pressed should be with the osm mod/layer
   OSM_REGISTER_KEY,
+  // The osm needs to be cleaned up
   OSM_CLEANUP,
+  // The layer key is considered held down. Only deactivate the layer on unpress
   OSM_RELEASE_ON_UNPRESS,
-  OSM_HOLD,
 };
 
 const static uint16_t OSM_MAX_HOLD_TIME = TAPPING_TERM;
+const static uint16_t OSM_MAX_WAIT_TIME = 5 * TAPPING_TERM;
 
 void OSM_deactivate(leep_osm_config_t *osm_config) {
   if (osm_config->activation_fn) {
@@ -65,6 +71,7 @@ void OSM_handled(uint16_t keycode, bool pressed) {
       // and then unpressing it another, when one of the keys in a layer is a tap dance and the other is not
       // (e.g. KC_A in LR_ELLA and TD_A in LR_BASE) causes strange behavior (basically, QMK doesn't track
       // that state properly for tap dance keys).
+      //
       // I looked into the issue for a while, but it's above my open source paygrade, and just releasing
       // shift right away covers all our use cases as well.
       if (pressed) {
@@ -89,7 +96,8 @@ void OSM_handled(uint16_t keycode, bool pressed) {
 void OSM_cleanup(void) {
   for (uint8_t i = 0; i < osm_configs_count(); i++) {
     leep_osm_config_t *osm_config = osm_configs_get(i);
-    if (osm_config->osm_step == OSM_CLEANUP) {
+    bool pressed_long_ago = osm_config->osm_step == OSM_REGISTER_KEY && timer_elapsed(osm_config->osm_press_time) > OSM_MAX_WAIT_TIME;
+    if (pressed_long_ago || osm_config->osm_step == OSM_CLEANUP) {
       OSM_deactivate(osm_config);
     }
   }
