@@ -189,7 +189,7 @@ bool SymbolLayerOverlap_handled_for(layer_overlap_handler_t *handler, uint16_t k
         bool needs_layer_overlap_logic = (record->event.type != COMBO_EVENT);
 
         // If it needs layer-overlap logic, then it has *not* been resolved
-        handler->resolved_first_symb_press = !needs_layer_overlap_logic;
+        handler->resolved_first_symb_press = !needs_layer_overlap_logic; // TODO: Is this line needed? Add test to check if it is
 
         if (needs_layer_overlap_logic) {
             // Send this fake event to mark the tap dance as interrupted (to ensure
@@ -220,4 +220,28 @@ bool SymbolLayerOverlap_handled(uint16_t keycode, keyrecord_t *record) {
         }
     }
     return false;
+}
+
+void SymbolLayerOverlap_housekeeping(void) {
+    for (uint16_t i = 0; i < symbol_layer_overlap_handlers_count(); i++) {
+        layer_overlap_handler_t *handler = symbol_layer_overlap_handlers_get(i);
+
+        // Check if the key was held down for longer than the tapping term,
+        // in which case we assume that the user intended to press and hold it,
+        // so start the key press
+        bool held_key = timer_elapsed32(handler->key_press_at) >= TAPPING_TERM;
+        if (handler->first_symb_press && held_key && !handler->resolved_first_symb_press) {
+            handler->resolved_first_symb_press = true;
+
+            // The key was held down for longer than the tapping term, so we
+            // assume that the user intended to press and hold it.
+            keyevent_t press_event = {
+                .key = handler->first_symb_press_key_pos,
+                .type = KEY_EVENT,
+                .pressed = true,
+                .time = timer_read(),
+            };
+            action_exec(press_event);
+        }
+    }
 }

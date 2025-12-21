@@ -51,6 +51,19 @@ EXPECT_NO_REPORT(driver); \
 run_one_scan_loop();      \
 EXPECT_STREQ(test_message, "Success!");
 
+
+/***************************************************
+* Helper methods that verify all mocks up to point *
+****************************************************/
+
+#define RUN_ONE_SCAN_LOOP() \
+  run_one_scan_loop(); \
+  VERIFY_AND_CLEAR(driver);
+
+#define IDLE_FOR(duration) \
+  idle_for(duration); \
+  VERIFY_AND_CLEAR(driver);
+
 /***************
 * Unlock tests *
 ***************/
@@ -1345,6 +1358,113 @@ TEST_F(LeepFrog, SymbolLayerOverlap_WorksWithCombo) {
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     run_one_scan_loop();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, SymbolLayerOverlap_PressesKeyIfHeld_SimpleKey) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_ALT;
+
+    LEEP_KEY_ROW(LR_BASE, 4,
+      to_symb,
+      KC_A,
+      KC_B,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_ALT, 4,
+      TK_0,
+      KC_1,
+      KC_2,
+      TK_1
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Press another key
+    k_KC_A.press();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Nothing happens for most of hold
+    EXPECT_NO_REPORT(driver);
+    IDLE_FOR(TAPPING_TERM - 1);
+
+    // After TAPPING_TERM elapsed, then assume it's a key hold
+    EXPECT_REPORT(driver, (KC_1));
+    RUN_ONE_SCAN_LOOP();
+
+    // Release key
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, SymbolLayerOverlap_PressesKeyIfHeld_ModKey) {
+    TestDriver driver;
+    InSequence s;
+
+    const uint16_t to_symb = TO_ALT;
+    const uint16_t alt_f = A(KC_RIGHT);
+
+    LEEP_KEY_ROW(LR_BASE, 3,
+      to_symb,
+      TK_0,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_ALT, 3,
+      TK_1,
+      alt_f,
+      TK_2
+    )
+
+    // Press the symbol layer key
+    k_to_symb.press();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Press another key
+    k_alt_f.press();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Nothing happens for most of hold
+    EXPECT_NO_REPORT(driver);
+    IDLE_FOR(TAPPING_TERM - 1);
+
+    // After TAPPING_TERM elapsed, then assume it's a key hold
+    EXPECT_REPORT(driver, (KC_LALT));
+    EXPECT_REPORT(driver, (KC_LALT, KC_RIGHT));
+    RUN_ONE_SCAN_LOOP();
+
+    // Still holding
+    EXPECT_NO_REPORT(driver);
+    IDLE_FOR(TAPPING_TERM);
+
+    // Release key
+    k_alt_f.release();
+    EXPECT_REPORT(driver, (KC_LALT));
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Release the symbol layer key
+    k_to_symb.release();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
 
     CONFIRM_RESET();
 }
