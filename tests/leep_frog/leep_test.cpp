@@ -301,7 +301,7 @@ TEST_F(LeepFrog, Osm_OverlappingTapDanceKeyPresses) {
 
     EXPECT_REPORT(driver, (KC_I));
     EXPECT_EMPTY_REPORT(driver);
-    idle_for(10 * TAPPING_TERM);
+    IDLE_FOR(10 * TAPPING_TERM);
 
     CONFIRM_RESET();
 }
@@ -383,7 +383,7 @@ TEST_F(LeepFrog, Osm_Hold) {
 
     EXPECT_REPORT(driver, (KC_RSFT, KC_S));
     EXPECT_REPORT(driver, (KC_RSFT));
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     // Press a combo key with no combo
     k_KC_F.press();
@@ -505,7 +505,7 @@ TEST_F(LeepFrog, Osm_StickyHold) {
 
     EXPECT_REPORT(driver, (KC_RSFT, KC_S));
     EXPECT_REPORT(driver, (KC_RSFT));
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     // Press a combo key with no combo
     k_KC_F.press();
@@ -724,7 +724,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     RUN_ONE_SCAN_LOOP();
 
     EXPECT_NO_REPORT(driver);
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     CONFIRM_RESET();
 
@@ -744,7 +744,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     RUN_ONE_SCAN_LOOP();
 
     EXPECT_NO_REPORT(driver);
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     CONFIRM_RESET();
 
@@ -764,7 +764,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     RUN_ONE_SCAN_LOOP();
 
     EXPECT_NO_REPORT(driver);
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     CONFIRM_RESET();
 
@@ -773,7 +773,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    idle_for(TAPPING_TERM+1);
+    IDLE_FOR(TAPPING_TERM+1);
 
     k_to_shct.release();
     EXPECT_NO_REPORT(driver);
@@ -979,7 +979,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_KC) {
     RUN_ONE_SCAN_LOOP();
 
     EXPECT_NO_REPORT(driver);
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     CONFIRM_RESET();
 
@@ -1001,7 +1001,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_KC) {
     RUN_ONE_SCAN_LOOP();
 
     EXPECT_NO_REPORT(driver);
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     CONFIRM_RESET();
 
@@ -1023,7 +1023,7 @@ TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_KC) {
     RUN_ONE_SCAN_LOOP();
 
     EXPECT_NO_REPORT(driver);
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     CONFIRM_RESET();
 }
@@ -1053,7 +1053,7 @@ TEST_F(LeepFrog, Osm_HoldJustShyOfTappingTerm) {
     RUN_ONE_SCAN_LOOP();
 
     // Wait to register as hold
-    idle_for(TAPPING_TERM-1);
+    IDLE_FOR(TAPPING_TERM-1);
 
     // Unpress the osm shift key
     k_ck_shft.release();
@@ -1094,7 +1094,7 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
     RUN_ONE_SCAN_LOOP();
 
     // Wait to register as hold
-    idle_for(TAPPING_TERM);
+    IDLE_FOR(TAPPING_TERM);
 
     // Unpress the osm shift key
     k_ck_shft.release();
@@ -1190,7 +1190,7 @@ TEST_F(LeepFrog, Osm_ModeratelyLongDelayStillUsesOsm) {
     RUN_ONE_SCAN_LOOP();
 
     // Wait a long time
-    idle_for(osm_too_long - 2); // Need extra minus one because above loop adds one scan loop time
+    IDLE_FOR(osm_too_long - 2); // Need extra minus one because above loop adds one scan loop time
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -1569,14 +1569,14 @@ TEST_P(LeepFrogSymbolLayerOverlapTiming, RegularKeycode) {
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    idle_for(symbol_layer_timing_params.in_layer_duration);
+    IDLE_FOR(symbol_layer_timing_params.in_layer_duration);
 
     // Release the symbol layer key
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    idle_for(symbol_layer_timing_params.out_layer_duration);
+    IDLE_FOR(symbol_layer_timing_params.out_layer_duration);
 
     // Release the other key
     k_KC_2.release();
@@ -1629,14 +1629,14 @@ TEST_P(LeepFrogSymbolLayerOverlapTiming, CustomKeycode) {
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    idle_for(symbol_layer_timing_params.in_layer_duration);
+    IDLE_FOR(symbol_layer_timing_params.in_layer_duration);
 
     // Release the symbol layer key
     k_to_symb.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    idle_for(symbol_layer_timing_params.out_layer_duration);
+    IDLE_FOR(symbol_layer_timing_params.out_layer_duration);
 
     // Release the other key
     k_custom_keycode.release();
@@ -1730,7 +1730,7 @@ TEST_P(LeepFrogOneHandLayer, QuickOneHandLayerPressesKey) {
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    idle_for(TAPPING_TERM + COMBO_TERM - 3);
+    IDLE_FOR(TAPPING_TERM + COMBO_TERM - 3);
 
     // Release the combo one hand left layer
     k_combo_keycode_2.release();
@@ -1771,7 +1771,7 @@ TEST_P(LeepFrogOneHandLayer, LongOneHandLayerDoesNotPressKey) {
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    idle_for(TAPPING_TERM + COMBO_TERM);
+    IDLE_FOR(TAPPING_TERM + COMBO_TERM);
 
     // Release the combo one hand left layer
     k_combo_keycode_2.release();
@@ -2037,7 +2037,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, SingleTapAfterAmbiguousTap) {
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
-  idle_for(10);
+  IDLE_FOR(10);
 
   // Release the layer key
   k_to_symb.release();
@@ -2049,7 +2049,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, SingleTapAfterAmbiguousTap) {
   EXPECT_EMPTY_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
-  idle_for(TAPPING_TERM * 10);
+  IDLE_FOR(TAPPING_TERM * 10);
   RUN_ONE_SCAN_LOOP();
 
   // Press the symbol layer key
@@ -2296,7 +2296,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, HoldSecondKey_AltTab) {
   EXPECT_REPORT(driver, (KC_X));
   RUN_ONE_SCAN_LOOP();
 
-  idle_for(20 * TAPPING_TERM);
+  IDLE_FOR(20 * TAPPING_TERM);
   RUN_ONE_SCAN_LOOP();
 
   k_ck_atb.release();
@@ -2446,7 +2446,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, ShiftAsSecondKey) {
 //   EXPECT_NO_REPORT(driver);
 //   RUN_ONE_SCAN_LOOP();
 
-//   idle_for(20 * TAPPING_TERM);
+//   IDLE_FOR(20 * TAPPING_TERM);
 //   EXPECT_NO_REPORT(driver);
 //   RUN_ONE_SCAN_LOOP();
 
@@ -2454,7 +2454,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, ShiftAsSecondKey) {
 //   EXPECT_NO_REPORT(driver);
 //   RUN_ONE_SCAN_LOOP();
 
-//   idle_for(20 * TAPPING_TERM);
+//   IDLE_FOR(20 * TAPPING_TERM);
 //   EXPECT_NO_REPORT(driver);
 //   RUN_ONE_SCAN_LOOP();
 
@@ -2463,7 +2463,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, ShiftAsSecondKey) {
 //   EXPECT_NO_REPORT(driver);
 //   RUN_ONE_SCAN_LOOP();
 
-//   idle_for(20 * TAPPING_TERM);
+//   IDLE_FOR(20 * TAPPING_TERM);
 //   EXPECT_NO_REPORT(driver);
 //   RUN_ONE_SCAN_LOOP();
 
@@ -2504,7 +2504,7 @@ on the actual keyboard. So appears to just be flaky test logic in QMK itself
 //   EXPECT_NO_REPORT(driver);
 //   RUN_ONE_SCAN_LOOP();
 
-//   idle_for(TAPPING_TERM * 100);
+//   IDLE_FOR(TAPPING_TERM * 100);
 
 //   // Unpress the symbol layer key
 //   k_to_symb.release();
@@ -2879,7 +2879,7 @@ TEST_F(LeepFrog, DeactivatesAltOnLayerChangeWhenSymbolLayerOverlap) {
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
-  idle_for(10);
+  IDLE_FOR(10);
 
   // Release the layer key
   k_to_overlap_layer.release();
@@ -2936,7 +2936,7 @@ TEST_F(LeepFrog, CustomKeycodeHold) {
   EXPECT_REPORT(driver, (KC_LCTL, KC_BACKSPACE));
   RUN_ONE_SCAN_LOOP();
 
-  idle_for(10 * TAPPING_TERM);
+  IDLE_FOR(10 * TAPPING_TERM);
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
