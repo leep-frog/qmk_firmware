@@ -59,7 +59,8 @@
 
 // Combo setup
 // #define FORCE_NKRO
-#define COMBO_TERM 40            // Number of milliseconds for combo keys.
+// Number of milliseconds for combo keys (0, 40] (guaranteed bounds from experience with combos)
+#define COMBO_TERM 20
 #define COMBO_SHOULD_TRIGGER
 #define COMBO_VARIABLE_LEN
 
