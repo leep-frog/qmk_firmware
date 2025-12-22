@@ -512,7 +512,7 @@ TEST_F(LeepFrog, Osm_StickyHold) {
 
     // Press a combo key with no combo
     k_KC_F.press();
-    EXPECT_NO_REPORT(driver); // TODO(bug-1) (see ref)
+    EXPECT_NO_REPORT(driver); // No report since would first need combo term to elapse
     RUN_ONE_SCAN_LOOP();
 
     k_KC_F.release();
@@ -2085,7 +2085,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, HoldAndPressRegularKey) {
   RUN_ONE_SCAN_LOOP();
 
   k_KC_X.press();
-  EXPECT_NO_REPORT(driver); // TODO(bug-1) (see ref)
+  EXPECT_NO_REPORT(driver); // No report since waiting to see if should press in symbol or non-symbol layer
   RUN_ONE_SCAN_LOOP();
 
   k_KC_X.release();
@@ -2127,7 +2127,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, HoldAndPressRegularKey_DifferentPressKeyAndUn
   RUN_ONE_SCAN_LOOP();
 
   k_KC_X.press();
-  EXPECT_NO_REPORT(driver); // TODO(bug-1) (see ref)
+  EXPECT_NO_REPORT(driver); // No report since waiting to see if should press in symbol or non-symbol layer
   RUN_ONE_SCAN_LOOP();
 
   // Note Y is released here but X is pressed above
@@ -2325,6 +2325,7 @@ TEST_P(LeepFrogSymbolLayerOverlap, ThirdKeyIsCombo) {
     TK_1
   )
 
+  bool is_alt = (symbol_layer_params.layer == LR_ALT);
 
   // Press the symbol layer key
   k_to_symb.press();
@@ -2339,11 +2340,17 @@ TEST_P(LeepFrogSymbolLayerOverlap, ThirdKeyIsCombo) {
   // Press the non-combo key as the third key
   k_KC_5.press();
   EXPECT_REPORT(driver, (KC_1));
-  EXPECT_REPORT(driver, (KC_1, KC_5));
-  run_one_scan_loop(); // TODO(bug-1) (see ref)
+  // TODO: Why is this behavior different for alt vs symbol
+  if (is_alt) {
+    EXPECT_REPORT(driver, (KC_1, KC_5));
+  }
+  RUN_ONE_SCAN_LOOP();
 
   // Release the non-combo key as the second key
   k_KC_1.release();
+  if (!is_alt) {
+    EXPECT_REPORT(driver, (KC_1, KC_5));
+  }
   EXPECT_REPORT(driver, (KC_5));
   RUN_ONE_SCAN_LOOP();
 
@@ -2981,9 +2988,9 @@ TEST_F(LeepFrog, CustomKeycodeFromCtrl) {
 TEST_F(LeepFrog, CustomKeycodeFromAlt) {
   TestDriver driver;
   InSequence s;
-  const uint16_t to_ctrl = TO_ALT;
+  const uint16_t to_alt = TO_ALT;
   LEEP_KEY_ROW(0, 3,
-    to_ctrl,
+    to_alt,
     KC_B,
     ck_test
   )
@@ -2994,12 +3001,14 @@ TEST_F(LeepFrog, CustomKeycodeFromAlt) {
     TK_1
   )
 
-  k_to_ctrl.press();
+  k_to_alt.press();
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
   k_ck_unbs.press();
-  EXPECT_NO_REPORT(driver); // TODO(bug-1???) (see ref)
+  // No report since alt has symbol layer overlap enabled and that needs to
+  // wait to see if should press in symbol or non-symbol layer
+  EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
   k_ck_unbs.release();
@@ -3009,7 +3018,7 @@ TEST_F(LeepFrog, CustomKeycodeFromAlt) {
   EXPECT_EMPTY_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
-  k_to_ctrl.release();
+  k_to_alt.release();
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
