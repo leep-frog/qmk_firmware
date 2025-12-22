@@ -120,18 +120,16 @@ TEST_F(LeepFrog, UnlockBehavior) {
     RUN_ONE_SCAN_LOOP();
 
     // D unlocks
+    // Include this, otherwise need to delay for COMBO_TERM
+    combo_disable();
     k_KC_D.press();
-    // TODO(bug-1): Why isn't D pressed here?!
-    // pretty sure bug-1 is just be for combo keys!!!
-    // so update test everywhere as needed to use non-combo keys if
-    // not explicitly testing combo keys
-    EXPECT_NO_REPORT(driver);
+    EXPECT_REPORT(driver, (KC_D));
     RUN_ONE_SCAN_LOOP();
 
     k_KC_D.release();
-    EXPECT_REPORT(driver, (KC_D));
     EXPECT_EMPTY_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
+    combo_enable();
 
     CONFIRM_RESET();
 }
@@ -323,7 +321,7 @@ TEST_F(LeepFrog, Osm_Hold) {
     LEEP_KEY_ROW(0, 7,
       td_s, // Tap dance key
       KC_H, // Regular key
-      KC_I, // Regular key
+      KC_X, // Regular key
       KC_D, // Combo key
       KC_F, // Combo key
       ck_shft,
@@ -354,13 +352,12 @@ TEST_F(LeepFrog, Osm_Hold) {
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
-    // Press the I key, which should be shifted.
-    k_KC_I.press();
-    EXPECT_NO_REPORT(driver); // TODO(bug-1) (see ref)
+    // Press the X key, which should be shifted.
+    k_KC_X.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_X));
     RUN_ONE_SCAN_LOOP();
 
-    k_KC_I.release();
-    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    k_KC_X.release();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
@@ -369,16 +366,15 @@ TEST_F(LeepFrog, Osm_Hold) {
     EXPECT_REPORT(driver, (KC_RSFT, KC_H));
     RUN_ONE_SCAN_LOOP();
 
-    k_KC_I.press();
-    EXPECT_NO_REPORT(driver); // TODO(bug-1) (see ref)
+    k_KC_X.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H, KC_X));
     RUN_ONE_SCAN_LOOP();
 
     k_KC_H.release();
-    EXPECT_REPORT(driver, (KC_RSFT, KC_H, KC_I));
-    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    EXPECT_REPORT(driver, (KC_RSFT, KC_X));
     RUN_ONE_SCAN_LOOP();
 
-    k_KC_I.release();
+    k_KC_X.release();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
@@ -397,7 +393,7 @@ TEST_F(LeepFrog, Osm_Hold) {
 
     // Press a combo key with no combo
     k_KC_F.press();
-    EXPECT_NO_REPORT(driver); // TODO(bug-1) (see ref)
+    EXPECT_NO_REPORT(driver); // No report since would first need combo term to elapse
     RUN_ONE_SCAN_LOOP();
 
     k_KC_F.release();
@@ -435,7 +431,7 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     LEEP_KEY_ROW(0, 7,
       td_s, // Tap dance key
       KC_H, // Regular key
-      KC_I, // Regular key
+      KC_X, // Regular key
       KC_D, // Combo key
       KC_F, // Combo key
       ck_shft,
@@ -477,13 +473,11 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     RUN_ONE_SCAN_LOOP();
 
     // Press the I key, which should be shifted.
-    k_KC_I.press();
-    // TODO(bug-1) (see ref)
-    EXPECT_NO_REPORT(driver);
+    k_KC_X.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_X));
     RUN_ONE_SCAN_LOOP();
 
-    k_KC_I.release();
-    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    k_KC_X.release();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
@@ -492,17 +486,15 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     EXPECT_REPORT(driver, (KC_RSFT, KC_H));
     RUN_ONE_SCAN_LOOP();
 
-    k_KC_I.press();
-    // TODO(bug-1) (see ref)
-    EXPECT_NO_REPORT(driver);
+    k_KC_X.press();
+    EXPECT_REPORT(driver, (KC_RSFT, KC_H, KC_X));
     RUN_ONE_SCAN_LOOP();
 
     k_KC_H.release();
-    EXPECT_REPORT(driver, (KC_RSFT, KC_H, KC_I));
-    EXPECT_REPORT(driver, (KC_RSFT, KC_I));
+    EXPECT_REPORT(driver, (KC_RSFT, KC_X));
     RUN_ONE_SCAN_LOOP();
 
-    k_KC_I.release();
+    k_KC_X.release();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 

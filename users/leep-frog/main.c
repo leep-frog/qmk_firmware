@@ -52,9 +52,12 @@ void test_confirm(keyrecord_t *record) {
   }
 
   // OSM
-  if (
-    !OSM_test_check(test_message)
-  ) {
+  if (!OSM_test_check(test_message)) {
+    return;
+  }
+
+  if (!is_combo_enabled()) {
+    strcpy(test_message, "Combos are now disabled!");
     return;
   }
 
