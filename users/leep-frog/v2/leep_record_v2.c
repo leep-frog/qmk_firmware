@@ -52,6 +52,7 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                 LEEP_COLOR_MODE(RED, RGB_MATRIX_RAINBOW_MOVING_CHEVRON, true);
             }
             break;
+        case SINGLE_HOLD:
         case DOUBLE_HOLD:
             if (!recording) {
                 if (macro_1) {
