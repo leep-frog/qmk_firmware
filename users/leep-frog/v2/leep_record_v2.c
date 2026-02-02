@@ -52,16 +52,6 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
                 LEEP_COLOR_MODE(RED, RGB_MATRIX_RAINBOW_MOVING_CHEVRON, true);
             }
             break;
-        case SINGLE_HOLD:
-        case DOUBLE_HOLD:
-            if (!recording) {
-                if (macro_1) {
-                    SNG_REC_1_PLAY();
-                } else {
-                    SNG_REC_2_PLAY();
-                }
-            }
-            break;
         case TRIPLE_TAP:
         case TRIPLE_HOLD:
           if (macro_1) {
@@ -72,6 +62,10 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
             SEND_STRING(LEEP_CODE_2);
           }
           return;
+        case SINGLE_HOLD:
+        case DOUBLE_HOLD:
+          // These will trigger record playback (so valid must remain true)
+          break;
         default:
           valid = false;
           break;
@@ -80,6 +74,13 @@ void recorder_base(tap_dance_state_t *state, uint16_t play_action, uint16_t star
     if (!valid) {
         SNG_DUD();
     } else {
+        if (!recording) {
+            if (macro_1) {
+                SNG_REC_1_PLAY();
+            } else {
+                SNG_REC_2_PLAY();
+            }
+        }
         processing_macro = true;
         process_dynamic_macro(action, &kr);
         processing_macro = false;
