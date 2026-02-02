@@ -50,6 +50,11 @@
       "alias": "mk"
     },
     {
+      "path": "/home/qmk/qmk_firmware/keyboards/zsa/voyager/keymaps/leep-frog/keymap.c",
+      "scheme": "file",
+      "alias": "vk"
+    },
+    {
       "path": "/home/qmk/qmk_firmware/quantum/keymap_introspection.c",
       "scheme": "file",
       "alias": "ki"

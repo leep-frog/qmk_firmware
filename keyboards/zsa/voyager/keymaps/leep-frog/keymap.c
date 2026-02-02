@@ -9,8 +9,6 @@
 
 // Can't evaluate macro in macro, so use this to ignore bottom row of keyboard
 // https://stackoverflow.com/questions/35114050/is-there-a-way-to-force-c-preprocessor-to-evaluate-macro-arguments-before-the-ma
-// #define LAYOUT(...) LAYOUT_moonlander(__VA_ARGS__)
-// #define BOTTOM_ROW      KC_LCTL, KC_LALT, CK_MUT, CK_MUTS, KC_LCTL, CK_MCR1, CK_MCR2, KC_RCTL, KC_RALT, CK_EYE, KB_OFF, CK_LOCK
 
 
 // TODO: Make top row special row, or shift everything up and make bottom row special row (better for thumb layer too
@@ -18,7 +16,7 @@
     PFX##_TAB,       PFX##_Q, PFX##_W, PFX##_E, PFX##_R, PFX##_T,                      PFX##_Y, PFX##_U, PFX##_I,  PFX##_O,  PFX##_P,  PFX##_LBRC, \
     PFX##_CAPS_LOCK, PFX##_A, PFX##_S, PFX##_D, PFX##_F, PFX##_G,                      PFX##_H, PFX##_J, PFX##_K,  PFX##_L,  PFX##_SC, PFX##_QUOTE, \
     PFX##_LSFT,      PFX##_Z, PFX##_X, PFX##_C, PFX##_V, PFX##_B,                      PFX##_N, PFX##_M, PFX##_LT, PFX##_GT, PFX##_SL, PFX##_RSFT, \
-    PFX##_ESC,       PFX##_1, PFX##_2, PFX##_3, PFX##_4, PFX##_5,                      PFX##_6, PFX##_7, PFX##_8,  PFX##_9,  PFX##_0,  PFX##_MINUS, \
+    PFX##_ESC,       PFX##_1, PFX##_2, PFX##_3, PFX##_LEFT_THUMB_TERTIARY, CK_MCR1,    CK_MCR2, PFX##_LEFT_THUMB_TERTIARY, PFX##_8,  PFX##_9,  PFX##_0,  PFX##_MINUS, \
             PFX##_LEFT_THUMB_PRIMARY, PFX##_LEFT_THUMB_SECONDARY,                      PFX##_RIGHT_THUMB_SECONDARY,  PFX##_RIGHT_THUMB_PRIMARY )
             // PFX##_LEFT_THUMB_SECONDARY, PFX##_LEFT_THUMB_PRIMARY,                      PFX##_RIGHT_THUMB_PRIMARY,  PFX##_RIGHT_THUMB_SECONDARY )
 
