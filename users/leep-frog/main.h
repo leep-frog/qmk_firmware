@@ -505,7 +505,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_LBRC KC_LBRC
 #define LK_SYMB_RBRC KC_RBRC
 // Middle row
-#define LK_SYMB_CAPS_LOCK LSFT_T(KC_LPRN)
+#define LK_SYMB_CAPS_LOCK KC_LPRN
 #define LK_SYMB_A KC_1
 #define LK_SYMB_S KC_2
 #define LK_SYMB_D KC_3
@@ -516,7 +516,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_K KC_8
 #define LK_SYMB_L KC_9
 #define LK_SYMB_SC KC_0
-#define LK_SYMB_QUOTE RSFT_T(KC_RPRN)
+#define LK_SYMB_QUOTE KC_RPRN  // TODO: shift on hold? was causing issues before. Same for LK_SYMB_CAPS_LOCK
 #define LK_SYMB_ENTER KC_ENTER
 // Bottom row
 #define LK_SYMB_LSFT KC_LCBR
