@@ -524,8 +524,8 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_X KC_UNDERSCORE
 #define LK_SYMB_C KC_LBRC
 #define LK_SYMB_V CK_MDPS
-#define LK_SYMB_B _______
-#define LK_SYMB_N KC_BSLS
+#define LK_SYMB_B KC_BSLS
+#define LK_SYMB_N KC_N
 #define LK_SYMB_M KC_PIPE
 #define LK_SYMB_LT KC_COMM
 #define LK_SYMB_GT KC_DOT
