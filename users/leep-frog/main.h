@@ -257,7 +257,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_CTRL_K CK_KILL
 #define LK_CTRL_L KC_PGUP
 #define LK_CTRL_SC TO_CTSH
-#define LK_CTRL_QUOTE MO(LR_CTRL_SHIFT)
+#define LK_CTRL_QUOTE TD(TDK_CTRL_SHIFT_TOGGLE)
 #define LK_CTRL_ENTER CL(ENT)
 // Bottom row
 #define LK_CTRL_LSFT CL(LSFT)
