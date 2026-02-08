@@ -306,7 +306,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_CTRL_SHIFT_Y CK_PSTE
 #define LK_CTRL_SHIFT_U CK_STBB
 #define LK_CTRL_SHIFT_I CL_SH(I)
-#define LK_CTRL_SHIFT_O CK_TABF
+#define LK_CTRL_SHIFT_O CK_STBF
 #define LK_CTRL_SHIFT_P KC_PGUP
 #define LK_CTRL_SHIFT_LBRC _______
 #define LK_CTRL_SHIFT_RBRC _______
