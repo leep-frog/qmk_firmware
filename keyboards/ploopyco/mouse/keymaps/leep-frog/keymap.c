@@ -51,7 +51,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top buttons
         far_left, left, wheel_click, right, far_right,
         // Side buttons
-        forward, back,
+        forward,
+        back,
         // Special button
         rectangle
     ),
@@ -61,7 +62,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         KC_BTN1, TO_ALT, KC_BTN2, TO_CTRL, TO_WS,
         // Side buttons
-        TD_COPY, TD_PASTE,
+        TD_COPY,
+        TD_PASTE,
         // Special button
         TD_BOOT),
 
@@ -71,7 +73,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         KC_A, KC_B, KC_C, KC_D, KC_E,
         // Side buttons
-        KC_F, KC_G,
+        KC_F,
+        KC_G,
         // Special button
         KC_H),
     #endif
@@ -80,7 +83,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         KC_BTN1, TD_CBCK, KC_BTN1, _______, TD_CFWD,
         // Side buttons
-        TD_CTAB, TD_OTAB,
+        TD_CTAB,
+        TD_OTAB,
         // Special button
         _______),
 
@@ -88,7 +92,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         _______, _______, _______, CK_ATAB, CK_1OR2,
         // Side buttons
-        CK_SATAB, TO(LR_ONSHAPE),
+        CK_SATAB,
+        TO(LR_ONSHAPE),
         // Special button
         _______),
 
@@ -96,7 +101,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         KC_PRINT_SCREEN, C(G(KC_LEFT)), _______, C(G(KC_RIGHT)), _______,
         // Side buttons
-        G(KC_TAB), _______,
+        G(KC_TAB),
+        _______,
         // Special button
         _______),
 
@@ -105,7 +111,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         KC_ESC, KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN3,
         // Side buttons
-        TO(LR_BASE), TO(LR_BASE),
+        TO(LR_BASE),
+        TO(LR_BASE),
         // Special button
         TO(LR_BASE)),
 };
