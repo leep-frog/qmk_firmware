@@ -5,6 +5,7 @@
 void SNG_COPY(void) {}
 
 #include "../../../../../users/leep-frog/v2/leep_tap_dance_v2.c"
+#include "../../../../../users/leep-frog/v2/leep_codes_v2.h"
 
 // TDK_COPY
 
@@ -59,14 +60,7 @@ void td_ctrl_shift_tab(tap_dance_state_t *state, bool tap, leep_td_value_t *hv) 
 // LEEP_TD_CLICK_TO_HOLD_KC_* doesn't work with custom keycodes (QK_BOOT), hence why
 // we need to create this function.
 void td_boot(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, true)) {
-        case SINGLE_TAP:
-            ToggleMove();
-            break;
-        case SINGLE_HOLD:
-            reset_keyboard();
-            break;
-    }
+    reset_keyboard();
 }
 
 // TDK_WORKSPACE
@@ -82,10 +76,16 @@ void td_workspace_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *
     // Can't really add additional logic here because the tap code will still be run first.
 }
 
+void _leep_code_fn(tap_dance_state_t *state, bool finished, leep_td_value_t *hv) {
+    if (finished) {
+        hv->td_bool ? SEND_STRING(LEEP_CODE_1) : SEND_STRING(LEEP_CODE_2);
+    }
+}
+
 
 tap_dance_action_t tap_dance_actions[] = {
     // Alt dance
-    [TDK_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER_ON_FIRST_CLICK_ONLY(KC_BTN1, LR_ALT),
+    [TDK_ALT] = LEEP_TD_CLICK_KC_HOLD_LAYER_ON_FIRST_CLICK_ONLY(KC_BTN3, LR_ALT),
     // Ctrl dance
     [TDK_CTRL] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_BTN3, LR_CTRL),
     // Ctrl+tab or next page in browser
@@ -98,10 +98,12 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_COPY] = ACTION_TAP_DANCE_FN(td_copy),
     // Paste dance
     [TDK_PASTE] = ACTION_TAP_DANCE_FN(td_paste),
-    // Open tab dance
-    [TDK_OPEN_TAB] = LEEP_TD_CLICK_KC_HOLD_KC(C(S(KC_T)), C(KC_R)),
-    // Close tab dance
-    [TDK_CLOSE_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(C(KC_W), td_hold_close_tab, LEEP_TD_NOVAL()),
+    // Reload/re-open tab dance
+    [TDK_REOPEN_RELOAD_TAB] = LEEP_TD_CLICK_KC_HOLD_KC(C(KC_R), C(S(KC_T))),
+    // Win+tab, code 1
+    [TDK_WIN_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(G(KC_TAB), _leep_code_fn, LEEP_TD_BOOL(true)),
+    // Print screen, code 2
+    [TDK_PRINT_SCREEN] = LEEP_TD_CLICK_KC_HOLD_FN(KC_PRINT_SCREEN, _leep_code_fn, LEEP_TD_BOOL(false)),
     // Reboot
     [TDK_BOOT] = ACTION_TAP_DANCE_FN(td_boot),
 };
@@ -121,3 +123,7 @@ tap_dance_action_t tap_dance_actions[] = {
 #define OL_DEL TD(TDK_OUTLOOK_DELETE)
 #define TD_VDEF TD(TDK_VSCODE_DEFINITION)
 #define TD_BOOT TD(TDK_BOOT)
+
+#define TD_REOPEN_RELOAD_TAB TD(TDK_REOPEN_RELOAD_TAB)
+#define TD_WIN_TAB TD(TDK_WIN_TAB)
+#define TD_PRINT_SCREEN TD(TDK_PRINT_SCREEN)

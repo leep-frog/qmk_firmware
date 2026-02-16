@@ -45,6 +45,41 @@
 // Just switch forward and back keys
 #define LEEPOUT(C1, C2, C3, C4, C5, C6, C7, C8) LAYOUT(C1, C2, C3, C4, C5, C7, C6, C8)
 
+/*
+
+left click - left button
+right click - far left button
+middle click - right button
+ctrl middle click - far right button
+paste/copy
+url paste/copy
+
+
+workspace layer:
+X workspace left/right
+* win+tab, double tap code 1
+* print screen, double tap code 2
+
+right click layer
+X alt+tab (left click)
+X shift+alt+tab (thumb click) (can be something else when not in alt mode!)
+X click thing (far right) (can be something else when not in alt mode!)
+
+
+thumb layer
+* ctrl+[shift+]tab (hold forward,back)
+* reload/re-open tab
+
+
+// TODO: Codes
+// TODO: copy paste
+// TODO: Home end
+// TODO: Ctrl+t
+
+*/
+
+#define _OPEN__ _______
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Example format:
     [LR_ABC] = LEEPOUT(
@@ -60,9 +95,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_BASE] = LEEPOUT(
         // Top
-        KC_BTN1, TO_ALT, KC_BTN2, TO_CTRL, TO_WS,
+        KC_BTN2, KC_BTN1, KC_BTN2, TO_ALT, TO_WS,
         // Side buttons
-        TD_COPY,
+        TO_CTRL,
         TD_PASTE,
         // Special button
         TD_BOOT),
@@ -81,16 +116,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_CTRL] = LEEPOUT(
         // Top
-        KC_BTN1, TD_CBCK, KC_BTN1, _______, TD_CFWD,
+        _OPEN__, TD_CBCK, _______, TD_CFWD, TD_REOPEN_RELOAD_TAB,
         // Side buttons
-        TD_CTAB,
-        TD_OTAB,
+        _______,
+        _______,
         // Special button
         _______),
 
     [LR_ALT] = LEEPOUT(
         // Top
-        _______, _______, _______, CK_ATAB, CK_1OR2,
+        _OPEN__, CK_ATAB, _______, _______, CK_1OR2,
         // Side buttons
         CK_SATAB,
         TO(LR_ONSHAPE),
@@ -99,10 +134,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_WS] = LEEPOUT(
         // Top
-        KC_PRINT_SCREEN, C(G(KC_LEFT)), _______, C(G(KC_RIGHT)), _______,
+        _OPEN__, C(G(KC_LEFT)), _______, C(G(KC_RIGHT)), _______,
         // Side buttons
-        G(KC_TAB),
-        _______,
+        TD_WIN_TAB,
+        TD_PRINT_SCREEN,
         // Special button
         _______),
 
@@ -118,10 +153,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-    if (IsMoving() && keycode != TD_BOOT) {
-      return false;
-    }
-
     if (keycode == TO_WS) {
         horizontal_scrolling = record->event.pressed;
     }
@@ -147,11 +178,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             SEND_STRING(SS_RSFT(SS_TAP(X_TAB)));
             break;
         case CK_1OR2:
-            if (alt_is_active()) {
-              tap_code16(KC_BTN1);
-            } else {
-              tap_code16(KC_BTN2);
-            }
+            tap_code16(alt_is_active() ? KC_BTN1 : KC_BTN2);
             break;
     }
 

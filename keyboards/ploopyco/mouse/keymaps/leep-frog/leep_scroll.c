@@ -23,10 +23,6 @@ void activateScrollSpeed(bool activated) {
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-  if (IsMoving()) {
-    return Move(mouse_report);
-  }
-
   if (scroll_speed_activated) {
     // Increment the scroll speed
     horz_scroll_speed_accumulator += mouse_report.x;

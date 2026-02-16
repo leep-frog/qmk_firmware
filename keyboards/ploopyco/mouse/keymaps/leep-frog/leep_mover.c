@@ -4,7 +4,9 @@
 #define MOVE_WINDOWS 6
 #define MOVE_WINDOW_MS 500
 
-const uint8_t MOVES[MOVE_WINDOWS][2] = {
+// TODO: Move this to kb since lots of memory for the mouse
+
+/*const uint8_t MOVES[MOVE_WINDOWS][2] = {
   {1, 0},
   {0, 0},
   {0, -1},
@@ -45,3 +47,4 @@ report_mouse_t Move(report_mouse_t mouse_report) {
   mouse_report.y = MOVES[move_idx][1];
   return mouse_report;
 }
+*/
