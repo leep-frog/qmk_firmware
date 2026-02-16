@@ -71,8 +71,6 @@ thumb layer
 * reload/re-open tab
 
 
-// TODO: Ctrl+t
-
 */
 
 #define _OPEN__ _______
