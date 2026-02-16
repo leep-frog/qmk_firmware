@@ -71,9 +71,6 @@ thumb layer
 * reload/re-open tab
 
 
-// TODO: Codes
-// TODO: copy paste
-// TODO: Home end
 // TODO: Ctrl+t
 
 */
@@ -98,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_BTN2, KC_BTN1, KC_BTN2, TO_ALT, TO_WS,
         // Side buttons
         TO_CTRL,
-        TD_PASTE,
+        TD_COPY_PASTE,
         // Special button
         TD_BOOT),
 
@@ -161,7 +158,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         return true;
     }
 
-    // Sometimes, we want to click while in the alt+tab mode, hence why KC_BTN1 was also added here.
+    // Sometimes, we want to click while in the alt+tab mode, hence why CK_1OR2 was also added here.
     if (alt_is_active() && keycode != CK_ATAB && keycode != CK_SATAB && keycode != CK_1OR2) {
         deactivate_alt();
         return false;
@@ -174,11 +171,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             SEND_STRING(SS_TAP(X_TAB));
             break;
         case CK_SATAB:
-            activate_alt();
-            SEND_STRING(SS_RSFT(SS_TAP(X_TAB)));
+            if (alt_is_active()) {
+                SEND_STRING(SS_RSFT(SS_TAP(X_TAB)));
+            } else {
+                tap_code16(KC_HOME);
+            }
             break;
         case CK_1OR2:
-            tap_code16(alt_is_active() ? KC_BTN1 : KC_BTN2);
+            tap_code16(alt_is_active() ? KC_BTN1 : KC_END);
             break;
     }
 

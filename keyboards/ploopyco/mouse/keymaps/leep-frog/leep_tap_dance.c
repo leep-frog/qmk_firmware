@@ -7,29 +7,20 @@ void SNG_COPY(void) {}
 #include "../../../../../users/leep-frog/v2/leep_tap_dance_v2.c"
 #include "../../../../../users/leep-frog/v2/leep_codes_v2.h"
 
-// TDK_COPY
+// TDK_COPY_PASTE
 
-void td_copy(tap_dance_state_t *state, void *user_data) {
+void td_copy_paste(tap_dance_state_t *state, void *user_data) {
     switch (cur_dance(state, false)) {
         case SINGLE_TAP:
             SEND_STRING(SS_COPY);
             break;
         case SINGLE_HOLD:
+            SEND_STRING(SS_PASTE);
+            break;
         case DOUBLE_TAP:
             URL_COPY();
             break;
-    }
-}
-
-// TDK_PASTE
-
-void td_paste(tap_dance_state_t *state, void *user_data) {
-    switch (cur_dance(state, false)) {
-        case SINGLE_TAP:
-            SEND_STRING(SS_PASTE);
-            break;
-        case SINGLE_HOLD:
-        case DOUBLE_TAP:
+        case DOUBLE_HOLD:
             URL_PASTE();
             break;
     }
@@ -94,10 +85,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_CTRL_STAB] = LEEP_TD_CLICK_FN_HOLD_KC(td_ctrl_shift_tab, LEEP_TD_NOVAL(), A(KC_LEFT)),
     // WS dance
     [TDK_WORKSPACE] = LEEP_TD_CLICK_FN_HOLD_LAYER(td_workspace_press_fn, LEEP_TD_NOVAL(), LR_WS),
-    // Copy dance
-    [TDK_COPY] = ACTION_TAP_DANCE_FN(td_copy),
-    // Paste dance
-    [TDK_PASTE] = ACTION_TAP_DANCE_FN(td_paste),
+    // Copy, paste dance
+    [TDK_COPY_PASTE] = ACTION_TAP_DANCE_FN(td_copy_paste),
     // Reload/re-open tab dance
     [TDK_REOPEN_RELOAD_TAB] = LEEP_TD_CLICK_KC_HOLD_KC(C(KC_R), C(S(KC_T))),
     // Win+tab, code 1
@@ -114,8 +103,7 @@ tap_dance_action_t tap_dance_actions[] = {
 
 #define TD_CFWD TD(TDK_CTRL_TAB)
 #define TD_CBCK TD(TDK_CTRL_STAB)
-#define TD_COPY TD(TDK_COPY)
-#define TD_PASTE TD(TDK_PASTE)
+#define TD_COPY_PASTE TD(TDK_COPY_PASTE)
 #define TD_OTAB TD(TDK_OPEN_TAB)
 #define TD_CTAB TD(TDK_CLOSE_TAB)
 #define OL_RLD TD(TDK_OUTLOOK_RELOAD)
