@@ -169,11 +169,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             SEND_STRING(SS_TAP(X_TAB));
             break;
         case CK_SATAB:
-            if (alt_is_active()) {
-                SEND_STRING(SS_RSFT(SS_TAP(X_TAB)));
-            } else {
-                tap_code16(KC_HOME);
-            }
+            tap_code16(alt_is_active() ? S(KC_TAB) : KC_HOME);
             break;
         case CK_1OR2:
             tap_code16(alt_is_active() ? KC_BTN1 : KC_END);
