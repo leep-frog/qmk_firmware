@@ -129,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [LR_WS] = LEEPOUT(
         // Top
-        _OPEN__, C(G(KC_LEFT)), _______, TD_WIN_RIGHT, _______,
+        _OPEN__, C(G(KC_LEFT)), _______, C(G(KC_RIGHT)), _______,
         // Side buttons
         TD_WIN_TAB,
         TD_PRINT_SCREEN,
