@@ -93,6 +93,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_WIN_TAB] = LEEP_TD_CLICK_KC_HOLD_FN(G(KC_TAB), _leep_code_fn, LEEP_TD_BOOL(true)),
     // Print screen, code 2
     [TDK_PRINT_SCREEN] = LEEP_TD_CLICK_KC_HOLD_FN(KC_PRINT_SCREEN, _leep_code_fn, LEEP_TD_BOOL(false)),
+    // Ctrl dance
+    [TDK_WIN_RIGHT] = LEEP_TD_CLICK_KC_HOLD_KC(C(G(KC_RIGHT)), KC_BTN2),
     // Reboot
     [TDK_BOOT] = ACTION_TAP_DANCE_FN(td_boot),
 };
@@ -115,3 +117,4 @@ tap_dance_action_t tap_dance_actions[] = {
 #define TD_REOPEN_RELOAD_TAB TD(TDK_REOPEN_RELOAD_TAB)
 #define TD_WIN_TAB TD(TDK_WIN_TAB)
 #define TD_PRINT_SCREEN TD(TDK_PRINT_SCREEN)
+#define TD_WIN_RIGHT TD(TDK_WIN_RIGHT)
