@@ -31,7 +31,7 @@
 
 /*************************
  * TODO:
- * Add a layer in keyboard QMK to complement capabilities here
+ * Add a layer in left part of keyboard QMK to complement capabilities here
  **************************/
 
 /*******************
