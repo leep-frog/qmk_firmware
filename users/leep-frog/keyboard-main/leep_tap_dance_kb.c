@@ -453,8 +453,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TDK_ALT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_ALT_KEYCODE, LR_ALT),
     // Symbol layer
     [TDK_SYMB_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_SYMB_KEYCODE, LR_SYMB),
-    // Right hand layer
-    [TDK_OH_RIGHT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SPACE, LR_ONE_HAND),
     // Ctrl+Shift layer
     [TDK_CTRL_SHIFT_LAYER] = LEEP_TD_CLICK_KC_HOLD_LAYER(CL(SCLN), LR_CTRL_SHIFT),
     // Tab shift

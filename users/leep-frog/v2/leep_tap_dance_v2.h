@@ -18,7 +18,7 @@ int cur_dance(tap_dance_state_t *state, bool interrupt_matters);
 
 typedef union {
     uint16_t td_int;
-    // TODO: Make these pointers to save space
+    // TODO: Make these pointers to save space?
     char td_string[13];
     uint16_t td_pair[2];
     bool td_bool;

@@ -115,7 +115,6 @@
 * Helper macros *
 *****************/
 
-// TODO: Remove this and use REDUCE_N instead
 #define FE_0(M, X)
 #define FE_1(M, X) M(X)
 #define FE_2(M, X, ...) M(X), FE_1(M, __VA_ARGS__)
