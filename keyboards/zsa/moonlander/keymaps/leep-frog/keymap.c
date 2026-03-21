@@ -9,7 +9,7 @@
 // Can't evaluate macro in macro, so use this to ignore bottom row of keyboard
 // https://stackoverflow.com/questions/35114050/is-there-a-way-to-force-c-preprocessor-to-evaluate-macro-arguments-before-the-ma
 #define ML_LAYOUT(...) LAYOUT_moonlander(__VA_ARGS__)
-#define BOTTOM_ROW      KC_LCTL, KC_LALT, CK_MUT, CK_MUTS, KC_LCTL, CK_MCR1, CK_MCR2, KC_RCTL, KC_RALT, CK_EYE, KB_OFF, CK_LOCK
+#define BOTTOM_ROW      KC_LCTL, KC_LALT, CK_MUT, CK_MUTS, KC_LCTL, CK_MCR1, CK_MCR2, KC_VOLU, KC_VOLD, CK_EYE, KB_OFF, CK_LOCK
 
 #define LEEP_LAYOUT(PFX, top_left, top_right, top_right_right, middle_left, middle_right, bottom_left, bottom_right) ML_LAYOUT( \
     PFX##_ESC,   PFX##_1, PFX##_2, PFX##_3, PFX##_4, PFX##_5, top_left,       top_right,  PFX##_6, PFX##_7, PFX##_8,    PFX##_9,   PFX##_0,    top_right_right, \
@@ -22,7 +22,7 @@ PFX##_CAPS_LOCK, PFX##_A, PFX##_S, PFX##_D, PFX##_F, PFX##_G, bottom_left,      
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LR_BASE] = LEEP_LAYOUT(LK_BASE,
-        WS_LEFT, KC_ESC,  KC_VOLU,
+        WS_LEFT, KC_ESC,  KC_BACKSPACE,
         LGHT_ON, LGHT_OF,
         WS_LEFT, CK_MCR1
     ),
