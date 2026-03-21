@@ -502,7 +502,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_I KC_ASTR
 #define LK_SYMB_O KC_MINUS
 #define LK_SYMB_P KC_PLUS
-#define LK_SYMB_LBRC KC_LBRC
+#define LK_SYMB_LBRC KC_PIPE
 #define LK_SYMB_RBRC KC_RBRC
 // Middle row
 #define LK_SYMB_CAPS_LOCK KC_LPRN
