@@ -33,6 +33,7 @@ bool IsToggleShiftTapDance(uint16_t keycode);
 #define TO_SCRL TD(TDK_SCROLL_LEFT)
 #define TO_SCRR TD(TDK_SCROLL_RIGHT)
 
+#define TO_SHFT TD(TDK_SHIFT_LAYER)
 #define TO_CTRL TD(TDK_CTRL_LAYER)
 #define TO_ALT TD(TDK_ALT_LAYER)
 #define TO_SYMB TD(TDK_SYMB_LAYER)

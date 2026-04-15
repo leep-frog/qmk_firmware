@@ -69,7 +69,7 @@ enum custom_keycode_handlers {
 #define CK_LOGS CK(CK_LOGS_HANDLER)
 #define CK_VRSN CK(CK_VERSION_HANDLER)
 #define CK_GCS CK(CK_DOWNLOAD_GCS)
-#define CK_SHFT CK(CK_OSM_SHIFT_HANDLER)
+#define CK_OSM_SHFT CK(CK_OSM_SHIFT_HANDLER)
 #define CK_USER CK(CK_USER_HANDLER)
 #define CK_EMAIL CK(CK_EMAIL_HANDLER)
 
@@ -208,7 +208,8 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_BASE_SL KC_SLSH
 #define LK_BASE_RSFT TD_RCBR
 // Thumbs
-#define LK_BASE_LEFT_THUMB_PRIMARY CK_SHFT
+// Previously was CK_OSM_SHFT
+#define LK_BASE_LEFT_THUMB_PRIMARY TO_SHFT
 #define LK_BASE_LEFT_THUMB_SECONDARY TO_ALT
 #define LK_BASE_LEFT_THUMB_TERTIARY TO_SHCT
 #define LK_BASE_RIGHT_THUMB_PRIMARY TO_SYMB

@@ -25,7 +25,7 @@ const uint16_t TK_6 = KC_TRANSPARENT;
 
 // We need these go betweens because CK_ABCs are macros and the nested macros pass the initial string values around (not the final macro)
 const uint16_t ck_test = CK_TEST;
-const uint16_t ck_shft = CK_SHFT;
+const uint16_t ck_osm_shft = CK_OSM_SHFT;
 const uint16_t ck_unbs = CK_UNBS;
 
 class LeepFrog : public TestFixture {};
@@ -139,7 +139,7 @@ TEST_F(LeepFrog, Osm_TransparentKey) {
     InSequence s;
     LEEP_KEY_ROW(0, 3,
       KC_A,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -150,10 +150,10 @@ TEST_F(LeepFrog, Osm_TransparentKey) {
     )
 
     // Press and unpress the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -175,7 +175,7 @@ TEST_F(LeepFrog, Osm_DifferentKey) {
     InSequence s;
     LEEP_KEY_ROW(0, 3,
       KC_A,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -186,10 +186,10 @@ TEST_F(LeepFrog, Osm_DifferentKey) {
     )
 
     // Press and unpress the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -213,7 +213,7 @@ TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
     LEEP_KEY_ROW(0, 4,
       KC_H,
       KC_I,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -225,10 +225,10 @@ TEST_F(LeepFrog, Osm_OverlappingKeyPresses) {
     )
 
     // Press and unpress the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -263,7 +263,7 @@ TEST_F(LeepFrog, Osm_OverlappingTapDanceKeyPresses) {
     LEEP_KEY_ROW(0, 4,
       KC_H,
       td_i, // regular KC_I in the other layer
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -275,10 +275,10 @@ TEST_F(LeepFrog, Osm_OverlappingTapDanceKeyPresses) {
     )
 
     // Press and unpress the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -324,7 +324,7 @@ TEST_F(LeepFrog, Osm_Hold) {
       KC_X, // Regular key
       KC_D, // Combo key
       KC_F, // Combo key
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -339,7 +339,7 @@ TEST_F(LeepFrog, Osm_Hold) {
     )
 
     // Press and hold the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
@@ -415,7 +415,7 @@ TEST_F(LeepFrog, Osm_Hold) {
     RUN_ONE_SCAN_LOOP();
 
     // Release the osm shift key
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -434,7 +434,7 @@ TEST_F(LeepFrog, Osm_StickyHold) {
       KC_X, // Regular key
       KC_D, // Combo key
       KC_F, // Combo key
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -449,17 +449,17 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     )
 
     // Press and release the osm shift key twice
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -534,10 +534,10 @@ TEST_F(LeepFrog, Osm_StickyHold) {
     RUN_ONE_SCAN_LOOP();
 
     // Press again to deactivate osm mode.
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_EMPTY_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -555,7 +555,7 @@ TEST_F(LeepFrog, ComboBehavior) {
       KC_D,
       KC_F,
       KC_LSFT,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -622,7 +622,7 @@ TEST_F(LeepFrog, ComboBehavior) {
     RUN_ONE_SCAN_LOOP();
 
     // When right shift is held, it should do un-shifted quote
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
@@ -639,7 +639,7 @@ TEST_F(LeepFrog, ComboBehavior) {
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -654,7 +654,7 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
       KC_B,
       KC_D,
       KC_F,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -671,10 +671,10 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
     )
 
     // Press and unpress the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     RUN_ONE_SCAN_LOOP();
 
     // Press and release the D and F keys simultaneously
@@ -1034,7 +1034,7 @@ TEST_F(LeepFrog, Osm_HoldJustShyOfTappingTerm) {
     InSequence s;
     LEEP_KEY_ROW(0, 3,
       KC_A,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -1045,7 +1045,7 @@ TEST_F(LeepFrog, Osm_HoldJustShyOfTappingTerm) {
     )
 
     // Press the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
@@ -1053,7 +1053,7 @@ TEST_F(LeepFrog, Osm_HoldJustShyOfTappingTerm) {
     IDLE_FOR_AND_EXPECT_NOTHING(TAPPING_TERM-1);
 
     // Unpress the osm shift key
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -1075,7 +1075,7 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
     InSequence s;
     LEEP_KEY_ROW(0, 3,
       KC_A,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -1086,7 +1086,7 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
     )
 
     // Press the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
@@ -1094,7 +1094,7 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
     IDLE_FOR_AND_EXPECT_NOTHING(TAPPING_TERM);
 
     // Unpress the osm shift key
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_EMPTY_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -1121,7 +1121,7 @@ TEST_F(LeepFrog, Osm_TooLongDelayCancelsOsm) {
     InSequence s;
     LEEP_KEY_ROW(0, 3,
       KC_A,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -1132,12 +1132,12 @@ TEST_F(LeepFrog, Osm_TooLongDelayCancelsOsm) {
     )
 
     // Press the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
     // Unpress the osm shift key
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
@@ -1165,7 +1165,7 @@ TEST_F(LeepFrog, Osm_ModeratelyLongDelayStillUsesOsm) {
     InSequence s;
     LEEP_KEY_ROW(0, 3,
       KC_A,
-      ck_shft,
+      ck_osm_shft,
       ck_test
     )
 
@@ -1176,12 +1176,12 @@ TEST_F(LeepFrog, Osm_ModeratelyLongDelayStillUsesOsm) {
     )
 
     // Press the osm shift key
-    k_ck_shft.press();
+    k_ck_osm_shft.press();
     EXPECT_REPORT(driver, (KC_RSFT));
     RUN_ONE_SCAN_LOOP();
 
     // Unpress the osm shift key
-    k_ck_shft.release();
+    k_ck_osm_shft.release();
     EXPECT_NO_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 
