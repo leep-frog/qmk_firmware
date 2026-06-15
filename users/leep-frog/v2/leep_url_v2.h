@@ -4,9 +4,9 @@
 
 // URLWait waits a short amount of time to allow the
 // internet browser to run actions (like opening a new tab).
-#define URLWait() wait_ms(80)
+#define URLWait() wait_ms(100)
 
-#define URL_WAIT_STRING() SS_DELAY(80)
+#define URL_WAIT_STRING() SS_DELAY(100)
 
 #define NEW_TAB_STRING() SS_RCTL("t") URL_WAIT_STRING()
 
