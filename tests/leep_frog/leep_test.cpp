@@ -1675,7 +1675,7 @@ protected:
 static const OneHandLayerParams one_hand_layer_params[] = {
   OneHandLayerParams{
     "OH_LEFT",
-    KC_RSFT,
+    KC_SPACE,
     KC_F,
     KC_SLASH,
   },

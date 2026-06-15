@@ -143,10 +143,10 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 // Thumbs
 // Recently switched these to TO_XYZ_KEYCODE. If noticing any
 // issues with OSM (being stuck in LR_ELLA), it may be due to these changes.
-#define LK_ELLA_LEFT_THUMB_PRIMARY KC_RSFT
+#define LK_ELLA_LEFT_THUMB_PRIMARY TO_SYMB_KEYCODE
 #define LK_ELLA_LEFT_THUMB_SECONDARY TO_ALT_KEYCODE
 #define LK_ELLA_LEFT_THUMB_TERTIARY KC_LGUI
-#define LK_ELLA_RIGHT_THUMB_PRIMARY TO_SYMB_KEYCODE
+#define LK_ELLA_RIGHT_THUMB_PRIMARY KC_SPACE
 #define LK_ELLA_RIGHT_THUMB_SECONDARY TO_CTRL_KEYCODE
 #define LK_ELLA_RIGHT_THUMB_TERTIARY KC_RGUI
 
@@ -195,7 +195,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_BASE_QUOTE SC_RSPC
 #define LK_BASE_ENTER KC_ENTER
 // Bottom row
-#define LK_BASE_LSFT TD_LCBR
+#define LK_BASE_LSFT TO_SHFT
 #define LK_BASE_Z KC_Z
 #define LK_BASE_X KC_X
 #define LK_BASE_C TD_C
@@ -209,10 +209,10 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_BASE_RSFT TD_RCBR
 // Thumbs
 // Previously was CK_OSM_SHFT
-#define LK_BASE_LEFT_THUMB_PRIMARY TO_SHFT
+#define LK_BASE_LEFT_THUMB_PRIMARY TO_SYMB
 #define LK_BASE_LEFT_THUMB_SECONDARY TO_ALT
 #define LK_BASE_LEFT_THUMB_TERTIARY TO_SHCT
-#define LK_BASE_RIGHT_THUMB_PRIMARY TO_SYMB
+#define LK_BASE_RIGHT_THUMB_PRIMARY KC_SPACE
 #define LK_BASE_RIGHT_THUMB_SECONDARY TO_CTRL
 #define LK_BASE_RIGHT_THUMB_TERTIARY TO_SHCT
 
@@ -533,10 +533,10 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SYMB_SL KC_SLSH
 #define LK_SYMB_RSFT KC_RCBR
 // Thumbs
-#define LK_SYMB_LEFT_THUMB_PRIMARY KC_SPACE
+#define LK_SYMB_LEFT_THUMB_PRIMARY _______
 #define LK_SYMB_LEFT_THUMB_SECONDARY KC_ENTER
 #define LK_SYMB_LEFT_THUMB_TERTIARY _______
-#define LK_SYMB_RIGHT_THUMB_PRIMARY _______
+#define LK_SYMB_RIGHT_THUMB_PRIMARY KC_SPACE
 #define LK_SYMB_RIGHT_THUMB_SECONDARY KC_ENTER
 #define LK_SYMB_RIGHT_THUMB_TERTIARY KC_RGUI
 
