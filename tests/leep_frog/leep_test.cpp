@@ -30,6 +30,8 @@ const uint16_t ck_unbs = CK_UNBS;
 
 class LeepFrog : public TestFixture {};
 
+class LeepFrogShiftParamTest : public TestFixture, public ::testing::WithParamInterface<uint16_t> {};
+
 #define NEW_ROW = QK_USER_MAX - 1
 
 uint16_t leep_key_layer = 0;
@@ -698,6 +700,190 @@ TEST_F(LeepFrog, ComboAndOSMTap) {
 /******************
 * Tap dance tests *
 ******************/
+
+struct SwapShiftParams {
+  std::string name;
+  uint16_t    shift_key;
+};
+
+
+class LeepFrogSwapShift : public ::testing::WithParamInterface<SwapShiftParams>, public TestFixture {
+protected:
+  SwapShiftParams swap_shift_params;
+
+  void SetUp() override {
+    swap_shift_params = GetParam();
+  }
+};
+
+static const SwapShiftParams swap_shift_params[] = {
+  SwapShiftParams{
+    "KC_LSFT",
+    KC_LSFT,
+  },
+  SwapShiftParams{
+    "KC_RSFT",
+    KC_RSFT,
+  },
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogSwapShift,
+  ::testing::ValuesIn(swap_shift_params),
+  [](const ::testing::TestParamInfo<SwapShiftParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogSwapShift, TO_OTLK_PressesColonAndSemicolon) {
+  TestDriver driver;
+  InSequence s;
+
+  uint16_t to_otlk = TO_OTLK;
+  uint16_t shift_key = swap_shift_params.shift_key;
+  LEEP_KEY_ROW(0, 4,
+    to_otlk,
+    KC_A,
+    shift_key,
+    ck_test
+  )
+
+  // Without shift, the tap dance key should output a colon.
+  k_to_otlk.press();
+  RUN_ONE_SCAN_LOOP();
+  k_to_otlk.release();
+  EXPECT_REPORT(driver, (KC_LSFT));
+  EXPECT_REPORT(driver, (KC_LSFT, KC_SCLN));
+  EXPECT_REPORT(driver, (KC_LSFT));
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSwapShift, TO_OTLK_PressesSemiColon) {
+  TestDriver driver;
+  InSequence s;
+
+  uint16_t to_otlk = TO_OTLK;
+  uint16_t shift_key = swap_shift_params.shift_key;
+  LEEP_KEY_ROW(0, 4,
+    to_otlk,
+    KC_A,
+    shift_key,
+    ck_test
+  )
+
+  // With the parameterized shift key held, the tap dance key should output a semicolon.
+  k_shift_key.press();
+  // TODO: Why does RSFT not press right away?  I think because of combo, but not sure
+  if (shift_key == KC_LSFT) {
+    EXPECT_REPORT(driver, (shift_key));
+  } else {
+    EXPECT_NO_REPORT(driver);
+  }
+  RUN_ONE_SCAN_LOOP();
+
+  k_to_otlk.press();
+  if (shift_key == KC_LSFT) {
+    EXPECT_NO_REPORT(driver);
+  } else {
+    EXPECT_REPORT(driver, (shift_key));
+  }
+  RUN_ONE_SCAN_LOOP();
+  k_to_otlk.release();
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (KC_SCLN));
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (shift_key));
+  RUN_ONE_SCAN_LOOP();
+
+  k_shift_key.release();
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+TEST_P(LeepFrogSwapShift, TO_OTLK_DoublePressesColon) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_otlk = TO_OTLK;
+    LEEP_KEY_ROW(0, 4,
+      to_otlk,
+      KC_A,
+      KC_LSFT,
+      ck_test
+    )
+
+  // Without shift double-tap
+  k_to_otlk.press();
+  RUN_ONE_SCAN_LOOP();
+  k_to_otlk.release();
+  EXPECT_REPORT(driver, (KC_LSFT));
+  EXPECT_REPORT(driver, (KC_LSFT, KC_SCLN));
+  EXPECT_REPORT(driver, (KC_LSFT));
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+  k_to_otlk.press();
+  EXPECT_REPORT(driver, (KC_LSFT));
+  EXPECT_REPORT(driver, (KC_LSFT, KC_SCLN));
+  EXPECT_REPORT(driver, (KC_LSFT));
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+  k_to_otlk.release();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+
+}
+
+TEST_F(LeepFrog, TO_OTLK_DoublePressesSemiColon) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_otlk = TO_OTLK;
+    LEEP_KEY_ROW(0, 4,
+      to_otlk,
+      KC_A,
+      KC_LSFT,
+      ck_test
+    )
+
+  // With shift double-tap
+  k_KC_LSFT.press();
+  EXPECT_REPORT(driver, (KC_LSFT));
+  RUN_ONE_SCAN_LOOP();
+
+  // First press
+  k_to_otlk.press();
+  RUN_ONE_SCAN_LOOP();
+  k_to_otlk.release();
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (KC_SCLN));
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (KC_LSFT));
+  RUN_ONE_SCAN_LOOP();
+  // Second press
+  k_to_otlk.press();
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (KC_SCLN));
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (KC_LSFT));
+  RUN_ONE_SCAN_LOOP();
+  k_to_otlk.release();
+  RUN_ONE_SCAN_LOOP();
+
+  // Release shift
+  k_KC_LSFT.release();
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
 
 TEST_F(LeepFrog, TapDance_CLICK_KC_HOLD_LAYER) {
     TestDriver driver;

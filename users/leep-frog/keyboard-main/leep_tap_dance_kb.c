@@ -359,6 +359,22 @@ void scroll_press_right(tap_dance_state_t *state, void *user_data) {
     SEND_STRING(SS_RCTL(SS_RGUI(SS_TAP(X_RIGHT))));
 }
 
+void reverse_colon_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value) {
+    if (!tap && !state->pressed) {
+        return;
+    }
+
+    // If shifted, then unshift
+    if (get_mods() & MOD_BIT(KC_LSFT)) {
+        SEND_STRING(SS_UP(X_LSFT) ";" SS_DOWN(X_LSFT));
+    } else if (get_mods() & MOD_BIT(KC_RSFT)) {
+        SEND_STRING(SS_UP(X_RSFT) ";" SS_DOWN(X_RSFT));
+    } else {
+        SEND_STRING(":");
+    }
+}
+
+
 void scroll_unpress(tap_dance_state_t *state, void *user_data) {
     layer_off(LR_SCROLL);
 }
@@ -383,27 +399,6 @@ void ella_mode(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-bool pinky_shifted = false;
-
-void pinky_start_fn(tap_dance_state_t *state, bool press, leep_td_value_t *hold_value) {
-  if (press) {
-    pinky_shifted = get_mods() & MOD_MASK_SHIFT;
-  }
-}
-
-void pinky_press_fn(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value) {
-  bool currently_shifted = get_mods() & MOD_MASK_SHIFT;
-  bool shift_override = false;
-  if (tap && pinky_shifted && !currently_shifted) {
-    add_mods(MOD_BIT(KC_RSFT));
-    shift_override = true;
-  }
-
-  leep_kc_press_fn(state, tap, hold_value);
-  if (shift_override) {
-    del_mods(MOD_BIT(KC_RSFT));
-  }
-}
 
 // void ctrl_shift_toggle_shift_layer(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value) {
 void ctrl_shift_toggle_shift_layer(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value) {
@@ -464,8 +459,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // Scroll right layer
     [TDK_SCROLL_RIGHT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(scroll_press_right, scroll_unpress, scroll_right_finished, NULL),
     // Outlook or semi-colon
-    // [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_KC_HOLD_LAYER(KC_SCLN, LR_OUTLOOK),
-    [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_HOLD(LEEP_TD_NOVAL(), pinky_start_fn, LEEP_TD_INT(KC_SCLN), pinky_press_fn, LEEP_TD_INT(LR_OUTLOOK), leep_layer_hold_fn),
+    [TDK_TO_OUTLOOK] = LEEP_TD_CLICK_FN_HOLD_LAYER(reverse_colon_fn, LEEP_TD_NOVAL(), LR_OUTLOOK),
     // Shortcut or no key (for now)
     [TDK_TO_SHORTCUT] = LEEP_TD_CLICK_KC_HOLD_LAYER(TO_SHORTCUT_KEYCODE, LR_SHORTCUTS),
     // Shortcut or no key (for now)
