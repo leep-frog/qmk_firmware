@@ -459,8 +459,8 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_ALT_LSFT AL(LSFT)
 #define LK_ALT_Z AL(Z)
 #define LK_ALT_X AL(X)
-#define LK_ALT_C AL(C)
-#define LK_ALT_V AL(V)
+#define LK_ALT_C CK_COPY
+#define LK_ALT_V CK_PSTE
 #define LK_ALT_B CL(LEFT)
 #define LK_ALT_N AL(N)
 #define LK_ALT_M AL(M)
