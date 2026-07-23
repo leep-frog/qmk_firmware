@@ -110,11 +110,11 @@ bool _change_mouse_speed(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         // Default speed is fast, then medium, then slow (and reset on layer change)
         if (leep_acl == 0) {
-            tap_code16(KC_ACL1);
+            tap_code16(MS_ACL1);
         } else if (leep_acl == 1) {
-            tap_code16(KC_ACL0);
+            tap_code16(MS_ACL0);
         } else if (leep_acl == 2) {
-            tap_code16(KC_ACL2);
+            tap_code16(MS_ACL2);
         }
         leep_acl = (leep_acl + 1) % 3;
     }
@@ -144,7 +144,7 @@ bool _ctrl_click(keyrecord_t *record, custom_keycode_value_t *_) {
         return true;
     }
     // Used to have the following line
-    // #define MS_CTRL RCTL(KC_MS_BTN1)
+    // #define MS_CTRL RCTL(MS_BTN1)
     // but in my work Windows laptop, the ctrl and click would be too
     // close together and sometimes wouldn't work properly.
     SEND_STRING(SS_DOWN(X_RCTL));
@@ -156,7 +156,7 @@ bool _ctrl_click(keyrecord_t *record, custom_keycode_value_t *_) {
 
 bool _slack_edit(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
-      tap_code16(KC_MS_BTN2);
+      tap_code16(MS_BTN2);
     } else {
       tap_code16(KC_E);
     }
@@ -251,7 +251,7 @@ void one_hand_layer_change(bool activated, layer_data_t *data) {
   // Simple activation logic
   if (activated) {
     leep_acl = 0;
-    tap_code16(KC_ACL2);
+    tap_code16(MS_ACL2);
   }
 
   // Logic to determine if simple modifier + key was intended (e.g. shift+F)

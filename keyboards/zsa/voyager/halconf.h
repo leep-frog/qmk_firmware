@@ -16,7 +16,5 @@
 #pragma once
 
 #define HAL_USE_I2C TRUE
-// #define HAL_USE_GPT TRUE // Added by leep-frog
-// #define HAL_USE_DAC TRUE // Added by leep-frog
 
 #include_next <halconf.h>
