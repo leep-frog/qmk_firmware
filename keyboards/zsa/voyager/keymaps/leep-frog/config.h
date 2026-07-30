@@ -11,6 +11,17 @@
 #define COMBO_ONLY_FROM_LAYER 1 // Ella layer
 #define TAPPING_TERM 180
 
+#define MS_BTN1 KC_BTN1
+#define MS_BTN2 KC_BTN2
+#define MS_BTN3 KC_BTN3
+#define MS_WHLU KC_WH_U
+#define MS_WHLD KC_WH_D
+#define MS_WHLL KC_WH_L
+#define MS_WHLR KC_WH_R
+#define MS_ACL0 KC_ACL0
+#define MS_ACL1 KC_ACL1
+#define MS_ACL2 KC_ACL2
+
 /***************
 * Main include *
 ***************/
