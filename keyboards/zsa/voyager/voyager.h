@@ -6,12 +6,6 @@
 
 #include "quantum.h"
 
-// START
-// #ifdef ORYX_ENABLE
-// #    include "oryx.h"
-// #endif // ORYX_ENABLE
-// END
-
 extern bool mcp23018_leds[];
 
 #define MCP23018_DEFAULT_ADDRESS 0b0100000
