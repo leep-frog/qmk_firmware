@@ -135,8 +135,8 @@ void matrix_init_custom(void) {
   num_beam_paths = sizeof(beam_paths) / sizeof(beam_path_t);
 
   for (uint8_t i = 0; i < POWER_PIN_COUNT; i++) {
-    setPinOutput(power_pins[i]);
-    writePinLow(power_pins[i]);
+    gpio_set_pin_output(power_pins[i]);
+    gpio_write_pin_low(power_pins[i]);
 
     pedal_state_t *pedal_state = &pedal_states[i];
     pedal_state->beam_state = DIR_END;
@@ -145,11 +145,11 @@ void matrix_init_custom(void) {
     pedal_state->beam_state_stale = true;
     pedal_state->beam_state_changed_time = timer_read();
   }
-  writePinHigh(power_pins[current_power_pin]);
+  gpio_write_pin_high(power_pins[current_power_pin]);
   power_pin_change_time = timer_read();
 
   for (uint8_t i = 0; i < INPUT_PIN_COUNT; i++) {
-    setPinInput(input_pins[i]);
+    gpio_set_pin_input_high(input_pins[i]);
   }
 
   // Set the pedal beam states
@@ -234,6 +234,9 @@ bool update_beam_state(pedal_state_t *pedal_state, direction_t new_beam_state) {
 // the combo from firing. By setting this, we allow for A to be held longer
 // so we get (press A, press B, release A, release B).
 // const uint16_t ACTIVATE_FOR = DEBOUNCE > COMBO_TERM ? DEBOUNCE : COMBO_TERM;
+#ifndef COMBO_TERM
+#    define COMBO_TERM 50
+#endif
 const uint16_t ACTIVATE_FOR = COMBO_TERM;
 
 bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
@@ -268,9 +271,9 @@ bool matrix_scan_custom_fancy(matrix_row_t current_matrix[]) {
 
   // Now that we read all of the pins, prepare for the next input.
   uint8_t pedal_beam_state_idx = current_power_pin;
-  writePinLow(power_pins[current_power_pin]);
+  gpio_write_pin_low(power_pins[current_power_pin]);
   current_power_pin = (current_power_pin + 1) % POWER_PIN_COUNT;
-  writePinHigh(power_pins[current_power_pin]);
+  gpio_write_pin_high(power_pins[current_power_pin]);
   power_pin_change_time = timer_read();
 
   pedal_state_t *pedal_state = &pedal_states[pedal_beam_state_idx];
