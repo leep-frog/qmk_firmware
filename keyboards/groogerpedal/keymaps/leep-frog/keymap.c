@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 
 #include "quantum/leep/custom_keycode_handler.h"
+#include "quantum/leep/symbol_layer_overlap_handler.h"
 
 #include "users/leep-frog/v2/leep_aliases_v2.h"
 #include "users/leep-frog/v2/leep_alt_v2.h"
@@ -84,6 +85,10 @@ tap_dance_action_t tap_dance_actions[] = {
 #define CK_WWW_REOPEN_FORWARD TD(TDK_BROWSER_3)
 
 #define CK_TABF_SHORTCUTS TD(TDK_TO_SHORTCUTS)
+
+#ifdef LEEP_KEYMAP_INTROSPECTION
+layer_overlap_handler_t symbol_layer_overlap_handlers[] = {};
+#endif
 
 uint16_t Alt_keycodes[] = {
   CK_ATAB,
