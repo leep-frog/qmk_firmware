@@ -17,8 +17,8 @@
 #pragma once
 
 /* Turn off effects when suspended */
-#define RGB_DISABLE_WHEN_USB_SUSPENDED
-#define LED_DISABLE_WHEN_USB_SUSPENDED
+#define RGB_MATRIX_SLEEP
+#define LED_MATRIX_SLEEP
 
 /* DIP switch */
 #define DIP_SWITCH_PINS \

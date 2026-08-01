@@ -24,7 +24,7 @@
 #include "users/leep-frog/main.h"
 
 
-#define LEEP_LAYOUT(PFX, backspace, version, bsls, del, home, up, ctrl, alt, left, down, right) LAYOUT_69_ansi( \
+#define LEEP_LAYOUT(PFX, backspace, version, bsls, del, home, up, ctrl, alt, left, down, right) LAYOUT_ansi_69( \
     PFX##_ESC,       PFX##_1,   PFX##_2,   PFX##_3,  PFX##_4,  PFX##_5,  PFX##_6,   PFX##_7,  PFX##_8,  PFX##_9,  PFX##_0,   PFX##_MINUS, PFX##_EQUAL,    backspace,    version, \
     PFX##_TAB,       PFX##_Q,   PFX##_W,   PFX##_E,  PFX##_R,  PFX##_T,  PFX##_Y,   PFX##_U,  PFX##_I,  PFX##_O,  PFX##_P,   PFX##_LBRC,  PFX##_RBRC,     bsls,         del,     \
     PFX##_CAPS_LOCK, PFX##_A,   PFX##_S,   PFX##_D,  PFX##_F,  PFX##_G,             PFX##_H,  PFX##_J,  PFX##_K,  PFX##_L,   PFX##_SC,    PFX##_QUOTE,    PFX##_ENTER,  home,    \

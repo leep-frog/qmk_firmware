@@ -136,7 +136,7 @@ void keyboard_post_init_kb(void) {
 #endif
 
     power_on_indicator_timer_buffer = sync_timer_read32() | 1;
-    writePin(BAT_LOW_LED_PIN, BAT_LOW_LED_PIN_ON_STATE);
+    gpio_write_pin(BAT_LOW_LED_PIN, BAT_LOW_LED_PIN_ON_STATE);
     keyboard_post_init_user();
 }
 
@@ -156,9 +156,9 @@ void matrix_scan_kb(void) {
     if (power_on_indicator_timer_buffer) {
         if (sync_timer_elapsed32(power_on_indicator_timer_buffer) > POWER_ON_LED_DURATION) {
             power_on_indicator_timer_buffer = 0;
-            writePin(BAT_LOW_LED_PIN, !BAT_LOW_LED_PIN_ON_STATE);
+            gpio_write_pin(BAT_LOW_LED_PIN, !BAT_LOW_LED_PIN_ON_STATE);
         } else {
-            writePin(BAT_LOW_LED_PIN, BAT_LOW_LED_PIN_ON_STATE);
+            gpio_write_pin(BAT_LOW_LED_PIN, BAT_LOW_LED_PIN_ON_STATE);
         }
     }
 
