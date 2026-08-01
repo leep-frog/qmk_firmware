@@ -17,7 +17,7 @@
         "rows": ["D6"]
     },
     "processor": "atmega32u4",
-    "url": "",
+    "url": "https://github.com/leep-frog/qmk_firmware",
     "usb": {
         "device_version": "1.0.0",
         "pid": "0x0000",
