@@ -268,7 +268,7 @@ bool DecrementScrollSpeed(keyrecord_t *record, custom_keycode_value_t *_) {
   return false;
 }
 
-custom_keycode_handler_t custom_keycode_handlers[] = {
+const custom_keycode_handler_t PROGMEM custom_keycode_handlers[] = {
   [ALT_TAB_HANDLER] = CK_HANDLER_FN(AltTabHandler),
   [SHIFT_ALT_TAB_HANDLER] = CK_HANDLER_FN(AltShiftTabHandler),
   [LR_ALT_B_BUTTON_HANDLER] = CK_HANDLER_FN(AltBButtonHandler),

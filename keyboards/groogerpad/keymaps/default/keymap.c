@@ -15,7 +15,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              _______,
                 C(G(KC_LEFT)),                                        C(G(KC_RIGHT)),
                                            _______,                   KC_Y,
-                C(KC_C),          KC_BTN2,          KC_BTN2, KC_X,             KC_B,
+                C(KC_C),          MS_BTN2,          MS_BTN2, KC_X,             KC_B,
                 KC_UP,                     _______,                   KC_A,
        KC_LEFT,          KC_RGHT,                   C(KC_V),
                 KC_DOWN

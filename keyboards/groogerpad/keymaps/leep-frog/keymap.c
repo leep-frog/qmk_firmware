@@ -10,6 +10,7 @@
 #include QMK_KEYBOARD_H
 
 #include "quantum/leep/custom_keycode_handler.h"
+#include "quantum/leep/symbol_layer_overlap_handler.h"
 #include "users/leep-frog/v2/leep_outlook_v2.h"
 #include "users/leep-frog/v2/leep_workspace_v2.h"
 
@@ -35,17 +36,23 @@ enum layers {
 // If the firmware ever gets too big, consider importing specific features required instead of everything.
 #include "users/leep-frog/v2/leep_index_v2.c"
 
-void TypeLayerHandler(bool activated) {
+void TypeLayerHandler(bool activated, layer_data_t *data) {
+  (void)data;
   if (activated) {
-    writePinHigh(D4);
+    gpio_write_pin_high(D4);
   } else {
-    writePinLow(D4);
+    gpio_write_pin_low(D4);
   }
 }
 
 void keyboard_post_init_user(void) {
   SET_LAYER_HANDLER(LR_TYPE, TypeLayerHandler);
 }
+
+#ifdef LEEP_KEYMAP_INTROSPECTION
+layer_overlap_handler_t symbol_layer_overlap_handlers[] = {};
+#endif
+
 
 /****************
  * Word Buttons *
@@ -273,7 +280,7 @@ bool DecrementScrollSpeed(keyrecord_t *record, custom_keycode_value_t *_) {
   return false;
 }
 
-custom_keycode_handler_t custom_keycode_handlers[] = {
+const custom_keycode_handler_t PROGMEM custom_keycode_handlers[] = {
   [ALT_TAB_HANDLER] = CK_HANDLER_FN(AltTabHandler),
   [SHIFT_ALT_TAB_HANDLER] = CK_HANDLER_FN(AltShiftTabHandler),
   [LR_ALT_B_BUTTON_HANDLER] = CK_HANDLER_FN(AltBButtonHandler),
@@ -339,8 +346,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,                                              _______,
                 TK_LB,                                                TK_RB,
                                            KC_LGUI,                   S(KC_TAB),
-                TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           KC_BTN2,
-                CK_STAB,                   TK_ESC_PRNT,               KC_BTN1,
+                TK_COPY,          TK_SLCT,          TK_STRT, KC_TAB,           MS_BTN2,
+                CK_STAB,                   TK_ESC_PRNT,               MS_BTN1,
        TK_LEFT,          TK_RGHT,                   TK_PSTE,
                 CK_ATAB
     ),

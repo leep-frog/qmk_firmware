@@ -342,7 +342,7 @@ bool ck_noop(keyrecord_t *_k, custom_keycode_value_t *_c) { return false; }
 #define GCS_3 "-prod"
 #define GCS_4 "-1"
 
-custom_keycode_handler_t custom_keycode_handlers[] = {
+const custom_keycode_handler_t PROGMEM custom_keycode_handlers[] = {
   // Fn handlers
   [TO_CTLX_HANDLER] = CK_HANDLER_FN(to_ctrl_x_layer),
   [CTRL_W_HANDLER] = CK_HANDLER_FN(CtrlWHandler),

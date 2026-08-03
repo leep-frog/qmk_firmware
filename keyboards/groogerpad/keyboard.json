@@ -2,14 +2,14 @@
     "manufacturer": "leep-frog",
     "keyboard_name": "groogerpad",
     "maintainer": "leep-frog",
-    "bootloader": "caterina",
+    "bootloader": "atmel-dfu",
     "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,
         "command": false,
         "console": false,
-        "extrakey": false,
-        "mousekey": false,
+        "extrakey": true,
+        "mousekey": true,
         "nkro": true
     },
     "matrix_pins": {
@@ -17,7 +17,7 @@
         "rows": ["D1", "D1", "D1", "D1", "D1", "D1", "D1"]
     },
     "processor": "atmega32u4",
-    "url": "",
+    "url": "https://github.com/leep-frog/qmk_firmware",
     "usb": {
         "device_version": "1.0.0",
         "pid": "0x0000",

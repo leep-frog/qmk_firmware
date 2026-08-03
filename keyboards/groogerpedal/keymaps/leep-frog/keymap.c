@@ -29,7 +29,7 @@ enum custom_keycode_handlers {
   CK_WS_THREE,
 };
 
-custom_keycode_handler_t custom_keycode_handlers[] = {
+const custom_keycode_handler_t PROGMEM custom_keycode_handlers[] = {
   [ALT_TAB_HANDLER] = CK_HANDLER_FN(AltTabHandler),
   [SHIFT_ALT_TAB_HANDLER] = CK_HANDLER_FN(AltShiftTabHandler),
   [CK_WS_TWO] = CK_HANDLER_STRING(SS_RCTL(SS_RGUI(SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_RIGHT) SS_TAP(X_RIGHT)))),

@@ -13,11 +13,11 @@ const int trigger_threshold = 900;
 const int blink_time = 125;
 
 void led_on(void) {
-  writePinHigh(D4);
+  gpio_write_pin_high(D4);
 }
 
 void led_off(void) {
-  writePinLow(D4);
+  gpio_write_pin_low(D4);
 }
 
 __attribute__((weak)) void handle_left_stick(int32_t axis_x, int32_t axis_y) {
@@ -37,7 +37,7 @@ void matrix_init_custom(void) {
   uart_init(115200);
   xprintf("Initializing groog controller");
   xprintf("Initing");
-  setPinOutput(D4);
+  gpio_set_pin_output(D4);
 
   // Clear the buffer;
   while (uart_available()) {

@@ -130,7 +130,9 @@ uint16_t custom_keycode_handlers_count(void) {
     return sizeof(custom_keycode_handlers) / sizeof(custom_keycode_handler_t);
 }
 custom_keycode_handler_t custom_keycode_handlers_get(uint16_t idx) {
-    return custom_keycode_handlers[idx];
+    custom_keycode_handler_t handler;
+    memcpy_P(&handler, &custom_keycode_handlers[idx], sizeof(handler));
+    return handler;
 }
 
 // ALt mode list
