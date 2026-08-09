@@ -1,5 +1,7 @@
 static bool pending_ctrl_x = false;
 
+#define LEEP_CTRL_X_DELAY_MS 30
+
 bool to_ctrl_x_layer(keyrecord_t *record, custom_keycode_value_t *_) {
     if (record->event.pressed) {
         pending_ctrl_x = true;
@@ -24,6 +26,6 @@ void ctrl_x_layer_process_record(uint16_t keycode, keyrecord_t *record) {
 
     if (should_send_ctrl_x) {
         SEND_STRING(SS_RCTL("x"));
-        wait_ms(30);
+        wait_ms(LEEP_CTRL_X_DELAY_MS);
     }
 }

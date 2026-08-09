@@ -3264,6 +3264,7 @@ TEST_P(LeepFrogCtrlXLayerDeferred, SendsCtrlXThenProcessesSecondKeyNormally) {
   RUN_ONE_SCAN_LOOP();
 
   // First key after TO_CTLX should trigger deferred Ctrl+X.
+  uint32_t start_time = timer_read32();
   k_first_key.press();
   EXPECT_REPORT(driver, (KC_RCTL));
   EXPECT_REPORT(driver, (KC_RCTL, KC_X));
@@ -3271,6 +3272,7 @@ TEST_P(LeepFrogCtrlXLayerDeferred, SendsCtrlXThenProcessesSecondKeyNormally) {
   EXPECT_EMPTY_REPORT(driver);
   EXPECT_REPORT(driver, (first_key));
   RUN_ONE_SCAN_LOOP();
+  EXPECT_GE(timer_elapsed32(start_time), 30u);
 
   k_first_key.release();
   EXPECT_EMPTY_REPORT(driver);
