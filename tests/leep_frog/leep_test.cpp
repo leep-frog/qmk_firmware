@@ -3325,7 +3325,7 @@ TEST_F(LeepFrog, CtrlXLayer_CopySkipsDeferredCtrlX) {
   InSequence s;
   const uint16_t to_ctlx = TO_CTLX;
   const uint16_t first_key = KC_A;
-  const uint16_t ck_copy = CK_COPY;
+  const uint16_t ck_paste = CK_PASTE;
   LEEP_KEY_ROW(0, 3,
     to_ctlx,
     first_key,
@@ -3334,7 +3334,7 @@ TEST_F(LeepFrog, CtrlXLayer_CopySkipsDeferredCtrlX) {
 
   LEEP_KEY_ROW(LR_CTRL_X, 3,
     TK_0,
-    ck_copy,
+    ck_paste,
     TK_1
   )
 
@@ -3346,14 +3346,14 @@ TEST_F(LeepFrog, CtrlXLayer_CopySkipsDeferredCtrlX) {
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
-  // CK_COPY should be sent, and deferred Ctrl+X should be skipped.
+  // CK_PASTE should be sent, and deferred Ctrl+X should be skipped.
   k_first_key.press();
-  EXPECT_REPORT(driver, (KC_RCTL));
-  EXPECT_REPORT(driver, (KC_RCTL, KC_C));
+  EXPECT_REPORT(driver, (KC_RSFT));
+  EXPECT_REPORT(driver, (KC_RSFT, KC_INSERT));
   RUN_ONE_SCAN_LOOP();
 
   k_first_key.release();
-  EXPECT_REPORT(driver, (KC_RCTL));
+  EXPECT_REPORT(driver, (KC_RSFT));
   EXPECT_EMPTY_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
