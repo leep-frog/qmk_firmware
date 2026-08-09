@@ -379,7 +379,7 @@ bool layers_status[NUM_LAYERS] = {
     [1 ... NUM_LAYERS - 1] = false,
 };
 
-#define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(GREEN, RGB_MATRIX_RAINDROPS, true)
+#define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(MAGENTA, RGB_MATRIX_RAINDROPS, true)
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
