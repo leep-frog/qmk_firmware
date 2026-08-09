@@ -156,12 +156,12 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_BASE_ESC KC_ESC
 #define LK_BASE_1 KC_1
 #define LK_BASE_2 KC_2
-#define LK_BASE_3 KC_3
+#define LK_BASE_3 KC_HASH
 #define LK_BASE_4 KC_4
 #define LK_BASE_5 KC_5
 #define LK_BASE_6 KC_6
 #define LK_BASE_7 KC_7
-#define LK_BASE_8 KC_8
+#define LK_BASE_8 KC_ASTERISK
 #define LK_BASE_9 KC_9
 #define LK_BASE_0 KC_0
 #define LK_BASE_MINUS KC_MINUS
