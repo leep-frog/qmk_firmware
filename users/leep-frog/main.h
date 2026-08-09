@@ -383,7 +383,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_CTRL_X_F CL(F)
 #define LK_CTRL_X_G CL(G)
 #define LK_CTRL_X_H CL(H)
-#define LK_CTRL_X_J CL(J)
+#define LK_CTRL_X_J CK_TGSH
 #define LK_CTRL_X_K CL(K)
 #define LK_CTRL_X_L CL(L)
 #define LK_CTRL_X_SC CL(SCLN)

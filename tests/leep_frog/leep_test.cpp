@@ -3282,42 +3282,12 @@ TEST_P(LeepFrogCtrlXLayerDeferred, SendsCtrlXThenProcessesSecondKeyNormally) {
   CONFIRM_RESET();
 }
 
-struct CtrlXLayerSkipParams {
-  std::string name;
-  uint16_t    ctrl_keycode;
-  uint16_t    expected_key;
-};
-
-class LeepFrogCtrlXLayerSkip : public ::testing::WithParamInterface<CtrlXLayerSkipParams>, public TestFixture {
-protected:
-  CtrlXLayerSkipParams ctrl_x_layer_skip_params;
-
-  void SetUp() override {
-    ctrl_x_layer_skip_params = GetParam();
-  }
-};
-
-static const CtrlXLayerSkipParams ctrl_x_layer_skip_params[] = {
-  CtrlXLayerSkipParams{"CTRL_J", RCTL(KC_J), KC_J},
-  CtrlXLayerSkipParams{"CK_COPY", CK_COPY, KC_C},
-};
-
-INSTANTIATE_TEST_CASE_P(
-  Layers,
-  LeepFrogCtrlXLayerSkip,
-  ::testing::ValuesIn(ctrl_x_layer_skip_params),
-  [](const ::testing::TestParamInfo<CtrlXLayerSkipParams> info) {
-    return info.param.name;
-  }
-);
-
-TEST_P(LeepFrogCtrlXLayerSkip, SkipsDeferredCtrlXForAllowedCtrlKeys) {
+TEST_F(LeepFrog, CtrlXLayer_JTriggersShiftModeAndSkipsDeferredCtrlX) {
   TestDriver driver;
   InSequence s;
   const uint16_t to_ctlx = TO_CTLX;
   const uint16_t first_key = KC_A;
-  const uint16_t ctrl_keycode = ctrl_x_layer_skip_params.ctrl_keycode;
-  const uint16_t expected_key = ctrl_x_layer_skip_params.expected_key;
+  const uint16_t ck_tgsh = CK_TGSH;
   LEEP_KEY_ROW(0, 3,
     to_ctlx,
     first_key,
@@ -3326,7 +3296,7 @@ TEST_P(LeepFrogCtrlXLayerSkip, SkipsDeferredCtrlXForAllowedCtrlKeys) {
 
   LEEP_KEY_ROW(LR_CTRL_X, 3,
     TK_0,
-    ctrl_keycode,
+    ck_tgsh,
     TK_1
   )
 
@@ -3338,10 +3308,48 @@ TEST_P(LeepFrogCtrlXLayerSkip, SkipsDeferredCtrlXForAllowedCtrlKeys) {
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
-  // Parameterized Ctrl+J/CK_COPY should be sent, and deferred Ctrl+X should be skipped.
+  // CK_TGSH should toggle shift mode, and deferred Ctrl+X should be skipped.
+  k_first_key.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_first_key.release();
+  EXPECT_REPORT(driver, (KC_RSFT));
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, CtrlXLayer_CopySkipsDeferredCtrlX) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t to_ctlx = TO_CTLX;
+  const uint16_t first_key = KC_A;
+  const uint16_t ck_copy = CK_COPY;
+  LEEP_KEY_ROW(0, 3,
+    to_ctlx,
+    first_key,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(LR_CTRL_X, 3,
+    TK_0,
+    ck_copy,
+    TK_1
+  )
+
+  k_to_ctlx.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_to_ctlx.release();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  // CK_COPY should be sent, and deferred Ctrl+X should be skipped.
   k_first_key.press();
   EXPECT_REPORT(driver, (KC_RCTL));
-  EXPECT_REPORT(driver, (KC_RCTL, expected_key));
+  EXPECT_REPORT(driver, (KC_RCTL, KC_C));
   RUN_ONE_SCAN_LOOP();
 
   k_first_key.release();
