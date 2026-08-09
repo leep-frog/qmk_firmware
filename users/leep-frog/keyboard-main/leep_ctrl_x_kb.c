@@ -19,7 +19,7 @@ void ctrl_x_layer_process_record(uint16_t keycode, keyrecord_t *record) {
     bool should_send_ctrl_x = true;
     switch (keycode) {
         case CL(J):
-        case CL(Y):
+        case CK_COPY: // CL(Y):
             should_send_ctrl_x = false;
             break;
     }

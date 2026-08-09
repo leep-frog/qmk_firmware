@@ -7,6 +7,7 @@
 #include "../../../../users/leep-frog/main.h"
 #include "users/leep-frog/keyboard-main/leep_tap_dance_kb.h"
 #include "users/leep-frog/keyboard-main/leep_symbol_layer_overlap_kb.h"
+#include "users/leep-frog/v2/leep_aliases_v2.h"
 
 using testing::_;
 using testing::InSequence;
@@ -3298,7 +3299,7 @@ protected:
 
 static const CtrlXLayerSkipParams ctrl_x_layer_skip_params[] = {
   CtrlXLayerSkipParams{"CTRL_J", RCTL(KC_J), KC_J},
-  CtrlXLayerSkipParams{"CTRL_Y", RCTL(KC_Y), KC_Y},
+  CtrlXLayerSkipParams{"CK_COPY", CK_COPY, KC_C},
 };
 
 INSTANTIATE_TEST_CASE_P(
@@ -3337,7 +3338,7 @@ TEST_P(LeepFrogCtrlXLayerSkip, SkipsDeferredCtrlXForAllowedCtrlKeys) {
   EXPECT_NO_REPORT(driver);
   RUN_ONE_SCAN_LOOP();
 
-  // Parameterized Ctrl+J/Ctrl+Y should be sent, and deferred Ctrl+X should be skipped.
+  // Parameterized Ctrl+J/CK_COPY should be sent, and deferred Ctrl+X should be skipped.
   k_first_key.press();
   EXPECT_REPORT(driver, (KC_RCTL));
   EXPECT_REPORT(driver, (KC_RCTL, expected_key));
