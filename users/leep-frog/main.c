@@ -196,14 +196,6 @@ void _ck_timer(bool pressed) {
     }
 }
 
-bool to_ctrl_x_layer(keyrecord_t *record, custom_keycode_value_t *_) {
-    if (record->event.pressed) {
-        SEND_STRING(SS_RCTL("x"));
-        ActivateOneshot(LR_CTRL_X);
-    }
-    return false;
-}
-
 void _ella_layer(bool activated, layer_data_t *data) {
     if (!activated) {
         return;
@@ -519,6 +511,8 @@ bool pre_process_record_user(uint16_t keycode, keyrecord_t* record) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+
+    ctrl_x_layer_process_record(keycode, record);
 
     OSM_handled(keycode, record->event.pressed);
     Mute_handled(record);

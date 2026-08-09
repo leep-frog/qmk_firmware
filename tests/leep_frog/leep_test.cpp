@@ -3204,3 +3204,147 @@ TEST_F(LeepFrog, CustomKeycodeFromAlt) {
 
   CONFIRM_RESET();
 }
+
+struct CtrlXLayerDeferredParams {
+  std::string name;
+  uint16_t    first_key;
+};
+
+class LeepFrogCtrlXLayerDeferred : public ::testing::WithParamInterface<CtrlXLayerDeferredParams>, public TestFixture {
+protected:
+  CtrlXLayerDeferredParams ctrl_x_layer_deferred_params;
+
+  void SetUp() override {
+    ctrl_x_layer_deferred_params = GetParam();
+  }
+};
+
+// We want multiple test cases here to show this is key-agnostic;
+// any arbitrary keycodes are fine.
+static const CtrlXLayerDeferredParams ctrl_x_layer_deferred_params[] = {
+  CtrlXLayerDeferredParams{"KC_A", KC_A},
+  CtrlXLayerDeferredParams{"KC_B", KC_B},
+  CtrlXLayerDeferredParams{"KC_1", KC_1},
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogCtrlXLayerDeferred,
+  ::testing::ValuesIn(ctrl_x_layer_deferred_params),
+  [](const ::testing::TestParamInfo<CtrlXLayerDeferredParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogCtrlXLayerDeferred, SendsCtrlXThenProcessesSecondKeyNormally) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t to_ctlx = TO_CTLX;
+  const uint16_t first_key = ctrl_x_layer_deferred_params.first_key;
+  LEEP_KEY_ROW(0, 3,
+    to_ctlx,
+    first_key,
+    ck_test
+  )
+
+  // We want to verify that on the second key press we get both deferred Ctrl+X
+  // and the pressed key itself processed normally.
+  LEEP_KEY_ROW_ONLY(LR_CTRL_X, 3,
+    TK_0,
+    first_key,
+    TK_1
+  )
+
+  k_to_ctlx.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_to_ctlx.release();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  // First key after TO_CTLX should trigger deferred Ctrl+X.
+  k_first_key.press();
+  EXPECT_REPORT(driver, (KC_RCTL));
+  EXPECT_REPORT(driver, (KC_RCTL, KC_X));
+  EXPECT_REPORT(driver, (KC_RCTL));
+  EXPECT_EMPTY_REPORT(driver);
+  EXPECT_REPORT(driver, (first_key));
+  RUN_ONE_SCAN_LOOP();
+
+  k_first_key.release();
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+struct CtrlXLayerSkipParams {
+  std::string name;
+  uint16_t    ctrl_keycode;
+  uint16_t    expected_key;
+};
+
+class LeepFrogCtrlXLayerSkip : public ::testing::WithParamInterface<CtrlXLayerSkipParams>, public TestFixture {
+protected:
+  CtrlXLayerSkipParams ctrl_x_layer_skip_params;
+
+  void SetUp() override {
+    ctrl_x_layer_skip_params = GetParam();
+  }
+};
+
+static const CtrlXLayerSkipParams ctrl_x_layer_skip_params[] = {
+  CtrlXLayerSkipParams{"CTRL_J", RCTL(KC_J), KC_J},
+  CtrlXLayerSkipParams{"CTRL_Y", RCTL(KC_Y), KC_Y},
+};
+
+INSTANTIATE_TEST_CASE_P(
+  Layers,
+  LeepFrogCtrlXLayerSkip,
+  ::testing::ValuesIn(ctrl_x_layer_skip_params),
+  [](const ::testing::TestParamInfo<CtrlXLayerSkipParams> info) {
+    return info.param.name;
+  }
+);
+
+TEST_P(LeepFrogCtrlXLayerSkip, SkipsDeferredCtrlXForAllowedCtrlKeys) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t to_ctlx = TO_CTLX;
+  const uint16_t first_key = KC_A;
+  const uint16_t ctrl_keycode = ctrl_x_layer_skip_params.ctrl_keycode;
+  const uint16_t expected_key = ctrl_x_layer_skip_params.expected_key;
+  LEEP_KEY_ROW(0, 3,
+    to_ctlx,
+    first_key,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(LR_CTRL_X, 3,
+    TK_0,
+    ctrl_keycode,
+    TK_1
+  )
+
+  k_to_ctlx.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_to_ctlx.release();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  // Parameterized Ctrl+J/Ctrl+Y should be sent, and deferred Ctrl+X should be skipped.
+  k_first_key.press();
+  EXPECT_REPORT(driver, (KC_RCTL));
+  EXPECT_REPORT(driver, (KC_RCTL, expected_key));
+  RUN_ONE_SCAN_LOOP();
+
+  k_first_key.release();
+  EXPECT_REPORT(driver, (KC_RCTL));
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
