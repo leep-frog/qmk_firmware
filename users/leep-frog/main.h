@@ -25,6 +25,7 @@ enum custom_keycode_handlers {
   CK_MUT_HANDLER,
   CK_CTLG_HANDLER,
   CK_TGL_SHIFT_HANDLER,
+  CK_MOUSE_MOVER_HANDLER,
   // String handlers
   CK_UNBS_HANDLER,
   CK_LOGS_HANDLER,
@@ -62,6 +63,7 @@ enum custom_keycode_handlers {
 #define CK_MUT CK(CK_MUT_HANDLER)
 #define CK_CTLG CK(CK_CTLG_HANDLER)
 #define CK_TGSH CK(CK_TGL_SHIFT_HANDLER)
+#define CK_MOUSE_MOVER CK(CK_MOUSE_MOVER_HANDLER)
 
 #define URL_PST CK(URL_PST_HANDLER)
 #define URL_CPY CK(URL_CPY_HANDLER)
@@ -594,7 +596,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SHORTCUTS_V CK_GCS
 #define LK_SHORTCUTS_B GU(LEFT)
 #define LK_SHORTCUTS_N GU(DOWN)
-#define LK_SHORTCUTS_M _______
+#define LK_SHORTCUTS_M CK_MOUSE_MOVER
 #define LK_SHORTCUTS_LT _______
 #define LK_SHORTCUTS_GT _______
 #define LK_SHORTCUTS_SL _______

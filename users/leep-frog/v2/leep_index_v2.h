@@ -21,3 +21,4 @@
 #include "./leep_color_v2.h"
 #include "./leep_oneshot_v2.h"
 #include "./leep_osm_v2.h"
+#include "./leep_mouse_mover_v2.h"

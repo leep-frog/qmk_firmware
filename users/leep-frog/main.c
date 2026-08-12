@@ -354,6 +354,7 @@ const custom_keycode_handler_t PROGMEM custom_keycode_handlers[] = {
   [CK_MUT_HANDLER] = CK_HANDLER_FN(MuteWithoutSound),
   [CK_CTLG_HANDLER] = CK_HANDLER_FN(_ctrl_g_new),
   [CK_UNBS_HANDLER] = CK_HANDLER_FN(_universal_backspace),
+  [CK_MOUSE_MOVER_HANDLER] = CK_HANDLER_FN(LeepMouse_Handler),
   // String handlers
   [CK_LOGS_HANDLER] = CK_HANDLER_STRING(SS_TAP(X_ENTER) " | sort @timestamp ascy"),
   [URL_PST_HANDLER] = CK_HANDLER_STRING(NEW_TAB_STRING() SS_RSFT(SS_TAP(X_INSERT)) SS_TAP(X_ENTER)),
@@ -488,6 +489,7 @@ bool leep_startup_mode(uint16_t keycode, keyrecord_t* record) {
 void housekeeping_task_user(void) {
   OSM_cleanup();
   SymbolLayerOverlap_housekeeping();
+  LeepMouse_Move();
 }
 
 bool pre_process_record_user(uint16_t keycode, keyrecord_t* record) {
@@ -511,9 +513,22 @@ bool pre_process_record_user(uint16_t keycode, keyrecord_t* record) {
   return true;
 }
 
+static bool override_LeepMouse_StopMoving(uint16_t keycode, keyrecord_t *record) {
+  // Ignore unpressing layer change key (which is released after pressing the mover key)
+  if (keycode == TO_SHCT && !record->event.pressed) {
+    return false;
+  }
+
+  // Don't process the key (return true) if the mouse was moving. Otherwise, return false to allow normal processing of the key.
+  return LeepMouse_StopMoving();
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
     ctrl_x_layer_process_record(keycode, record);
+    if (override_LeepMouse_StopMoving(keycode, record)) {
+      return false;
+    }
 
     OSM_handled(keycode, record->event.pressed);
     Mute_handled(record);
