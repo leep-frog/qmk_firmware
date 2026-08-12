@@ -1,6 +1,6 @@
 #include "../v2/leep_osm_v2.h"
 
-void shift_activation_fn(bool activated) {
+static void shift_activation_fn(bool activated) {
   if (activated) {
     layer_on(LR_ELLA);
     register_code16(KC_RSFT);

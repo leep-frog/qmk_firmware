@@ -23,3 +23,4 @@ bool _ck_string_handler(keyrecord_t *record, custom_keycode_value_t *v);
 
 #define CK_HANDLER_FN(handler) { .fn = &handler, .v = { .ck_int = 0 } }
 #define CK_HANDLER_STRING(str) { .fn = &_ck_string_handler, .v = { .ck_string = str "\0" } }
+#define CK_HANDLER_EMOJI(str) { .fn = &_ck_string_handler, .v = { .ck_string = str SS_TAP(X_ENTER) "\0" } }
