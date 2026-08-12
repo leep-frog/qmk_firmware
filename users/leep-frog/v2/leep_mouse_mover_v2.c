@@ -17,11 +17,6 @@ static bool leep_moving = false;
 
 void LeepMouse_ToggleMove(void) {
   leep_moving = !leep_moving;
-  if (leep_moving) {
-    tap_code16(KC_S);
-  } else {
-    tap_code16(KC_E);
-  }
 }
 
 void LeepMouse_Move(void) {
