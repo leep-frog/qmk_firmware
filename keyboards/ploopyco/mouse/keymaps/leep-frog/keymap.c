@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
-#include "leep_mover.c"
 #include "leep_enum.c"
 #include "leep_combo.c"
 #include "leep_outlook.c"
