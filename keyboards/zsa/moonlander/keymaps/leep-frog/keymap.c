@@ -99,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______
     ),
 
-    [LR_EMOJI] = LEEP_LAYOUT(LK_SCROLL,
+    [LR_EMOJI] = LEEP_LAYOUT(LK_EMOJI,
         _______, _______, _______,
         _______, _______,
         _______, _______
