@@ -33,6 +33,7 @@ const uint16_t CtrlLayer = LR_CTRL;
 enum td_keys { // prefix TDK
     TDK_SHIFT_TOGGLE,
     TDK_CTRL_SHIFT_TOGGLE,
+    TDK_EMOJI,
     TDK_KILL_LINE,
     TDK_MACRO_1,
     TDK_MACRO_2,

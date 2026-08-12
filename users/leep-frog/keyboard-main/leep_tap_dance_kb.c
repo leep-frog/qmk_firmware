@@ -407,11 +407,18 @@ void ctrl_shift_toggle_shift_layer(tap_dance_state_t *state, bool tap, leep_td_v
     }
 }
 
+void emoji_osm_layer(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_value) {
+    OSM_handled(CK_OSM_EMOJI, true);
+    OSM_handled(CK_OSM_EMOJI, false);
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Shift toggle
     // [TDK_SHIFT_TOGGLE] = ACTION_TAP_DANCE_FN(TDToggleShift),
     [TDK_SHIFT_TOGGLE] = LEEP_TD_CLICK_KC_HOLD_FN(C(KC_J), TDToggleShift_hold, LEEP_TD_NOVAL()),
     [TDK_CTRL_SHIFT_TOGGLE] = LEEP_TD_CLICK_FN_HOLD_LAYER(ctrl_shift_toggle_shift_layer, LEEP_TD_NOVAL(), LR_CTRL_SHIFT),
+    // OSM emoji layer
+    [TDK_EMOJI] = LEEP_TD_CLICK_FN_HOLD_LAYER(emoji_osm_layer, LEEP_TD_NOVAL(), LR_SHORTCUTS),
     // Kill line
     [TDK_KILL_LINE] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, TDKillLine_finished, TDKillLine_reset),
     // Record 1

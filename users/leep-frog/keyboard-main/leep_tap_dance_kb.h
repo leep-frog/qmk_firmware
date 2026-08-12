@@ -8,6 +8,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record);
 bool IsToggleShiftTapDance(uint16_t keycode);
 
 #define TGL_SHF TD(TDK_SHIFT_TOGGLE)
+#define TO_EMOJI TD(TDK_EMOJI)
 
 #define CK_KILL TD(TDK_KILL_LINE)
 #define CK_MCR1 TD(TDK_MACRO_1)

@@ -10,6 +10,15 @@ static void shift_activation_fn(bool activated) {
   }
 }
 
-leep_osm_config_t osm_configs[1] = {
+static void emoji_activation_fn(bool activated) {
+  if (activated) {
+    layer_on(LR_EMOJI);
+  } else {
+    layer_off(LR_EMOJI);
+  }
+}
+
+leep_osm_config_t osm_configs[2] = {
   OSM_CONFIG(CK_OSM_SHFT, shift_activation_fn),
+  OSM_CONFIG(CK_OSM_EMOJI, emoji_activation_fn),
 };

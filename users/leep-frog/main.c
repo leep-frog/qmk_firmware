@@ -371,6 +371,7 @@ const custom_keycode_handler_t PROGMEM custom_keycode_handlers[] = {
   [CK_TADA_HANDLER] = CK_HANDLER_EMOJI("tada"),
   // OSM no-ops (handled by leep_osm*.[ch] files)
   [CK_OSM_SHIFT_HANDLER] = CK_NOOP(),
+  [CK_OSM_EMOJI_HANDLER] = CK_NOOP(),
 };
 
 uint16_t Alt_keycodes[] = {
