@@ -293,6 +293,8 @@ int layer_colors[NUM_LAYERS][3] = {
     [LR_OUTLOOK] = {LEEP_C(BLUE)},
     // Scroll layer
     [LR_SCROLL] = {LEEP_C(RED)},
+    // Scroll layer
+    [LR_EMOJI] = {LEEP_C(PURPLE)},
     // ORANGE is available color
 };
 

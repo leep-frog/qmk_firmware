@@ -16,6 +16,7 @@ enum layers { // prefix LR
     LR_CTRL_ALT,
     LR_ONE_HAND,
     LR_SCROLL,
+    LR_EMOJI,
 
     NUM_LAYERS,
 };

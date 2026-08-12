@@ -107,8 +107,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         /* bottom row */ _______,
         _______, _______, _______, _______, _______),
 
-    // Need this so that the layer map size is full (as expected by encoder)
     [LR_SCROLL] = LEEP_LAYOUT(LK_SCROLL,
+        /* number row */ _______, _______,
+        /*  top row   */ _______, _______,
+        /* middle row */ _______,
+        /* bottom row */ _______,
+        _______, _______,  _______, _______, _______),
+
+    // Need this so that the layer map size is full (as expected by encoder)
+    [LR_EMOJI] = LEEP_LAYOUT(LK_EMOJI,
         /* number row */ _______, _______,
         /*  top row   */ _______, _______,
         /* middle row */ _______,
