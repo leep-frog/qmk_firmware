@@ -36,6 +36,7 @@ enum custom_keycode_handlers {
   CK_OSM_SHIFT_HANDLER,
   CK_USER_HANDLER,
   CK_EMAIL_HANDLER,
+  CK_PR_LINK_HANDLER,
 
 #ifdef LEEP_TEST_MODE
   // CK_TEST_CONFIRM is used by tests to confirm that the keyboard
@@ -72,6 +73,7 @@ enum custom_keycode_handlers {
 #define CK_OSM_SHFT CK(CK_OSM_SHIFT_HANDLER)
 #define CK_USER CK(CK_USER_HANDLER)
 #define CK_EMAIL CK(CK_EMAIL_HANDLER)
+#define CK_PR_LINK CK(CK_PR_LINK_HANDLER)
 
 #ifdef LEEP_TEST_MODE
 extern char test_message[];
@@ -580,7 +582,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_SHORTCUTS_H _______
 #define LK_SHORTCUTS_J _______
 #define LK_SHORTCUTS_K _______
-#define LK_SHORTCUTS_L _______
+#define LK_SHORTCUTS_L CK_PR_LINK
 #define LK_SHORTCUTS_SC _______
 #define LK_SHORTCUTS_QUOTE _______
 #define LK_SHORTCUTS_ENTER _______
