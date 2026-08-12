@@ -1301,7 +1301,7 @@ TEST_F(LeepFrog, Osm_HoldLongerThanTappingTerm) {
 *   OSM too long after tap   *
 ******************************/
 
-const uint16_t osm_too_long = 5 * TAPPING_TERM;
+const uint16_t osm_too_long = 10 * TAPPING_TERM;
 
 TEST_F(LeepFrog, Osm_TooLongDelayCancelsOsm) {
     TestDriver driver;

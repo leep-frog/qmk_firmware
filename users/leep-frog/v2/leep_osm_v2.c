@@ -21,7 +21,7 @@ enum osm_enact_steps {
 };
 
 const static uint16_t OSM_MAX_HOLD_TIME = TAPPING_TERM;
-const static uint16_t OSM_MAX_WAIT_TIME = 5 * TAPPING_TERM;
+const static uint16_t OSM_MAX_WAIT_TIME = 10 * TAPPING_TERM;
 
 void OSM_deactivate(leep_osm_config_t *osm_config) {
   if (osm_config->activation_fn) {
