@@ -9,6 +9,7 @@
 #include "./leep_layers_v2.h"
 #include "./leep_tap_dance_v2.h"
 #include "./leep_alt_v2.h"
+#include "./leep_alt_delay_v2.h"
 #include "./leep_aliases_v2.h"
 #include "./leep_google_v2.h"
 #include "./leep_url_v2.h"

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "users/leep-frog/v2/leep_alt_delay_v2.c" // Needed for alt delay when in remote desktop
 #include "leep_enum.c"
 #include "leep_combo.c"
 #include "leep_outlook.c"
