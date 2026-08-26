@@ -3359,3 +3359,98 @@ TEST_F(LeepFrog, CtrlXLayer_CopySkipsDeferredCtrlX) {
 
   CONFIRM_RESET();
 }
+
+/**********************
+* Alt keycode delay   *
+***********************
+* Some remote desktop clients drop the Alt modifier if the base keycode
+* arrives too quickly after it, so Alt-modified keys are delayed by
+* LEEP_ALT_KEYCODE_DELAY_MS (quantum/action.c and
+* users/leep-frog/v2/leep_alt_delay_v2.c).
+*/
+
+// Mirrors the value configured for LEEP_ALT_KEYCODE_DELAY_MS so test intent is
+// clear without readers needing to go trace the macro's definition.
+#define EXPECTED_LEEP_ALT_KEYCODE_DELAY_MS LEEP_ALT_KEYCODE_DELAY_MS
+
+TEST_F(LeepFrog, AltKeycodeDelay_LeftAltKeymapEntryIsDelayed) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t alt_d = LALT(KC_D);
+  LEEP_KEY_ROW(0, 2, alt_d, ck_test)
+
+  uint32_t start_time = timer_read32();
+  k_alt_d.press();
+  EXPECT_REPORT(driver, (KC_LALT));
+  EXPECT_REPORT(driver, (KC_LALT, KC_D));
+  RUN_ONE_SCAN_LOOP();
+  EXPECT_GE(timer_elapsed32(start_time), (uint32_t)EXPECTED_LEEP_ALT_KEYCODE_DELAY_MS);
+
+  k_alt_d.release();
+  EXPECT_REPORT(driver, (KC_LALT));
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, AltKeycodeDelay_RightAltKeymapEntryIsDelayed) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t alt_d = RALT(KC_D);
+  LEEP_KEY_ROW(0, 2, alt_d, ck_test)
+
+  uint32_t start_time = timer_read32();
+  k_alt_d.press();
+  EXPECT_REPORT(driver, (KC_RALT));
+  EXPECT_REPORT(driver, (KC_RALT, KC_D));
+  RUN_ONE_SCAN_LOOP();
+  EXPECT_GE(timer_elapsed32(start_time), (uint32_t)EXPECTED_LEEP_ALT_KEYCODE_DELAY_MS);
+
+  k_alt_d.release();
+  EXPECT_REPORT(driver, (KC_RALT));
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, AltKeycodeDelay_NonAltModifierKeymapEntryIsNotDelayed) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t ctrl_d = LCTL(KC_D);
+  LEEP_KEY_ROW(0, 2, ctrl_d, ck_test)
+
+  uint32_t start_time = timer_read32();
+  k_ctrl_d.press();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_REPORT(driver, (KC_LCTL, KC_D));
+  RUN_ONE_SCAN_LOOP();
+  // Only the scan loop's own 1ms tick should have elapsed; a Ctrl-modified
+  // key must not get the Alt-only delay.
+  EXPECT_LT(timer_elapsed32(start_time), (uint32_t)EXPECTED_LEEP_ALT_KEYCODE_DELAY_MS);
+
+  k_ctrl_d.release();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, AltKeycodeDelay_RegisterCode16IsDelayed) {
+  TestDriver driver;
+  InSequence s;
+
+  uint32_t start_time = timer_read32();
+  EXPECT_REPORT(driver, (KC_RALT));
+  EXPECT_REPORT(driver, (KC_RALT, KC_Q));
+  register_code16(RALT(KC_Q));
+  VERIFY_AND_CLEAR(driver);
+  EXPECT_GE(timer_elapsed32(start_time), (uint32_t)EXPECTED_LEEP_ALT_KEYCODE_DELAY_MS);
+
+  EXPECT_REPORT(driver, (KC_RALT));
+  EXPECT_EMPTY_REPORT(driver);
+  unregister_code16(RALT(KC_Q));
+  VERIFY_AND_CLEAR(driver);
+}
