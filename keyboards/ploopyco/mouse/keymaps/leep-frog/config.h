@@ -25,6 +25,15 @@
 // https://github.com/qmk/qmk_firmware/blob/master/docs/tap_hold.md#tapping-term
 #define TAPPING_TERM_PER_KEY
 
+// quantum/action.c inserts a delay between registering the Alt modifier and
+// sending the base keycode for Alt-modified keys (e.g. RALT(KC_A)); needed
+// because some remote desktop clients drop the modifier if the base key
+// arrives too quickly after it.
+#include "users/leep-frog/v2/leep_alt_delay_v2.h"
+#ifndef LEEP_ALT_KEYCODE_DELAY_MS
+  #error "Must define LEEP_ALT_KEYCODE_DELAY_MS (include users/leep-frog/v2/leep_alt_delay_v2.h)"
+#endif
+
 // Combo setup
 // #define FORCE_NKRO
 #define COMBO_TERM 40            // Number of milliseconds for combo keys.

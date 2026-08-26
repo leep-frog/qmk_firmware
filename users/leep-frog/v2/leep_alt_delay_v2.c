@@ -20,7 +20,7 @@ void register_code16(uint16_t code) {
   }
 
   if (extract_mod_bits(code) & (MOD_BIT(KC_LEFT_ALT) | MOD_BIT(KC_RIGHT_ALT))) {
-    wait_ms(ALT_KEYCODE_DELAY_MS);
+    wait_ms(LEEP_ALT_KEYCODE_DELAY_MS);
   }
 
   register_code(code);

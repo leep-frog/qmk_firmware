@@ -421,6 +421,11 @@ void process_action(keyrecord_t *record, action_t action) {
                         add_weak_mods(mods);
                     }
                     send_keyboard_report();
+#if defined(LEEP_ALT_KEYCODE_DELAY_MS) && LEEP_ALT_KEYCODE_DELAY_MS > 0
+                    if (mods & (MOD_BIT(KC_LEFT_ALT) | MOD_BIT(KC_RIGHT_ALT))) {
+                        wait_ms(LEEP_ALT_KEYCODE_DELAY_MS);
+                    }
+#endif
                 }
                 register_code(action.key.code);
             } else {
@@ -455,6 +460,11 @@ void process_action(keyrecord_t *record, action_t action) {
                                     add_weak_mods(mods);
                                 }
                                 send_keyboard_report();
+#if defined(LEEP_ALT_KEYCODE_DELAY_MS) && LEEP_ALT_KEYCODE_DELAY_MS > 0
+                                if (mods & (MOD_BIT(KC_LEFT_ALT) | MOD_BIT(KC_RIGHT_ALT))) {
+                                    wait_ms(LEEP_ALT_KEYCODE_DELAY_MS);
+                                }
+#endif
                             }
                             register_code(action.key.code);
                         } else {

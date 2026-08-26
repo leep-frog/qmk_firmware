@@ -44,6 +44,15 @@
   #define TO_SHORTCUT_KEYCODE KC_LGUI
 #endif
 
+// quantum/action.c inserts a delay between registering the Alt modifier and
+// sending the base keycode for Alt-modified keys (e.g. RALT(KC_A)); needed
+// because some remote desktop clients drop the modifier if the base key
+// arrives too quickly after it.
+#include "users/leep-frog/v2/leep_alt_delay_v2.h"
+#ifndef LEEP_ALT_KEYCODE_DELAY_MS
+  #error "Must define LEEP_ALT_KEYCODE_DELAY_MS (include users/leep-frog/v2/leep_alt_delay_v2.h)"
+#endif
+
 /************************
 * Feature configuration *
 ************************/
