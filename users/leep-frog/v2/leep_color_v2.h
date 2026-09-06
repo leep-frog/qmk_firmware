@@ -16,6 +16,11 @@ void leep_change_mode(uint8_t mode, bool force);
 // Shifting the hue closer to red compensates for that.
 #    define HSV_LEEP_ORANGE 4, 255, 255
 
+// Stock HSV_YELLOW (43, 255, 255) reads as green-ish for the same reason --
+// the green channel renders stronger than requested, so pull the hue back
+// toward orange to compensate.
+#    define HSV_LEEP_YELLOW 30, 255, 255
+
 // Stock HSV_GOLD (36, 255, 255) reads as near-white for the same reason --
 // the green channel renders stronger than requested, so pull the hue back
 // toward orange and drop the value a bit so it reads as gold, not a pale
