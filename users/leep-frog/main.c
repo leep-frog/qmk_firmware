@@ -302,9 +302,9 @@ int layer_colors[NUM_LAYERS][3] = {
 
 #ifdef ENABLE_LEEP_COLOR
 uint8_t layer_modes[NUM_LAYERS] = {
-    [0 ... NUM_LAYERS - 1] = RGB_MATRIX_SOLID_COLOR,
-    [LR_BASE] = RGB_MATRIX_MULTISPLASH,
-    [LR_SHORTCUTS] = RGB_MATRIX_RIVERFLOW,
+  [0 ... NUM_LAYERS - 1] = RGB_MATRIX_SOLID_COLOR,
+  [LR_BASE] = RGB_MATRIX_SOLID_REACTIVE,
+  [LR_SHORTCUTS] = RGB_MATRIX_MULTISPLASH,
 };
 #endif
 
@@ -396,7 +396,7 @@ bool layers_status[NUM_LAYERS] = {
     [1 ... NUM_LAYERS - 1] = false,
 };
 
-#define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(MAGENTA, RGB_MATRIX_DIGITAL_RAIN, true)
+#define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(MAGENTA, RGB_MATRIX_STARLIGHT_SMOOTH, true)
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
