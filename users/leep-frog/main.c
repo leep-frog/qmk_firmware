@@ -282,21 +282,21 @@ int layer_colors[NUM_LAYERS][3] = {
     // Alt layer
     [LR_ALT] = {LEEP_C(BLUE)},
     // Ctrl+X layer
-    [LR_CTRL_X] = {LEEP_C(CHARTREUSE)},
+    [LR_CTRL_X] = {LEEP_C(LEEP_PINK)},
     // Ctrl+Alt layer
-    [LR_CTRL_ALT] = {LEEP_C(GOLD)},
+    [LR_CTRL_ALT] = {LEEP_C(LEEP_GOLD)},
     // Shortcut layer
-    [LR_SHORTCUTS] = {LEEP_C(TURQUOISE)},
+    [LR_SHORTCUTS] = {LEEP_C(YELLOW)},
     // Symbol layer
-    [LR_SYMB] = {LEEP_C(CORAL)},
+    [LR_SYMB] = {LEEP_C(GREEN)},
     // Outlook layer
-    [LR_OUTLOOK] = {LEEP_C(GOLD)},
+    [LR_OUTLOOK] = {LEEP_C(LEEP_GOLD)},
     // Scroll layer
     [LR_SCROLL] = {LEEP_C(RED)},
     // Scroll layer
     [LR_EMOJI] = {LEEP_C(PURPLE)},
     // Shortcut layer
-    [LR_ONE_HAND] = {LEEP_C(ORANGE)},
+    [LR_ONE_HAND] = {LEEP_C(LEEP_ORANGE)},
     // ORANGE is available color
 };
 
