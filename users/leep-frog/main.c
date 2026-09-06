@@ -300,6 +300,14 @@ int layer_colors[NUM_LAYERS][3] = {
     // ORANGE is available color
 };
 
+#ifdef ENABLE_LEEP_COLOR
+uint8_t layer_modes[NUM_LAYERS] = {
+    [0 ... NUM_LAYERS - 1] = RGB_MATRIX_SOLID_COLOR,
+    [LR_BASE] = RGB_MATRIX_MULTISPLASH,
+    [LR_SHORTCUTS] = RGB_MATRIX_RIVERFLOW,
+};
+#endif
+
 /*******************
  * Custom keycodes *
  *******************/
@@ -388,7 +396,7 @@ bool layers_status[NUM_LAYERS] = {
     [1 ... NUM_LAYERS - 1] = false,
 };
 
-#define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(MAGENTA, RGB_MATRIX_RAINDROPS, true)
+#define LEEP_STARTUP_COLOR_MODE() LEEP_COLOR_MODE(MAGENTA, RGB_MATRIX_DIGITAL_RAIN, true)
 
 void keyboard_post_init_user(void) {
     if (!PlayedStartupSong()) {
