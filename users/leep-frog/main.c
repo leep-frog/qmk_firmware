@@ -278,9 +278,9 @@ int layer_colors[NUM_LAYERS][3] = {
     // Ella layer
     [LR_ELLA] = {LEEP_C(GREEN)},
     // Ctrl layer
-    [LR_CTRL] = {LEEP_C(SPRINGGREEN)},
+    [LR_CTRL] = {LEEP_C(MAGENTA)},
     // Alt layer
-    [LR_ALT] = {LEEP_C(MAGENTA)},
+    [LR_ALT] = {LEEP_C(BLUE)},
     // Ctrl+X layer
     [LR_CTRL_X] = {LEEP_C(CHARTREUSE)},
     // Ctrl+Alt layer
@@ -290,11 +290,13 @@ int layer_colors[NUM_LAYERS][3] = {
     // Symbol layer
     [LR_SYMB] = {LEEP_C(CORAL)},
     // Outlook layer
-    [LR_OUTLOOK] = {LEEP_C(BLUE)},
+    [LR_OUTLOOK] = {LEEP_C(GOLD)},
     // Scroll layer
     [LR_SCROLL] = {LEEP_C(RED)},
     // Scroll layer
     [LR_EMOJI] = {LEEP_C(PURPLE)},
+    // Shortcut layer
+    [LR_ONE_HAND] = {LEEP_C(ORANGE)},
     // ORANGE is available color
 };
 
@@ -556,6 +558,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
       // Don't untoggle for ctrl g since that should *only* deactivate the shift layer
       // (and not send ctrl+g afterwards too)
       case CK_CTLG:
+      // Don't untoggle for kill-line either, for the same reason: it checks
+      // shift mode itself and handles turning it off, so unsetting it here
+      // first would make that check always see shift mode as already off.
+      case CK_KILL:
       // Don't untoggle for these layer changes
       case TO_CTRL:
       case TO_ALT:

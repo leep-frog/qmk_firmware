@@ -9,6 +9,15 @@
 #include "users/leep-frog/keyboard-main/leep_symbol_layer_overlap_kb.h"
 #include "users/leep-frog/v2/leep_aliases_v2.h"
 
+// ToggleShift et al. have plain C linkage (defined via the C-compiled
+// leep_keyboard.c translation unit), so declare them extern "C" here just
+// like test_common.hpp does for quantum.h, otherwise the C++ compiler mangles
+// these references and the test binary fails to link.
+extern "C" {
+#include "users/leep-frog/v2/leep_tap_dance_v2.h"
+#include "users/leep-frog/v2/leep_shift_v2.h"
+}
+
 using testing::_;
 using testing::InSequence;
 // See lib/googletest/docs/reference/assertions.md
@@ -2919,6 +2928,72 @@ TEST_P(LeepFrogSimpleTapDance, OverlapKeyTap) {
 
     k_td_kc.release();
     EXPECT_REPORT(driver, (simple_tap_dance_params.tap_keycode));
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    CONFIRM_RESET();
+}
+
+/******************
+* Kill line tests *
+******************/
+
+TEST_F(LeepFrog, KillLine_ShiftMode_RunsKillAndYank) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t td_kill = CK_KILL;
+    LEEP_KEY_ROW(0, 3,
+      td_kill,
+      KC_A,
+      ck_test
+    )
+
+    // Enter shift mode directly; the shift-toggle tap dance itself isn't
+    // what's under test here.
+    EXPECT_REPORT(driver, (KC_RSFT));
+    ToggleShift();
+    VERIFY_AND_CLEAR(driver);
+
+    // Tap (not hold) the kill-line key.
+    k_td_kill.press();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    k_td_kill.release();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // The tap dance doesn't resolve on release alone (it's still waiting to
+    // see if this becomes a double-tap); pressing another key interrupts it
+    // and forces immediate resolution instead of waiting out TAPPING_TERM.
+    // Since shift mode is active, that resolution should run the full
+    // kill-and-yank sequence (ctrl+k, paste, enter) instead of a bare
+    // ctrl+k -- the same sequence that holding the key runs -- and then the
+    // interrupting key (A) is processed normally right after.
+    k_KC_A.press();
+    // Shift mode is turned off first (releasing RSFT), but that produces no
+    // visible report on its own: RSFT was still held as a tap-dance "weak
+    // mod" snapshot until cleared right after, so the next visible change is
+    // ctrl+k itself.
+    // ctrl+k
+    EXPECT_REPORT(driver, (KC_RCTL));
+    EXPECT_REPORT(driver, (KC_RCTL, KC_K));
+    EXPECT_REPORT(driver, (KC_RCTL));
+    EXPECT_EMPTY_REPORT(driver);
+    // paste
+    EXPECT_REPORT(driver, (KC_RSFT));
+    EXPECT_REPORT(driver, (KC_RSFT, KC_INSERT));
+    EXPECT_REPORT(driver, (KC_RSFT));
+    EXPECT_EMPTY_REPORT(driver);
+    // enter
+    EXPECT_REPORT(driver, (KC_ENTER));
+    EXPECT_EMPTY_REPORT(driver);
+    // the interrupting key itself
+    EXPECT_REPORT(driver, (KC_A));
+    RUN_ONE_SCAN_LOOP();
+
+    k_KC_A.release();
     EXPECT_EMPTY_REPORT(driver);
     RUN_ONE_SCAN_LOOP();
 

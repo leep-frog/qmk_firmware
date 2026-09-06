@@ -56,6 +56,12 @@ void TDKillLine_finished(tap_dance_state_t *state, void *user_data) {
     // While in shift mode, both a tap and a hold should just run the full kill-and-yank sequence.
     if (shift_toggled) {
         UnsetShift();
+        // The tap dance framework snapshots the mods active at the initial
+        // tap (here, RSFT from shift mode) as "weak mods" that get replayed
+        // on top of whatever we send until this dance's reset runs. Without
+        // clearing that now, the RSFT above would leak into ctrl+k (sending
+        // ctrl+shift+k) and into the final enter (sending shift+enter).
+        clear_weak_mods();
         SEND_STRING(SS_RCTL("k") SS_DELAY(100) SS_PASTE SS_DELAY(50) SS_TAP(X_ENTER));
         return;
     }
