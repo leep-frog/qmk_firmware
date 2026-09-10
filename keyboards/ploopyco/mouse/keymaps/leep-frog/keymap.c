@@ -92,8 +92,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Top
         KC_BTN2, KC_BTN1, KC_BTN2, TO_ALT, TO_WS,
         // Side buttons
-        TO_CTRL,
         TD_COPY_PASTE,
+        TO_CTRL,
         // Special button
         TD_BOOT),
 
