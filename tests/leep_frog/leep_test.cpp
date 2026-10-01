@@ -3435,6 +3435,122 @@ TEST_F(LeepFrog, CtrlXLayer_CopySkipsDeferredCtrlX) {
   CONFIRM_RESET();
 }
 
+// Regression tests for the oneshot layer used by ctrl+x chords (see
+// leep_oneshot_v2.c). The oneshot used to track progress by blindly
+// counting release events (1st release = the activating key, 2nd release
+// = the action key), with no check on *which* key actually released. If
+// some unrelated held key (e.g. the physical Ctrl key backing the
+// ctrl-layer) released in between, it got miscounted and the LR_CTRL_X
+// layer was deactivated before the action key (e.g. J) was ever pressed,
+// so the action key fell through to a lower layer instead of CK_TGSH.
+// This affected both relative orderings of the two unrelated releases
+// identically, which both tests below cover.
+TEST_F(LeepFrog, CtrlXLayer_XReleaseThenUnrelatedKeyReleaseBeforeAction) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t ctrl_key = KC_LCTL;
+  const uint16_t to_ctlx = TO_CTLX;
+  const uint16_t action_key = KC_J;
+  const uint16_t ck_tgsh = CK_TGSH;
+  LEEP_KEY_ROW(0, 4,
+    ctrl_key,
+    to_ctlx,
+    action_key,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(LR_CTRL_X, 4,
+    TK_0,
+    TK_1,
+    ck_tgsh,
+    TK_2
+  )
+
+  // Hold an unrelated key (standing in for the physical key that holds
+  // the ctrl layer open) through the whole sequence.
+  k_ctrl_key.press();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  RUN_ONE_SCAN_LOOP();
+
+  // Tap X (TO_CTLX), activating the LR_CTRL_X oneshot layer.
+  k_to_ctlx.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_to_ctlx.release();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  // Release the unrelated key *after* X, but still before the action key
+  // is pressed. This is the second release seen since activation.
+  k_ctrl_key.release();
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  // The action key should still resolve via LR_CTRL_X to CK_TGSH, not
+  // fall through to the plain KC_J mapped on layer 0.
+  k_action_key.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_action_key.release();
+  EXPECT_REPORT(driver, (KC_RSFT));
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
+TEST_F(LeepFrog, CtrlXLayer_UnrelatedKeyReleaseThenXReleaseBeforeAction) {
+  TestDriver driver;
+  InSequence s;
+  const uint16_t ctrl_key = KC_LCTL;
+  const uint16_t to_ctlx = TO_CTLX;
+  const uint16_t action_key = KC_J;
+  const uint16_t ck_tgsh = CK_TGSH;
+  LEEP_KEY_ROW(0, 4,
+    ctrl_key,
+    to_ctlx,
+    action_key,
+    ck_test
+  )
+
+  LEEP_KEY_ROW(LR_CTRL_X, 4,
+    TK_0,
+    TK_1,
+    ck_tgsh,
+    TK_2
+  )
+
+  k_ctrl_key.press();
+  EXPECT_REPORT(driver, (KC_LCTL));
+  RUN_ONE_SCAN_LOOP();
+
+  // Tap X (TO_CTLX), activating the LR_CTRL_X oneshot layer.
+  k_to_ctlx.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  // This time release the unrelated key *before* X releases.
+  k_ctrl_key.release();
+  EXPECT_EMPTY_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_to_ctlx.release();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  // The action key should still resolve via LR_CTRL_X to CK_TGSH.
+  k_action_key.press();
+  EXPECT_NO_REPORT(driver);
+  RUN_ONE_SCAN_LOOP();
+
+  k_action_key.release();
+  EXPECT_REPORT(driver, (KC_RSFT));
+  RUN_ONE_SCAN_LOOP();
+
+  CONFIRM_RESET();
+}
+
 /**********************
 * Alt keycode delay   *
 ***********************

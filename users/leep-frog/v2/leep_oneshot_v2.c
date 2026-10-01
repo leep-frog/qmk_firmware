@@ -5,32 +5,45 @@
 // or as a custom keycode.
 
 static uint16_t leep_oneshot_layer = 0;
-static bool leep_oneshot_key_pressed = false;
+static bool leep_oneshot_awaiting_action = false;
+static keypos_t leep_oneshot_action_keypos;
 
 // Note: this does not support nested one shots.
 void ActivateOneshot(uint16_t layer) {
-    if (!leep_oneshot_key_pressed) {
+    if (!leep_oneshot_layer) {
         leep_oneshot_layer = layer;
         layer_on(layer);
-        leep_oneshot_key_pressed = true;
+        leep_oneshot_awaiting_action = true;
     }
 }
 
 void Oneshot_handled(keyrecord_t* record) {
-    // Do nothing if a key pressed
+    if (!leep_oneshot_layer) {
+        return;
+    }
+
     if (record->event.pressed) {
+        // The first key pressed while the oneshot layer is active is the
+        // "action" key (e.g. the J in ctrl+x j). Remember its position so
+        // that only *its* release ends the oneshot below. Previously this
+        // just counted releases (1st = the activating key, 2nd = the
+        // action key), which broke if some other held key (e.g. the
+        // layer's hold key) happened to release in between, prematurely
+        // deactivating the layer before the action key was even pressed.
+        if (leep_oneshot_awaiting_action) {
+            leep_oneshot_awaiting_action = false;
+            leep_oneshot_action_keypos = record->event.key;
+        }
         return;
     }
 
-    // Unpress the one shot key
-    if (leep_oneshot_key_pressed) {
-        leep_oneshot_key_pressed = false;
+    // Ignore releases of any key other than the action key (including the
+    // key that activated the oneshot, and any key released before the
+    // action key was even pressed).
+    if (leep_oneshot_awaiting_action || !KEYEQ(record->event.key, leep_oneshot_action_keypos)) {
         return;
     }
 
-    // Deactivate the oneshot layer after the second key press
-    if (leep_oneshot_layer) {
-        layer_off(leep_oneshot_layer);
-        leep_oneshot_layer = 0;
-    }
+    layer_off(leep_oneshot_layer);
+    leep_oneshot_layer = 0;
 }
