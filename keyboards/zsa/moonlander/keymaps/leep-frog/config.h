@@ -26,6 +26,10 @@
 // (i.e. adding this define) seemed to resolve the issue.
 #define MOONLANDER_USER_LEDS
 
+// Newer effects are opt-in (must be explicitly enabled) rather than
+// opt-out like the rest of the built-in effects below.
+#define ENABLE_RGB_MATRIX_FLOWER_BLOOMING
+
 // Disable as many of these as possible to save memory
 #define DISABLE_RGB_MATRIX_SOLID_COLOR          // Static single hue, no speed support
 #define DISABLE_RGB_MATRIX_ALPHAS_MODS          // Static dual hue, speed is hue for secondary hue
