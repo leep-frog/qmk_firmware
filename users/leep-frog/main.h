@@ -721,7 +721,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_ONE_HAND_K CK_TABF
 #define LK_ONE_HAND_L CL(R)
 #define LK_ONE_HAND_SC TO_SCRR
-#define LK_ONE_HAND_QUOTE KC_RSFT
+#define LK_ONE_HAND_QUOTE CL(T)
 #define LK_ONE_HAND_ENTER _______
 // Bottom row
 #define LK_ONE_HAND_LSFT _______
