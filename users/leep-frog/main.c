@@ -379,6 +379,8 @@ const custom_keycode_handler_t PROGMEM custom_keycode_handlers[] = {
   [CK_PR_LINK_HANDLER] = CK_HANDLER_STRING("(PR)" SS_TAP(X_LEFT) SS_RSFT(SS_TAP(X_LEFT) SS_TAP(X_LEFT)) SS_RCTL("v") SS_TAP(X_RIGHT) SS_TAP(X_RIGHT)),
   // Emojis
   [CK_TADA_HANDLER] = CK_HANDLER_EMOJI("tada"),
+  [CK_STAMP_HANDLER] = CK_HANDLER_EMOJI("stamp"),
+  [CK_PRAY_HANDLER] = CK_HANDLER_EMOJI("pray"),
   // OSM no-ops (handled by leep_osm*.[ch] files)
   [CK_OSM_SHIFT_HANDLER] = CK_NOOP(),
   [CK_OSM_EMOJI_HANDLER] = CK_NOOP(),

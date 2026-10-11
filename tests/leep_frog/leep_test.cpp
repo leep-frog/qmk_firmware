@@ -3645,3 +3645,131 @@ TEST_F(LeepFrog, AltKeycodeDelay_RegisterCode16IsDelayed) {
   unregister_code16(RALT(KC_Q));
   VERIFY_AND_CLEAR(driver);
 }
+
+/***************
+* Emoji layer *
+***************/
+
+TEST_F(LeepFrog, EmojiLayer_Hold) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_emoji = TO_EMOJI;
+    LEEP_KEY_ROW(0, 3,
+      to_emoji,
+      KC_A,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_EMOJI, 3,
+      TK_0,
+      KC_B,
+      TK_1
+    )
+
+    // Press and hold the emoji key
+    k_to_emoji.press();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Tap a key twice while holding (both should be in the emoji layer)
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    RUN_ONE_SCAN_LOOP();
+    EXPECT_TRUE(IS_LAYER_ON(LR_EMOJI));
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    RUN_ONE_SCAN_LOOP();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Release the emoji key
+    k_to_emoji.release();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+    EXPECT_FALSE(IS_LAYER_ON(LR_EMOJI));
+
+    // Next press is back in the base layer
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_A));
+    RUN_ONE_SCAN_LOOP();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    CONFIRM_RESET();
+}
+
+class LeepFrogEmojiTapParamTest : public TestFixture, public ::testing::WithParamInterface<uint16_t> {};
+
+TEST_P(LeepFrogEmojiTapParamTest, EmojiLayer_TapIsOneShot) {
+    TestDriver driver;
+    InSequence s;
+
+    uint16_t to_emoji = TO_EMOJI;
+    LEEP_KEY_ROW(0, 3,
+      to_emoji,
+      KC_A,
+      ck_test
+    )
+
+    LEEP_KEY_ROW(LR_EMOJI, 3,
+      TK_0,
+      KC_B,
+      TK_1
+    )
+
+    // Tap the emoji key
+    k_to_emoji.press();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    k_to_emoji.release();
+    EXPECT_NO_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    // Optionally wait for the tap dance to finish (and reset) on its own
+    if (GetParam()) {
+      IDLE_FOR_AND_EXPECT_NOTHING(GetParam());
+    }
+
+    // Next key is in the emoji layer
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_B));
+    RUN_ONE_SCAN_LOOP();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+    EXPECT_FALSE(IS_LAYER_ON(LR_EMOJI));
+
+    // Following key is back in the base layer
+    k_KC_A.press();
+    EXPECT_REPORT(driver, (KC_A));
+    RUN_ONE_SCAN_LOOP();
+
+    k_KC_A.release();
+    EXPECT_EMPTY_REPORT(driver);
+    RUN_ONE_SCAN_LOOP();
+
+    CONFIRM_RESET();
+}
+
+INSTANTIATE_TEST_CASE_P(
+  EmojiTap,
+  LeepFrogEmojiTapParamTest,
+  ::testing::Values(
+    // Press the next key right away (interrupts the tap dance)
+    0,
+    // Press the next key after the tap dance times out
+    TAPPING_TERM + 1
+  )
+);

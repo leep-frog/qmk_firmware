@@ -412,13 +412,27 @@ void emoji_osm_layer(tap_dance_state_t *state, bool tap, leep_td_value_t *hold_v
     OSM_handled(CK_OSM_EMOJI, false);
 }
 
+// Only turn the emoji layer off if the hold turned it on. Otherwise, the
+// tap dance reset (which also runs after a tap) would undo the OSM layer.
+static bool emoji_layer_held = false;
+
+void emoji_hold_layer(tap_dance_state_t *state, bool finished, leep_td_value_t *hold_value) {
+    if (finished) {
+        layer_on(LR_EMOJI);
+        emoji_layer_held = true;
+    } else if (emoji_layer_held) {
+        layer_off(LR_EMOJI);
+        emoji_layer_held = false;
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Shift toggle
     // [TDK_SHIFT_TOGGLE] = ACTION_TAP_DANCE_FN(TDToggleShift),
     [TDK_SHIFT_TOGGLE] = LEEP_TD_CLICK_KC_HOLD_FN(C(KC_J), TDToggleShift_hold, LEEP_TD_NOVAL()),
     [TDK_CTRL_SHIFT_TOGGLE] = LEEP_TD_CLICK_FN_HOLD_LAYER(ctrl_shift_toggle_shift_layer, LEEP_TD_NOVAL(), LR_CTRL_SHIFT),
     // OSM emoji layer
-    [TDK_EMOJI] = LEEP_TD_CLICK_FN_HOLD_LAYER(emoji_osm_layer, LEEP_TD_NOVAL(), LR_SHORTCUTS),
+    [TDK_EMOJI] = LEEP_TD_CLICK_FN_HOLD_FN(emoji_osm_layer, LEEP_TD_NOVAL(), emoji_hold_layer, LEEP_TD_NOVAL()),
     // Kill line
     [TDK_KILL_LINE] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(NULL, NULL, TDKillLine_finished, TDKillLine_reset),
     // Record 1

@@ -41,6 +41,8 @@ enum custom_keycode_handlers {
   CK_PR_LINK_HANDLER,
   // Emojis
   CK_TADA_HANDLER,
+  CK_STAMP_HANDLER,
+  CK_PRAY_HANDLER,
 
 #ifdef LEEP_TEST_MODE
   // CK_TEST_CONFIRM is used by tests to confirm that the keyboard
@@ -83,6 +85,8 @@ enum custom_keycode_handlers {
 
 // Emojis
 #define CK_TADA CK(CK_TADA_HANDLER)
+#define CK_STAMP CK(CK_STAMP_HANDLER)
+#define CK_PRAY CK(CK_PRAY_HANDLER)
 
 #ifdef LEEP_TEST_MODE
 extern char test_message[];
@@ -834,13 +838,13 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_EMOJI_U _______
 #define LK_EMOJI_I _______
 #define LK_EMOJI_O _______
-#define LK_EMOJI_P _______
+#define LK_EMOJI_P CK_PRAY
 #define LK_EMOJI_LBRC _______
 #define LK_EMOJI_RBRC _______
 // Middle row
 #define LK_EMOJI_CAPS_LOCK _______
 #define LK_EMOJI_A _______
-#define LK_EMOJI_S _______
+#define LK_EMOJI_S CK_STAMP
 #define LK_EMOJI_D _______
 #define LK_EMOJI_F _______
 #define LK_EMOJI_G _______
