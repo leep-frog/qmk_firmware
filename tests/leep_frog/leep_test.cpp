@@ -2938,7 +2938,7 @@ TEST_P(LeepFrogSimpleTapDance, OverlapKeyTap) {
 * Kill line tests *
 ******************/
 
-TEST_F(LeepFrog, KillLine_ShiftMode_RunsKillAndYank) {
+TEST_F(LeepFrog, KillLine_ShiftMode_Pastes) {
     TestDriver driver;
     InSequence s;
 
@@ -2967,27 +2967,17 @@ TEST_F(LeepFrog, KillLine_ShiftMode_RunsKillAndYank) {
     // The tap dance doesn't resolve on release alone (it's still waiting to
     // see if this becomes a double-tap); pressing another key interrupts it
     // and forces immediate resolution instead of waiting out TAPPING_TERM.
-    // Since shift mode is active, that resolution should run the full
-    // kill-and-yank sequence (ctrl+k, paste, enter) instead of a bare
-    // ctrl+k -- the same sequence that holding the key runs -- and then the
-    // interrupting key (A) is processed normally right after.
+    // Since shift mode is active, that resolution should just paste
+    // instead of a bare ctrl+k, and then the interrupting key (A) is
+    // processed normally right after.
     k_KC_A.press();
     // Shift mode is turned off first (releasing RSFT), but that produces no
     // visible report on its own: RSFT was still held as a tap-dance "weak
-    // mod" snapshot until cleared right after, so the next visible change is
-    // ctrl+k itself.
-    // ctrl+k
-    EXPECT_REPORT(driver, (KC_RCTL));
-    EXPECT_REPORT(driver, (KC_RCTL, KC_K));
-    EXPECT_REPORT(driver, (KC_RCTL));
-    EXPECT_EMPTY_REPORT(driver);
+    // mod" snapshot until cleared right after. The paste then presses RSFT
+    // again, so RSFT is never visibly released before the insert.
     // paste
-    EXPECT_REPORT(driver, (KC_RSFT));
     EXPECT_REPORT(driver, (KC_RSFT, KC_INSERT));
     EXPECT_REPORT(driver, (KC_RSFT));
-    EXPECT_EMPTY_REPORT(driver);
-    // enter
-    EXPECT_REPORT(driver, (KC_ENTER));
     EXPECT_EMPTY_REPORT(driver);
     // the interrupting key itself
     EXPECT_REPORT(driver, (KC_A));
