@@ -844,7 +844,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 // Middle row
 #define LK_EMOJI_CAPS_LOCK _______
 #define LK_EMOJI_A _______
-#define LK_EMOJI_S KC_BSPC
+#define LK_EMOJI_S CK_STAMP
 #define LK_EMOJI_D KC_DEL
 #define LK_EMOJI_F _______
 #define LK_EMOJI_G _______
