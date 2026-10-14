@@ -860,7 +860,7 @@ bool leep_process_record_user(uint16_t keycode, keyrecord_t* record);
 #define LK_EMOJI_Z _______
 #define LK_EMOJI_X _______
 #define LK_EMOJI_C CK_EMAIL
-#define LK_EMOJI_V _______
+#define LK_EMOJI_V CK_PASTE
 #define LK_EMOJI_B _______
 #define LK_EMOJI_N _______
 #define LK_EMOJI_M CK_MOUSE_MOVER
